@@ -18,5 +18,8 @@
     "experimentalDecorators": true
   },
   "include": ["src/**/*", "__tests__", "__mocks__"],
-  "files": ["src/types/index.d.ts"],
+  "files": [
+    "src/StoryLine/types/index.d.ts",
+    "src/StoryLine/types/styles.d.ts"
+    ],
 }

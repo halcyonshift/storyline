@@ -1,4 +1,5 @@
-import { app, BrowserWindow, ipcMain, dialog } from 'electron'
+import { app, BrowserWindow, ipcMain, dialog, Menu, MenuItem } from 'electron'
+
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
@@ -20,7 +21,27 @@ const createWindow = (): void => {
     mainWindow.webContents.openDevTools()
 }
 
-app.on('ready', createWindow)
+app.on('ready', () => {
+    createWindow()
+    /*
+    const template: MenuItem[] = [
+        {
+            label: 'StoryLine',
+            submenu: [
+                {
+                    label: 'About StoryLine',
+                    selector: 'orderFrontStandardAboutPanel:'
+                },
+                {
+                    type: 'separator'
+                },
+            ]
+        },
+    ]
+    const menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu)
+    */
+})
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {

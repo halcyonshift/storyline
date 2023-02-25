@@ -3,24 +3,31 @@ import React from 'react'
 import DatabaseProvider from '@nozbe/watermelondb/DatabaseProvider'
 import ReactDOM from 'react-dom/client'
 
-import './index.css'
-import Main from './Main'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
-
-import '@fontsource/roboto/300.css'
-import '@fontsource/roboto/400.css'
-import '@fontsource/roboto/500.css'
-import '@fontsource/roboto/700.css'
 
 import './i18n'
 import database from './db'
+import App from './App'
 
+import * as Layouts from './ui/layouts'
+import * as StoryLineScreens from './screens/storyline'
 
 const router = createHashRouter([
   {
     path: '/',
-    element: <Main />,
-    errorElement: <p>404</p>
+    element: <App />,
+    errorElement: <p>404</p>,
+    children: [
+        {
+            element: <Layouts.StoryLineLayout />,
+            children: [
+                {
+                    index: true,
+                    element: <StoryLineScreens.LandingScreen />
+                }
+            ]
+        }
+    ]
   },
 ])
 

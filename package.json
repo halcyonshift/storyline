@@ -1,8 +1,8 @@
 {
   "name": "storyline",
-  "productName": "storyline",
+  "productName": "StoryLine",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Writing tool",
   "main": ".webpack/main",
   "scripts": {
     "start": "ELECTRON_DISABLE_SECURITY_WARNINGS=true electron-forge start",
