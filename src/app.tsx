@@ -1,34 +1,35 @@
-import CssBaseline from '@mui/material/CssBaseline'
-import { ThemeProvider } from '@mui/material/styles'
-import Typography from '@mui/material/Typography'
+import React from 'react'
+
+import DatabaseProvider from '@nozbe/watermelondb/DatabaseProvider'
 import ReactDOM from 'react-dom/client'
 
-import theme from './theme'
+import './index.css'
+import Main from './Main'
+import { createHashRouter, RouterProvider } from 'react-router-dom'
 
-const dialogConfig = {
-    title: 'Select a file',
-    buttonLabel: 'This one will do',
-    properties: ['openFile']
-};
+import '@fontsource/roboto/300.css'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/500.css'
+import '@fontsource/roboto/700.css'
 
+import './i18n'
+import database from './db'
+
+
+const router = createHashRouter([
+  {
+    path: '/',
+    element: <Main />,
+    errorElement: <p>404</p>
+  },
+])
 
 const root = ReactDOM.createRoot(
-    document.getElementById('root') as HTMLElement
+  document.getElementById('root') as HTMLElement
 )
 
-const Main = () => {
-    const handler = () => {
-        api.openDialog('showOpenDialog', dialogConfig).then(result => console.log(result))
-    }
-
-    return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Typography variant='h1' className='text-center' onClick={handler}>Supp</Typography>
-        </ThemeProvider>
-    )
-}
-
 root.render(
-    <Main />
+  <DatabaseProvider database={database}>
+    <RouterProvider router={router} />
+  </DatabaseProvider>
 )
