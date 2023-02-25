@@ -1,0 +1,11 @@
+{
+    "navigation": {
+        "back": "Back"
+    },
+    "screens": {
+        "settings": {
+            "title": "Settings",
+            "language": "Language"
+        }
+    }
+}
