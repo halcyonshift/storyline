@@ -17,6 +17,6 @@
     },
     "experimentalDecorators": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "__tests__", "__mocks__"],
   "files": ["src/types/index.d.ts"],
 }

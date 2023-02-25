@@ -1,4 +1,9 @@
+import CssBaseline from '@mui/material/CssBaseline'
+import { ThemeProvider } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
 import ReactDOM from 'react-dom/client'
+
+import theme from './theme'
 
 const dialogConfig = {
     title: 'Select a file',
@@ -16,7 +21,12 @@ const Main = () => {
         api.openDialog('showOpenDialog', dialogConfig).then(result => console.log(result))
     }
 
-    return <h1 className='text-center' onClick={handler}>Supp</h1>
+    return (
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Typography variant='h1' className='text-center' onClick={handler}>Supp</Typography>
+        </ThemeProvider>
+    )
 }
 
 root.render(
