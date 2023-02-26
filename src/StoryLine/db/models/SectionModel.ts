@@ -5,7 +5,7 @@ import { DateTime } from 'luxon'
 
 import { capitalize, htmlExtractExcerpts, htmlParse, wordCount } from '../../utils'
 
-import { SectionType, StatisticType } from '../types'
+import { SectionDataType, StatisticDataType } from './types'
 
 import { CharacterModel, ItemModel, LocationModel, ProjectModel } from './'
 
@@ -123,7 +123,7 @@ export default class SectionModel extends Model {
         Q.sortBy('order', Q.asc)
     )
 
-    @writer async addSection(data: SectionType) {
+    @writer async addSection(data: SectionDataType) {
         const project = await this.project.fetch()
         return await this.collections.get<SectionModel>('section').create(section => {
             section.section.set(this)
@@ -139,7 +139,7 @@ export default class SectionModel extends Model {
         })
     }
 
-    @writer async addStatistic(data: StatisticType) {
+    @writer async addStatistic(data: StatisticDataType) {
         return await this.collections.get<SectionModel>('section').create(section => {
             section.section.set(this)
             section.words = data.words

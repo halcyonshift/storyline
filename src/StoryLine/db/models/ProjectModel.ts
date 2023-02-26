@@ -2,7 +2,7 @@ import { Model, Q, Query } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, readonly, text, writer } from '@nozbe/watermelondb/decorators'
 
-import { AnnotationType, CharacterType, ItemType, LocationType, ProjectType, SectionType } from '../types'
+import { AnnotationDataType, CharacterDataType, ItemDataType, LocationDataType, ProjectDataType, SectionDataType } from './types'
 
 import AnnotationModel from './AnnotationModel'
 import CharacterModel from './CharacterModel'
@@ -81,7 +81,7 @@ export default class ProjectModel extends Model {
         })
     }
 
-    @writer async updateProject(data: ProjectType) {
+    @writer async updateProject(data: ProjectDataType) {
         await this.update(project => {
             project.title = data.title.toString()
             project.author = (data.author || '').toString()
@@ -91,7 +91,7 @@ export default class ProjectModel extends Model {
         })
     }
 
-    @writer async addAnnotation(data: AnnotationType) {
+    @writer async addAnnotation(data: AnnotationDataType) {
         return await this.collections.get<AnnotationModel>('annotation').create(annotation => {
             annotation.project.set(this)
             annotation.title = data.title
@@ -99,7 +99,7 @@ export default class ProjectModel extends Model {
         })
     }
 
-    @writer async addCharacter(data: CharacterType) {
+    @writer async addCharacter(data: CharacterDataType) {
         return await this.collections.get<CharacterModel>('character').create(character => {
             character.project.set(this)
             character.displayName = data.displayName
@@ -107,14 +107,14 @@ export default class ProjectModel extends Model {
         })
     }
 
-    @writer async addItem(data: ItemType) {
+    @writer async addItem(data: ItemDataType) {
         return await this.collections.get<ItemModel>('item').create(item => {
             item.project.set(this)
             item.name = data.name
         })
     }
 
-    @writer async addLocation(data: LocationType) {
+    @writer async addLocation(data: LocationDataType) {
         return await this.collections.get<LocationModel>('location').create(location => {
             location.project.set(this)
             location.name = data.name
@@ -126,7 +126,7 @@ export default class ProjectModel extends Model {
         })
     }
 
-    @writer async addPart(data: SectionType) {
+    @writer async addPart(data: SectionDataType) {
         return await this.collections.get<SectionModel>('section').create(section => {
             section.project.set(this)
             section.title = data.title

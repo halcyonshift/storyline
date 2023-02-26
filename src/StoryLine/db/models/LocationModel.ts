@@ -2,7 +2,7 @@ import { Model, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, readonly, relation, text, writer } from '@nozbe/watermelondb/decorators'
 
-import { LocationType } from '../types'
+import { LocationDataType } from './types'
 
 import NoteModel from './NoteModel'
 import ProjectModel from './ProjectModel'
@@ -27,7 +27,7 @@ export default class LocationModel extends Model {
     @relation('location', 'location_id') location!: Relation<LocationModel>
     @children('note') note!: Query<NoteModel>
 
-    @writer async addLocation(data: LocationType) {
+    @writer async addLocation(data: LocationDataType) {
         const project = await this.project.fetch()
         return await this.collections.get<LocationModel>('location').create(location => {
             location.location.set(this)

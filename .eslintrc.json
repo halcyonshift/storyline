@@ -13,5 +13,8 @@
     "plugin:import/typescript"
   ],
   "parser": "@typescript-eslint/parser",
-  "ignorePatterns": ["__mocks__/**/*", "__tests__/**/*"]
+  "ignorePatterns": ["__mocks__/**/*", "__tests__/**/*"],
+  "rules": {
+    "complexity": ["error", 10]
+  }
 }
