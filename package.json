@@ -14,7 +14,8 @@
     "test:integration": "PWDEBUG=1 yarn playwright test",
     "validate": "yarn test:unit && yarn lint",
     "precommit": "yarn validate",
-    "prepush": "yarn validate"
+    "prepush": "yarn validate",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": {
