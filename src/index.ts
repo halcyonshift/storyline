@@ -1,5 +1,6 @@
-import { app, BrowserWindow, ipcMain, dialog } from 'electron'
+/** @format */
 
+import { app, BrowserWindow, ipcMain, dialog } from 'electron'
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
@@ -14,13 +15,15 @@ const createWindow = (): void => {
         height: 768,
         webPreferences: {
             preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY
-        },
+        }
     })
 
-    mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY).then(() => {
-        mainWindow.webContents.openDevTools()
-    }).catch(() => null)
-
+    mainWindow
+        .loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
+        .then(() => {
+            mainWindow.webContents.openDevTools()
+        })
+        .catch(() => null)
 }
 
 app.on('ready', () => {
@@ -57,8 +60,10 @@ app.on('activate', () => {
     }
 })
 
-app.whenReady().then(() => {
-    ipcMain.handle('dialog', (_, method: string, params: Electron.OpenDialogOptions) => {
-        if (method === 'showOpenDialog') void dialog.showOpenDialog(params)
+app.whenReady()
+    .then(() => {
+        ipcMain.handle('dialog', (_, method: string, params: Electron.OpenDialogOptions) => {
+            if (method === 'showOpenDialog') void dialog.showOpenDialog(params)
+        })
     })
-}).catch(() => null)
+    .catch(() => null)

@@ -1,3 +1,5 @@
+/** @format */
+
 import { Model, Q, Query } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, readonly, text, writer } from '@nozbe/watermelondb/decorators'
@@ -16,7 +18,6 @@ import CharacterModel from './CharacterModel'
 import ItemModel from './ItemModel'
 import LocationModel from './LocationModel'
 import SectionModel from './SectionModel'
-
 
 export default class ProjectModel extends Model {
     static table = 'project'
@@ -43,10 +44,7 @@ export default class ProjectModel extends Model {
     @children('location') location!: Query<LocationModel>
     @children('section') section!: Query<SectionModel>
 
-    @lazy parts = this.section.extend(
-        Q.where('mode', 'part'),
-        Q.sortBy('order', Q.asc)
-    )
+    @lazy parts = this.section.extend(Q.where('mode', 'part'), Q.sortBy('order', Q.asc))
 
     @lazy chapters = this.section.extend(
         Q.where('project_id', this.id),
@@ -70,26 +68,20 @@ export default class ProjectModel extends Model {
         Q.sortBy('display_name', Q.asc)
     )
 
-    @lazy annotations = this.annotation.extend(
-        Q.sortBy('title', Q.asc)
-    )
+    @lazy annotations = this.annotation.extend(Q.sortBy('title', Q.asc))
 
-    @lazy items = this.item.extend(
-        Q.sortBy('name', Q.asc)
-    )
+    @lazy items = this.item.extend(Q.sortBy('name', Q.asc))
 
-    @lazy locations = this.location.extend(
-        Q.sortBy('name', Q.asc)
-    )
+    @lazy locations = this.location.extend(Q.sortBy('name', Q.asc))
 
     @writer async updateLastOpened() {
-        await this.update(project => {
+        await this.update((project) => {
             project.lastOpenedAt = new Date()
         })
     }
 
     @writer async updateProject(data: ProjectDataType) {
-        await this.update(project => {
+        await this.update((project) => {
             project.title = data.title.toString()
             project.author = (data.author || '').toString()
             project.language = data.language
@@ -99,7 +91,7 @@ export default class ProjectModel extends Model {
     }
 
     @writer async addAnnotation(data: AnnotationDataType) {
-        return await this.collections.get<AnnotationModel>('annotation').create(annotation => {
+        return await this.collections.get<AnnotationModel>('annotation').create((annotation) => {
             annotation.project.set(this)
             annotation.title = data.title
             annotation.body = data.body
@@ -107,7 +99,7 @@ export default class ProjectModel extends Model {
     }
 
     @writer async addCharacter(data: CharacterDataType) {
-        return await this.collections.get<CharacterModel>('character').create(character => {
+        return await this.collections.get<CharacterModel>('character').create((character) => {
             character.project.set(this)
             character.displayName = data.displayName
             character.mode = data.mode
@@ -115,14 +107,14 @@ export default class ProjectModel extends Model {
     }
 
     @writer async addItem(data: ItemDataType) {
-        return await this.collections.get<ItemModel>('item').create(item => {
+        return await this.collections.get<ItemModel>('item').create((item) => {
             item.project.set(this)
             item.name = data.name
         })
     }
 
     @writer async addLocation(data: LocationDataType) {
-        return await this.collections.get<LocationModel>('location').create(location => {
+        return await this.collections.get<LocationModel>('location').create((location) => {
             location.project.set(this)
             location.name = data.name
             location.body = data.body
@@ -135,7 +127,7 @@ export default class ProjectModel extends Model {
 
     @writer async addPart(data: SectionDataType) {
         // eslint-disable-next-line max-statements
-        return await this.collections.get<SectionModel>('section').create(section => {
+        return await this.collections.get<SectionModel>('section').create((section) => {
             section.project.set(this)
             section.title = data.title
             section.description = data.description

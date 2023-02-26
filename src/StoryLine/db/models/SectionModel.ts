@@ -1,3 +1,5 @@
+/** @format */
+
 import { Model, Q, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { date, field, readonly, relation, text, writer, lazy } from '@nozbe/watermelondb/decorators'
@@ -8,7 +10,6 @@ import { capitalize, htmlExtractExcerpts, htmlParse, wordCount } from '../../uti
 import { SectionDataType, StatisticDataType } from './types'
 
 import { CharacterModel, ItemModel, LocationModel, ProjectModel } from './'
-
 
 export default class SectionModel extends Model {
     static table = 'section'
@@ -30,7 +31,6 @@ export default class SectionModel extends Model {
 
     @relation('project', 'project_id') project!: Relation<ProjectModel>
     @relation('section', 'section_id') section!: Relation<SectionModel>
-
 
     get displayTitle() {
         return this.title || `${capitalize(this.mode)} ${this.order}`
@@ -94,39 +94,38 @@ export default class SectionModel extends Model {
         new DOMParser()
             .parseFromString(this.body, 'text/html')
             .querySelectorAll(`.tag-${mode}`)
-            .forEach(tag => ids.push(tag.id))
+            .forEach((tag) => ids.push(tag.id))
 
         if (ids.length) {
-            return await this.database.get<CharacterModel | ItemModel | LocationModel>(mode).query(
-                Q.where('id', Q.oneOf(ids))
-            ).fetch()
+            return await this.database
+                .get<CharacterModel | ItemModel | LocationModel>(mode)
+                .query(Q.where('id', Q.oneOf(ids)))
+                .fetch()
         }
 
         return []
     }
 
-    @lazy scenes = this.collections.get<SectionModel>('section').query(
-        Q.where('section_id', this.id),
-        Q.where('mode', 'scene'),
-        Q.sortBy('order', Q.asc)
-    )
+    @lazy scenes = this.collections
+        .get<SectionModel>('section')
+        .query(Q.where('section_id', this.id), Q.where('mode', 'scene'), Q.sortBy('order', Q.asc))
 
-    @lazy chapters = this.collections.get<SectionModel>('section').query(
-        Q.where('section_id', this.id),
-        Q.where('mode', 'chapter'),
-        Q.sortBy('order', Q.asc)
-    )
+    @lazy chapters = this.collections
+        .get<SectionModel>('section')
+        .query(Q.where('section_id', this.id), Q.where('mode', 'chapter'), Q.sortBy('order', Q.asc))
 
-    @lazy revisions = this.collections.get<SectionModel>('section').query(
-        Q.where('section_id', this.id),
-        Q.where('mode', 'revision'),
-        Q.sortBy('order', Q.asc)
-    )
+    @lazy revisions = this.collections
+        .get<SectionModel>('section')
+        .query(
+            Q.where('section_id', this.id),
+            Q.where('mode', 'revision'),
+            Q.sortBy('order', Q.asc)
+        )
 
     @writer async addSection(data: SectionDataType) {
         const project = await this.project.fetch()
         // eslint-disable-next-line max-statements
-        return await this.collections.get<SectionModel>('section').create(section => {
+        return await this.collections.get<SectionModel>('section').create((section) => {
             section.section.set(this)
             section.project.set(project)
             section.title = (data.title || '').toString()
@@ -141,45 +140,45 @@ export default class SectionModel extends Model {
     }
 
     @writer async addStatistic(data: StatisticDataType) {
-        return await this.collections.get<SectionModel>('section').create(section => {
+        return await this.collections.get<SectionModel>('section').create((section) => {
             section.section.set(this)
             section.words = data.words
         })
     }
 
     @writer async updateTitle(data: string) {
-        await this.update(section => {
+        await this.update((section) => {
             section.title = data.toString()
         })
     }
 
     @writer async updateDate(data: string) {
-        await this.update(section => {
+        await this.update((section) => {
             section.date = data
         })
     }
 
     @writer async updateBody(data: string) {
-        await this.update(section => {
+        await this.update((section) => {
             section.body = data.toString()
             section.words = wordCount(data.toString())
         })
     }
 
     @writer async updateDescription(data: string) {
-        await this.update(section => {
+        await this.update((section) => {
             section.description = data.toString()
         })
     }
 
     @writer async updateOrder(data: number) {
-        await this.update(section => {
+        await this.update((section) => {
             section.order = data
         })
     }
 
     @writer async setPart(part: SectionModel) {
-        await this.update(section => {
+        await this.update((section) => {
             section.section.set(part)
         })
     }

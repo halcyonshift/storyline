@@ -1,3 +1,4 @@
+/** @format */
 
 import { Database } from '@nozbe/watermelondb'
 import LokiJSAdapter from '@nozbe/watermelondb/adapters/lokijs'
@@ -15,7 +16,6 @@ import {
     SectionModel,
     StatisticModel
 } from './models'
-
 
 const adapter = new LokiJSAdapter({
     schema,
@@ -37,7 +37,7 @@ const adapter = new LokiJSAdapter({
         onDidOverwrite: () => {
             // Called when this adapter is forced to overwrite contents of IndexedDB.
             // This happens if there's another open tab of the same app that's making changes.
-            // Try to synchronize the app now, and if user is offline, alert them that if they 
+            // Try to synchronize the app now, and if user is offline, alert them that if they
             // close this tab, some data may be lost
         },
         onversionchange: () => {
@@ -46,7 +46,7 @@ const adapter = new LokiJSAdapter({
             // if (checkIfUserIsLoggedIn()) {
             //  window.location.reload()
             //}
-        },
+        }
     }
 })
 
@@ -62,7 +62,7 @@ const database = new Database({
         ProjectModel,
         SectionModel,
         StatisticModel
-    ],
+    ]
 })
 
 export default database

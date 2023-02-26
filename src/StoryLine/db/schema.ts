@@ -1,3 +1,5 @@
+/** @format */
+
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 const schema = appSchema({
@@ -14,7 +16,7 @@ const schema = appSchema({
                 { name: 'deadline_at', type: 'number', isOptional: true },
                 { name: 'last_opened_at', type: 'number', isOptional: true },
                 { name: 'created_at', type: 'number' },
-                { name: 'updated_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
             ]
         }),
         tableSchema({
@@ -31,7 +33,7 @@ const schema = appSchema({
                 { name: 'section_id', type: 'string', isIndexed: true, isOptional: true },
                 { name: 'deadline_at', type: 'number', isOptional: true },
                 { name: 'created_at', type: 'number' },
-                { name: 'updated_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
             ]
         }),
         tableSchema({
@@ -40,7 +42,7 @@ const schema = appSchema({
                 { name: 'words', type: 'number', isOptional: true },
                 { name: 'section_id', type: 'string', isIndexed: true, isOptional: true },
                 { name: 'created_at', type: 'number' },
-                { name: 'updated_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
             ]
         }),
         tableSchema({
@@ -57,7 +59,7 @@ const schema = appSchema({
                 { name: 'url', type: 'string', isOptional: true },
                 { name: 'image', type: 'string', isOptional: true },
                 { name: 'created_at', type: 'number' },
-                { name: 'updated_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
             ]
         }),
         tableSchema({
@@ -97,7 +99,7 @@ const schema = appSchema({
                 { name: 'distinguishing_features', type: 'string', isOptional: true },
                 { name: 'image', type: 'string', isOptional: true },
                 { name: 'conflict', type: 'string', isOptional: true },
-                { name: 'evolution', type: 'string', isOptional: true },
+                { name: 'evolution', type: 'string', isOptional: true }
             ]
         }),
         tableSchema({
@@ -112,7 +114,7 @@ const schema = appSchema({
                 { name: 'project_id', type: 'string', isIndexed: true },
                 { name: 'location_id', type: 'string', isIndexed: true },
                 { name: 'created_at', type: 'number' },
-                { name: 'updated_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
             ]
         }),
         tableSchema({
@@ -125,7 +127,7 @@ const schema = appSchema({
                 { name: 'image', type: 'string', isOptional: true },
                 { name: 'project_id', type: 'string', isIndexed: true },
                 { name: 'created_at', type: 'number' },
-                { name: 'updated_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
             ]
         }),
         tableSchema({
@@ -140,7 +142,7 @@ const schema = appSchema({
                 { name: 'item_id', type: 'string', isIndexed: true, isOptional: true },
                 { name: 'location_id', type: 'string', isIndexed: true, isOptional: true },
                 { name: 'created_at', type: 'number' },
-                { name: 'updated_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
             ]
         })
     ]

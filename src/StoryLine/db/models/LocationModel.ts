@@ -1,3 +1,5 @@
+/** @format */
+
 import { Model, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import {
@@ -38,7 +40,7 @@ export default class LocationModel extends Model {
     @writer async addLocation(data: LocationDataType) {
         const project = await this.project.fetch()
         // eslint-disable-next-line max-statements
-        return await this.collections.get<LocationModel>('location').create(location => {
+        return await this.collections.get<LocationModel>('location').create((location) => {
             location.location.set(this)
             location.project.set(project)
             location.name = data.name

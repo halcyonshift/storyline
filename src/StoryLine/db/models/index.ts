@@ -1,3 +1,5 @@
+/** @format */
+
 export { default as AnnotationModel } from './AnnotationModel'
 export { default as CharacterModel } from './CharacterModel'
 export { default as ItemModel } from './ItemModel'
