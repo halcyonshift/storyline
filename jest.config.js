@@ -8,6 +8,7 @@ module.exports = {
         "./src/StoryLine/i18n.ts",
         "./src/StoryLine/App.tsx"
     ],
+    testMatch: ['**/*.test.{ts,tsx}'],
     transform: {
       "\\.[jt]sx?$": "babel-jest"
     },
