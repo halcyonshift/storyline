@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, dialog, Menu, MenuItem } from 'electron'
+import { app, BrowserWindow, ipcMain, dialog } from 'electron'
 
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string

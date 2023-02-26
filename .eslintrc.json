@@ -5,8 +5,6 @@
     "node": true
   },
   "extends": [
-    "react-app",
-    "react-app/jest",
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
@@ -14,5 +12,6 @@
     "plugin:import/electron",
     "plugin:import/typescript"
   ],
-  "parser": "@typescript-eslint/parser"
+  "parser": "@typescript-eslint/parser",
+  "ignorePatterns": ["__mocks__/**/*", "__tests__/**/*"]
 }

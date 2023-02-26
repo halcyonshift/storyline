@@ -5,6 +5,8 @@ import { DateTime } from 'luxon'
 
 import { capitalize, htmlExtractExcerpts, htmlParse, wordCount } from '../../utils'
 
+import { SectionType, StatisticType } from '../types'
+
 import { CharacterModel, ItemModel, LocationModel, ProjectModel } from './'
 
 
@@ -22,7 +24,7 @@ export default class SectionModel extends Model {
     @text('date') date!: string
     @field('words') words!: number
     @field('order') order!: number
-    @date('deadline_at') deadlineAt!: number
+    @date('deadline_at') deadlineAt!: Date
     @readonly @date('created_at') createdAt!: Date
     @readonly @date('updated_at') updatedAt!: Date
 
@@ -87,7 +89,7 @@ export default class SectionModel extends Model {
     }
 
     async _tags(mode: string) {
-        let ids: string[] = []
+        const ids: string[] = []
 
         new DOMParser()
             .parseFromString(this.body, 'text/html')
@@ -121,7 +123,7 @@ export default class SectionModel extends Model {
         Q.sortBy('order', Q.asc)
     )
 
-    @writer async addSection(data: any) {
+    @writer async addSection(data: SectionType) {
         const project = await this.project.fetch()
         return await this.collections.get<SectionModel>('section').create(section => {
             section.section.set(this)
@@ -132,15 +134,14 @@ export default class SectionModel extends Model {
             section.date = data.date
             section.order = data.order
             section.words = data.words
-            section.mode = data.mode.toString()
+            section.mode = data.mode
             section.deadlineAt = data.deadlineAt
         })
     }
 
-    @writer async addStatistic(data: any) {
+    @writer async addStatistic(data: StatisticType) {
         return await this.collections.get<SectionModel>('section').create(section => {
             section.section.set(this)
-            section.date = data.date
             section.words = data.words
         })
     }
