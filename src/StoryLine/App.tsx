@@ -1,24 +1,28 @@
-import React from 'react'
+/** @format */
 
-import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { Outlet } from 'react-router-dom'
 
+import { useColorMode } from './ui/display/colorMode'
 import theme from './ui/theme'
 
+const App = () => {
+    const colorMode = useColorMode()
 
-const App = () => (
-    <ThemeProvider theme={theme}>
+    return (
         <LocalizationProvider dateAdapter={AdapterLuxon}>
-            <CssBaseline />
-            <Container disableGutters maxWidth={false} className='h-[100vh]'>
-                <Outlet />
-            </Container>
+            <ThemeProvider theme={theme[colorMode.mode]}>
+                <CssBaseline />
+                <Box className={`${colorMode.mode} flex h-full`}>
+                    <Outlet />
+                </Box>
+            </ThemeProvider>
         </LocalizationProvider>
-    </ThemeProvider>
-)
+    )
+}
 
 export default App

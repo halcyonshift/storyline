@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body, #root {
+    height: 100vh
+}
+
+#root {
+    display: flex;
+    flex-direction: column
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
 }

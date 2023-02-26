@@ -2,10 +2,12 @@
     "navigation": {
         "back": "Retourner"
     },
-    "screens": {
-        "settings": {
-            "title": "Paramètres",
-            "language": "La langue"
+    "screen": {
+        "storyline": {
+            "settings": {
+                "title": "Paramètres",
+                "language": "La langue"
+            }
         }
     }
 }

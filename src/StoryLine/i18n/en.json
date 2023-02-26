@@ -2,10 +2,31 @@
     "navigation": {
         "back": "Back"
     },
-    "screens": {
-        "settings": {
-            "title": "Settings",
-            "language": "Language"
+    "screen": {
+        "storyline": {
+            "landing": {
+                "title": "Welcome to StoryLine!",
+                "navigation": {
+                    "openProject": "Open project",
+                    "newProject": "New project",
+                    "newSequel": "New sequel",
+                    "importProject": "Import project",
+                    "settings": "Settings",
+                    "info": "Info"
+                },
+                "recent": {
+                    "title": "Recently opened"
+                }
+            },
+            "settings": {
+                "title": "Settings",
+                "language": "Language",
+                "mode": {
+                    "title": "Display mode",
+                    "light": "Light",
+                    "dark": "Dark"
+                }
+            }
         }
     }
 }

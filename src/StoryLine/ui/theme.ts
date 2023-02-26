@@ -1,10 +1,16 @@
 import { createTheme } from '@mui/material/styles'
 import { orange } from '@mui/material/colors'
 
-const theme = createTheme({
+const light = createTheme({
     status: {
         danger: orange[500],
     },
 })
 
-export default theme
+const dark = createTheme({
+    status: {
+        danger: orange[500],
+    },
+})
+
+export default { light, dark }
