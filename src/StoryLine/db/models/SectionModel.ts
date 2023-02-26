@@ -125,6 +125,7 @@ export default class SectionModel extends Model {
 
     @writer async addSection(data: SectionDataType) {
         const project = await this.project.fetch()
+        // eslint-disable-next-line max-statements
         return await this.collections.get<SectionModel>('section').create(section => {
             section.section.set(this)
             section.project.set(project)

@@ -8,13 +8,20 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:import/recommended",
     "plugin:import/electron",
-    "plugin:import/typescript"
+    "plugin:import/typescript",
+    "eslint-config-code-complexity"
   ],
+  "parserOptions": {
+    "project": true,
+    "tsconfigRootDir": "./"
+  },
+  "root": true,
   "parser": "@typescript-eslint/parser",
-  "ignorePatterns": ["__mocks__/**/*", "__tests__/**/*"],
+  "ignorePatterns": ["__mocks__/**/*", "__tests__/**/*", "webpack.*", "*.config.*"],
   "rules": {
-    "complexity": ["error", 10]
+    "max-len": ["error", 100]
   }
 }

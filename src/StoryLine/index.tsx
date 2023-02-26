@@ -1,16 +1,19 @@
 import React from 'react'
 
+import { Q } from '@nozbe/watermelondb'
 import DatabaseProvider from '@nozbe/watermelondb/DatabaseProvider'
 import ReactDOM from 'react-dom/client'
 
 import { createHashRouter, RouterProvider } from 'react-router-dom'
 
-import './i18n'
 import database from './db'
-import App from './App'
-
+import { ProjectModel } from './db/models'
+import './i18n'
 import * as Layouts from './ui/layouts'
 import * as StoryLineScreens from './screens/storyline'
+
+import App from './App'
+
 
 const router = createHashRouter([
   {
@@ -23,7 +26,10 @@ const router = createHashRouter([
             children: [
                 {
                     index: true,
-                    element: <StoryLineScreens.LandingScreen />
+                    element: <StoryLineScreens.LandingScreen />,
+                    loader: async () => await database.get<ProjectModel>('project').query(
+                        Q.sortBy('title', Q.asc)
+                    ).fetch(),
                 }
             ]
         }
@@ -32,7 +38,7 @@ const router = createHashRouter([
 ])
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById('root')
 )
 
 root.render(

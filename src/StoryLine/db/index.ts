@@ -37,12 +37,12 @@ const adapter = new LokiJSAdapter({
         onDidOverwrite: () => {
             // Called when this adapter is forced to overwrite contents of IndexedDB.
             // This happens if there's another open tab of the same app that's making changes.
-            // Try to synchronize the app now, and if user is offline, alert them that if they close this
-            // tab, some data may be lost
+            // Try to synchronize the app now, and if user is offline, alert them that if they 
+            // close this tab, some data may be lost
         },
         onversionchange: () => {
-            // database was deleted in another browser tab (user logged out), so we must make sure we delete
-            // it in this tab as well - usually best to just refresh the page
+            // database was deleted in another browser tab (user logged out), so we must make sure
+            // we delete it in this tab as well - usually best to just refresh the page
             // if (checkIfUserIsLoggedIn()) {
             //  window.location.reload()
             //}

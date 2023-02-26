@@ -5,6 +5,7 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 import EN from './en.json'
 import FR from './fr.json'
 
+
 const resources = {
     en: {
         translation: EN
@@ -14,7 +15,7 @@ const resources = {
     }
 }
 
-i18n
+void i18n
     .use(initReactI18next)
     .use(LanguageDetector)
     .init({

@@ -17,8 +17,10 @@ const createWindow = (): void => {
         },
     })
 
-    mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
-    mainWindow.webContents.openDevTools()
+    mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY).then(() => {
+        mainWindow.webContents.openDevTools()
+    }).catch(() => null)
+
 }
 
 app.on('ready', () => {
@@ -56,7 +58,7 @@ app.on('activate', () => {
 })
 
 app.whenReady().then(() => {
-    ipcMain.handle('dialog', (_, method, params) => {
-        if (method === 'showOpenDialog') dialog.showOpenDialog(params)
+    ipcMain.handle('dialog', (_, method: string, params: Electron.OpenDialogOptions) => {
+        if (method === 'showOpenDialog') void dialog.showOpenDialog(params)
     })
-})
+}).catch(() => null)

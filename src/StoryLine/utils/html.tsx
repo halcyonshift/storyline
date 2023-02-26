@@ -14,7 +14,11 @@ export const htmlExtractExcerptsOptions: HTMLReactParserOptions = {
 export const htmlParseOptions: HTMLReactParserOptions = {
     replace: domNode => {
         if (domNode instanceof Element && domNode.attribs && domNode.name === 'p') {
-            return <Typography variant='body1'>{domToReact(domNode.children, htmlParseOptions)}</Typography>
+            return (
+                <Typography variant='body1'>
+                    {domToReact(domNode.children, htmlParseOptions)}
+                </Typography>
+            )
         }
         if (domNode instanceof Element && domNode.attribs && domNode.name === 'a') {
             return <span>{domToReact(domNode.children, htmlParseOptions)}</span>

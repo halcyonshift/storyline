@@ -2,7 +2,14 @@ import { Model, Q, Query } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, readonly, text, writer } from '@nozbe/watermelondb/decorators'
 
-import { AnnotationDataType, CharacterDataType, ItemDataType, LocationDataType, ProjectDataType, SectionDataType } from './types'
+import {
+    AnnotationDataType,
+    CharacterDataType,
+    ItemDataType,
+    LocationDataType,
+    ProjectDataType,
+    SectionDataType
+} from './types'
 
 import AnnotationModel from './AnnotationModel'
 import CharacterModel from './CharacterModel'
@@ -127,6 +134,7 @@ export default class ProjectModel extends Model {
     }
 
     @writer async addPart(data: SectionDataType) {
+        // eslint-disable-next-line max-statements
         return await this.collections.get<SectionModel>('section').create(section => {
             section.project.set(this)
             section.title = data.title
