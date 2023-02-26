@@ -1,8 +1,7 @@
 /** @format */
 
 import { createContext, ReactNode, useState } from 'react'
-
-type modeType = 'dark' | 'light'
+import { modeType } from './types'
 
 export const ColorModeContext = createContext(
     {} as {

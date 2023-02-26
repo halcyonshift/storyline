@@ -12,10 +12,9 @@ import { useDatabase } from '@nozbe/watermelondb/hooks'
 import { useTranslation } from 'react-i18next'
 
 import i18n from '../../i18n'
+import { languageType } from '../../i18n/types'
 import useColorMode from '../../ui/display/colorMode/hooks'
-
-type languageType = 'en' | 'fr'
-type modeType = 'light' | 'dark'
+import { modeType } from '../../ui/display/colorMode/types'
 
 const SettingsScreen = () => {
     const [language, setLanguage] = useState<languageType>('en')
