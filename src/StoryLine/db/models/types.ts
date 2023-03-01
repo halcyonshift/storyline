@@ -58,16 +58,6 @@ export type LocationDataType = {
     image?: string
 }
 
-export type ProjectDataType = {
-    title: string
-    author?: string
-    summary?: string
-    language?: string
-    wordGoal?: number
-    deadlineAt?: Date
-    lastOpenedAt?: Date
-}
-
 export type SectionDataType = {
     title: string
     mode?: 'chapter' | 'scene' | 'part' | 'revision'
@@ -81,4 +71,14 @@ export type SectionDataType = {
 
 export type StatisticDataType = {
     words?: number
+}
+
+export type WorkDataType = {
+    title: string
+    author?: string
+    summary?: string
+    language?: string
+    wordGoal?: number
+    deadlineAt?: Date
+    lastOpenedAt?: Date
 }

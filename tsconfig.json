@@ -13,7 +13,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "paths": {
-      "*": ["node_modules/*"]
+      "*": ["node_modules/*"],
     },
     "experimentalDecorators": true
   },
@@ -21,5 +21,5 @@
   "files": [
     "src/StoryLine/types/index.d.ts",
     "src/StoryLine/types/styles.d.ts"
-    ],
+    ]
 }

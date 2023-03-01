@@ -4633,7 +4633,7 @@ escodegen@^2.0.0:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-code-complexity@^1.1.1:
+eslint-config-code-complexity@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/eslint-config-code-complexity/-/eslint-config-code-complexity-1.1.1.tgz#930e6ae707d3a8e3abffa054186e9828d39a33d3"
   integrity sha512-WTViXIDVRBmOaPRc77uVMrPssEKJSff4v7E5P+F2ghtXbdjnQ7b6uM215NVUdHpm148UqRSEBp2xY0pEY0oT2A==
@@ -5765,7 +5765,7 @@ humanize-ms@^1.2.1:
   dependencies:
     ms "^2.0.0"
 
-husky@^8.0.3:
+husky@8.0.3:
   version "8.0.3"
   resolved "https://registry.yarnpkg.com/husky/-/husky-8.0.3.tgz#4936d7212e46d1dea28fef29bb3a108872cd9184"
   integrity sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==

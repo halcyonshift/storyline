@@ -4,9 +4,28 @@
     },
     "screen": {
         "storyline": {
+            "landing": {
+                "title": "Bienvenue sur StoryLine!",
+                "navigation": {
+                    "openWork": "Projets",
+                    "newWork": "Nouveau projet",
+                    "newSequel": "Nouvelle suite",
+                    "importWork": "Importer un projet",
+                    "settings": "Paramètres",
+                    "info": "Information"
+                },
+                "recent": {
+                    "title": "Récemment ouvert"
+                }
+            },
             "settings": {
-                "title": "Paramètres",
-                "language": "La langue"
+                "font": "Police de caractère",
+                "language": "La langue",
+                "mode": {
+                    "title": "Mode d'affichage",
+                    "light": "Lumière",
+                    "dark": "Sombre"
+                }
             }
         }
     }

@@ -9,8 +9,8 @@ import {
     CharacterDataType,
     ItemDataType,
     LocationDataType,
-    ProjectDataType,
-    SectionDataType
+    SectionDataType,
+    WorkDataType
 } from './types'
 
 import AnnotationModel from './AnnotationModel'
@@ -19,14 +19,14 @@ import ItemModel from './ItemModel'
 import LocationModel from './LocationModel'
 import SectionModel from './SectionModel'
 
-export default class ProjectModel extends Model {
-    static table = 'project'
+export default class WorkModel extends Model {
+    static table = 'work'
     public static associations: Associations = {
-        annotation: { type: 'has_many', foreignKey: 'project_id' },
-        character: { type: 'has_many', foreignKey: 'project_id' },
-        item: { type: 'has_many', foreignKey: 'project_id' },
-        location: { type: 'has_many', foreignKey: 'project_id' },
-        section: { type: 'has_many', foreignKey: 'project_id' }
+        annotation: { type: 'has_many', foreignKey: 'work_id' },
+        character: { type: 'has_many', foreignKey: 'work_id' },
+        item: { type: 'has_many', foreignKey: 'work_id' },
+        location: { type: 'has_many', foreignKey: 'work_id' },
+        section: { type: 'has_many', foreignKey: 'work_id' }
     }
     @text('title') title!: string
     @text('author') author!: string
@@ -47,13 +47,13 @@ export default class ProjectModel extends Model {
     @lazy parts = this.section.extend(Q.where('mode', 'part'), Q.sortBy('order', Q.asc))
 
     @lazy chapters = this.section.extend(
-        Q.where('project_id', this.id),
+        Q.where('work_id', this.id),
         Q.where('mode', 'chapter'),
         Q.sortBy('order', Q.asc)
     )
 
     @lazy fabula = this.section.extend(
-        Q.where('project_id', this.id),
+        Q.where('work_id', this.id),
         Q.where('mode', 'scene'),
         Q.sortBy('date', Q.asc)
     )
@@ -75,24 +75,24 @@ export default class ProjectModel extends Model {
     @lazy locations = this.location.extend(Q.sortBy('name', Q.asc))
 
     @writer async updateLastOpened() {
-        await this.update((project) => {
-            project.lastOpenedAt = new Date()
+        await this.update((work) => {
+            work.lastOpenedAt = new Date()
         })
     }
 
-    @writer async updateProject(data: ProjectDataType) {
-        await this.update((project) => {
-            project.title = data.title.toString()
-            project.author = (data.author || '').toString()
-            project.language = data.language
-            project.wordGoal = data.wordGoal || null
-            project.deadlineAt = data.deadlineAt || null
+    @writer async updateWork(data: WorkDataType) {
+        await this.update((work) => {
+            work.title = data.title.toString()
+            work.author = (data.author || '').toString()
+            work.language = data.language
+            work.wordGoal = data.wordGoal || null
+            work.deadlineAt = data.deadlineAt || null
         })
     }
 
     @writer async addAnnotation(data: AnnotationDataType) {
         return await this.collections.get<AnnotationModel>('annotation').create((annotation) => {
-            annotation.project.set(this)
+            annotation.work.set(this)
             annotation.title = data.title
             annotation.body = data.body
         })
@@ -100,7 +100,7 @@ export default class ProjectModel extends Model {
 
     @writer async addCharacter(data: CharacterDataType) {
         return await this.collections.get<CharacterModel>('character').create((character) => {
-            character.project.set(this)
+            character.work.set(this)
             character.displayName = data.displayName
             character.mode = data.mode
         })
@@ -108,14 +108,14 @@ export default class ProjectModel extends Model {
 
     @writer async addItem(data: ItemDataType) {
         return await this.collections.get<ItemModel>('item').create((item) => {
-            item.project.set(this)
+            item.work.set(this)
             item.name = data.name
         })
     }
 
     @writer async addLocation(data: LocationDataType) {
         return await this.collections.get<LocationModel>('location').create((location) => {
-            location.project.set(this)
+            location.work.set(this)
             location.name = data.name
             location.body = data.body
             location.latitude = data.latitude
@@ -128,7 +128,7 @@ export default class ProjectModel extends Model {
     @writer async addPart(data: SectionDataType) {
         // eslint-disable-next-line max-statements
         return await this.collections.get<SectionModel>('section').create((section) => {
-            section.project.set(this)
+            section.work.set(this)
             section.title = data.title
             section.description = data.description
             section.body = data.body

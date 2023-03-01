@@ -7,10 +7,10 @@
             "landing": {
                 "title": "Welcome to StoryLine!",
                 "navigation": {
-                    "openProject": "Open project",
-                    "newProject": "New project",
+                    "openWork": "Works",
+                    "newWork": "New work",
                     "newSequel": "New sequel",
-                    "importProject": "Import project",
+                    "importWork": "Import work",
                     "settings": "Settings",
                     "info": "Info"
                 },
@@ -19,7 +19,9 @@
                 }
             },
             "settings": {
-                "title": "Settings",
+                "font": "Font",
+                "fontSize": "Font size",
+                "indent": "Indent paragraphs",
                 "language": "Language",
                 "mode": {
                     "title": "Display mode",

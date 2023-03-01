@@ -7,16 +7,15 @@ import { date, field, readonly, relation, text } from '@nozbe/watermelondb/decor
 import CharacterModel from './CharacterModel'
 import ItemModel from './ItemModel'
 import LocationModel from './LocationModel'
-import ProjectModel from './ProjectModel'
 import SectionModel from './SectionModel'
-
+import WorkModel from './WorkModel'
 export default class AnnotationModel extends Model {
     static table = 'annotation'
     public static associations: Associations = {
         character: { type: 'belongs_to', key: 'character_id' },
         item: { type: 'belongs_to', key: 'item_id' },
         location: { type: 'belongs_to', key: 'location_id' },
-        project: { type: 'belongs_to', key: 'project_id' },
+        work: { type: 'belongs_to', key: 'work_id' },
         section: { type: 'belongs_to', key: 'section_id' }
     }
 
@@ -31,6 +30,6 @@ export default class AnnotationModel extends Model {
     @relation('character', 'character_id') character!: Relation<CharacterModel>
     @relation('item', 'item_id') item!: Relation<ItemModel>
     @relation('location', 'location_id') location!: Relation<LocationModel>
-    @relation('project', 'project_id') project!: Relation<ProjectModel>
     @relation('section', 'section_id') section!: Relation<SectionModel>
+    @relation('work', 'work_id') work!: Relation<WorkModel>
 }

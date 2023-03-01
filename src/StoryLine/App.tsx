@@ -7,17 +7,16 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { Outlet } from 'react-router-dom'
 
-import { useColorMode } from './ui/display/colorMode'
-import theme from './ui/theme'
+import { useDisplay } from './ui/hooks/theme'
 
 const App = () => {
-    const colorMode = useColorMode()
+    const display = useDisplay()
 
     return (
         <LocalizationProvider dateAdapter={AdapterLuxon}>
-            <ThemeProvider theme={theme[colorMode.mode]}>
+            <ThemeProvider theme={display.theme}>
                 <CssBaseline />
-                <Box className={`${colorMode.mode} flex h-full`}>
+                <Box className={`${display.mode} flex h-full`}>
                     <Outlet />
                 </Box>
             </ThemeProvider>

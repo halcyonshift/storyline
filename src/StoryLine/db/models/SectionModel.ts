@@ -1,20 +1,19 @@
 /** @format */
 
+import { capitalize } from '@mui/material/utils'
 import { Model, Q, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { date, field, readonly, relation, text, writer, lazy } from '@nozbe/watermelondb/decorators'
 import { DateTime } from 'luxon'
 
-import { capitalize, htmlExtractExcerpts, htmlParse, wordCount } from '../../utils'
-
+import { htmlExtractExcerpts, htmlParse, wordCount } from '../../utils'
 import { SectionDataType, StatisticDataType } from './types'
-
-import { CharacterModel, ItemModel, LocationModel, ProjectModel } from './'
+import { CharacterModel, ItemModel, LocationModel, WorkModel } from './'
 
 export default class SectionModel extends Model {
     static table = 'section'
     public static associations: Associations = {
-        project: { type: 'belongs_to', key: 'project_id' },
+        work: { type: 'belongs_to', key: 'work_id' },
         section: { type: 'belongs_to', key: 'section_id' }
     }
 
@@ -29,10 +28,14 @@ export default class SectionModel extends Model {
     @readonly @date('created_at') createdAt!: Date
     @readonly @date('updated_at') updatedAt!: Date
 
-    @relation('project', 'project_id') project!: Relation<ProjectModel>
+    @relation('work', 'work_id') work!: Relation<WorkModel>
     @relation('section', 'section_id') section!: Relation<SectionModel>
 
     get displayTitle() {
+        if (this.mode === 'revision') {
+            return this.id
+        }
+
         return this.title || `${capitalize(this.mode)} ${this.order}`
     }
 
@@ -123,11 +126,11 @@ export default class SectionModel extends Model {
         )
 
     @writer async addSection(data: SectionDataType) {
-        const project = await this.project.fetch()
+        const work = await this.work.fetch()
         // eslint-disable-next-line max-statements
         return await this.collections.get<SectionModel>('section').create((section) => {
             section.section.set(this)
-            section.project.set(project)
+            section.work.set(work)
             section.title = (data.title || '').toString()
             section.description = (data.description || '').toString()
             section.body = (data.body || '').toString()
@@ -182,4 +185,5 @@ export default class SectionModel extends Model {
             section.section.set(part)
         })
     }
+    // eslint-disable-next-line max-lines
 }

@@ -5,12 +5,12 @@ import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, readonly, relation, text } from '@nozbe/watermelondb/decorators'
 
 import NoteModel from './NoteModel'
-import ProjectModel from './ProjectModel'
+import WorkModel from './WorkModel'
 
 export default class CharacterModel extends Model {
     static table = 'character'
     public static associations: Associations = {
-        project: { type: 'belongs_to', key: 'project_id' },
+        work: { type: 'belongs_to', key: 'work_id' },
         note: { type: 'has_many', foreignKey: 'character_id' }
     }
 
@@ -47,7 +47,7 @@ export default class CharacterModel extends Model {
     @text('evolution') evolution!: string
     @readonly @date('created_at') createdAt!: Date
     @readonly @date('updated_at') updatedAt!: Date
-    @relation('project', 'project_id') project!: Relation<ProjectModel>
+    @relation('work', 'work_id') work!: Relation<WorkModel>
     @children('note') note!: Query<NoteModel>
 
     get isMain() {

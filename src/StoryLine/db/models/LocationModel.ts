@@ -15,12 +15,12 @@ import {
 import { LocationDataType } from './types'
 
 import NoteModel from './NoteModel'
-import ProjectModel from './ProjectModel'
+import WorkModel from './WorkModel'
 
 export default class LocationModel extends Model {
     static table = 'location'
     public static associations: Associations = {
-        project: { type: 'belongs_to', key: 'project_id' },
+        work: { type: 'belongs_to', key: 'work_id' },
         note: { type: 'has_many', foreignKey: 'character_id' }
     }
 
@@ -33,16 +33,16 @@ export default class LocationModel extends Model {
     @readonly @date('created_at') createdAt!: Date
     @readonly @date('updated_at') updatedAt!: Date
 
-    @relation('project', 'project_id') project!: Relation<ProjectModel>
+    @relation('work', 'work_id') work!: Relation<WorkModel>
     @relation('location', 'location_id') location!: Relation<LocationModel>
     @children('note') note!: Query<NoteModel>
 
     @writer async addLocation(data: LocationDataType) {
-        const project = await this.project.fetch()
+        const work = await this.work.fetch()
         // eslint-disable-next-line max-statements
         return await this.collections.get<LocationModel>('location').create((location) => {
             location.location.set(this)
-            location.project.set(project)
+            location.work.set(work)
             location.name = data.name
             location.body = data.body
             location.latitude = data.latitude

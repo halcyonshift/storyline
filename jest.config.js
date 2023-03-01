@@ -1,6 +1,6 @@
 module.exports = {
     preset: "ts-jest",
-    testEnvironment: 'node',
+    testEnvironment: "jsdom",
     collectCoverage: true,
     collectCoverageFrom: ['./src/StoryLine/**/*.{js,jsx,ts,tsx}', '!**/node_modules/**'],
     coveragePathIgnorePatterns: [

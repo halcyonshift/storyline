@@ -10,7 +10,7 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx .",
-    "test:unit": "yarn jest ./__tests__/unit",
+    "test:unit": "yarn jest ./__tests__/unit --silent",
     "test:integration": "PWDEBUG=1 yarn playwright test",
     "validate": "yarn test:unit && yarn lint",
     "precommit": "yarn validate",

@@ -6,7 +6,7 @@ const schema = appSchema({
     version: 1,
     tables: [
         tableSchema({
-            name: 'project',
+            name: 'work',
             columns: [
                 { name: 'title', type: 'string' },
                 { name: 'summary', type: 'string', isOptional: true },
@@ -29,7 +29,7 @@ const schema = appSchema({
                 { name: 'order', type: 'number' },
                 { name: 'words', type: 'number', isOptional: true },
                 { name: 'date', type: 'string', isOptional: true },
-                { name: 'project_id', type: 'string', isIndexed: true },
+                { name: 'work_id', type: 'string', isIndexed: true },
                 { name: 'section_id', type: 'string', isIndexed: true, isOptional: true },
                 { name: 'deadline_at', type: 'number', isOptional: true },
                 { name: 'created_at', type: 'number' },
@@ -50,7 +50,7 @@ const schema = appSchema({
             columns: [
                 { name: 'title', type: 'string', isOptional: true },
                 { name: 'body', type: 'string', isOptional: true },
-                { name: 'project_id', type: 'string', isIndexed: true },
+                { name: 'work_id', type: 'string', isIndexed: true },
                 { name: 'section_id', type: 'string', isOptional: true, isIndexed: true },
                 { name: 'character_id', type: 'string', isOptional: true, isIndexed: true },
                 { name: 'item_id', type: 'string', isOptional: true, isIndexed: true },
@@ -71,7 +71,7 @@ const schema = appSchema({
                 { name: 'first_name', type: 'string', isOptional: true },
                 { name: 'last_name', type: 'string', isOptional: true },
                 { name: 'nickname', type: 'string', isOptional: true },
-                { name: 'project_id', type: 'string', isIndexed: true },
+                { name: 'work_id', type: 'string', isIndexed: true },
                 { name: 'created_at', type: 'number' },
                 { name: 'updated_at', type: 'number' },
                 { name: 'gender', type: 'string', isOptional: true },
@@ -111,7 +111,7 @@ const schema = appSchema({
                 { name: 'latitude', type: 'string', isOptional: true },
                 { name: 'url', type: 'string', isOptional: true },
                 { name: 'image', type: 'string', isOptional: true },
-                { name: 'project_id', type: 'string', isIndexed: true },
+                { name: 'work_id', type: 'string', isIndexed: true },
                 { name: 'location_id', type: 'string', isIndexed: true },
                 { name: 'created_at', type: 'number' },
                 { name: 'updated_at', type: 'number' }
@@ -125,7 +125,7 @@ const schema = appSchema({
                 { name: 'date', type: 'string', isOptional: true },
                 { name: 'url', type: 'string', isOptional: true },
                 { name: 'image', type: 'string', isOptional: true },
-                { name: 'project_id', type: 'string', isIndexed: true },
+                { name: 'work_id', type: 'string', isIndexed: true },
                 { name: 'created_at', type: 'number' },
                 { name: 'updated_at', type: 'number' }
             ]

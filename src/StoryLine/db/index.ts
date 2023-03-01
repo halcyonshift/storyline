@@ -12,9 +12,9 @@ import {
     ItemModel,
     LocationModel,
     NoteModel,
-    ProjectModel,
     SectionModel,
-    StatisticModel
+    StatisticModel,
+    WorkModel
 } from './models'
 
 const adapter = new LokiJSAdapter({
@@ -59,9 +59,9 @@ const database = new Database({
         ItemModel,
         LocationModel,
         NoteModel,
-        ProjectModel,
         SectionModel,
-        StatisticModel
+        StatisticModel,
+        WorkModel
     ]
 })
 
