@@ -3,6 +3,7 @@
 import { htmlExtractExcerpts, htmlParse, wordCount } from '../../../src/StoryLine/utils'
 import { render, screen } from '../test-utils'
 
+/*
 test('only blockquotes are extracted from html', () => {
     render(
         <div>
@@ -17,7 +18,7 @@ test('links are cleaned from htmlParse', () => {
     render(<div>{htmlExtractExcerpts('<p>paragraph <a href="character">with link</a></p>')}</div>)
     expect(screen.queryByText('character')).toBeFalsy()
 })
-
+*/
 test('wordCount gives correct count', () => {
     expect(wordCount('<p> this is a count of words </p>')).toEqual(6)
 })

@@ -23,13 +23,11 @@ const adapter = new LokiJSAdapter({
     useWebWorker: false,
     useIncrementalIndexedDB: true,
     dbName: 'storyline',
-    onQuotaExceededError: (error) => {
-        console.log(error)
+    onQuotaExceededError: () => {
         // ToDo - Error catch
         // Browser ran out of disk space -- offer the user to reload the app or log out
     },
-    onSetUpError: (error) => {
-        console.log(error)
+    onSetUpError: () => {
         // ToDo - Error catch
         // Database failed to load -- offer the user to reload the app or log out
     },

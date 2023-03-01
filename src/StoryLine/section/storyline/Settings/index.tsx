@@ -87,13 +87,7 @@ const SettingsScreen = () => {
 
     const handleLanguageChange = (event: SelectChangeEvent) => {
         const value = event.target.value as languageType
-        void i18n
-            .changeLanguage(event.target.value, (err) => {
-                if (err) {
-                    console.log('something went wrong loading', err) // ToDo handle
-                }
-            })
-            .then(() => setLanguage(value))
+        void i18n.changeLanguage(event.target.value).then(() => setLanguage(value))
     }
 
     const handleModeChange = (event: SelectChangeEvent) => {
