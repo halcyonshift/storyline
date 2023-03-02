@@ -68,6 +68,11 @@ export default class WorkModel extends Model {
         Q.sortBy('display_name', Q.asc)
     )
 
+    @lazy tertiaryCharacters = this.character.extend(
+        Q.where('mode', 'tertiary'),
+        Q.sortBy('display_name', Q.asc)
+    )
+
     @lazy annotations = this.annotation.extend(Q.sortBy('title', Q.asc))
 
     @lazy items = this.item.extend(Q.sortBy('name', Q.asc))

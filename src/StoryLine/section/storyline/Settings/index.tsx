@@ -151,7 +151,7 @@ const SettingsScreen = () => {
                             step={1}
                             marks
                             min={12}
-                            max={28}
+                            max={24}
                             value={fontSize}
                             onChange={(_, value: number) => setFontSize(value)}
                         />

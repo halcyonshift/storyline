@@ -22,16 +22,15 @@ const StoryLineLayout = () => {
             <AppBar position='static' color='transparent'>
                 <Toolbar variant='dense'>
                     <Box>
-                        {title ? (
-                            <IconButton
-                                size='large'
-                                edge='start'
-                                color='inherit'
-                                aria-label={t('navigation.back')}
-                                onClick={() => navigate(-1)}>
-                                <ArrowBackIcon />
-                            </IconButton>
-                        ) : null}
+                        <IconButton
+                            disabled={!title}
+                            size='large'
+                            edge='start'
+                            color='inherit'
+                            aria-label={t('navigation.back')}
+                            onClick={() => navigate(-1)}>
+                            <ArrowBackIcon />
+                        </IconButton>
                     </Box>
                     <Box className='flex flex-grow justify-between'>
                         <Typography variant='h6'>

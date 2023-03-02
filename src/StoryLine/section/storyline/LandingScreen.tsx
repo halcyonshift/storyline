@@ -27,7 +27,7 @@ const LandingScreen = () => {
                 <List>
                     {recentWorks.length ? (
                         <ListItem
-                            link='/opeWork'
+                            link='/openWork'
                             icon={<FileOpenIcon />}
                             text='screen.storyline.landing.navigation.openWork'
                         />

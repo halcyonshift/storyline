@@ -8,9 +8,10 @@ import { createHashRouter, RouterProvider } from 'react-router-dom'
 
 import App from './App'
 import database from './db'
-import { WorkModel } from './db/models'
+import { SectionModel, WorkModel } from './db/models'
 import './i18n'
 import * as StoryLineScreens from './section/storyline'
+import * as WorkScreens from './section/work'
 import * as Layouts from './ui/layouts'
 import { DisplayProvider } from './ui/hooks/theme'
 
@@ -33,6 +34,10 @@ const router = createHashRouter([
                                 .fetch()
                     },
                     {
+                        path: 'newWork',
+                        element: <StoryLineScreens.NewWorkScreen />
+                    },
+                    {
                         path: 'openWork',
                         element: <StoryLineScreens.OpenWorkScreen />,
                         loader: async () =>
@@ -40,10 +45,6 @@ const router = createHashRouter([
                                 .get<WorkModel>('work')
                                 .query(Q.sortBy('title', Q.asc))
                                 .fetch()
-                    },
-                    {
-                        path: 'newWork',
-                        element: <StoryLineScreens.SettingsScreen />
                     },
                     {
                         path: 'newSequel',
@@ -60,6 +61,56 @@ const router = createHashRouter([
                     {
                         path: 'info',
                         element: <StoryLineScreens.InfoScreen />
+                    }
+                ]
+            },
+            {
+                path: 'works/:work_id',
+                id: 'work',
+                element: <Layouts.WorkLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <WorkScreens.LandingScreen />
+                    },
+                    {
+                        path: 'backupRestore',
+                        element: <p>backupRestore</p>
+                    },
+                    {
+                        path: 'insight',
+                        element: <p>Insights</p>
+                    },
+                    {
+                        path: 'relation',
+                        element: <p>Relation</p>
+                    },
+                    {
+                        path: 'search',
+                        element: <p>Search</p>
+                    },
+                    {
+                        path: 'section',
+                        element: <WorkScreens.PartScreen />,
+                        loader: async () =>
+                            await database
+                                .get<SectionModel>('section')
+                                .query(Q.where('section_id', null), Q.sortBy('order', Q.asc))
+                                .fetch()
+                    },
+                    {
+                        path: 'section/:section_id',
+                        element: <p>section</p>,
+                        loader: async ({ params }) =>
+                            await database.get<SectionModel>('section').find(params.section_id)
+                    },
+                    {
+                        path: 'setting',
+                        element: <p>Settings</p>
+                    },
+                    {
+                        path: 'timeline',
+                        element: <p>Timeline</p>
                     }
                 ]
             }

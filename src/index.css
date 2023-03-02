@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 html, body, #root {
-    height: 100vh
+    height: 100vh;
+    overflow: hidden
 }
 
 #root {
@@ -13,4 +14,5 @@ html, body, #root {
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+  user-select: none
 }

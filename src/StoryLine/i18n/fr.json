@@ -5,7 +5,7 @@
     "screen": {
         "storyline": {
             "landing": {
-                "title": "Bienvenue sur StoryLine!",
+                "title": "",
                 "navigation": {
                     "openWork": "Projets",
                     "newWork": "Nouveau projet",
@@ -15,7 +15,7 @@
                     "info": "Information"
                 },
                 "recent": {
-                    "title": "Récemment ouvert"
+                    "title": ""
                 }
             },
             "settings": {

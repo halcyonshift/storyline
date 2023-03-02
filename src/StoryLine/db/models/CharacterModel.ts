@@ -14,7 +14,7 @@ export default class CharacterModel extends Model {
         note: { type: 'has_many', foreignKey: 'character_id' }
     }
 
-    @field('mode') mode!: 'main' | 'secondary'
+    @field('mode') mode!: 'main' | 'secondary' | 'tertiary'
     @text('display_name') displayName!: string
     @text('pronouns') pronouns!: string
     @text('first_name') firstName!: string
@@ -56,5 +56,9 @@ export default class CharacterModel extends Model {
 
     get isSecondary() {
         return Boolean(this.mode === 'secondary')
+    }
+
+    get isTertiary() {
+        return Boolean(this.mode === 'tertiary')
     }
 }

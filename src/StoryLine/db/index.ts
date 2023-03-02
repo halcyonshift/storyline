@@ -22,7 +22,7 @@ const adapter = new LokiJSAdapter({
     // migrations,
     useWebWorker: false,
     useIncrementalIndexedDB: true,
-    dbName: 'storyline',
+    dbName: 'storyline-dev',
     onQuotaExceededError: () => {
         // ToDo - Error catch
         // Browser ran out of disk space -- offer the user to reload the app or log out

@@ -2,10 +2,39 @@
     "navigation": {
         "back": "Back"
     },
+    "layout": {
+        "work": {
+            "navigation": {
+                "work": "Narrative",
+                "character": "Characters",
+                "location": "Locations",
+                "item": "Items",
+                "note": "Notes",
+                "search": "Search",
+                "timeline": "Timeline",
+                "relation": "Relationships",
+                "insight": "Insights",
+                "backupRestore": "Backup, restore & export",
+                "setting": "Settings"
+            },
+            "panel": {
+                "section": {
+                    "addPart": "Add part",
+                    "addChapter": "Add chapter",
+                    "addScene": "Add scene"
+                },
+                "character": {
+                    "addMain": "Add main character",
+                    "addSecondary": "Add secondary character",
+                    "addTertiary": "Add tertiary character"
+                }
+            }
+        }
+    },
     "screen": {
         "storyline": {
             "landing": {
-                "title": "Welcome to StoryLine!",
+                "title": "",
                 "navigation": {
                     "openWork": "Works",
                     "newWork": "New work",
@@ -15,7 +44,7 @@
                     "info": "Info"
                 },
                 "recent": {
-                    "title": "Recently opened"
+                    "title": ""
                 }
             },
             "settings": {
