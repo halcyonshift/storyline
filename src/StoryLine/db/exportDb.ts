@@ -1,5 +1,3 @@
-/** @format */
-
 import { useDatabase } from '@nozbe/watermelondb/hooks'
 
 const databaseTables: string[] = [

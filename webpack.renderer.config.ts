@@ -1,5 +1,3 @@
-/** @format */
-
 import type { Configuration } from 'webpack'
 
 import { rules } from './webpack.rules'

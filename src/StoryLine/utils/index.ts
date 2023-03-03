@@ -1,5 +1,3 @@
-/** @format */
-
 import parse from 'html-react-parser'
 
 import { htmlExtractExcerptsOptions, htmlParseOptions } from './html'

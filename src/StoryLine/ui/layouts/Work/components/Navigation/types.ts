@@ -1,5 +1,3 @@
-/** @format */
-
 import { WorkModel } from '../../../../../db/models'
 
 export type NavigationProps = {

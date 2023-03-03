@@ -1,5 +1,3 @@
-/** @format */
-
 import { app, BrowserWindow, ipcMain, dialog } from 'electron'
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
@@ -16,6 +14,7 @@ const createWindow = (): void => {
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
+            spellcheck: true,
             preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY
         }
     })

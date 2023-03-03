@@ -1,5 +1,3 @@
-/** @format */
-
 import AnnotationModel from '../../../../src/StoryLine/db/models/AnnotationModel'
 
 describe('AnnotationModel', () => {

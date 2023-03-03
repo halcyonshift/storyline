@@ -1,5 +1,3 @@
-/** @format */
-
 import { Q } from '@nozbe/watermelondb'
 import DatabaseProvider from '@nozbe/watermelondb/DatabaseProvider'
 import ReactDOM from 'react-dom/client'
@@ -10,10 +8,10 @@ import App from './App'
 import database from './db'
 import { SectionModel, WorkModel } from './db/models'
 import './i18n'
-import * as StoryLineScreens from './section/storyline'
-import * as WorkScreens from './section/work'
+import * as StoryLineScreens from './ui/views/storyline'
+import * as WorkScreens from './ui/views/work'
 import * as Layouts from './ui/layouts'
-import { DisplayProvider } from './ui/hooks/theme'
+import { DisplayProvider } from './ui/theme'
 
 const router = createHashRouter([
     {
@@ -87,20 +85,11 @@ const router = createHashRouter([
                     },
                     {
                         path: 'search',
-                        element: <p>Search</p>
-                    },
-                    {
-                        path: 'section',
-                        element: <WorkScreens.PartScreen />,
-                        loader: async () =>
-                            await database
-                                .get<SectionModel>('section')
-                                .query(Q.where('section_id', null), Q.sortBy('order', Q.asc))
-                                .fetch()
+                        element: <WorkScreens.SearchScreen />
                     },
                     {
                         path: 'section/:section_id',
-                        element: <p>section</p>,
+                        element: <WorkScreens.SectionScreen />,
                         loader: async ({ params }) =>
                             await database.get<SectionModel>('section').find(params.section_id)
                     },

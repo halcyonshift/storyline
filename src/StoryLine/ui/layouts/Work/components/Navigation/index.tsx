@@ -1,4 +1,3 @@
-/** @format */
 import ImportExportIcon from '@mui/icons-material/ImportExport'
 import GroupIcon from '@mui/icons-material/Group'
 import LocationOnIcon from '@mui/icons-material/LocationOn'

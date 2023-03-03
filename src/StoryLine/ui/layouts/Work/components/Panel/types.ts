@@ -1,5 +1,3 @@
-/** @format */
-
 import { CharacterModel, ItemModel, LocationModel, SectionModel } from '../../../../../db/models'
 import { TabType } from '../../types'
 

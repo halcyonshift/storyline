@@ -1,5 +1,3 @@
-/** @format */
-
 import { Model, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import {

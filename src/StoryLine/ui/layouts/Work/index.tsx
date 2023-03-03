@@ -1,4 +1,3 @@
-/** @format */
 import { useState } from 'react'
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
@@ -103,7 +102,7 @@ const WorkLayout = ({ characters, items, locations, sections, work }: WorkLayout
                     setCurrentPanel={setCurrentPanel}
                 />
                 {currentPanel ? (
-                    <Box className='flex flex-col bg-indigo-50 border-r-slate-400 border-r w-1/4'>
+                    <Box className='flex flex-col bg-indigo-50 border-r-slate-400 border-r w-1/5'>
                         {currentPanel === 'character' ? (
                             <CharacterPanel loadTab={loadTab} characters={characters} />
                         ) : null}
@@ -118,7 +117,7 @@ const WorkLayout = ({ characters, items, locations, sections, work }: WorkLayout
                         ) : null}
                     </Box>
                 ) : null}
-                <Box className='flex-grow'>
+                <Box className='flex flex-col flex-grow'>
                     {tabs.length && hasTabs.includes(currentPanel) ? (
                         <Tabs
                             value={currentTab}

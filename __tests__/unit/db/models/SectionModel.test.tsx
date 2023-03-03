@@ -1,5 +1,3 @@
-/** @format */
-
 import database from '../../../../src/StoryLine/db'
 import WorkModel from '../../../../src/StoryLine/db/models/WorkModel'
 import SectionModel from '../../../../src/StoryLine/db/models/SectionModel'

@@ -1,5 +1,3 @@
-/** @format */
-
 import { capitalize } from '@mui/material/utils'
 import { Model, Q, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'

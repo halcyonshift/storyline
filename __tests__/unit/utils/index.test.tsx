@@ -1,5 +1,3 @@
-/** @format */
-
 import { htmlExtractExcerpts, htmlParse, wordCount } from '../../../src/StoryLine/utils'
 import { render, screen } from '../test-utils'
 

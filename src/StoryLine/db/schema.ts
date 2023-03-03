@@ -1,5 +1,3 @@
-/** @format */
-
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 const schema = appSchema({

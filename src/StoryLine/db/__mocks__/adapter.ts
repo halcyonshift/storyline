@@ -1,5 +1,3 @@
-/** @format */
-
 import LokiJSAdapter from '@nozbe/watermelondb/adapters/lokijs'
 
 import migrations from '../migrations'

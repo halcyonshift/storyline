@@ -1,4 +1,3 @@
-/** @format */
 import { useEffect, useState } from 'react'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'

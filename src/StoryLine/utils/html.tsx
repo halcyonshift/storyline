@@ -1,5 +1,3 @@
-/** @format */
-
 import Typography from '@mui/material/Typography'
 import { domToReact, HTMLReactParserOptions, Element } from 'html-react-parser'
 

@@ -1,5 +1,3 @@
-/** @format */
-
 import { contextBridge } from 'electron'
 import api from './StoryLine/api'
 

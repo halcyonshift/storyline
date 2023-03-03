@@ -1,5 +1,3 @@
-/** @format */
-
 const importDB = () => {
     // ToDo import data
 }

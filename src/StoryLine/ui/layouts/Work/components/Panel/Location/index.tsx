@@ -1,5 +1,3 @@
-/** @format */
-
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'

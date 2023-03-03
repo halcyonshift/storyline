@@ -1,5 +1,3 @@
-/** @format */
-
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'

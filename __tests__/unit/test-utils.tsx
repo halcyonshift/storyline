@@ -1,15 +1,9 @@
-/**
- * eslint-disable @typescript-eslint/import/export
- *
- * @format
- */
-
-import React, { ReactElement } from 'react'
+import { ReactElement, ReactNode } from 'react'
 import { render, RenderOptions } from '@testing-library/react'
 import { ThemeProvider } from '@mui/material/styles'
-import { useDisplay } from '../../src/StoryLine/ui/hooks/theme'
+import { useDisplay } from '../../src/StoryLine/ui/theme'
 
-const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
+const AllTheProviders = ({ children }: { children: ReactNode }) => {
     const display = useDisplay()
     return <ThemeProvider theme={display.theme}>{children}</ThemeProvider>
 }

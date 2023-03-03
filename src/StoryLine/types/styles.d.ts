@@ -1,9 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-    createTheme,
-    ThemeProvider
-} from '@mui/material/styles'
-
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 declare module '@mui/material/styles' {
     interface Theme {

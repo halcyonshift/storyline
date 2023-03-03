@@ -1,5 +1,3 @@
-/** @format */
-
 export type AnnotationDataType = {
     title: string
     body?: string
