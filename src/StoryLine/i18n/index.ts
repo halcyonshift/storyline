@@ -14,8 +14,7 @@ const resources = {
     }
 }
 
-void i18n
-    .use(initReactI18next)
+i18n.use(initReactI18next)
     .use(LanguageDetector)
     .init({
         resources,

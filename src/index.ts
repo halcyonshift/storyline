@@ -64,7 +64,7 @@ app.on('activate', () => {
 app.whenReady()
     .then(() => {
         ipcMain.handle('dialog', (_, method: string, params: Electron.OpenDialogOptions) => {
-            if (method === 'showOpenDialog') void dialog.showOpenDialog(params)
+            if (method === 'showOpenDialog') dialog.showOpenDialog(params)
         })
     })
     .catch(() => null)

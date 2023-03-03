@@ -27,11 +27,11 @@ const DisplayProvider = ({ children }: { children: ReactNode }) => {
     const [theme, setTheme] = useState<Theme>(createTheme({}))
 
     useEffect(() => {
-        void database.localStorage.get<fontType>('font').then((font) => setFont(font || 'roboto'))
-        void database.localStorage
+        database.localStorage.get<fontType>('font').then((font) => setFont(font || 'roboto'))
+        database.localStorage
             .get<number>('fontSize')
             .then((fontSize) => setFontSize(fontSize || 12))
-        void database.localStorage.get<modeType>('mode').then((mode) => setMode(mode || 'light'))
+        database.localStorage.get<modeType>('mode').then((mode) => setMode(mode || 'light'))
     }, [])
 
     useEffect(() => {

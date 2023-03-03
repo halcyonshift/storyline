@@ -85,7 +85,7 @@ const SettingsScreen = () => {
 
     const handleLanguageChange = (event: SelectChangeEvent) => {
         const value = event.target.value as languageType
-        void i18n.changeLanguage(event.target.value).then(() => setLanguage(value))
+        i18n.changeLanguage(event.target.value).then(() => setLanguage(value))
     }
 
     const handleModeChange = (event: SelectChangeEvent) => {
