@@ -22,7 +22,7 @@ const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) =>
     const { t } = useTranslation()
     const navigate = useNavigate()
 
-    const togglePanel = (panel: 'section' | 'location' | 'character' | 'item' | 'note') => {
+    const togglePanel = (panel?: 'section' | 'location' | 'character' | 'item' | 'note') => {
         setCurrentPanel(panel !== currentPanel ? panel : null)
     }
 
@@ -77,7 +77,7 @@ const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) =>
                         color='inherit'
                         aria-label={t('layout.work.navigation.search')}
                         onClick={() => {
-                            togglePanel(null)
+                            togglePanel()
                             navigate(`/works/${work.id}/search`)
                         }}>
                         <SearchIcon />
@@ -88,7 +88,7 @@ const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) =>
                         color='inherit'
                         aria-label={t('layout.work.navigation.timeline')}
                         onClick={() => {
-                            togglePanel(null)
+                            togglePanel()
                             navigate(`/works/${work.id}/timeline`)
                         }}>
                         <FormatListBulletedIcon />
@@ -99,7 +99,7 @@ const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) =>
                         color='inherit'
                         aria-label={t('layout.work.navigation.relation')}
                         onClick={() => {
-                            togglePanel(null)
+                            togglePanel()
                             navigate(`/works/${work.id}/relation`)
                         }}>
                         <HubIcon />
@@ -110,7 +110,7 @@ const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) =>
                         color='inherit'
                         aria-label={t('layout.work.navigation.insight')}
                         onClick={() => {
-                            togglePanel(null)
+                            togglePanel()
                             navigate(`/works/${work.id}/insight`)
                         }}>
                         <InsightsIcon />
@@ -121,7 +121,7 @@ const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) =>
                         color='inherit'
                         aria-label={t('layout.work.navigation.backupRestore')}
                         onClick={() => {
-                            togglePanel(null)
+                            togglePanel()
                             navigate(`/works/${work.id}/backupRestore`)
                         }}>
                         <ImportExportIcon />
@@ -132,7 +132,7 @@ const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) =>
                         color='inherit'
                         aria-label={t('layout.work.navigation.setting')}
                         onClick={() => {
-                            togglePanel(null)
+                            togglePanel()
                             navigate(`/works/${work.id}/setting`)
                         }}>
                         <SettingsIcon />

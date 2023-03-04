@@ -2,7 +2,7 @@
     "navigation": {
         "back": "Retourner"
     },
-    "screen": {
+    "view": {
         "storyline": {
             "landing": {
                 "title": "",

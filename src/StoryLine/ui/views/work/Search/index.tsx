@@ -1,3 +1,3 @@
-const SearchScreen = () => <p>Search</p>
+const SearchView = () => <p>Search</p>
 
-export default SearchScreen
+export default SearchView

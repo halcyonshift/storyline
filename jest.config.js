@@ -13,4 +13,5 @@ module.exports = {
       "\\.[jt]sx?$": "babel-jest"
     },
     transformIgnorePatterns: ["node_modules/(?!variables/.*)"],
+    setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect"]
 };

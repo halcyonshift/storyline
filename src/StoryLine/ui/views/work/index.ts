@@ -1,3 +1,4 @@
-export { default as LandingScreen } from './Landing'
-export { default as SectionScreen } from './Section'
-export { default as SearchScreen } from './Search'
+export { default as LandingView } from './Landing'
+export { default as SectionView } from './Section'
+export { default as AddPartView } from './AddPart'
+export { default as SearchView } from './Search'

@@ -1,5 +1,5 @@
 import SectionModel from '../../../../db/models/SectionModel'
 
-export type SectionScreenType = {
+export type SectionViewType = {
     section: SectionModel
 }

@@ -62,7 +62,7 @@ export type SectionDataType = {
     body?: string
     description?: string
     date?: string
-    words?: number
+    words?: number | null
     order?: number
     deadlineAt?: Date
 }

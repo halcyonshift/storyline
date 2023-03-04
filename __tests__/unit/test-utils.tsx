@@ -1,11 +1,20 @@
 import { ReactElement, ReactNode } from 'react'
+
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { render, RenderOptions } from '@testing-library/react'
-import { ThemeProvider } from '@mui/material/styles'
-import { useDisplay } from '../../src/StoryLine/ui/theme'
+import { BrowserRouter } from 'react-router-dom'
 
 const AllTheProviders = ({ children }: { children: ReactNode }) => {
-    const display = useDisplay()
-    return <ThemeProvider theme={display.theme}>{children}</ThemeProvider>
+    const theme = createTheme({})
+    return (
+        <ThemeProvider theme={theme}>
+            <LocalizationProvider dateAdapter={AdapterLuxon}>
+                <BrowserRouter>{children}</BrowserRouter>
+            </LocalizationProvider>
+        </ThemeProvider>
+    )
 }
 
 const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>

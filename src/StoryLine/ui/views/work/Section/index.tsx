@@ -1,19 +1,19 @@
 import { useLoaderData } from 'react-router-dom'
 import { SectionModel } from '../../../../db/models'
-import ChapterScreen from './Chapter'
-import PartScreen from './Part'
-import SceneScreen from './Scene'
+import ChapterView from './Chapter'
+import PartView from './Part'
+import SceneView from './Scene'
 
-const SectionScreen = () => {
+const SectionView = () => {
     const section = useLoaderData() as SectionModel
 
     if (section.isPart) {
-        return <PartScreen section={section} />
+        return <PartView section={section} />
     } else if (section.isChapter) {
-        return <ChapterScreen section={section} />
+        return <ChapterView section={section} />
     } else {
-        return <SceneScreen section={section} />
+        return <SceneView section={section} />
     }
 }
 
-export default SectionScreen
+export default SectionView

@@ -46,15 +46,27 @@ export default class SectionModel extends Model {
     }
 
     get displayDate() {
-        return this.date ? DateTime.fromISO(this.date).toFormat('EEEE dd LLL yyyy') : null
+        try {
+            return DateTime.fromISO(this.date).toFormat('EEEE dd LLL yyyy')
+        } catch {
+            return this.date
+        }
     }
 
     get displayTime() {
-        return this.date ? DateTime.fromISO(this.date).toFormat('H:mm') : null
+        try {
+            return DateTime.fromISO(this.date).toFormat('H:mm')
+        } catch {
+            return this.date
+        }
     }
 
     get displayDateTime() {
-        return this.date ? DateTime.fromISO(this.date).toFormat('EEEE dd LLL yyyy H:mm') : null
+        try {
+            return DateTime.fromISO(this.date).toFormat('EEEE dd LLL yyyy H:mm')
+        } catch {
+            return this.date
+        }
     }
 
     get isChapter() {

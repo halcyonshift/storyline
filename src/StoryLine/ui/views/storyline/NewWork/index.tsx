@@ -1,5 +1,5 @@
 import NewWorkForm from './form'
 
-const NewWorkScreen = () => <NewWorkForm />
+const NewWorkView = () => <NewWorkForm />
 
-export default NewWorkScreen
+export default NewWorkView

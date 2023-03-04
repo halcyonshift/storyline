@@ -14,56 +14,54 @@ import { useLoaderData } from 'react-router-dom'
 import ListItem from '../../components/ListItem'
 import { WorkModel } from '../../../db/models'
 
-const LandingScreen = () => {
+const LandingView = () => {
     const recentWorks = useLoaderData() as WorkModel[]
     const { t } = useTranslation()
 
     return (
         <Grid container spacing={2}>
             <Grid item xs={6}>
-                <Typography variant='h5'>{t('screen.storyline.landing.title')}</Typography>
+                <Typography variant='h5'>{t('view.storyline.landing.title')}</Typography>
                 <List>
                     {recentWorks.length ? (
                         <ListItem
                             link='/openWork'
                             icon={<FileOpenIcon />}
-                            text='screen.storyline.landing.navigation.openWork'
+                            text='view.storyline.landing.navigation.openWork'
                         />
                     ) : null}
                     <ListItem
                         link='/newWork'
                         icon={<AddIcon />}
-                        text='screen.storyline.landing.navigation.newWork'
+                        text='view.storyline.landing.navigation.newWork'
                     />
                     {recentWorks.length ? (
                         <ListItem
                             link='/newSequel'
                             icon={<ContentCopyIcon />}
-                            text='screen.storyline.landing.navigation.newSequel'
+                            text='view.storyline.landing.navigation.newSequel'
                         />
                     ) : null}
                     <ListItem
                         link='/importWork'
                         icon={<ArrowDownwardIcon />}
-                        text='screen.storyline.landing.navigation.importWork'
+                        text='view.storyline.landing.navigation.importWork'
                     />
                     <ListItem
                         link='/settings'
                         icon={<SettingsIcon />}
-                        text='screen.storyline.landing.navigation.settings'
+                        text='view.storyline.landing.navigation.settings'
                     />
                     <ListItem
                         link='/info'
                         icon={<InfoIcon />}
-                        text='screen.storyline.landing.navigation.info'
+                        text='view.storyline.landing.navigation.info'
                     />
                 </List>
             </Grid>
             {recentWorks.length ? (
                 <Grid item xs={6}>
-                    <Typography variant='h5'>
-                        {t('screen.storyline.landing.recent.title')}
-                    </Typography>
+                    <Typography variant='h5'>{t('view.storyline.landing.recent.title')}</Typography>
                     {recentWorks.map((work) => (
                         <ListItem
                             key={work.id}
@@ -78,4 +76,4 @@ const LandingScreen = () => {
     )
 }
 
-export default LandingScreen
+export default LandingView

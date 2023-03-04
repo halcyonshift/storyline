@@ -1,7 +1,7 @@
-import { SectionScreenType } from '../types'
+import { SectionViewType } from '../types'
 
-const SceneScreen = ({ section }: SectionScreenType) => {
+const SceneView = ({ section }: SectionViewType) => {
     return <>{section.displayTitle}</>
 }
 
-export default SceneScreen
+export default SceneView

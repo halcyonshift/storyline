@@ -8,8 +8,8 @@ import App from './App'
 import database from './db'
 import { SectionModel, WorkModel } from './db/models'
 import './i18n'
-import * as StoryLineScreens from './ui/views/storyline'
-import * as WorkScreens from './ui/views/work'
+import * as StoryLineViews from './ui/views/storyline'
+import * as WorkViews from './ui/views/work'
 import * as Layouts from './ui/layouts'
 import { DisplayProvider } from './ui/theme'
 
@@ -24,7 +24,7 @@ const router = createHashRouter([
                 children: [
                     {
                         index: true,
-                        element: <StoryLineScreens.LandingScreen />,
+                        element: <StoryLineViews.LandingView />,
                         loader: async () =>
                             await database
                                 .get<WorkModel>('work')
@@ -33,11 +33,11 @@ const router = createHashRouter([
                     },
                     {
                         path: 'newWork',
-                        element: <StoryLineScreens.NewWorkScreen />
+                        element: <StoryLineViews.NewWorkView />
                     },
                     {
                         path: 'openWork',
-                        element: <StoryLineScreens.OpenWorkScreen />,
+                        element: <StoryLineViews.OpenWorkView />,
                         loader: async () =>
                             await database
                                 .get<WorkModel>('work')
@@ -46,19 +46,19 @@ const router = createHashRouter([
                     },
                     {
                         path: 'newSequel',
-                        element: <StoryLineScreens.SettingsScreen />
+                        element: <StoryLineViews.SettingsView />
                     },
                     {
                         path: 'importWork',
-                        element: <StoryLineScreens.SettingsScreen />
+                        element: <StoryLineViews.SettingsView />
                     },
                     {
                         path: 'settings',
-                        element: <StoryLineScreens.SettingsScreen />
+                        element: <StoryLineViews.SettingsView />
                     },
                     {
                         path: 'info',
-                        element: <StoryLineScreens.InfoScreen />
+                        element: <StoryLineViews.InfoView />
                     }
                 ]
             },
@@ -69,7 +69,13 @@ const router = createHashRouter([
                 children: [
                     {
                         index: true,
-                        element: <WorkScreens.LandingScreen />
+                        element: <WorkViews.LandingView />
+                    },
+                    {
+                        path: 'addPart',
+                        element: <WorkViews.AddPartView />,
+                        loader: async ({ params }) =>
+                            await database.get<WorkModel>('work').find(params.work_id)
                     },
                     {
                         path: 'backupRestore',
@@ -85,11 +91,11 @@ const router = createHashRouter([
                     },
                     {
                         path: 'search',
-                        element: <WorkScreens.SearchScreen />
+                        element: <WorkViews.SearchView />
                     },
                     {
                         path: 'section/:section_id',
-                        element: <WorkScreens.SectionScreen />,
+                        element: <WorkViews.SectionView />,
                         loader: async ({ params }) =>
                             await database.get<SectionModel>('section').find(params.section_id)
                     },

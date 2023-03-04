@@ -19,7 +19,7 @@ import { languageType } from '../../../../i18n/types'
 import useDisplay from '../../../theme/useDisplay'
 import { fontType, modeType } from '../../../theme/types'
 
-const SettingsScreen = () => {
+const SettingsView = () => {
     const database = useDatabase()
     const display = useDisplay()
     const { t } = useTranslation()
@@ -98,12 +98,12 @@ const SettingsScreen = () => {
             <Box>
                 <FormControl fullWidth>
                     <InputLabel id='select-language'>
-                        {t('screen.storyline.settings.language')}
+                        {t('view.storyline.settings.language')}
                     </InputLabel>
                     <Select
                         labelId='select-language'
                         value={language}
-                        label={t('screen.storyline.settings.language')}
+                        label={t('view.storyline.settings.language')}
                         onChange={handleLanguageChange}>
                         <MenuItem value='en'>English</MenuItem>
                         <MenuItem value='fr'>Français</MenuItem>
@@ -113,27 +113,25 @@ const SettingsScreen = () => {
             <Box>
                 <FormControl fullWidth>
                     <InputLabel id='select-mode'>
-                        {t('screen.storyline.settings.mode.title')}
+                        {t('view.storyline.settings.mode.title')}
                     </InputLabel>
                     <Select
                         labelId='select-mode'
                         value={mode}
-                        label={t('screen.storyline.settings.mode.title')}
+                        label={t('view.storyline.settings.mode.title')}
                         onChange={handleModeChange}>
-                        <MenuItem value='light'>
-                            {t('screen.storyline.settings.mode.light')}
-                        </MenuItem>
-                        <MenuItem value='dark'>{t('screen.storyline.settings.mode.dark')}</MenuItem>
+                        <MenuItem value='light'>{t('view.storyline.settings.mode.light')}</MenuItem>
+                        <MenuItem value='dark'>{t('view.storyline.settings.mode.dark')}</MenuItem>
                     </Select>
                 </FormControl>
             </Box>
             <Box>
                 <FormControl fullWidth>
-                    <InputLabel id='select-font'>{t('screen.storyline.settings.font')}</InputLabel>
+                    <InputLabel id='select-font'>{t('view.storyline.settings.font')}</InputLabel>
                     <Select
                         labelId='select-font'
                         value={font}
-                        label={t('screen.storyline.settings.font')}
+                        label={t('view.storyline.settings.font')}
                         onChange={handleFontChange}>
                         <MenuItem value='arial'>Arial</MenuItem>
                         <MenuItem value='roboto'>Roboto</MenuItem>
@@ -142,7 +140,7 @@ const SettingsScreen = () => {
                     <Stack spacing={2} direction='row' alignItems='center'>
                         <TextDecreaseIcon />
                         <Slider
-                            aria-label={t('screen.storyline.settings.fontSize')}
+                            aria-label={t('view.storyline.settings.fontSize')}
                             defaultValue={12}
                             getAriaValueText={(value) => value.toString()}
                             valueLabelDisplay='auto'
@@ -163,10 +161,10 @@ const SettingsScreen = () => {
                                 checked={indent}
                                 onChange={handleIndentChange}
                                 color='success'
-                                aria-label={t('screen.storyline.settings.indent')}
+                                aria-label={t('view.storyline.settings.indent')}
                             />
                         }
-                        label={t('screen.storyline.settings.indent')}
+                        label={t('view.storyline.settings.indent')}
                     />
                 </FormControl>
             </Box>
@@ -174,4 +172,4 @@ const SettingsScreen = () => {
     )
 }
 
-export default SettingsScreen
+export default SettingsView

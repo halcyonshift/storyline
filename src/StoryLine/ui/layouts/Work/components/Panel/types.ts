@@ -1,5 +1,12 @@
+import { ReactNode } from 'react'
+import { TooltipIconButtonProps } from '../../../../components/TooltipIconButton/types'
 import { CharacterModel, ItemModel, LocationModel, SectionModel } from '../../../../../db/models'
 import { TabType } from '../../types'
+
+export type PanelProps = {
+    navigation: TooltipIconButtonProps[]
+    children?: ReactNode
+}
 
 type Panel = {
     loadTab: (focusTab: TabType) => void

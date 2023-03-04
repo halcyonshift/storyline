@@ -2,6 +2,22 @@
     "navigation": {
         "back": "Back"
     },
+    "model": {
+        "character": {
+            "main": "Main",
+            "secondary": "Secondary",
+            "tertiary": "Tertiary"
+        }
+    },
+    "component": {
+        "dateField": {
+            "label": "Date",
+            "toggle": {
+                "custom": "Switch to custom",
+                "picker": "Switch to picker"
+            }
+        }
+    },
     "layout": {
         "work": {
             "navigation": {
@@ -18,20 +34,23 @@
                 "setting": "Settings"
             },
             "panel": {
-                "section": {
-                    "addPart": "Add part",
-                    "addChapter": "Add chapter",
-                    "addScene": "Add scene"
-                },
                 "character": {
                     "addMain": "Add main character",
                     "addSecondary": "Add secondary character",
                     "addTertiary": "Add tertiary character"
+                },
+                "location": {
+                    "add": "Add location"
+                },
+                "section": {
+                    "addPart": "Add part",
+                    "addChapter": "Add chapter",
+                    "addScene": "Add scene"
                 }
             }
         }
     },
-    "screen": {
+    "view": {
         "storyline": {
             "landing": {
                 "title": "",
@@ -56,6 +75,18 @@
                     "title": "Display mode",
                     "light": "Light",
                     "dark": "Dark"
+                }
+            }
+        },
+        "work": {
+            "addPart": {
+                "title": "Add part",
+                "form": {
+                    "title": "Title",
+                    "description": "Description",
+                    "wordGoal": "Word goal",
+                    "deadline": "Deadline",
+                    "create": "Add"
                 }
             }
         }

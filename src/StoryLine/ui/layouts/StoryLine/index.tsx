@@ -33,7 +33,7 @@ const StoryLineLayout = () => {
                     </Box>
                     <Box className='flex flex-grow justify-between'>
                         <Typography variant='h6'>
-                            {title ? t(`screen.storyline.landing.navigation.${title}`) : ''}
+                            {title ? t(`view.storyline.landing.navigation.${title}`) : ''}
                         </Typography>
                         <Typography variant='h6'>StoryLine</Typography>
                     </Box>

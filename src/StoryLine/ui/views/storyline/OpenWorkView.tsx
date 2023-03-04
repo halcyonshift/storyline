@@ -5,7 +5,7 @@ import { useLoaderData } from 'react-router-dom'
 import ListItem from '../../components/ListItem'
 import { WorkModel } from '../../../db/models'
 
-const OpenWorkScreen = () => {
+const OpenWorkView = () => {
     const works = useLoaderData() as WorkModel[]
 
     return (
@@ -22,4 +22,4 @@ const OpenWorkScreen = () => {
     )
 }
 
-export default OpenWorkScreen
+export default OpenWorkView

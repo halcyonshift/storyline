@@ -1,3 +1,3 @@
-const LandingScreen = () => <p>Overview</p>
+const LandingView = () => <p>Overview</p>
 
-export default LandingScreen
+export default LandingView
