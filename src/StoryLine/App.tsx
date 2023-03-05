@@ -5,7 +5,7 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { Outlet } from 'react-router-dom'
 
-import { useDisplay } from './ui/theme'
+import { useDisplay } from '@sl/theme'
 
 const App = () => {
     const display = useDisplay()

@@ -1,17 +1,17 @@
 import { Q } from '@nozbe/watermelondb'
 import DatabaseProvider from '@nozbe/watermelondb/DatabaseProvider'
-import ReactDOM from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 
 import { createHashRouter, RouterProvider } from 'react-router-dom'
 
-import App from './App'
-import database from './db'
-import { SectionModel, WorkModel } from './db/models'
-import './i18n'
-import * as StoryLineViews from './ui/views/storyline'
-import * as WorkViews from './ui/views/work'
-import * as Layouts from './ui/layouts'
-import { DisplayProvider } from './ui/theme'
+import App from '@sl/App'
+import database from '@sl/db'
+import { SectionModel, WorkModel } from '@sl/db/models'
+import '@sl/i18n'
+import * as StoryLineViews from '@sl/views/storyline'
+import * as WorkViews from '@sl/views/work'
+import * as Layouts from '@sl/layouts'
+import { DisplayProvider } from '@sl/theme'
 
 const router = createHashRouter([
     {
@@ -113,7 +113,7 @@ const router = createHashRouter([
     }
 ])
 
-const root = ReactDOM.createRoot(document.getElementById('root'))
+const root = createRoot(document.getElementById('root'))
 
 root.render(
     <DatabaseProvider database={database}>

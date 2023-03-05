@@ -33,5 +33,10 @@
     "max-nested-callbacks": ["error", 4],
     "no-console": ["error"],
     "semi": ["error", "never"]
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
   }
 }

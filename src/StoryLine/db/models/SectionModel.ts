@@ -4,7 +4,7 @@ import { Associations } from '@nozbe/watermelondb/Model'
 import { date, field, readonly, relation, text, writer, lazy } from '@nozbe/watermelondb/decorators'
 import { DateTime } from 'luxon'
 
-import { htmlExtractExcerpts, htmlParse, wordCount } from '../../utils'
+import { htmlExtractExcerpts, htmlParse, wordCount } from '@sl/utils'
 import { SectionDataType, StatisticDataType } from './types'
 import { CharacterModel, ItemModel, LocationModel, WorkModel } from './'
 

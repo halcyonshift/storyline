@@ -10,7 +10,7 @@ import { rendererConfig } from './webpack.renderer.config'
 
 const config: ForgeConfig = {
     packagerConfig: {
-        icon: './src/assets/images/icon',
+        icon: './src/StoryLine/assets/images/icon',
         appCopyright: "Hannah O'Malley 2023",
         appVersion: '0.0.1',
         appCategoryType: 'public.app-category.productivity',
