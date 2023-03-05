@@ -162,17 +162,23 @@ export default withDatabase(
             work: database.get<WorkModel>('work').findAndObserve(workId),
             characters: database
                 .get<CharacterModel>('character')
-                .query(Q.where('work_id', workId))
+                .query(Q.where('work_id', workId), Q.sortBy('first_name', Q.asc))
                 .observe(),
-            items: database.get<ItemModel>('item').query(Q.where('work_id', workId)).observe(),
+            items: database
+                .get<ItemModel>('item')
+                .query(Q.where('work_id', workId), Q.sortBy('name', Q.asc))
+                .observe(),
             locations: database
                 .get<LocationModel>('location')
-                .query(Q.where('work_id', workId))
+                .query(Q.where('work_id', workId), Q.sortBy('name', Q.asc))
                 .observe(),
-            notes: database.get<NoteModel>('note').query(Q.where('work_id', workId)).observe(),
+            notes: database
+                .get<NoteModel>('note')
+                .query(Q.where('work_id', workId), Q.sortBy('title', Q.asc))
+                .observe(),
             sections: database
                 .get<SectionModel>('section')
-                .query(Q.where('work_id', workId))
+                .query(Q.where('work_id', workId), Q.sortBy('order', Q.asc))
                 .observe()
         }
     })(WorkLayout)

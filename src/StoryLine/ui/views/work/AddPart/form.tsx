@@ -22,7 +22,6 @@ const Form = ({ work }: { work: WorkModel }) => {
         title: yup.string(),
         description: yup.string(),
         date: yup.string().nullable(),
-        order: yup.number().positive().integer().nullable(),
         words: yup.number().positive().integer().nullable(),
         deadlineAt: yup.date().nullable()
     })
@@ -32,12 +31,13 @@ const Form = ({ work }: { work: WorkModel }) => {
             title: '',
             description: '',
             date: null,
-            order: 2,
             words: 0,
             deadlineAt: null
         },
         validationSchema: validationSchema,
         onSubmit: async (values: SectionDataType) => {
+            const partsCount = await work.parts.fetchCount()
+            values.order = partsCount + 1
             await work.addPart(values)
             form.resetForm()
             navigate(`/works/${work.id}`)

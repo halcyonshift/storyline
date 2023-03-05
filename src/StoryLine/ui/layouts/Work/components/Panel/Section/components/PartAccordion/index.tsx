@@ -1,23 +1,26 @@
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Typography from '@mui/material/Typography'
 import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
-
-import { GLOBAL_ICONS } from '../../../../../../../icons'
+import { colors } from '../../../../../../../theme/utils'
 import ChapterAccordion from '../ChapterAccordion'
 import { PartAccordionProps } from '../types'
 
 const PartAccordion = ({ parts, chapters, scenes, loadTab }: PartAccordionProps) => (
     <>
         {parts.map((part) => (
-            <Accordion key={part.id}>
+            <Accordion key={part.id} disableGutters square elevation={0}>
                 <AccordionSummary
-                    expandIcon={GLOBAL_ICONS.expand}
+                    sx={{ backgroundColor: colors.indigo['400'] }}
+                    expandIcon={<ExpandMoreIcon htmlColor={colors.white} />}
                     aria-controls={`${part.id}-chapters`}
                     id={`${part.id}-header`}>
-                    <Typography>{part.displayTitle}</Typography>
+                    <Typography variant='body1' className='py-2 text-white'>
+                        {part.displayTitle}
+                    </Typography>
                 </AccordionSummary>
-                <AccordionDetails>
+                <AccordionDetails sx={{ padding: 0 }}>
                     <ChapterAccordion
                         loadTab={loadTab}
                         chapters={chapters.filter((chapter) => chapter.section.id === part.id)}

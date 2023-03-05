@@ -9,7 +9,13 @@ import { mainConfig } from './webpack.main.config'
 import { rendererConfig } from './webpack.renderer.config'
 
 const config: ForgeConfig = {
-    packagerConfig: {},
+    packagerConfig: {
+        icon: './src/assets/images/icon',
+        appCopyright: "Hannah O'Malley 2023",
+        appVersion: '0.0.1',
+        appCategoryType: 'public.app-category.productivity',
+        asar: true
+    },
     rebuildConfig: {},
     makers: [
         new MakerSquirrel({}),
@@ -18,9 +24,21 @@ const config: ForgeConfig = {
         new MakerDeb({})
     ],
     plugins: [
+        {
+            name: '@electron-forge/plugin-electronegativity',
+            config: {
+                isSarif: true
+            }
+        },
+        {
+            name: '@electron-forge/plugin-auto-unpack-natives',
+            config: {}
+        },
         new WebpackPlugin({
             devServer: {
-                allowedHosts: 'auto'
+                allowedHosts: 'auto',
+                hot: true,
+                liveReload: false
             },
             devContentSecurityPolicy: 'connect-src *',
             mainConfig,
@@ -32,7 +50,11 @@ const config: ForgeConfig = {
                         js: './src/renderer.ts',
                         name: 'main_window',
                         preload: {
-                            js: './src/preload.ts'
+                            js: './src/preload.ts',
+                            config: {
+                                ...rendererConfig,
+                                plugins: []
+                            }
                         }
                     }
                 ]

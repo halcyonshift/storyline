@@ -34,16 +34,15 @@ const SectionPanel = ({ sections, loadTab }: SectionPanelProps) => {
                 text: 'layout.work.panel.section.addChapter',
                 icon: SECTION_ICONS.addChapter
             })
-        }
 
-        if (chapters.length === 1) {
-            newNavigation.push({
-                link: 'section/add/scene',
-                text: 'layout.work.panel.section.addScene',
-                icon: SECTION_ICONS.addScene
-            })
+            if (chapters.length === 1) {
+                newNavigation.push({
+                    link: 'section/add/scene',
+                    text: 'layout.work.panel.section.addScene',
+                    icon: SECTION_ICONS.addScene
+                })
+            }
         }
-
         setNavigation(newNavigation)
     }, [parts.length, chapters.length])
 

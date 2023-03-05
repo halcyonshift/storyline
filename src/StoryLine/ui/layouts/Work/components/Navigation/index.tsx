@@ -27,7 +27,7 @@ const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) =>
     }
 
     return (
-        <Box className='bg-indigo-400 text-white flex flex-col justify-between'>
+        <Box className='bg-indigo-400 dark:bg-indigo-800 text-white flex flex-col justify-between'>
             <Stack>
                 <Tooltip title={t('layout.work.navigation.work')} placement='right'>
                     <IconButton
