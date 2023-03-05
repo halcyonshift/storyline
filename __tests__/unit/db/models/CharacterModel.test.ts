@@ -13,7 +13,7 @@ describe('CharacterModel', () => {
         expect(CharacterModel.table).toBe('character')
     })
 
-    it('isMain should be true for main characters and false for secondary characters', async () => {
+    it('isPrimary should be true for main characters and false for secondary characters', async () => {
         const work = await database.write(async () => {
             return database.get<WorkModel>('work').create((work) => {
                 work.title = 'Test'
@@ -24,15 +24,15 @@ describe('CharacterModel', () => {
             return database.get<CharacterModel>('character').create((character) => {
                 character.work.set(work)
                 character.displayName = 'Main Character'
-                character.mode = 'main'
+                character.mode = 'primary'
             })
         })
 
-        expect(character.isMain).toBeTruthy()
+        expect(character.isPrimary).toBeTruthy()
         expect(character.isSecondary).toBeFalsy()
     })
 
-    it('isMain should be false for secondary characters and true for secondary characters', async () => {
+    it('isPrimary should be false for secondary characters and true for secondary characters', async () => {
         const work = await database.write(async () => {
             return database.get<WorkModel>('work').create((work) => {
                 work.title = 'Test'
@@ -47,7 +47,7 @@ describe('CharacterModel', () => {
             })
         })
 
-        expect(character.isMain).toBeFalsy()
+        expect(character.isPrimary).toBeFalsy()
         expect(character.isSecondary).toBeTruthy()
     })
 })

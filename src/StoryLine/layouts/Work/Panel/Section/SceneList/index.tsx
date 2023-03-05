@@ -5,7 +5,7 @@ import ListItemText from '@mui/material/ListItemText'
 import { SceneListProps } from '../types'
 
 const SceneList = ({ scenes, loadTab }: SceneListProps) => (
-    <List dense>
+    <List dense className='bg-white'>
         {scenes.map((scene) => (
             <ListItem key={scene.id}>
                 <ListItemText

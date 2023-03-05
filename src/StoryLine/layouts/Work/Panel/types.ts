@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { TooltipIconButtonProps } from '@sl/components/TooltipIconButton/types'
-import { CharacterModel, ItemModel, LocationModel, SectionModel } from '@sl/db/models'
+import { CharacterModel, ItemModel, LocationModel, NoteModel, SectionModel } from '@sl/db/models'
 import { TabType } from '../types'
 
 export type PanelProps = {
@@ -22,6 +22,10 @@ export type ItemPanelProps = {
 
 export type LocationPanelProps = {
     locations: LocationModel[]
+} & Panel
+
+export type NotePanelProps = {
+    notes: NoteModel[]
 } & Panel
 
 export type SectionPanelProps = {

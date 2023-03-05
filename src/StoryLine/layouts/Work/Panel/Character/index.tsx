@@ -9,14 +9,14 @@ import { CharacterPanelProps } from '../types'
 import Panel from '../'
 
 const CharacterPanel = ({ characters }: CharacterPanelProps) => {
-    const [main, setMain] = useState<CharacterModel[]>([])
+    const [primary, setPrimary] = useState<CharacterModel[]>([])
     const [secondary, setSecondary] = useState<CharacterModel[]>([])
     const [tertiary, setTertiary] = useState<CharacterModel[]>([])
 
     const { t } = useTranslation()
 
     useEffect(() => {
-        setMain(characters.filter((character) => character.isMain))
+        setPrimary(characters.filter((character) => character.isPrimary))
         setSecondary(characters.filter((character) => character.isSecondary))
         setTertiary(characters.filter((character) => character.isTertiary))
     }, [characters])
@@ -25,22 +25,24 @@ const CharacterPanel = ({ characters }: CharacterPanelProps) => {
         <Panel
             navigation={[
                 {
-                    link: 'character/add/main',
-                    text: 'layout.work.panel.character.addMain',
-                    icon: CHARACTER_ICONS.addMain
+                    link: 'addCharacter/primary',
+                    text: 'layout.work.panel.character.addPrimary',
+                    icon: CHARACTER_ICONS.addPrimary
                 },
                 {
-                    link: 'character/add/secondary',
+                    link: 'addCharacter/secondary',
                     text: 'layout.work.panel.character.addSecondary',
                     icon: CHARACTER_ICONS.addSecondary
                 },
                 {
-                    link: 'character/add/tertiary',
+                    link: 'addCharacter/tertiary',
                     text: 'layout.work.panel.character.addTertiary',
                     icon: CHARACTER_ICONS.addTertiary
                 }
             ]}>
-            {main.length ? <Typography variant='h6'>{t('model.character.main')}</Typography> : null}
+            {primary.length ? (
+                <Typography variant='h6'>{t('model.character.primary')}</Typography>
+            ) : null}
             {secondary.length ? (
                 <Typography variant='h6'>{t('model.character.secondary')}</Typography>
             ) : null}

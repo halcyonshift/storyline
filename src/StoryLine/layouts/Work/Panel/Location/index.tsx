@@ -8,7 +8,7 @@ const LocationPanel = ({ locations }: LocationPanelProps) => {
         <Panel
             navigation={[
                 {
-                    link: 'location/add',
+                    link: 'addLocation',
                     text: 'layout.work.panel.location.add',
                     icon: LOCATION_ICONS.add
                 }

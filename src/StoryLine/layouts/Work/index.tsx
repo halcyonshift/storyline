@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import CloseIcon from '@mui/icons-material/Close'
@@ -14,7 +14,7 @@ import { type Database, Q } from '@nozbe/watermelondb'
 import { withDatabase } from '@nozbe/watermelondb/DatabaseProvider'
 import withObservables from '@nozbe/with-observables'
 import { useTranslation } from 'react-i18next'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, useParams, useLocation } from 'react-router-dom'
 
 import {
     CharacterModel,
@@ -25,18 +25,34 @@ import {
     WorkModel
 } from '@sl/db/models'
 import Navigation from './Navigation'
-import { CharacterPanel, ItemPanel, LocationPanel, SectionPanel } from './Panel'
+import { CharacterPanel, ItemPanel, LocationPanel, NotePanel, SectionPanel } from './Panel'
 import { TabType, WorkLayoutProps } from './types'
 
-const hasTabs = ['character', 'item', 'location', 'note', 'section']
-
-const WorkLayout = ({ characters, items, locations, sections, work }: WorkLayoutProps) => {
+const WorkLayout = ({ characters, items, locations, notes, sections, work }: WorkLayoutProps) => {
     const navigate = useNavigate()
     const { t } = useTranslation()
 
     const [currentPanel, setCurrentPanel] = useState<string | null>()
     const [currentTab, setCurrentTab] = useState<number>(0)
     const [tabs, setTabs] = useState<TabType[]>([])
+    const [showTabs, setShowTabs] = useState<boolean>(false)
+
+    const params = useParams()
+    const location = useLocation()
+
+    useEffect(() => {
+        /*
+        if (
+            tabs.length &&
+            'section_id' in Object(params).keys() &&
+            !location.pathname.match(/(\/add|edit|delete)/gi)
+        ) {
+            setShowTabs(true)
+        } else {
+            setShowTabs(false)
+        }
+        */
+    }, [tabs, params, location])
 
     const loadTab = (focusTab: TabType) => {
         const focus = tabs.findIndex((tab) => tab.id === focusTab.id)
@@ -112,13 +128,16 @@ const WorkLayout = ({ characters, items, locations, sections, work }: WorkLayout
                         {currentPanel === 'location' ? (
                             <LocationPanel loadTab={loadTab} locations={locations} />
                         ) : null}
+                        {currentPanel === 'note' ? (
+                            <NotePanel loadTab={loadTab} notes={notes} />
+                        ) : null}
                         {currentPanel === 'section' ? (
                             <SectionPanel loadTab={loadTab} sections={sections} />
                         ) : null}
                     </Box>
                 ) : null}
                 <Box className='flex flex-col flex-grow'>
-                    {tabs.length && hasTabs.includes(currentPanel) ? (
+                    {showTabs ? (
                         <Tabs
                             value={currentTab}
                             onChange={(_, value) => setCurrentTab(value)}

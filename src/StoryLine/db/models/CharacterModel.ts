@@ -12,7 +12,7 @@ export default class CharacterModel extends Model {
         note: { type: 'has_many', foreignKey: 'character_id' }
     }
 
-    @field('mode') mode!: 'main' | 'secondary' | 'tertiary'
+    @field('mode') mode!: 'primary' | 'secondary' | 'tertiary'
     @text('display_name') displayName!: string
     @text('pronouns') pronouns!: string
     @text('first_name') firstName!: string
@@ -48,8 +48,8 @@ export default class CharacterModel extends Model {
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @children('note') note!: Query<NoteModel>
 
-    get isMain() {
-        return Boolean(this.mode === 'main')
+    get isPrimary() {
+        return Boolean(this.mode === 'primary')
     }
 
     get isSecondary() {

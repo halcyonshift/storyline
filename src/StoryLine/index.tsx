@@ -6,10 +6,10 @@ import { createHashRouter, RouterProvider } from 'react-router-dom'
 
 import App from '@sl/App'
 import database from '@sl/db'
-import { SectionModel, WorkModel } from '@sl/db/models'
+import { LocationModel, SectionModel, WorkModel } from '@sl/db/models'
 import '@sl/i18n'
-import * as StoryLineViews from '@sl/views/storyline'
-import * as WorkViews from '@sl/views/work'
+import * as StoryLineViews from '@sl/views/StoryLine'
+import * as WorkViews from '@sl/views/Work'
 import * as Layouts from '@sl/layouts'
 import { DisplayProvider } from '@sl/theme'
 
@@ -66,16 +66,32 @@ const router = createHashRouter([
                 path: 'works/:work_id',
                 id: 'work',
                 element: <Layouts.WorkLayout />,
+                loader: async ({ params }) =>
+                    await database.get<WorkModel>('work').find(params.work_id),
                 children: [
                     {
                         index: true,
                         element: <WorkViews.LandingView />
                     },
                     {
+                        path: 'addCharacter/:mode',
+                        element: <WorkViews.AddCharacterView />
+                    },
+                    {
+                        path: 'addItem',
+                        element: <WorkViews.AddItemView />
+                    },
+                    {
+                        path: 'addLocation',
+                        element: <WorkViews.AddLocationView />
+                    },
+                    {
+                        path: 'addNote',
+                        element: <WorkViews.AddNoteView />
+                    },
+                    {
                         path: 'addPart',
-                        element: <WorkViews.AddPartView />,
-                        loader: async ({ params }) =>
-                            await database.get<WorkModel>('work').find(params.work_id)
+                        element: <WorkViews.AddPartView />
                     },
                     {
                         path: 'backupRestore',
@@ -94,10 +110,48 @@ const router = createHashRouter([
                         element: <WorkViews.SearchView />
                     },
                     {
-                        path: 'section/:section_id',
-                        element: <WorkViews.SectionView />,
+                        path: 'location/:location_id',
+                        id: 'location',
                         loader: async ({ params }) =>
-                            await database.get<SectionModel>('section').find(params.section_id)
+                            await database.get<LocationModel>('location').find(params.location_id),
+                        children: [
+                            {
+                                index: true,
+                                element: <p>Edit location</p>
+                            },
+                            {
+                                path: 'add',
+                                element: <p>Add to location</p>
+                            },
+                            {
+                                path: 'delete',
+                                element: <p>Delete location</p>
+                            }
+                        ]
+                    },
+                    {
+                        path: 'section/:section_id',
+                        id: 'section',
+                        loader: async ({ params }) =>
+                            await database.get<SectionModel>('section').find(params.section_id),
+                        children: [
+                            {
+                                index: true,
+                                element: <WorkViews.SectionView />
+                            },
+                            {
+                                path: 'add',
+                                element: <p>Add to section</p>
+                            },
+                            {
+                                path: 'edit',
+                                element: <p>Edit section</p>
+                            },
+                            {
+                                path: 'delete',
+                                element: <p>Delete section</p>
+                            }
+                        ]
                     },
                     {
                         path: 'setting',

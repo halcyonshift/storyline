@@ -7,7 +7,7 @@ const ItemPanel = ({ items }: ItemPanelProps) => {
     return (
         <Panel
             navigation={[
-                { link: 'item/add', text: 'layout.work.panel.item.add', icon: ITEM_ICONS.add }
+                { link: 'addItem', text: 'layout.work.panel.item.add', icon: ITEM_ICONS.add }
             ]}
         />
     )

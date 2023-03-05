@@ -4,7 +4,7 @@
     },
     "model": {
         "character": {
-            "main": "Main",
+            "primary": "Primary",
             "secondary": "Secondary",
             "tertiary": "Tertiary"
         }
@@ -35,17 +35,25 @@
             },
             "panel": {
                 "character": {
-                    "addMain": "Add main character",
+                    "addPrimary": "Add primary character",
                     "addSecondary": "Add secondary character",
                     "addTertiary": "Add tertiary character"
+                },
+                "item": {
+                    "add": "Add item"
                 },
                 "location": {
                     "add": "Add location"
                 },
+                "note": {
+                    "add": "Add note"
+                },
                 "section": {
                     "addPart": "Add part",
                     "addChapter": "Add chapter",
-                    "addScene": "Add scene"
+                    "addScene": "Add scene",
+                    "edit": "Edit",
+                    "delete": "Delete"
                 }
             }
         }
@@ -79,6 +87,18 @@
             }
         },
         "work": {
+            "addCharacter": {
+                "title": "Add {{mode}} character"
+            },
+            "addItem": {
+                "title": "Add item"
+            },
+            "addLocation": {
+                "title": "Add location"
+            },
+            "addNote": {
+                "title": "Add note"
+            },
             "addPart": {
                 "title": "Add part",
                 "form": {

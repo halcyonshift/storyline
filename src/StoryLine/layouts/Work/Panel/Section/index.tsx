@@ -5,7 +5,9 @@ import { SECTION_ICONS } from '@sl/constants/icons'
 import { SectionPanelProps } from '../types'
 import Panel from '../'
 
-import { ChapterAccordion, PartAccordion, SceneList } from './components'
+import ChapterAccordion from './ChapterAccordion'
+import PartAccordion from './PartAccordion'
+import SceneList from './SceneList'
 
 const SectionPanel = ({ sections, loadTab }: SectionPanelProps) => {
     const [parts, setParts] = useState<SectionModel[]>([])
