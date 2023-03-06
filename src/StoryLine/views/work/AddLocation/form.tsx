@@ -11,6 +11,7 @@ import * as yup from 'yup'
 import { WorkModel } from '@sl/db/models'
 import { LocationDataType } from '@sl/db/models/types'
 import useOnlineStatus from '@sl/utils/useOnlineStatus'
+import MapField from '@sl/components/MapField'
 
 const Form = ({ work }: { work: WorkModel }) => {
     const navigate = useNavigate()
@@ -45,11 +46,7 @@ const Form = ({ work }: { work: WorkModel }) => {
 
     return (
         <Stack component={'form'} spacing={2} onSubmit={form.handleSubmit} autoComplete='off'>
-            {!isOnline ? (
-                <Alert severity='warning'>
-                    Locations need an internet connection for full functionality
-                </Alert>
-            ) : null}
+            {!isOnline ? <Alert severity='warning'>{t('error.connection')}</Alert> : null}
             <TextField
                 autoFocus
                 margin='dense'
@@ -66,7 +63,7 @@ const Form = ({ work }: { work: WorkModel }) => {
             <TextField
                 margin='dense'
                 id='body'
-                label={t('view.work.addPart.form.body')}
+                label={t('view.work.addLocation.form.body')}
                 name='body'
                 fullWidth
                 multiline
@@ -77,6 +74,7 @@ const Form = ({ work }: { work: WorkModel }) => {
                 error={form.touched.body && Boolean(form.errors.body)}
                 helperText={form.touched.body && form.errors.body}
             />
+            <MapField form={form} />
             <Box className='text-center border-t pt-3'>
                 <Button type='submit' variant='contained'>
                     {t('view.work.addLocation.form.create')}

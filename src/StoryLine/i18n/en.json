@@ -1,4 +1,7 @@
 {
+    "error": {
+        "connection": "Some features of this area aren't available without an internet connection"
+    },
     "navigation": {
         "back": "Back"
     },
@@ -12,6 +15,15 @@
     "component": {
         "dateField": {
             "label": "Date",
+            "toggle": {
+                "custom": "Switch to custom",
+                "picker": "Switch to picker"
+            }
+        },
+        "mapField": {
+            "label": "Map",
+            "latitude": "Latitude",
+            "longitude": "Longitude",
             "toggle": {
                 "custom": "Switch to custom",
                 "picker": "Switch to picker"
@@ -94,7 +106,12 @@
                 "title": "Add item"
             },
             "addLocation": {
-                "title": "Add location"
+                "title": "Add location",
+                "form": {
+                    "name": "Name",
+                    "body": "Description",
+                    "create": "Add"
+                }
             },
             "addNote": {
                 "title": "Add note"

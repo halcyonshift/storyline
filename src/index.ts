@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, dialog, session } from 'electron'
+import { app, BrowserWindow, ipcMain, dialog, session, shell } from 'electron'
 import contextMenu from 'electron-context-menu'
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
@@ -32,6 +32,12 @@ const createWindow = (): void => {
             }
         })
         .catch(() => null)
+    /*
+    mainWindow.webContents.on('will-navigate', function (e, url) {
+        e.preventDefault()
+        shell.openExternal(url)
+    })
+    */
 }
 
 app.on('ready', () => {

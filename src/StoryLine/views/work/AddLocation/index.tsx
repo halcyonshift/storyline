@@ -1,3 +1,4 @@
+import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
@@ -12,11 +13,17 @@ const AddLocationView = () => {
     const { t } = useTranslation()
 
     return (
-        <Container className='p-5'>
-            <Typography variant='h6'>{t('view.work.addLocation.title')}</Typography>
-            <Divider />
-            <Form work={work} />
-        </Container>
+        <Box className='flex flex-col flex-grow'>
+            <Box>
+                <Typography variant='h6' className='px-3 py-1'>
+                    {t('view.work.addLocation.title')}
+                </Typography>
+                <Divider />
+            </Box>
+            <Container className='flex-grow h-0 overflow-auto pb-5'>
+                <Form work={work} />
+            </Container>
+        </Box>
     )
 }
 

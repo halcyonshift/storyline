@@ -9,10 +9,10 @@ import { GLOBAL_ICONS } from '@sl/constants/icons'
 
 import { DateTime } from 'luxon'
 
-import { FieldType, DateProps } from './types'
+import { FieldType, DateFieldProps } from './types'
 import { useTranslation } from 'react-i18next'
 
-const DateField = ({ form, fieldType }: DateProps) => {
+const DateField = ({ form, fieldType }: DateFieldProps) => {
     const [mode, setMode] = useState<FieldType>(fieldType || 'picker')
     const { t } = useTranslation()
 

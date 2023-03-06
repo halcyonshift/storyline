@@ -16,3 +16,8 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
   user-select: none
 }
+
+.leaflet-container {
+  height: 400px;
+  width: 400px;
+}

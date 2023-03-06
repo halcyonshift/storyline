@@ -3,7 +3,7 @@ import { SectionDataType } from '@sl/db/models/types'
 
 export type FieldType = 'picker' | 'custom'
 
-export type DateProps = {
+export type DateFieldProps = {
     fieldType?: FieldType
     form: FormikProps<SectionDataType>
 }
