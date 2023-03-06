@@ -14,20 +14,12 @@ import Map from '../Map'
 import { FieldType, MapFieldProps, LocationMarkerProps } from './types'
 
 const LocationMarker = ({ form }: LocationMarkerProps) => {
-    const [latLng, setLatLng] = useState<{ lat: number; lng: number } | null>()
     useMapEvent('click', (e) => {
-        setLatLng(e.latlng)
         form.setFieldValue('latitude', e.latlng.lat)
         form.setFieldValue('longitude', e.latlng.lng)
     })
 
-    return latLng ? (
-        <Marker position={[latLng.lat, latLng.lng]}>
-            <Popup>You are here</Popup>
-        </Marker>
-    ) : (
-        <></>
-    )
+    return <></>
 }
 
 const MapField = ({ form, fieldType, label }: MapFieldProps) => {
