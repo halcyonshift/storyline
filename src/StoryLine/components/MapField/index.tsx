@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
-import { useMapEvent, Marker, Popup } from 'react-leaflet'
+import { useMapEvent } from 'react-leaflet'
 
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 import useOnlineStatus from '@sl/utils/useOnlineStatus'
