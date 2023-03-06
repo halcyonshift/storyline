@@ -6,11 +6,29 @@ import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
+import { useMapEvent, Marker, Popup } from 'react-leaflet'
 
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 import useOnlineStatus from '@sl/utils/useOnlineStatus'
 import Map from '../Map'
-import { FieldType, MapFieldProps } from './types'
+import { FieldType, MapFieldProps, LocationMarkerProps } from './types'
+
+const LocationMarker = ({ form }: LocationMarkerProps) => {
+    const [latLng, setLatLng] = useState<{ lat: number; lng: number } | null>()
+    useMapEvent('click', (e) => {
+        setLatLng(e.latlng)
+        form.setFieldValue('latitude', e.latlng.lat)
+        form.setFieldValue('longitude', e.latlng.lng)
+    })
+
+    return latLng ? (
+        <Marker position={[latLng.lat, latLng.lng]}>
+            <Popup>You are here</Popup>
+        </Marker>
+    ) : (
+        <></>
+    )
+}
 
 const MapField = ({ form, fieldType, label }: MapFieldProps) => {
     const [mode, setMode] = useState<FieldType>(fieldType || 'picker')
@@ -30,7 +48,9 @@ const MapField = ({ form, fieldType, label }: MapFieldProps) => {
                 <Box>
                     {mode === 'picker' ? (
                         <Stack spacing={2}>
-                            <Map />
+                            <Map>
+                                <LocationMarker form={form} />
+                            </Map>
                             <Typography>
                                 {form.values.latitude} {form.values.longitude}
                             </Typography>

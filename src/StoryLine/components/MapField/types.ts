@@ -8,3 +8,7 @@ export type MapFieldProps = {
     fieldType?: FieldType
     form: FormikProps<LocationDataType>
 }
+
+export type LocationMarkerProps = {
+    form: FormikProps<LocationDataType>
+}
