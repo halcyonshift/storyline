@@ -8,6 +8,7 @@ import {
 } from '@sl/db/models/types'
 
 export type ImageFieldProps = {
+    label?: string
     form: FormikProps<
         AnnotationDataType | CharacterDataType | ItemDataType | LocationDataType | NoteDataType
     >

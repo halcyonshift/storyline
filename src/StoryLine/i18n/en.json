@@ -114,6 +114,9 @@
                 "form": {
                     "name": "Name",
                     "body": "Description",
+                    "url": "Link",
+                    "location": "Location",
+                    "image": "Image",
                     "create": "Add"
                 }
             },

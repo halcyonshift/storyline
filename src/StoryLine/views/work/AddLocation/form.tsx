@@ -21,11 +21,11 @@ const Form = ({ work }: { work: WorkModel }) => {
 
     const validationSchema = yup.object({
         name: yup.string().required(t('view.work.addLocation.form.required.name')),
-        body: yup.string(),
-        latitude: yup.string(),
-        longitude: yup.string(),
-        url: yup.string(),
-        image: yup.string()
+        body: yup.string().nullable(),
+        latitude: yup.number().nullable(),
+        longitude: yup.number().nullable(),
+        url: yup.string().url().nullable(),
+        image: yup.string().nullable()
     })
 
     const form: FormikProps<LocationDataType> = useFormik<LocationDataType>({
@@ -75,8 +75,20 @@ const Form = ({ work }: { work: WorkModel }) => {
                 error={form.touched.body && Boolean(form.errors.body)}
                 helperText={form.touched.body && form.errors.body}
             />
-            <MapField form={form} />
-            <ImageField form={form} />
+            <TextField
+                margin='dense'
+                id='url'
+                label={t('view.work.addLocation.form.url')}
+                name='url'
+                fullWidth
+                variant='standard'
+                value={form.values.url}
+                onChange={form.handleChange}
+                error={form.touched.url && Boolean(form.errors.url)}
+                helperText={form.touched.url && form.errors.url}
+            />
+            <MapField label={t('view.work.addLocation.form.location')} form={form} />
+            <ImageField label={t('view.work.addLocation.form.image')} form={form} />
             <Box className='text-center border-t pt-3'>
                 <Button type='submit' variant='contained'>
                     {t('view.work.addLocation.form.create')}

@@ -23,7 +23,7 @@ const createWindow = (): void => {
         minHeight: 600,
         webPreferences: {
             preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
-            spellcheck: false
+            spellcheck: true
         }
     })
 
@@ -118,9 +118,10 @@ app.whenReady()
             return saveFilePath
         })
 
-        ipcMain.handle('show-image', async (e, path) => {
-            const img = fs.readFileSync(path).toString('base64')
-            return `data:image/png;base64,${img}`
+        ipcMain.handle('show-image', async (e, filePath) => {
+            const extension = path.extname(filePath)
+            const img = fs.readFileSync(filePath).toString('base64')
+            return `data:image/${extension};base64,${img}`
         })
 
         ipcMain.handle('delete-file', async (e, path) => {

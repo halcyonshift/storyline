@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import Button from '@mui/material/Button'
+import InputLabel from '@mui/material/InputLabel'
 import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
 import Image from '@sl/components/Image'
 import { ImageFieldProps } from './types'
 import { useTranslation } from 'react-i18next'
 
-const ImageField = ({ form }: ImageFieldProps) => {
+const ImageField = ({ form, label }: ImageFieldProps) => {
     const { t } = useTranslation()
     const [path, setPath] = useState<string>('')
 
@@ -25,15 +27,18 @@ const ImageField = ({ form }: ImageFieldProps) => {
     }
 
     return (
-        <Stack direction='row' spacing={2}>
-            <Image path={path} width='100px' />
-            <Stack spacing={2}>
-                <Button onClick={importImage}>{t('component.imageField.browse')}</Button>
-                {form.values.image ? (
-                    <Button onClick={deleteImage}>{t('component.imageField.delete')}</Button>
-                ) : null}
+        <>
+            <InputLabel>{label}</InputLabel>
+            <Stack direction='row' spacing={2}>
+                <Image path={path} width='100px' />
+                <Stack spacing={2}>
+                    <Button onClick={importImage}>{t('component.imageField.browse')}</Button>
+                    {form.values.image ? (
+                        <Button onClick={deleteImage}>{t('component.imageField.delete')}</Button>
+                    ) : null}
+                </Stack>
             </Stack>
-        </Stack>
+        </>
     )
 }
 
