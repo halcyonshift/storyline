@@ -57,7 +57,7 @@ export default class WorkModel extends Model {
     )
 
     @lazy mainCharacters = this.character.extend(
-        Q.where('mode', 'main'),
+        Q.where('mode', 'primary'),
         Q.sortBy('display_name', Q.asc)
     )
 

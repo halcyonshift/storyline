@@ -7,7 +7,7 @@ export type AnnotationDataType = {
 }
 
 export type CharacterDataType = {
-    mode: 'main' | 'secondary' | 'tertiary'
+    mode: 'primary' | 'secondary' | 'tertiary'
     displayName: string
     pronouns?: string
     firstName?: string
