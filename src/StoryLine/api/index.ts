@@ -1,5 +1,8 @@
 import { ipcRenderer } from 'electron'
 
 export default {
-    openDialog: (method: string, config: object) => ipcRenderer.invoke('dialog', method, config)
+    openDialog: (method: string, config: object) => ipcRenderer.invoke('dialog', method, config),
+    importImage: (subDir: string) => ipcRenderer.invoke('select-image', subDir),
+    imageSrc: (path: string) => ipcRenderer.invoke('show-image', path),
+    deleteFile: (path: string) => ipcRenderer.invoke('delete-file', path)
 }

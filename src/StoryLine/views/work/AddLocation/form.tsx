@@ -11,6 +11,7 @@ import * as yup from 'yup'
 import { WorkModel } from '@sl/db/models'
 import { LocationDataType } from '@sl/db/models/types'
 import useOnlineStatus from '@sl/utils/useOnlineStatus'
+import ImageField from '@sl/components/ImageField'
 import MapField from '@sl/components/MapField'
 
 const Form = ({ work }: { work: WorkModel }) => {
@@ -75,6 +76,7 @@ const Form = ({ work }: { work: WorkModel }) => {
                 helperText={form.touched.body && form.errors.body}
             />
             <MapField form={form} />
+            <ImageField form={form} />
             <Box className='text-center border-t pt-3'>
                 <Button type='submit' variant='contained'>
                     {t('view.work.addLocation.form.create')}

@@ -56,6 +56,14 @@ export type LocationDataType = {
     image?: string
 }
 
+export type NoteDataType = {
+    title: string
+    body?: string
+    date?: string
+    url?: string
+    image?: string
+}
+
 export type SectionDataType = {
     title: string
     mode?: 'chapter' | 'scene' | 'part' | 'revision'

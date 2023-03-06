@@ -20,6 +20,10 @@
                 "picker": "Switch to picker"
             }
         },
+        "imageField": {
+            "browse": "Browse",
+            "delete": "Delete"
+        },
         "mapField": {
             "label": "Map",
             "latitude": "Latitude",

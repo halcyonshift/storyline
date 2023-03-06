@@ -1,6 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { app, BrowserWindow, ipcMain, dialog, session, shell } from 'electron'
+import { app, BrowserWindow, ipcMain, dialog, session, shell, Dialog } from 'electron'
 import contextMenu from 'electron-context-menu'
+import fs from 'fs'
+import path from 'path'
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
@@ -96,8 +98,41 @@ app.on('activate', () => {
 
 app.whenReady()
     .then(() => {
-        ipcMain.handle('dialog', (_, method: string, params: Electron.OpenDialogOptions) => {
-            if (method === 'showOpenDialog') dialog.showOpenDialog(params)
+        ipcMain.handle('select-image', async (e, subDir) => {
+            const result = await dialog.showOpenDialog({
+                title: 'Select an image',
+                filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'gif'] }]
+            })
+
+            if (result.canceled || !result.filePaths.length) return false
+
+            const filePath = result.filePaths[0]
+            const fileDir = path.join(app.getPath('userData'), subDir)
+            await fs.promises.mkdir(fileDir, { recursive: true })
+            const timestamp = new Date().getTime()
+            const extension = path.extname(filePath)
+            const fileName = `image-${timestamp}${extension}`
+            const saveFilePath = path.join(fileDir, fileName)
+            await fs.promises.copyFile(filePath, saveFilePath)
+
+            return saveFilePath
+        })
+
+        ipcMain.handle('show-image', async (e, path) => {
+            const img = fs.readFileSync(path).toString('base64')
+            return `data:image/png;base64,${img}`
+        })
+
+        ipcMain.handle('delete-file', async (e, path) => {
+            fs.rmSync(path)
+        })
+
+        ipcMain.handle('dialog', (event, method, params) => {
+            switch (method) {
+                case 'showOpenDialog':
+                    return dialog.showOpenDialog(params)
+                    break
+            }
         })
     })
     .catch(() => null)
