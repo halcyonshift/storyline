@@ -6,6 +6,7 @@ import { useRouteLoaderData } from 'react-router-dom'
 import { WorkModel } from '@sl/db/models'
 
 const AddNoteView = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const work = useRouteLoaderData('work') as WorkModel
     const { t } = useTranslation()
 

@@ -6,6 +6,7 @@ import { useParams, useRouteLoaderData } from 'react-router-dom'
 import { WorkModel } from '@sl/db/models'
 
 const AddCharacterView = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const work = useRouteLoaderData('work') as WorkModel
     const params = useParams()
     const { t } = useTranslation()

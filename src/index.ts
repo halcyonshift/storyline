@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { app, BrowserWindow, ipcMain, dialog, session, shell } from 'electron'
 import contextMenu from 'electron-context-menu'
 
@@ -33,6 +34,7 @@ const createWindow = (): void => {
         })
         .catch(() => null)
     /*
+            // ToDo - make work
     mainWindow.webContents.on('will-navigate', function (e, url) {
         e.preventDefault()
         shell.openExternal(url)

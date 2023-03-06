@@ -35,6 +35,7 @@ const WorkLayout = ({ characters, items, locations, notes, sections, work }: Wor
     const [currentPanel, setCurrentPanel] = useState<string | null>()
     const [currentTab, setCurrentTab] = useState<number>(0)
     const [tabs, setTabs] = useState<TabType[]>([])
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [showTabs, setShowTabs] = useState<boolean>(false)
 
     const params = useParams()
