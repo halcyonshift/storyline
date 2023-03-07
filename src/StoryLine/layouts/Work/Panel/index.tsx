@@ -1,4 +1,4 @@
-import { Box, Stack, Divider } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 
@@ -10,10 +10,10 @@ export { default as SectionPanel } from './Section'
 
 import { PanelProps } from './types'
 
-const Panel = ({ navigation, children }: PanelProps) => {
+const Panel = ({ navigation, children, action }: PanelProps) => {
     return (
         <Box className='flex-grow flex flex-col'>
-            <Stack direction='row'>
+            <Stack direction='row' alignItems='center'>
                 {navigation.map((item) => (
                     <TooltipIconButton
                         key={item.text}
@@ -22,9 +22,9 @@ const Panel = ({ navigation, children }: PanelProps) => {
                         icon={item.icon}
                     />
                 ))}
+                {action ? <Box className='ml-auto'>{action}</Box> : null}
             </Stack>
-            <Divider />
-            <Box className='flex-grow overflow-auto'>{children}</Box>
+            <Box className='flex-grow overflow-auto border-t-2 border-indigo-400'>{children}</Box>
         </Box>
     )
 }

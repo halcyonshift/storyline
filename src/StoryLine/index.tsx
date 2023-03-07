@@ -117,11 +117,15 @@ const router = createHashRouter([
                         children: [
                             {
                                 index: true,
-                                element: <p>Edit location</p>
+                                element: <p>View location</p>
                             },
                             {
                                 path: 'add',
                                 element: <p>Add to location</p>
+                            },
+                            {
+                                path: 'edit',
+                                element: <p>Edit location</p>
                             },
                             {
                                 path: 'delete',

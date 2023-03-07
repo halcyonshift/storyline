@@ -9,7 +9,7 @@ import {
     text,
     writer
 } from '@nozbe/watermelondb/decorators'
-
+import { LatLngExpression } from 'leaflet'
 import { LocationDataType } from './types'
 
 import NoteModel from './NoteModel'
@@ -52,5 +52,12 @@ export default class LocationModel extends Model {
 
     get displayName() {
         return this.name
+    }
+
+    get latLng(): LatLngExpression | null {
+        if (this.latitude && this.longitude) {
+            return [parseFloat(this.latitude), parseFloat(this.longitude)]
+        }
+        return null
     }
 }

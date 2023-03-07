@@ -1,10 +1,11 @@
 import { ReactElement } from 'react'
+import { LatLngExpression } from 'leaflet'
 import { MapContainer, TileLayer } from 'react-leaflet'
 import './map.css'
 
-const Map = ({ children }: { children?: ReactElement }) => (
+const Map = ({ center, children }: { center?: LatLngExpression; children?: ReactElement }) => (
     <MapContainer
-        center={[51.505, -0.09]}
+        center={center || [51.51531376950311, -0.12632316009655253]}
         zoom={6}
         maxZoom={10}
         attributionControl={true}

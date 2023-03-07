@@ -12,8 +12,8 @@ const ListItem = ({ link, icon, text, divider }: ListItemProps) => {
     const { t } = useTranslation()
 
     return (
-        <MuiListItem disablePadding disableGutters divider={divider} onClick={() => navigate(link)}>
-            <ListItemButton>
+        <MuiListItem disablePadding disableGutters divider={divider}>
+            <ListItemButton onClick={() => navigate(link)}>
                 <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText primary={t(text)} />
             </ListItemButton>

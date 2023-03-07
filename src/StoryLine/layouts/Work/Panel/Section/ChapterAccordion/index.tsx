@@ -13,7 +13,7 @@ const ChapterAccordion = ({ chapters, scenes, loadTab }: ChapterAccordionProps) 
         {chapters.map((chapter) => (
             <Accordion
                 key={chapter.id}
-                className='p-1'
+                className='p-1 '
                 title={
                     <Box className='flex flex-row flex-grow justify-between'>
                         <Typography variant='body1'>{chapter.displayTitle}</Typography>

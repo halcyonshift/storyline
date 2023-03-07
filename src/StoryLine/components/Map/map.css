@@ -1,1 +1,9 @@
 @import '~leaflet/dist/leaflet.css';
+
+.leaflet-container {
+    width: 100%;
+    min-width: 200px;
+    height: 200px;
+    border: 1px solid #999;
+    border-radius: 5px;
+}
