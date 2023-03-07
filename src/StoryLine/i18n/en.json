@@ -32,6 +32,12 @@
                 "custom": "Switch to custom",
                 "picker": "Switch to picker"
             }
+        },
+        "tooltipIconButton": {
+            "dialog": {
+                "yes": "Yes",
+                "no": "no"
+            }
         }
     },
     "layout": {
@@ -59,7 +65,10 @@
                     "add": "Add item"
                 },
                 "location": {
-                    "add": "Add location"
+                    "add": "Add location",
+                    "edit": "Edit",
+                    "delete": "Delete",
+                    "deleteConfirm": "Are you sure you want to delete {{name}}?"
                 },
                 "note": {
                     "add": "Add note"
@@ -126,7 +135,7 @@
                     "url": "Link",
                     "location": "Location",
                     "image": "Image",
-                    "create": "Add"
+                    "button": "Add"
                 }
             },
             "addNote": {
@@ -140,6 +149,16 @@
                     "wordGoal": "Word goal",
                     "deadline": "Deadline",
                     "create": "Add"
+                }
+            },
+            "editLocation": {
+                "form": {
+                    "name": "Name",
+                    "body": "Description",
+                    "url": "Link",
+                    "location": "Location",
+                    "image": "Image",
+                    "button": "Update"
                 }
             }
         }

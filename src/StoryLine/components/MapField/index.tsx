@@ -5,6 +5,7 @@ import InputLabel from '@mui/material/InputLabel'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+import { LatLngExpression } from 'leaflet'
 import { useTranslation } from 'react-i18next'
 import { useMapEvent } from 'react-leaflet'
 
@@ -25,6 +26,11 @@ const LocationMarker = ({ form }: LocationMarkerProps) => {
 const MapField = ({ form, fieldType, label }: MapFieldProps) => {
     const [mode, setMode] = useState<FieldType>(fieldType || 'picker')
     const [inputType, setInputType] = useState<string>('hidden')
+    const [center] = useState<LatLngExpression | null>(() =>
+        form.values.latitude && form.values.longitude
+            ? [parseFloat(form.values.latitude), parseFloat(form.values.longitude)]
+            : null
+    )
     const { t } = useTranslation()
     const isOnline = useOnlineStatus()
 
@@ -40,7 +46,7 @@ const MapField = ({ form, fieldType, label }: MapFieldProps) => {
                 <Box>
                     {mode === 'picker' ? (
                         <Stack spacing={2}>
-                            <Map>
+                            <Map center={center}>
                                 <LocationMarker form={form} />
                             </Map>
                             <Typography>

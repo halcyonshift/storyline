@@ -109,19 +109,15 @@ const router = createHashRouter([
                         children: [
                             {
                                 index: true,
-                                element: <p>View location</p>
+                                element: <WorkViews.LocationView />
                             },
                             {
                                 path: 'add',
-                                element: <p>Add to location</p>
+                                element: <WorkViews.AddLocationView />
                             },
                             {
                                 path: 'edit',
-                                element: <p>Edit location</p>
-                            },
-                            {
-                                path: 'delete',
-                                element: <p>Delete location</p>
+                                element: <WorkViews.EditLocationView />
                             }
                         ]
                     },

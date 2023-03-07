@@ -14,13 +14,13 @@ import useOnlineStatus from '@sl/utils/useOnlineStatus'
 import ImageField from '@sl/components/ImageField'
 import MapField from '@sl/components/MapField'
 
-const Form = ({ location, work }: { location?: LocationModel; work: WorkModel }) => {
+const Form = ({ location, work }: { location: LocationModel; work: WorkModel }) => {
     const navigate = useNavigate()
     const { t } = useTranslation()
     const isOnline = useOnlineStatus()
 
     const validationSchema = yup.object({
-        name: yup.string().required(t('view.work.addLocation.form.required.name')),
+        name: yup.string().required(t('view.work.editLocation.form.required.name')),
         body: yup.string().nullable(),
         latitude: yup.number().nullable(),
         longitude: yup.number().nullable(),
@@ -30,24 +30,17 @@ const Form = ({ location, work }: { location?: LocationModel; work: WorkModel })
 
     const form: FormikProps<LocationDataType> = useFormik<LocationDataType>({
         initialValues: {
-            name: '',
-            body: '',
-            latitude: '',
-            longitude: '',
-            url: '',
-            image: ''
+            name: location.name,
+            body: location.body,
+            latitude: location.latitude,
+            longitude: location.longitude,
+            url: location.url,
+            image: location.image
         },
         validationSchema: validationSchema,
         onSubmit: async (values: LocationDataType) => {
-            let newLocation: LocationModel
-            if (location) {
-                newLocation = await location.addLocation(values)
-            } else {
-                newLocation = await work.addLocation(values)
-            }
-
-            form.resetForm()
-            navigate(`/works/${work.id}/location/${newLocation.id}`)
+            await location.updateLocation(values)
+            navigate(`/works/${work.id}/location/${location.id}`)
         }
     })
 
@@ -58,7 +51,7 @@ const Form = ({ location, work }: { location?: LocationModel; work: WorkModel })
                 autoFocus
                 margin='dense'
                 id='name'
-                label={t('view.work.addLocation.form.name')}
+                label={t('view.work.editLocation.form.name')}
                 name='name'
                 fullWidth
                 variant='standard'
@@ -70,7 +63,7 @@ const Form = ({ location, work }: { location?: LocationModel; work: WorkModel })
             <TextField
                 margin='dense'
                 id='body'
-                label={t('view.work.addLocation.form.body')}
+                label={t('view.work.editLocation.form.body')}
                 name='body'
                 fullWidth
                 multiline
@@ -84,7 +77,7 @@ const Form = ({ location, work }: { location?: LocationModel; work: WorkModel })
             <TextField
                 margin='dense'
                 id='url'
-                label={t('view.work.addLocation.form.url')}
+                label={t('view.work.editLocation.form.url')}
                 name='url'
                 fullWidth
                 variant='standard'
@@ -93,11 +86,11 @@ const Form = ({ location, work }: { location?: LocationModel; work: WorkModel })
                 error={form.touched.url && Boolean(form.errors.url)}
                 helperText={form.touched.url && form.errors.url}
             />
-            <MapField label={t('view.work.addLocation.form.location')} form={form} />
-            <ImageField label={t('view.work.addLocation.form.image')} form={form} />
+            <MapField label={t('view.work.editLocation.form.location')} form={form} />
+            <ImageField label={t('view.work.editLocation.form.image')} form={form} />
             <Box className='text-center border-t pt-3'>
                 <Button type='submit' variant='contained'>
-                    {t('view.work.addLocation.form.button')}
+                    {t('view.work.editLocation.form.button')}
                 </Button>
             </Box>
         </Stack>

@@ -19,7 +19,8 @@ export default class LocationModel extends Model {
     static table = 'location'
     public static associations: Associations = {
         work: { type: 'belongs_to', key: 'work_id' },
-        note: { type: 'has_many', foreignKey: 'character_id' }
+        note: { type: 'has_many', foreignKey: 'character_id' },
+        location: { type: 'has_many', foreignKey: 'location_id' }
     }
 
     @text('name') name!: string
@@ -34,6 +35,7 @@ export default class LocationModel extends Model {
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @relation('location', 'location_id') location!: Relation<LocationModel>
     @children('note') note!: Query<NoteModel>
+    @children('location') locations!: Query<NoteModel>
 
     @writer async addLocation(data: LocationDataType) {
         const work = await this.work.fetch()
@@ -48,6 +50,25 @@ export default class LocationModel extends Model {
             location.url = data.url
             location.image = data.image
         })
+    }
+
+    @writer async updateLocation(data: LocationDataType) {
+        await this.update((location) => {
+            location.name = data.name
+            location.body = data.body
+            location.latitude = data.latitude
+            location.longitude = data.longitude
+            location.url = data.url
+            location.image = data.image
+        })
+    }
+
+    @writer async delete() {
+        const countChildren = await this.locations.fetchCount()
+        if (!countChildren) {
+            await this.destroyPermanently()
+        }
+        return true
     }
 
     get displayName() {
