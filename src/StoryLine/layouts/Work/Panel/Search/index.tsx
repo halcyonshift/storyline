@@ -58,7 +58,7 @@ const SearchPanel = ({ loadTab }: PanelType) => {
                         placeholder={t('layout.work.panel.search.form.placeholder')}
                         onChange={(e) => doSearch(e.target.value)}
                     />
-                    <Box className='grid grid-cols-1 lg:grid-cols-2 gap-0 px-2'>
+                    <Box className='grid grid-cols-1 xl:grid-cols-2 gap-0 px-2'>
                         <FormControlLabel
                             control={
                                 <Checkbox

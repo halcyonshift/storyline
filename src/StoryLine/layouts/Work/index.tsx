@@ -49,18 +49,18 @@ const WorkLayout = ({ characters, items, locations, notes, sections, work }: Wor
     const location = useLocation()
 
     useEffect(() => {
-        /*
-        if (
-            tabs.length &&
-            'section_id' in Object(params).keys() &&
-            !location.pathname.match(/(\/add|edit|delete)/gi)
-        ) {
+        if (tabs.length) {
             setShowTabs(true)
         } else {
             setShowTabs(false)
         }
-        */
     }, [tabs, params, location])
+
+    useEffect(() => {
+        if (tabs[currentTab]) {
+            loadTab(tabs[currentTab])
+        }
+    }, [currentTab])
 
     const loadTab = (focusTab: TabType) => {
         const focus = tabs.findIndex((tab) => tab.id === focusTab.id)
