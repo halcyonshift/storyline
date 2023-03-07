@@ -1,20 +1,20 @@
 import { useRouteLoaderData } from 'react-router-dom'
 import { SectionModel, WorkModel } from '@sl/db/models'
-import AddChapterView from './AddChapter'
-import AddPartView from './AddPart'
-import AddSceneView from './AddScene'
+import EditChapterView from './EditChapter'
+import EditPartView from './EditPart'
+import EditSceneView from './EditScene'
 
-const AddSectionView = () => {
+const EditSectionView = () => {
     const work = useRouteLoaderData('work') as WorkModel
     const section = useRouteLoaderData('section') as SectionModel
 
     if (section.isPart) {
-        return <AddPartView />
+        return <EditPartView />
     } else if (section.isChapter) {
-        return <AddChapterView />
+        return <EditChapterView />
     } else {
-        return <AddSceneView />
+        return <EditSceneView />
     }
 }
 
-export default AddSectionView
+export default EditSectionView
