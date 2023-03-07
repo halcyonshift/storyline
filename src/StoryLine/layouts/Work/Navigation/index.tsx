@@ -16,13 +16,13 @@ import Stack from '@mui/material/Stack'
 import Tooltip from '@mui/material/Tooltip'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { NavigationProps } from '@sl/layouts/Work/Navigation/types'
+import { NavigationProps, TogglePanelType } from '@sl/layouts/Work/Navigation/types'
 
 const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
 
-    const togglePanel = (panel?: 'section' | 'location' | 'character' | 'item' | 'note') => {
+    const togglePanel = (panel?: TogglePanelType) => {
         setCurrentPanel(panel !== currentPanel ? panel : null)
     }
 
@@ -76,10 +76,7 @@ const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) =>
                     <IconButton
                         color='inherit'
                         aria-label={t('layout.work.navigation.search')}
-                        onClick={() => {
-                            togglePanel()
-                            navigate(`/works/${work.id}/search`)
-                        }}>
+                        onClick={() => togglePanel('search')}>
                         <SearchIcon />
                     </IconButton>
                 </Tooltip>

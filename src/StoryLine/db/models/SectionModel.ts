@@ -119,6 +119,20 @@ export default class SectionModel extends Model {
         return []
     }
 
+    @writer async delete() {
+        if (this.isScene) {
+            await this.destroyPermanently()
+        } else if (this.isChapter) {
+            const sceneCount = await this.scenes.fetchCount()
+            if (!sceneCount) await this.destroyPermanently()
+        } else if (this.isPart) {
+            const chapterCount = await this.chapters.fetchCount()
+            if (!chapterCount) await this.destroyPermanently()
+        }
+
+        return true
+    }
+
     @lazy scenes = this.collections
         .get<SectionModel>('section')
         .query(Q.where('section_id', this.id), Q.where('mode', 'scene'), Q.sortBy('order', Q.asc))
@@ -149,6 +163,22 @@ export default class SectionModel extends Model {
             section.words = data.words
             section.mode = data.mode
             section.deadlineAt = data.deadlineAt
+        })
+    }
+
+    async addChapter() {
+        const count = await this.chapters.fetchCount()
+        return await this.addSection({
+            mode: 'chapter',
+            order: count + 1
+        })
+    }
+
+    async addScene() {
+        const count = await this.scenes.fetchCount()
+        return await this.addSection({
+            mode: 'scene',
+            order: count + 1
         })
     }
 

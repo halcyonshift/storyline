@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { TooltipIconButtonProps } from './types'
 
-const TooltipIconButton = ({ text, icon, link, ...props }: TooltipIconButtonProps) => {
+const TooltipIconButton = ({ text, icon, link, onClick, ...props }: TooltipIconButtonProps) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
 
@@ -12,7 +12,10 @@ const TooltipIconButton = ({ text, icon, link, ...props }: TooltipIconButtonProp
         <Tooltip title={t(text)}>
             <IconButton
                 color='inherit'
-                onClick={() => navigate(link)}
+                onClick={async () => {
+                    if (onClick) await onClick()
+                    if (link) navigate(link)
+                }}
                 aria-label={t(text)}
                 {...props}>
                 {icon}

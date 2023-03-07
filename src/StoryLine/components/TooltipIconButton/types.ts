@@ -4,5 +4,7 @@ import { ReactElement } from 'react'
 export type TooltipIconButtonProps = {
     text: string
     icon: ReactElement
-    link: string
+    link?: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onClick?: () => Promise<any>
 } & IconButtonProps

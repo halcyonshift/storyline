@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
+import { useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { TooltipIconButtonProps } from '@sl/components/TooltipIconButton/types'
-import { SectionModel } from '@sl/db/models'
+import { SectionModel, WorkModel } from '@sl/db/models'
 import { SECTION_ICONS } from '@sl/constants/icons'
 import { SectionPanelProps } from '../types'
 import Panel from '../'
-
 import ChapterAccordion from './ChapterAccordion'
 import PartAccordion from './PartAccordion'
 import SceneList from './SceneList'
@@ -14,6 +14,8 @@ const SectionPanel = ({ sections, loadTab }: SectionPanelProps) => {
     const [chapters, setChapters] = useState<SectionModel[]>([])
     const [scenes, setScenes] = useState<SectionModel[]>([])
     const [navigation, setNavigation] = useState<TooltipIconButtonProps[]>([])
+    const work = useRouteLoaderData('work') as WorkModel
+    const navigate = useNavigate()
 
     useEffect(() => {
         setParts(sections.filter((section) => section.isPart))
@@ -24,7 +26,13 @@ const SectionPanel = ({ sections, loadTab }: SectionPanelProps) => {
     useEffect(() => {
         const newNavigation: TooltipIconButtonProps[] = [
             {
-                link: 'addPart',
+                onClick: async () => {
+                    const count = await work.parts.fetchCount()
+                    const part = await work.addPart({
+                        order: count + 1
+                    })
+                    navigate(`section/${part.id}/edit`)
+                },
                 text: 'layout.work.panel.section.addPart',
                 icon: SECTION_ICONS.addPart
             }
@@ -32,16 +40,20 @@ const SectionPanel = ({ sections, loadTab }: SectionPanelProps) => {
 
         if (parts.length === 1) {
             newNavigation.push({
-                link: 'section/add/chapter',
                 text: 'layout.work.panel.section.addChapter',
-                icon: SECTION_ICONS.addChapter
+                icon: SECTION_ICONS.addChapter,
+                onClick: async () => {
+                    parts[0].addChapter()
+                }
             })
 
             if (chapters.length === 1) {
                 newNavigation.push({
-                    link: 'section/add/scene',
                     text: 'layout.work.panel.section.addScene',
-                    icon: SECTION_ICONS.addScene
+                    icon: SECTION_ICONS.addScene,
+                    onClick: async () => {
+                        chapters[0].addScene()
+                    }
                 })
             }
         }

@@ -3,6 +3,7 @@ import {
     AddLocationAlt,
     Article,
     ChangeCircle,
+    Clear,
     Delete,
     Edit,
     ExpandMore,
@@ -39,6 +40,10 @@ export const LOCATION_ICONS = {
 
 export const NOTE_ICONS = {
     add: <PostAdd fontSize='inherit' color='inherit' />
+}
+
+export const SEARCH_ICONS = {
+    clear: <Clear fontSize='inherit' color='inherit' />
 }
 
 export const SECTION_ICONS = {

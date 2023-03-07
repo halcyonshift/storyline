@@ -90,10 +90,6 @@ const router = createHashRouter([
                         element: <WorkViews.AddNoteView />
                     },
                     {
-                        path: 'addPart',
-                        element: <WorkViews.AddPartView />
-                    },
-                    {
                         path: 'backupRestore',
                         element: <p>backupRestore</p>
                     },
@@ -104,10 +100,6 @@ const router = createHashRouter([
                     {
                         path: 'relation',
                         element: <p>Relation</p>
-                    },
-                    {
-                        path: 'search',
-                        element: <WorkViews.SearchView />
                     },
                     {
                         path: 'location/:location_id',
@@ -144,16 +136,8 @@ const router = createHashRouter([
                                 element: <WorkViews.SectionView />
                             },
                             {
-                                path: 'add',
-                                element: <p>Add to section</p>
-                            },
-                            {
                                 path: 'edit',
                                 element: <p>Edit section</p>
-                            },
-                            {
-                                path: 'delete',
-                                element: <p>Delete section</p>
                             }
                         ]
                     },

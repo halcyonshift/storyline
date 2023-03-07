@@ -25,7 +25,14 @@ import {
     WorkModel
 } from '@sl/db/models'
 import Navigation from './Navigation'
-import { CharacterPanel, ItemPanel, LocationPanel, NotePanel, SectionPanel } from './Panel'
+import {
+    CharacterPanel,
+    ItemPanel,
+    LocationPanel,
+    NotePanel,
+    SearchPanel,
+    SectionPanel
+} from './Panel'
 import { TabType, WorkLayoutProps } from './types'
 
 const WorkLayout = ({ characters, items, locations, notes, sections, work }: WorkLayoutProps) => {
@@ -132,6 +139,7 @@ const WorkLayout = ({ characters, items, locations, notes, sections, work }: Wor
                         {currentPanel === 'note' ? (
                             <NotePanel loadTab={loadTab} notes={notes} />
                         ) : null}
+                        {currentPanel === 'search' ? <SearchPanel loadTab={loadTab} /> : null}
                         {currentPanel === 'section' ? (
                             <SectionPanel loadTab={loadTab} sections={sections} />
                         ) : null}

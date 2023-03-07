@@ -50,6 +50,12 @@ export default class WorkModel extends Model {
         Q.sortBy('order', Q.asc)
     )
 
+    @lazy scenes = this.section.extend(
+        Q.where('work_id', this.id),
+        Q.where('mode', 'scene'),
+        Q.sortBy('order', Q.asc)
+    )
+
     @lazy fabula = this.section.extend(
         Q.where('work_id', this.id),
         Q.where('mode', 'scene'),
@@ -141,5 +147,16 @@ export default class WorkModel extends Model {
             section.mode = 'part'
             section.deadlineAt = data.deadlineAt
         })
+    }
+
+    // ToDo finish search
+    async search(query: string, sceneOnly: boolean, caseSensitive: boolean, fullWord: boolean) {
+        const regex = new RegExp(fullWord ? `\\b${query}\\b` : query, caseSensitive ? 'g' : 'gi')
+
+        if (sceneOnly) {
+            const scenes = await this.scenes.fetch()
+            const results = scenes.filter((scene) => scene.body.match(regex))
+            return results
+        }
     }
 }

@@ -20,8 +20,8 @@ const PartAccordion = ({ parts, chapters, scenes, loadTab }: PartAccordionProps)
                             <TooltipIconButton
                                 size='small'
                                 text='layout.work.panel.section.addChapter'
-                                link={`section/${part.id}/add`}
                                 icon={SECTION_ICONS.addChapter}
+                                onClick={() => part.addChapter()}
                             />
                             <TooltipIconButton
                                 size='small'
@@ -32,8 +32,8 @@ const PartAccordion = ({ parts, chapters, scenes, loadTab }: PartAccordionProps)
                             <TooltipIconButton
                                 size='small'
                                 text='layout.work.panel.section.delete'
-                                link={`section/${part.id}/delete`}
                                 icon={GLOBAL_ICONS.delete}
+                                onClick={() => part.delete()}
                             />
                         </Stack>
                     </Box>

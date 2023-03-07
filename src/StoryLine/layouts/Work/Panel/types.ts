@@ -9,26 +9,26 @@ export type PanelProps = {
     action?: ReactElement
 }
 
-type Panel = {
+export type PanelType = {
     loadTab: (focusTab: TabType) => void
 }
 
 export type CharacterPanelProps = {
     characters: CharacterModel[]
-} & Panel
+} & PanelType
 
 export type ItemPanelProps = {
     items: ItemModel[]
-} & Panel
+} & PanelType
 
 export type LocationPanelProps = {
     locations: LocationModel[]
-} & Panel
+} & PanelType
 
 export type NotePanelProps = {
     notes: NoteModel[]
-} & Panel
+} & PanelType
 
 export type SectionPanelProps = {
     sections: SectionModel[]
-} & Panel
+} & PanelType

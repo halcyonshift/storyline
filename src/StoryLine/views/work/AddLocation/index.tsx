@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box'
-import Container from '@mui/material/Container'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
@@ -20,9 +19,9 @@ const AddLocationView = () => {
                 </Typography>
                 <Divider />
             </Box>
-            <Container className='flex-grow h-0 overflow-auto pb-5'>
+            <Box className='flex-grow h-0 overflow-auto p-5'>
                 <Form work={work} />
-            </Container>
+            </Box>
         </Box>
     )
 }

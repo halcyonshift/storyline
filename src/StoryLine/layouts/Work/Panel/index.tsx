@@ -6,6 +6,7 @@ export { default as CharacterPanel } from './Character'
 export { default as ItemPanel } from './Item'
 export { default as LocationPanel } from './Location'
 export { default as NotePanel } from './Note'
+export { default as SearchPanel } from './Search'
 export { default as SectionPanel } from './Section'
 
 import { PanelProps } from './types'
@@ -20,11 +21,12 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
                         link={item.link}
                         text={item.text}
                         icon={item.icon}
+                        onClick={item.onClick}
                     />
                 ))}
                 {action ? <Box className='ml-auto'>{action}</Box> : null}
             </Stack>
-            <Box className='flex-grow overflow-auto border-t-2 border-indigo-400'>{children}</Box>
+            <Box className='flex-grow overflow-auto border-t-2'>{children}</Box>
         </Box>
     )
 }

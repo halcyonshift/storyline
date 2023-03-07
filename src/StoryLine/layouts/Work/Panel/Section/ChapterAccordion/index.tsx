@@ -21,8 +21,8 @@ const ChapterAccordion = ({ chapters, scenes, loadTab }: ChapterAccordionProps) 
                             <TooltipIconButton
                                 size='small'
                                 text='layout.work.panel.section.addScene'
-                                link={`section/${chapter.id}/add`}
                                 icon={SECTION_ICONS.addScene}
+                                onClick={() => chapter.addScene()}
                             />
                             <TooltipIconButton
                                 size='small'
@@ -33,8 +33,8 @@ const ChapterAccordion = ({ chapters, scenes, loadTab }: ChapterAccordionProps) 
                             <TooltipIconButton
                                 size='small'
                                 text='layout.work.panel.section.delete'
-                                link={`section/${chapter.id}/delete`}
                                 icon={GLOBAL_ICONS.delete}
+                                onClick={() => chapter.delete()}
                             />
                         </Stack>
                     </Box>

@@ -64,6 +64,15 @@
                 "note": {
                     "add": "Add note"
                 },
+                "search": {
+                    "clear": "Clear",
+                    "form": {
+                        "placeholder": "Search",
+                        "fullWord": "Full word",
+                        "caseSensitive": "Case sensitive",
+                        "sceneOnly": "Scene only"
+                    }
+                },
                 "section": {
                     "addPart": "Add part",
                     "addChapter": "Add chapter",

@@ -65,7 +65,7 @@ export type NoteDataType = {
 }
 
 export type SectionDataType = {
-    title: string
+    title?: string
     mode?: 'chapter' | 'scene' | 'part' | 'revision'
     body?: string
     description?: string
