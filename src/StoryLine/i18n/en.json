@@ -33,6 +33,9 @@
                 "picker": "Switch to picker"
             }
         },
+        "richtextEditor": {
+            "placeholder": "It was a dark and stormy night..."
+        },
         "tooltipIconButton": {
             "dialog": {
                 "yes": "Yes",

@@ -1,7 +1,17 @@
+import { useState } from 'react'
+import RichtextEditor from '@sl/components/Richtext'
 import { SectionViewType } from '../types'
 
 const SceneView = ({ section }: SectionViewType) => {
-    return <>{section.displayTitle}</>
+    const [isSaving, setIsSaving] = useState<boolean>(false)
+    const [initialValue] = useState<string>(section.body)
+
+    const onChange = (html: string) => {
+        if (isSaving) return
+        setIsSaving(true)
+        section.updateBody(html).then(() => setIsSaving(false))
+    }
+    return <RichtextEditor onChange={onChange} initialValue={initialValue} />
 }
 
 export default SceneView
