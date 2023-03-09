@@ -1,2 +1,2 @@
-export { default as useDisplay } from './useDisplay'
-export { default as DisplayProvider } from './context'
+export { default as useSettings } from './useSettings'
+export { default as SettingsProvider } from './context'

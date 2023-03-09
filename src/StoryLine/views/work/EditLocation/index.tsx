@@ -2,13 +2,12 @@ import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import { useRouteLoaderData } from 'react-router-dom'
-import { LocationModel, WorkModel } from '@sl/db/models'
+import { LocationModel } from '@sl/db/models'
 
-import Form from './form'
+import LocationForm from '@sl/forms/Work/Location'
 
 const EditLocationView = () => {
     const location = useRouteLoaderData('location') as LocationModel
-    const work = useRouteLoaderData('work') as WorkModel
 
     return (
         <Box className='flex flex-col flex-grow'>
@@ -19,7 +18,17 @@ const EditLocationView = () => {
                 <Divider />
             </Box>
             <Box className='flex-grow h-0 overflow-auto p-5'>
-                <Form work={work} location={location} />
+                <LocationForm
+                    location={location}
+                    initialValues={{
+                        name: location.name,
+                        body: location.body,
+                        latitude: location.latitude,
+                        longitude: location.longitude,
+                        url: location.url,
+                        image: location.image
+                    }}
+                />
             </Box>
         </Box>
     )

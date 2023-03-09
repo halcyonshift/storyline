@@ -5,7 +5,6 @@ import schema from './schema'
 // import migrations from './migrations'
 
 import {
-    AnnotationModel,
     CharacterModel,
     ItemModel,
     LocationModel,
@@ -50,7 +49,6 @@ const adapter = new LokiJSAdapter({
 const database = new Database({
     adapter,
     modelClasses: [
-        AnnotationModel,
         CharacterModel,
         ItemModel,
         LocationModel,

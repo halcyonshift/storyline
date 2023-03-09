@@ -1,15 +1,70 @@
-import { ITEM_ICONS } from '@sl/constants/icons'
+import Box from '@mui/material/Box'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemText from '@mui/material/ListItemText'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import { useTranslation } from 'react-i18next'
+import { GLOBAL_ICONS, ITEM_ICONS } from '@sl/constants/icons'
+import TooltipIconButton from '@sl/components/TooltipIconButton'
+
 import { ItemPanelProps } from '../types'
 import Panel from '../'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const ItemPanel = ({ items }: ItemPanelProps) => {
+const ItemPanel = ({ items, loadTab }: ItemPanelProps) => {
+    const { t } = useTranslation()
+
     return (
         <Panel
             navigation={[
                 { link: 'addItem', text: 'layout.work.panel.item.add', icon: ITEM_ICONS.add }
-            ]}
-        />
+            ]}>
+            <List dense disablePadding>
+                {items.map((item) => (
+                    <ListItem key={item.id} disablePadding disableGutters divider>
+                        <ListItemText
+                            primary={
+                                <Box className='flex justify-between align-middle'>
+                                    <ListItemButton
+                                        onClick={() =>
+                                            loadTab({
+                                                id: item.id,
+                                                label: item.displayName,
+                                                link: `item/${item.id}`
+                                            })
+                                        }>
+                                        <Typography
+                                            variant='body1'
+                                            className='whitespace-nowrap text-ellipsis
+                                            overflow-hidden'>
+                                            {item.displayName}
+                                        </Typography>
+                                    </ListItemButton>
+                                    <Stack spacing={0} direction='row'>
+                                        <TooltipIconButton
+                                            size='small'
+                                            text='layout.work.panel.item.edit'
+                                            link={`item/${item.id}/edit`}
+                                            icon={GLOBAL_ICONS.edit}
+                                        />
+                                        <TooltipIconButton
+                                            size='small'
+                                            text='layout.work.panel.item.delete'
+                                            icon={GLOBAL_ICONS.delete}
+                                            confirm={t('layout.work.panel.item.deleteConfirm', {
+                                                name: item.displayName
+                                            })}
+                                            onClick={() => item.delete()}
+                                        />
+                                    </Stack>
+                                </Box>
+                            }
+                        />
+                    </ListItem>
+                ))}
+            </List>
+        </Panel>
     )
 }
 

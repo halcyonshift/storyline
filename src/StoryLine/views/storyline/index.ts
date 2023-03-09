@@ -1,5 +1,5 @@
+export { default as AddWorkView } from './AddWork'
 export { default as InfoView } from './InfoView'
 export { default as LandingView } from './LandingView'
-export { default as NewWorkView } from './NewWork'
 export { default as OpenWorkView } from './OpenWorkView'
 export { default as SettingsView } from './Settings'

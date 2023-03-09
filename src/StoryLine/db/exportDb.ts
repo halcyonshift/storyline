@@ -1,7 +1,6 @@
 import { useDatabase } from '@nozbe/watermelondb/hooks'
 
 const databaseTables: string[] = [
-    'annotation',
     'character',
     'item',
     'location',

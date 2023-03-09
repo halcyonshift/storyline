@@ -98,7 +98,7 @@ app.on('activate', () => {
 
 app.whenReady()
     .then(() => {
-        ipcMain.handle('select-image', async (e, subDir) => {
+        ipcMain.handle('select-image', async (_, subDir) => {
             const result = await dialog.showOpenDialog({
                 title: 'Select an image',
                 filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'gif'] }]
@@ -107,7 +107,7 @@ app.whenReady()
             if (result.canceled || !result.filePaths.length) return false
 
             const filePath = result.filePaths[0]
-            const fileDir = path.join(app.getPath('userData'), subDir)
+            const fileDir = path.join(app.getPath('userData'), 'images', subDir)
             await fs.promises.mkdir(fileDir, { recursive: true })
             const timestamp = new Date().getTime()
             const extension = path.extname(filePath)

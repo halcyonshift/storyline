@@ -11,7 +11,7 @@ import '@sl/i18n'
 import * as StoryLineViews from '@sl/views/StoryLine'
 import * as WorkViews from '@sl/views/Work'
 import * as Layouts from '@sl/layouts'
-import { DisplayProvider } from '@sl/theme'
+import { SettingsProvider } from '@sl/theme'
 
 const router = createHashRouter([
     {
@@ -32,8 +32,8 @@ const router = createHashRouter([
                                 .fetch()
                     },
                     {
-                        path: 'newWork',
-                        element: <StoryLineViews.NewWorkView />
+                        path: 'addWork',
+                        element: <StoryLineViews.AddWorkView />
                     },
                     {
                         path: 'openWork',
@@ -102,6 +102,22 @@ const router = createHashRouter([
                         element: <p>Relation</p>
                     },
                     {
+                        path: 'item/:item_id',
+                        id: 'item',
+                        loader: async ({ params }) =>
+                            await database.get<LocationModel>('item').find(params.item_id),
+                        children: [
+                            {
+                                index: true,
+                                element: <WorkViews.ItemView />
+                            },
+                            {
+                                path: 'edit',
+                                element: <WorkViews.EditItemView />
+                            }
+                        ]
+                    },
+                    {
                         path: 'location/:location_id',
                         id: 'location',
                         loader: async ({ params }) =>
@@ -155,8 +171,8 @@ const root = createRoot(document.getElementById('root'))
 
 root.render(
     <DatabaseProvider database={database}>
-        <DisplayProvider>
+        <SettingsProvider>
             <RouterProvider router={router} />
-        </DisplayProvider>
+        </SettingsProvider>
     </DatabaseProvider>
 )

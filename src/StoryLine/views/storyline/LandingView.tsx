@@ -31,7 +31,7 @@ const LandingView = () => {
                         />
                     ) : null}
                     <ListItem
-                        link='/newWork'
+                        link='/addWork'
                         icon={<AddIcon />}
                         text='view.storyline.landing.navigation.newWork'
                     />

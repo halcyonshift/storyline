@@ -189,7 +189,7 @@ const ToolbarPlugin = (): ReactElement => {
                     <FormatListBulletedIcon />
                 </IconButton>
                 <IconButton
-                    aria-label={t('component.richtext.toolbar.listNumbered')}
+                    aria-label={t('component.richtext.toolbar.listOrdered')}
                     onClick={() =>
                         editor.dispatchCommand(
                             blockType !== 'ol' ? INSERT_ORDERED_LIST_COMMAND : REMOVE_LIST_COMMAND,
@@ -237,7 +237,7 @@ const ToolbarPlugin = (): ReactElement => {
                     —
                 </Button>
                 <IconButton
-                    aria-label={t('component.richtext.toolbar.annotate')}
+                    aria-label={t('component.richtext.toolbar.excerpt')}
                     onClick={formatQuote}>
                     <TextSnippetIcon />
                 </IconButton>

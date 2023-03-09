@@ -1,4 +1,3 @@
-export { default as AnnotationModel } from './AnnotationModel'
 export { default as CharacterModel } from './CharacterModel'
 export { default as ItemModel } from './ItemModel'
 export { default as LocationModel } from './LocationModel'

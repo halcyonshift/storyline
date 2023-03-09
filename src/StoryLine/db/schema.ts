@@ -44,23 +44,6 @@ const schema = appSchema({
             ]
         }),
         tableSchema({
-            name: 'annotation',
-            columns: [
-                { name: 'title', type: 'string', isOptional: true },
-                { name: 'body', type: 'string', isOptional: true },
-                { name: 'work_id', type: 'string', isIndexed: true },
-                { name: 'section_id', type: 'string', isOptional: true, isIndexed: true },
-                { name: 'character_id', type: 'string', isOptional: true, isIndexed: true },
-                { name: 'item_id', type: 'string', isOptional: true, isIndexed: true },
-                { name: 'location_id', type: 'string', isOptional: true, isIndexed: true },
-                { name: 'color', type: 'string', isOptional: true },
-                { name: 'url', type: 'string', isOptional: true },
-                { name: 'image', type: 'string', isOptional: true },
-                { name: 'created_at', type: 'number' },
-                { name: 'updated_at', type: 'number' }
-            ]
-        }),
-        tableSchema({
             name: 'character',
             columns: [
                 { name: 'mode', type: 'string' },
@@ -136,9 +119,15 @@ const schema = appSchema({
                 { name: 'date', type: 'string', isOptional: true },
                 { name: 'url', type: 'string', isOptional: true },
                 { name: 'image', type: 'string', isOptional: true },
+                { name: 'color', type: 'string', isOptional: true },
+                { name: 'url', type: 'string', isOptional: true },
+                { name: 'order', type: 'number', isOptional: true },
                 { name: 'character_id', type: 'string', isIndexed: true, isOptional: true },
                 { name: 'item_id', type: 'string', isIndexed: true, isOptional: true },
                 { name: 'location_id', type: 'string', isIndexed: true, isOptional: true },
+                { name: 'note_id', type: 'string', isIndexed: true },
+                { name: 'section_id', type: 'string', isIndexed: true, isOptional: true },
+                { name: 'work_id', type: 'string', isIndexed: true },
                 { name: 'created_at', type: 'number' },
                 { name: 'updated_at', type: 'number' }
             ]

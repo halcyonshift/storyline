@@ -1,6 +1,5 @@
 import { FormikProps } from 'formik'
 import {
-    AnnotationDataType,
     CharacterDataType,
     ItemDataType,
     LocationDataType,
@@ -9,7 +8,6 @@ import {
 
 export type ImageFieldProps = {
     label?: string
-    form: FormikProps<
-        AnnotationDataType | CharacterDataType | ItemDataType | LocationDataType | NoteDataType
-    >
+    dir: string
+    form: FormikProps<CharacterDataType | ItemDataType | LocationDataType | NoteDataType>
 }

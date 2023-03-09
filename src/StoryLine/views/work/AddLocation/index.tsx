@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { LocationModel, WorkModel } from '@sl/db/models'
 
-import Form from './form'
+import LocationForm from '@sl/forms/Work/Location'
 
 const AddLocationView = () => {
     const location = useRouteLoaderData('location') as LocationModel
@@ -22,7 +22,7 @@ const AddLocationView = () => {
                 <Divider />
             </Box>
             <Box className='flex-grow h-0 overflow-auto p-5'>
-                <Form work={work} location={location} />
+                <LocationForm work={work} location={location} />
             </Box>
         </Box>
     )

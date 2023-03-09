@@ -35,7 +35,7 @@ export default class LocationModel extends Model {
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @relation('location', 'location_id') location!: Relation<LocationModel>
     @children('note') note!: Query<NoteModel>
-    @children('location') locations!: Query<NoteModel>
+    @children('location') locations!: Query<LocationModel>
 
     @writer async addLocation(data: LocationDataType) {
         const work = await this.work.fetch()

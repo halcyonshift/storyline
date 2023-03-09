@@ -6,7 +6,7 @@ import Image from '@sl/components/Image'
 import { ImageFieldProps } from './types'
 import { useTranslation } from 'react-i18next'
 
-const ImageField = ({ form, label }: ImageFieldProps) => {
+const ImageField = ({ form, label, dir }: ImageFieldProps) => {
     const { t } = useTranslation()
     const [path, setPath] = useState<string>('')
 
@@ -15,7 +15,7 @@ const ImageField = ({ form, label }: ImageFieldProps) => {
     }, [form.values.image])
 
     const importImage = async () => {
-        const result = await api.importImage('locations')
+        const result = await api.importImage(dir)
         form.setFieldValue('image', result)
     }
 

@@ -5,13 +5,6 @@
     "navigation": {
         "back": "Back"
     },
-    "model": {
-        "character": {
-            "primary": "Primary",
-            "secondary": "Secondary",
-            "tertiary": "Tertiary"
-        }
-    },
     "component": {
         "dateField": {
             "label": "Date",
@@ -35,6 +28,24 @@
         },
         "richtextEditor": {
             "placeholder": "It was a dark and stormy night...",
+            "toolbar": {
+                "undo": "Undo",
+                "redo": "Redo",
+                "bold": "Bold",
+                "italic": "Italic",
+                "underlined": "Underlined",
+                "strikethrough": "Strikethrough",
+                "listBulleted": "Bulleted list",
+                "listOrdered": "Ordered list",
+                "alignLeft": "Left align",
+                "alignCenter": "Center align",
+                "alignRight": "Right align",
+                "alignJustify": "Justify",
+                "emdash": "Em dash",
+                "excerpt": "Excerpt",
+                "search": "Search",
+                "save": "Save"
+            },
             "search": {
                 "placeholder": "Keywords"
             }
@@ -43,6 +54,53 @@
             "dialog": {
                 "yes": "Yes",
                 "no": "no"
+            }
+        }
+    },
+    "form": {
+        "work": {
+            "location": {
+                "name": {
+                    "label": "Name",
+                    "required": "Please give the location name"
+                },
+                "body": "Description",
+                "url": "Link",
+                "location": "Location",
+                "image": "Image",
+                "button": {
+                    "create": "Add",
+                    "update": "Edit"
+                }
+            },
+            "item": {
+                "name": {
+                    "label": "Name",
+                    "required": "Please give the location name"
+                },
+                "body": "Description",
+                "url": "Link",
+                "image": "Image",
+                "button": {
+                    "create": "Add",
+                    "update": "Edit"
+                }
+            }
+        },
+        "storyline": {
+            "settings": {
+                "font": "Font",
+                "fontSize": "Font size",
+                "indentParagraph": "Indent paragraphs",
+                "language": "Language",
+                "displayMode": {
+                    "label": "Display mode",
+                    "light": "Light",
+                    "dark": "Dark"
+                },
+                "button": {
+                    "save": "Save"
+                }
             }
         }
     },
@@ -68,7 +126,10 @@
                     "addTertiary": "Add tertiary character"
                 },
                 "item": {
-                    "add": "Add item"
+                    "add": "Add item",
+                    "edit": "Edit",
+                    "delete": "Delete",
+                    "deleteConfirm": "Are you sure you want to delete {{name}}?"
                 },
                 "location": {
                     "add": "Add location",
@@ -77,7 +138,10 @@
                     "deleteConfirm": "Are you sure you want to delete {{name}}?"
                 },
                 "note": {
-                    "add": "Add note"
+                    "add": "Add note",
+                    "edit": "Edit",
+                    "delete": "Delete",
+                    "deleteConfirm": "Are you sure you want to delete {{name}}?"
                 },
                 "search": {
                     "clear": "Clear",
@@ -98,6 +162,13 @@
             }
         }
     },
+    "model": {
+        "character": {
+            "primary": "Primary",
+            "secondary": "Secondary",
+            "tertiary": "Tertiary"
+        }
+    },
     "view": {
         "storyline": {
             "landing": {
@@ -113,17 +184,6 @@
                 "recent": {
                     "title": ""
                 }
-            },
-            "settings": {
-                "font": "Font",
-                "fontSize": "Font size",
-                "indent": "Indent paragraphs",
-                "language": "Language",
-                "mode": {
-                    "title": "Display mode",
-                    "light": "Light",
-                    "dark": "Dark"
-                }
             }
         },
         "work": {
@@ -134,15 +194,7 @@
                 "title": "Add item"
             },
             "addLocation": {
-                "title": "Add location",
-                "form": {
-                    "name": "Name",
-                    "body": "Description",
-                    "url": "Link",
-                    "location": "Location",
-                    "image": "Image",
-                    "button": "Add"
-                }
+                "title": "Add location"
             },
             "addNote": {
                 "title": "Add note"

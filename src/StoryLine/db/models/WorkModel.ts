@@ -3,27 +3,27 @@ import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, readonly, text, writer } from '@nozbe/watermelondb/decorators'
 
 import {
-    AnnotationDataType,
     CharacterDataType,
     ItemDataType,
     LocationDataType,
+    NoteDataType,
     SectionDataType,
     WorkDataType
 } from './types'
 
-import AnnotationModel from './AnnotationModel'
 import CharacterModel from './CharacterModel'
 import ItemModel from './ItemModel'
 import LocationModel from './LocationModel'
+import NoteModel from './NoteModel'
 import SectionModel from './SectionModel'
 
 export default class WorkModel extends Model {
     static table = 'work'
     public static associations: Associations = {
-        annotation: { type: 'has_many', foreignKey: 'work_id' },
         character: { type: 'has_many', foreignKey: 'work_id' },
         item: { type: 'has_many', foreignKey: 'work_id' },
         location: { type: 'has_many', foreignKey: 'work_id' },
+        note: { type: 'has_many', foreignKey: 'work_id' },
         section: { type: 'has_many', foreignKey: 'work_id' }
     }
     @text('title') title!: string
@@ -36,10 +36,10 @@ export default class WorkModel extends Model {
     @readonly @date('created_at') createdAt!: Date
     @readonly @date('updated_at') updatedAt!: Date
 
-    @children('annotation') annotation!: Query<AnnotationModel>
     @children('character') character!: Query<CharacterModel>
     @children('item') item!: Query<ItemModel>
     @children('location') location!: Query<LocationModel>
+    @children('note') note!: Query<NoteModel>
     @children('section') section!: Query<SectionModel>
 
     @lazy parts = this.section.extend(Q.where('mode', 'part'), Q.sortBy('order', Q.asc))
@@ -77,7 +77,7 @@ export default class WorkModel extends Model {
         Q.sortBy('display_name', Q.asc)
     )
 
-    @lazy annotations = this.annotation.extend(Q.sortBy('title', Q.asc))
+    @lazy notes = this.note.extend(Q.sortBy('title', Q.asc))
 
     @lazy items = this.item.extend(Q.sortBy('name', Q.asc))
 
@@ -99,14 +99,6 @@ export default class WorkModel extends Model {
         })
     }
 
-    @writer async addAnnotation(data: AnnotationDataType) {
-        return await this.collections.get<AnnotationModel>('annotation').create((annotation) => {
-            annotation.work.set(this)
-            annotation.title = data.title
-            annotation.body = data.body
-        })
-    }
-
     @writer async addCharacter(data: CharacterDataType) {
         return await this.collections.get<CharacterModel>('character').create((character) => {
             character.work.set(this)
@@ -119,6 +111,20 @@ export default class WorkModel extends Model {
         return await this.collections.get<ItemModel>('item').create((item) => {
             item.work.set(this)
             item.name = data.name
+            item.body = data.body
+            item.url = data.url
+            item.image = data.image
+        })
+    }
+
+    @writer async addNote(data: NoteDataType) {
+        return await this.collections.get<NoteModel>('note').create((note) => {
+            note.work.set(this)
+            note.title = data.title
+            note.body = data.body
+            note.url = data.url
+            note.image = data.image
+            note.color = data.color
         })
     }
 

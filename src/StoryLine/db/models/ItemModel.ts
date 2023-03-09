@@ -1,9 +1,18 @@
 import { Model, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
-import { children, date, field, readonly, relation, text } from '@nozbe/watermelondb/decorators'
+import {
+    children,
+    date,
+    field,
+    readonly,
+    relation,
+    text,
+    writer
+} from '@nozbe/watermelondb/decorators'
 
 import NoteModel from './NoteModel'
 import WorkModel from './WorkModel'
+import { ItemDataType } from './types'
 
 export default class ItemModel extends Model {
     static table = 'item'
@@ -21,6 +30,20 @@ export default class ItemModel extends Model {
 
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @children('note') note!: Query<NoteModel>
+
+    @writer async updateItem(data: ItemDataType) {
+        await this.update((item) => {
+            item.name = data.name
+            item.body = data.body
+            item.url = data.url
+            item.image = data.image
+        })
+    }
+
+    @writer async delete() {
+        await this.destroyPermanently()
+        return true
+    }
 
     get displayName() {
         return this.name

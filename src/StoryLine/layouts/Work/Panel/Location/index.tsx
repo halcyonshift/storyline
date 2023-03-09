@@ -44,18 +44,18 @@ const LocationPanel = ({ locations, loadTab }: LocationPanelProps) => {
                         <ListItemText
                             primary={
                                 <Box className='flex justify-between align-middle'>
-                                    <ListItemButton>
+                                    <ListItemButton
+                                        onClick={() =>
+                                            loadTab({
+                                                id: location.id,
+                                                label: location.displayName,
+                                                link: `location/${location.id}`
+                                            })
+                                        }>
                                         <Typography
                                             variant='body1'
                                             className='whitespace-nowrap text-ellipsis
-                                            overflow-hidden'
-                                            onClick={() =>
-                                                loadTab({
-                                                    id: location.id,
-                                                    label: location.displayName,
-                                                    link: `location/${location.id}`
-                                                })
-                                            }>
+                                            overflow-hidden'>
                                             {location.displayName}
                                         </Typography>
                                     </ListItemButton>

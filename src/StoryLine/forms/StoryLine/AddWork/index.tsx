@@ -59,7 +59,7 @@ const Form = () => {
             })
 
             form.resetForm()
-            navigate(`/works/${newWork.scene.id}`)
+            navigate(`/works/${newWork.work.id}`)
         }
     })
 

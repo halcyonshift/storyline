@@ -4,16 +4,16 @@ import { ThemeProvider } from '@mui/material/styles'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { Outlet } from 'react-router-dom'
-import { useDisplay } from '@sl/theme'
+import { useSettings } from '@sl/theme'
 
 const App = () => {
-    const display = useDisplay()
+    const settings = useSettings()
 
     return (
         <LocalizationProvider dateAdapter={AdapterLuxon}>
-            <ThemeProvider theme={display.theme}>
+            <ThemeProvider theme={settings.theme}>
                 <CssBaseline />
-                <Box className={`${display.mode} flex h-full`}>
+                <Box className={`${settings.displayMode} flex h-full`}>
                     <Outlet />
                 </Box>
             </ThemeProvider>

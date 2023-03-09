@@ -1,11 +1,3 @@
-export type AnnotationDataType = {
-    title: string
-    body?: string
-    color?: string
-    url?: string
-    image?: string
-}
-
 export type CharacterDataType = {
     mode: 'primary' | 'secondary' | 'tertiary'
     displayName: string
@@ -57,11 +49,13 @@ export type LocationDataType = {
 }
 
 export type NoteDataType = {
-    title: string
+    title?: string
     body?: string
     date?: string
     url?: string
     image?: string
+    color?: string
+    order?: number
 }
 
 export type SectionDataType = {
