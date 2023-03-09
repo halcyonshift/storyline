@@ -14,8 +14,13 @@ const PartAccordion = ({ parts, chapters, scenes, loadTab }: PartAccordionProps)
             <Accordion
                 key={part.id}
                 title={
-                    <Box className='flex flex-row flex-grow justify-between'>
-                        <Typography variant='body1'>{part.displayTitle}</Typography>
+                    <Box className='flex flex-grow'>
+                        <Typography
+                            variant='body1'
+                            className='flex-grow w-0 whitespace-nowrap text-ellipsis
+                                        overflow-hidden self-center'>
+                            {part.displayTitle}
+                        </Typography>
                         <Stack spacing={1} direction='row'>
                             <TooltipIconButton
                                 size='small'

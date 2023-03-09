@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import RichtextEditor from '@sl/components/Richtext'
+import RichtextEditor from '@sl/components/RichtextEditor'
 import { SectionViewType } from '../types'
 
 const SceneView = ({ section }: SectionViewType) => {
@@ -8,8 +8,8 @@ const SceneView = ({ section }: SectionViewType) => {
 
     const onChange = (html: string) => {
         if (isSaving) return
-        setIsSaving(true)
-        section.updateBody(html).then(() => setIsSaving(false))
+        //setIsSaving(true)
+        //section.updateBody(html).then(() => setIsSaving(false))
     }
     return <RichtextEditor onChange={onChange} initialValue={initialValue} />
 }

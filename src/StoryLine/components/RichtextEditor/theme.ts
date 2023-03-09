@@ -20,7 +20,8 @@ const theme = {
         bold: 'font-bold',
         italic: 'italic',
         underline: 'underline-offset-4',
-        strikethrough: 'line-through'
+        strikethrough: 'line-through',
+        highlight: 'bg-indigo-200'
     }
 }
 

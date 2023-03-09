@@ -34,7 +34,10 @@
             }
         },
         "richtextEditor": {
-            "placeholder": "It was a dark and stormy night..."
+            "placeholder": "It was a dark and stormy night...",
+            "search": {
+                "placeholder": "Keywords"
+            }
         },
         "tooltipIconButton": {
             "dialog": {
