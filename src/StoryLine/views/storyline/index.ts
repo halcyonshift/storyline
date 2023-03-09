@@ -1,4 +1,5 @@
 export { default as AddWorkView } from './AddWork'
+export { default as ErrorBoundary } from './ErrorBoundary'
 export { default as InfoView } from './InfoView'
 export { default as LandingView } from './LandingView'
 export { default as OpenWorkView } from './OpenWorkView'

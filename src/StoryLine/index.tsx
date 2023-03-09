@@ -17,7 +17,7 @@ const router = createHashRouter([
     {
         path: '/',
         element: <App />,
-        errorElement: <p>404</p>,
+        errorElement: <StoryLineViews.ErrorBoundary />,
         children: [
             {
                 element: <Layouts.StoryLineLayout />,

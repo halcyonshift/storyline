@@ -1,6 +1,10 @@
 {
     "error": {
-        "connection": "Some features of this area aren't available without an internet connection"
+        "connection": "Some features of this area aren't available without an internet connection",
+        "404": {
+            "title": "The princess is in another castle :(",
+            "link": "Go back to StoryLine"
+        }
     },
     "navigation": {
         "back": "Back"
