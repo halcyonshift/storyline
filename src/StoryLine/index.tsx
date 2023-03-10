@@ -45,10 +45,6 @@ const router = createHashRouter([
                                 .fetch()
                     },
                     {
-                        path: 'newSequel',
-                        element: <StoryLineViews.SettingsView />
-                    },
-                    {
                         path: 'importWork',
                         element: <StoryLineViews.SettingsView />
                     },
@@ -66,8 +62,11 @@ const router = createHashRouter([
                 path: 'works/:work_id',
                 id: 'work',
                 element: <Layouts.WorkLayout />,
-                loader: async ({ params }) =>
-                    await database.get<WorkModel>('work').find(params.work_id),
+                loader: async ({ params }) => {
+                    const work = await database.get<WorkModel>('work').find(params.work_id)
+                    await work.updateLastOpened()
+                    return work
+                },
                 children: [
                     {
                         index: true,

@@ -140,18 +140,12 @@ export default class WorkModel extends Model {
         })
     }
 
-    @writer async addPart(data: SectionDataType) {
-        // eslint-disable-next-line max-statements
+    @writer async addPart() {
+        const count = await this.parts.fetchCount()
         return await this.collections.get<SectionModel>('section').create((section) => {
             section.work.set(this)
-            section.title = data.title
-            section.description = data.description
-            section.body = data.body
-            section.date = data.date
-            section.order = data.order
-            section.words = data.words
+            section.order = count + 1
             section.mode = 'part'
-            section.deadlineAt = data.deadlineAt
         })
     }
 

@@ -39,7 +39,7 @@ const StoryLineLayout = () => {
                     </Box>
                 </Toolbar>
             </AppBar>
-            <Box className='flex flex-col flex-grow p-10'>
+            <Box className='flex flex-col flex-grow p-10 h-0 overflow-auto'>
                 <Outlet />
             </Box>
         </Box>

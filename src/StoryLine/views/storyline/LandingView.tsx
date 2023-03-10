@@ -33,15 +33,8 @@ const LandingView = () => {
                     <ListItem
                         link='/addWork'
                         icon={<AddIcon />}
-                        text='view.storyline.landing.navigation.newWork'
+                        text='view.storyline.landing.navigation.addWork'
                     />
-                    {recentWorks.length ? (
-                        <ListItem
-                            link='/newSequel'
-                            icon={<ContentCopyIcon />}
-                            text='view.storyline.landing.navigation.newSequel'
-                        />
-                    ) : null}
                     <ListItem
                         link='/importWork'
                         icon={<ArrowDownwardIcon />}
@@ -61,7 +54,7 @@ const LandingView = () => {
             </Grid>
             {recentWorks.length ? (
                 <Grid item xs={6}>
-                    <Typography variant='h5'>{t('view.storyline.landing.recent.title')}</Typography>
+                    <Typography variant='h6'>{t('view.storyline.landing.recent.title')}</Typography>
                     {recentWorks.map((work) => (
                         <ListItem
                             key={work.id}

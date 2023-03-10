@@ -4,15 +4,17 @@ import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
 import { FormikProps, useFormik } from 'formik'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 
-import { SectionModel, WorkModel } from '@sl/db/models'
+import { WorkModel } from '@sl/db/models'
 import { WorkDataType } from '@sl/db/models/types'
 
-const Form = () => {
+const AddWorkForm = () => {
     const database = useDatabase()
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     const validationSchema = yup.object({
         title: yup.string().required('Please give a project title'),
@@ -28,38 +30,20 @@ const Form = () => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values: WorkDataType) => {
-            const newWork = await database.write(async () => {
-                const work = await database.get<WorkModel>('work').create((work) => {
+            const work = await database.write(async () => {
+                return await database.get<WorkModel>('work').create((work) => {
                     work.title = values.title
                     work.author = values.author
                     work.language = values.language
                 })
-
-                const part = await database.get<SectionModel>('section').create((section) => {
-                    section.work.set(work)
-                    section.mode = 'part'
-                    section.order = 1
-                })
-
-                const chapter = await database.get<SectionModel>('section').create((chapter) => {
-                    chapter.work.set(work)
-                    chapter.section.set(part)
-                    chapter.mode = 'chapter'
-                    chapter.order = 1
-                })
-
-                const scene = await database.get<SectionModel>('section').create((scene) => {
-                    scene.work.set(work)
-                    scene.section.set(chapter)
-                    scene.mode = 'scene'
-                    scene.order = 1
-                })
-
-                return { work, part, chapter, scene }
             })
 
+            const part = await work.addPart()
+            const chapter = await part.addChapter()
+            await chapter.addScene()
+
             form.resetForm()
-            navigate(`/works/${newWork.work.id}`)
+            navigate(`/works/${work.id}`)
         }
     })
 
@@ -111,4 +95,4 @@ const Form = () => {
     )
 }
 
-export default Form
+export default AddWorkForm

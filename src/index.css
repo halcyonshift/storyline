@@ -2,6 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('StoryLine/assets/fonts/open_dyslexic/OpenDyslexic-Bold.otf');
+  font-weight: bold;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('StoryLine/assets/fonts/open_dyslexic/OpenDyslexic-BoldItalic.otf');
+  font-weight: bold;
+  font-style: italic
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('StoryLine/assets/fonts/open_dyslexic/OpenDyslexic-Italic.otf');
+  font-weight: normal;
+  font-style: italic
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('StoryLine/assets/fonts/open_dyslexic/OpenDyslexic-Regular.otf');
+  font-weight: normal;
+  font-style: normal
+}
+
 html, body, #root {
     height: 100vh;
     overflow: hidden
@@ -16,3 +44,4 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
   user-select: none
 }
+

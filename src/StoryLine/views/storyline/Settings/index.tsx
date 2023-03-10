@@ -1,17 +1,36 @@
 import { useState } from 'react'
-
 import SettingsForm from '@sl/forms/StoryLine/Settings'
 import { useSettings } from '@sl/theme'
 import { SettingsDataType } from '@sl/theme/types'
 
 const SettingsView = () => {
-    const { displayMode, font, fontSize, language, indentParagraph } = useSettings()
-    const [initialValues] = useState<SettingsDataType>({
+    const {
+        autoSave,
+        autoBackupFreq,
+        autoBackupMax,
         displayMode,
         font,
         fontSize,
+        indentParagraph,
         language,
-        indentParagraph
+        lineSpacing,
+        palette,
+        paragraphSpacing,
+        spellCheck
+    } = useSettings()
+    const [initialValues] = useState<SettingsDataType>({
+        autoSave,
+        autoBackupFreq,
+        autoBackupMax,
+        displayMode,
+        font,
+        fontSize,
+        indentParagraph,
+        language,
+        lineSpacing,
+        palette,
+        paragraphSpacing,
+        spellCheck
     })
 
     return <SettingsForm initialValues={initialValues} />

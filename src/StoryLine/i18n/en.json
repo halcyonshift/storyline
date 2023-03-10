@@ -4,6 +4,10 @@
         "404": {
             "title": "The princess is in another castle :(",
             "link": "Go back to StoryLine"
+        },
+        "500": {
+            "title": "The database has hiccuped",
+            "link": "Go back to StoryLine"
         }
     },
     "navigation": {
@@ -102,6 +106,20 @@
                     "light": "Light",
                     "dark": "Dark"
                 },
+                "palette": "Theme",
+                "spellCheck": "Use spellcheck",
+                "autoSave": "Autosave",
+                "autoBackupFreq": {
+                    "label": "Backup frequency",
+                    "option0": "Never",
+                    "option30": "Every 30 mins",
+                    "option60": "Every hour",
+                    "option120": "Every 2 hours"
+                },
+                "autoBackupMax": "Maximum number of backups",
+                "alert": {
+                    "success": "The settings have been saved"
+                },
                 "button": {
                     "save": "Save"
                 }
@@ -179,14 +197,13 @@
                 "title": "",
                 "navigation": {
                     "openWork": "Works",
-                    "newWork": "New work",
-                    "newSequel": "New sequel",
-                    "importWork": "Import work",
+                    "addWork": "New",
+                    "importWork": "Import",
                     "settings": "Settings",
                     "info": "Info"
                 },
                 "recent": {
-                    "title": ""
+                    "title": "Recently opened"
                 }
             }
         },

@@ -15,18 +15,19 @@ import Typography from '@mui/material/Typography'
 import { EditorState, LexicalEditor } from 'lexical'
 import { useTranslation } from 'react-i18next'
 
+import { useSettings } from '@sl/theme'
 import InitialValuePlugin from './plugins/InitialValue'
 import ToolbarPlugin from './plugins/Toolbar'
-
 import theme from './theme'
 import { RichtextEditorProps } from './types'
 
 const RichtextEditor = ({ onChange, initialValue }: RichtextEditorProps) => {
+    const { indentParagraph } = useSettings()
     const { t } = useTranslation()
 
     const initialConfig = {
         namespace: 'rte',
-        theme,
+        theme: { ...theme, ['paragraph']: indentParagraph ? 'indent-4 mb-2' : 'mb-2' },
         nodes: [ListItemNode, ListNode, QuoteNode],
         onError(error: Error) {
             throw error
@@ -55,7 +56,7 @@ const RichtextEditor = ({ onChange, initialValue }: RichtextEditorProps) => {
                 />
                 <AutoFocusPlugin />
                 <HistoryPlugin />
-                <InitialValuePlugin text={initialValue} />
+                {initialValue ? <InitialValuePlugin text={initialValue} /> : null}
                 <ListPlugin />
                 <OnChangePlugin
                     onChange={(editorState: EditorState, editor: LexicalEditor) => {

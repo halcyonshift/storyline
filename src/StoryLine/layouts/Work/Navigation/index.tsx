@@ -17,17 +17,21 @@ import Tooltip from '@mui/material/Tooltip'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { NavigationProps, TogglePanelType } from '@sl/layouts/Work/Navigation/types'
+import { useSettings } from '@sl/theme'
 
 const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const settings = useSettings()
 
     const togglePanel = (panel?: TogglePanelType) => {
         setCurrentPanel(panel !== currentPanel ? panel : null)
     }
 
     return (
-        <Box className='bg-indigo-400 dark:bg-indigo-800 text-white flex flex-col justify-between'>
+        <Box
+            sx={{ backgroundColor: settings.getHex() }}
+            className='text-white flex flex-col justify-between'>
             <Stack>
                 <Tooltip title={t('layout.work.navigation.work')} placement='right'>
                     <IconButton

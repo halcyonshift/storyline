@@ -15,7 +15,7 @@ import { withDatabase } from '@nozbe/watermelondb/DatabaseProvider'
 import withObservables from '@nozbe/with-observables'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useNavigate, useParams, useLocation } from 'react-router-dom'
-
+import { useSettings } from '@sl/theme'
 import {
     CharacterModel,
     ItemModel,
@@ -38,6 +38,7 @@ import { TabType, WorkLayoutProps } from './types'
 const WorkLayout = ({ characters, items, locations, notes, sections, work }: WorkLayoutProps) => {
     const navigate = useNavigate()
     const { t } = useTranslation()
+    const settings = useSettings()
 
     const [currentPanel, setCurrentPanel] = useState<string | null>()
     const [currentTab, setCurrentTab] = useState<number>(0)
@@ -126,7 +127,9 @@ const WorkLayout = ({ characters, items, locations, notes, sections, work }: Wor
                     setCurrentPanel={setCurrentPanel}
                 />
                 {currentPanel ? (
-                    <Box className='flex flex-col bg-indigo-50 border-r-slate-400 border-r w-1/5'>
+                    <Box
+                        sx={{ backgroundColor: settings.getHex(50) }}
+                        className={`flex flex-col border-r-slate-400 border-r w-1/5`}>
                         {currentPanel === 'character' ? (
                             <CharacterPanel loadTab={loadTab} characters={characters} />
                         ) : null}

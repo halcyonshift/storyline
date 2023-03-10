@@ -38,7 +38,7 @@ const Form = ({ work }: { work: WorkModel }) => {
         onSubmit: async (values: SectionDataType) => {
             const partsCount = await work.parts.fetchCount()
             values.order = partsCount + 1
-            await work.addPart(values)
+            await work.addPart()
             form.resetForm()
             navigate(`/works/${work.id}`)
         }
