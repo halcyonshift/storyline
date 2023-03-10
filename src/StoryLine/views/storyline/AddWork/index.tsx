@@ -1,5 +1,5 @@
-import AddWorkForm from '@sl/forms/StoryLine/AddWork'
+import WorkForm from '@sl/forms/Work/Work'
 
-const AddWorkView = () => <AddWorkForm />
+const AddWorkView = () => <WorkForm />
 
 export default AddWorkView

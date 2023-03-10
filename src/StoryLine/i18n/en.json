@@ -93,6 +93,21 @@
                     "create": "Add",
                     "update": "Edit"
                 }
+            },
+            "work": {
+                "title": {
+                    "label": "Title",
+                    "required": "Please give your work a title"
+                },
+                "author": "Author",
+                "language": "Language",
+                "summary": "Summary",
+                "wordGoal": "Word goal",
+                "deadline": "Deadline",
+                "button": {
+                    "create": "Add",
+                    "update": "Edit"
+                }
             }
         },
         "storyline": {

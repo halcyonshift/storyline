@@ -153,8 +153,8 @@ const router = createHashRouter([
                         ]
                     },
                     {
-                        path: 'setting',
-                        element: <p>Settings</p>
+                        path: 'edit',
+                        element: <WorkViews.EditWorkView />
                     },
                     {
                         path: 'timeline',

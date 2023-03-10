@@ -134,7 +134,7 @@ const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) =>
                         aria-label={t('layout.work.navigation.setting')}
                         onClick={() => {
                             togglePanel()
-                            navigate(`/works/${work.id}/setting`)
+                            navigate(`/works/${work.id}/edit`)
                         }}>
                         <SettingsIcon />
                     </IconButton>

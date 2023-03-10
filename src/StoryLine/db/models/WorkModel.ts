@@ -7,7 +7,6 @@ import {
     ItemDataType,
     LocationDataType,
     NoteDataType,
-    SectionDataType,
     WorkDataType
 } from './types'
 
@@ -94,6 +93,7 @@ export default class WorkModel extends Model {
             work.title = data.title.toString()
             work.author = (data.author || '').toString()
             work.language = data.language
+            work.summary = data.summary
             work.wordGoal = data.wordGoal || null
             work.deadlineAt = data.deadlineAt || null
         })
