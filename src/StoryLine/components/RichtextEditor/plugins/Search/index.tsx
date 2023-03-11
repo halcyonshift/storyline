@@ -69,28 +69,19 @@ const Search = () => {
 
     return (
         <Box className='rounded p-2 shadow-md'>
-            <TextField
-                autoFocus
-                margin='dense'
-                id='search'
-                placeholder={t('component.richtextEditor.search.placeholder')}
-                name='search'
-                fullWidth
-                variant='standard'
-                onChange={(e) => doSearch(e.target.value)}
-            />
-            <Box className='flex w-10'>
-                <Typography variant='body1' className='flex-grow'>
-                    0/{results.length}
-                </Typography>
-                <IconButton size='small' onClick={() => navigate('back')}>
-                    <ArrowUpwardIcon />
-                </IconButton>
-                <IconButton size='small' onClick={() => navigate('next')}>
-                    <ArrowDownwardIcon />
-                </IconButton>
-            </Box>
-            <Box className='grid grid-cols-3 gap-0 px-2'>
+            <Box className='flex'>
+                <Box className='flex-grow'>
+                    <TextField
+                        autoFocus
+                        margin='dense'
+                        id='search'
+                        placeholder={t('component.richtextEditor.search.placeholder')}
+                        name='search'
+                        fullWidth
+                        variant='standard'
+                        onChange={(e) => doSearch(e.target.value)}
+                    />
+                </Box>
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -113,6 +104,19 @@ const Search = () => {
                     label={t('layout.work.panel.search.form.caseSensitive')}
                     labelPlacement='end'
                 />
+                {results.length ? (
+                    <Box className='flex'>
+                        <Typography variant='body1' className='flex-grow self-center'>
+                            {resultIndex + 1}/{results.length}
+                        </Typography>
+                        <IconButton size='small' onClick={() => navigate('back')}>
+                            <ArrowUpwardIcon />
+                        </IconButton>
+                        <IconButton size='small' onClick={() => navigate('next')}>
+                            <ArrowDownwardIcon />
+                        </IconButton>
+                    </Box>
+                ) : null}
             </Box>
         </Box>
     )
