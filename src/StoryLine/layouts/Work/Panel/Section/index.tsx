@@ -27,10 +27,7 @@ const SectionPanel = ({ sections, loadTab }: SectionPanelProps) => {
         const newNavigation: TooltipIconButtonProps[] = [
             {
                 onClick: async () => {
-                    const count = await work.parts.fetchCount()
-                    const part = await work.addPart({
-                        order: count + 1
-                    })
+                    const part = await work.addPart()
                     navigate(`section/${part.id}/edit`)
                 },
                 text: 'layout.work.panel.section.addPart',

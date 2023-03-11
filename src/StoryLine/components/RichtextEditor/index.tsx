@@ -14,7 +14,6 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { EditorState, LexicalEditor } from 'lexical'
 import { useTranslation } from 'react-i18next'
-
 import { useSettings } from '@sl/theme'
 import InitialValuePlugin from './plugins/InitialValue'
 import ToolbarPlugin from './plugins/Toolbar'
@@ -22,7 +21,7 @@ import theme from './theme'
 import { RichtextEditorProps } from './types'
 
 const RichtextEditor = ({ onChange, initialValue }: RichtextEditorProps) => {
-    const { indentParagraph } = useSettings()
+    const { indentParagraph, spellCheck } = useSettings()
     const { t } = useTranslation()
 
     const initialConfig = {
@@ -34,16 +33,27 @@ const RichtextEditor = ({ onChange, initialValue }: RichtextEditorProps) => {
         }
     }
 
+    const Editor = () =>
+        spellCheck ? (
+            <GrammarlyEditorPlugin clientId='client_PJGNpq8df12athMYk8jcSr'>
+                <ContentEditable
+                    className='resize-none caret-slate-500 outline-none'
+                    spellCheck={true}
+                />
+            </GrammarlyEditorPlugin>
+        ) : (
+            <ContentEditable
+                className='resize-none caret-slate-500 outline-none'
+                spellCheck={false}
+            />
+        )
+
     return (
         <LexicalComposer initialConfig={initialConfig}>
             <ToolbarPlugin />
             <Box className='rte-container relative flex-grow overflow-auto h-0 p-3'>
                 <RichTextPlugin
-                    contentEditable={
-                        <GrammarlyEditorPlugin clientId='client_PJGNpq8df12athMYk8jcSr'>
-                            <ContentEditable className='resize-none caret-slate-500 outline-none' />
-                        </GrammarlyEditorPlugin>
-                    }
+                    contentEditable={<Editor />}
                     placeholder={
                         <Typography
                             variant='body1'

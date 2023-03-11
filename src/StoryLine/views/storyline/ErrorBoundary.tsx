@@ -3,17 +3,15 @@ import { useTranslation } from 'react-i18next'
 import { useRouteError, isRouteErrorResponse } from 'react-router-dom'
 
 import Link from '@sl/components/Link'
-import { useSettings } from '@sl/theme'
 
 const Status404 = () => {
     const { t } = useTranslation()
-    const settings = useSettings()
 
     return (
         <Box className='text-center'>
             <Typography variant='h4'>{t('error.404.title')}</Typography>
             <Typography variant='body1'>
-                <Link href='/' className={`text-${settings.palette}-400 font-bold`}>
+                <Link href='/' className='font-bold'>
                     {t('error.404.link')}
                 </Link>
             </Typography>
@@ -23,13 +21,12 @@ const Status404 = () => {
 
 const Status500 = () => {
     const { t } = useTranslation()
-    const settings = useSettings()
 
     return (
         <Box className='text-center'>
             <Typography variant='h4'>{t('error.500.title')}</Typography>
             <Typography variant='body1'>
-                <Link href='/' className={`text-${settings.palette}-400 font-bold`}>
+                <Link href='/' className='font-bold'>
                     {t('error.500.link')}
                 </Link>
             </Typography>

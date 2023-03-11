@@ -35,10 +35,8 @@ const Form = ({ work }: { work: WorkModel }) => {
             deadlineAt: null
         },
         validationSchema: validationSchema,
-        onSubmit: async (values: SectionDataType) => {
-            const partsCount = await work.parts.fetchCount()
-            values.order = partsCount + 1
-            await work.addPart(values)
+        onSubmit: async () => {
+            await work.addPart()
             form.resetForm()
             navigate(`/works/${work.id}`)
         }

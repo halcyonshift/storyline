@@ -5,7 +5,7 @@ import { TabType } from '../types'
 
 export type PanelProps = {
     navigation: TooltipIconButtonProps[]
-    children?: ReactElement
+    children?: ReactElement | ReactElement[]
     action?: ReactElement
 }
 

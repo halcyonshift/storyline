@@ -11,6 +11,7 @@ const SceneView = ({ section }: SectionViewType) => {
         //setIsSaving(true)
         //section.updateBody(html).then(() => setIsSaving(false))
     }
+    // return <Editor />
     return <RichtextEditor onChange={onChange} initialValue={initialValue} />
 }
 

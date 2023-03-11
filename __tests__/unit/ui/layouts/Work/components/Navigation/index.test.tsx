@@ -1,6 +1,6 @@
 import userEvent from '@testing-library/user-event'
 
-import Navigation from '../../../../../../../src/StoryLine/ui/layouts/Work/components/Navigation'
+import Navigation from '../../../../../../../src/StoryLine/layouts/Work/Navigation'
 import { render, screen } from '../../../../../test-utils'
 import database from '../../../../../../../src/StoryLine/db'
 import { WorkModel } from '../../../../../../../src/StoryLine/db/models'

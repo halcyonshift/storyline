@@ -25,12 +25,6 @@ const config: ForgeConfig = {
     ],
     plugins: [
         {
-            name: '@electron-forge/plugin-electronegativity',
-            config: {
-                isSarif: true
-            }
-        },
-        {
             name: '@electron-forge/plugin-auto-unpack-natives',
             config: {}
         },

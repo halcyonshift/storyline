@@ -62,10 +62,10 @@ const ItemForm = ({
                 name='name'
                 fullWidth
                 variant='standard'
-                value={form.values.name}
+                value={form.values.title}
                 onChange={form.handleChange}
-                error={form.touched.name && Boolean(form.errors.name)}
-                helperText={form.touched.name && form.errors.name}
+                error={form.touched.title && Boolean(form.errors.title)}
+                helperText={form.touched.title && form.errors.title}
             />
             <TextField
                 margin='dense'
@@ -96,7 +96,7 @@ const ItemForm = ({
             <ImageField label={t('form.item.image')} form={form} dir='items' />
             <Box className='text-center border-t pt-3'>
                 <Button type='submit' variant='contained'>
-                    {t(initialValues.name ? 'form.item.button.update' : 'form.item.button.create')}
+                    {t(initialValues.title ? 'form.item.button.update' : 'form.item.button.create')}
                 </Button>
             </Box>
         </Stack>
