@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState, ReactElement } from 'react'
+import { $generateHtmlFromNodes } from '@lexical/html'
 import {
     INSERT_ORDERED_LIST_COMMAND,
     INSERT_UNORDERED_LIST_COMMAND,
@@ -10,6 +11,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { $createQuoteNode } from '@lexical/rich-text'
 import { $wrapNodes } from '@lexical/selection'
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils'
+import CategoryIcon from '@mui/icons-material/Category'
 import FormatBoldIcon from '@mui/icons-material/FormatBold'
 import FormatItalicIcon from '@mui/icons-material/FormatItalic'
 import FormatStrikethroughIcon from '@mui/icons-material/FormatStrikethrough'
@@ -20,22 +22,25 @@ import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft'
 import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter'
 import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight'
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify'
+import PersonIcon from '@mui/icons-material/Person'
+import LocationOnIcon from '@mui/icons-material/LocationOn'
 import RedoIcon from '@mui/icons-material/Redo'
 import SaveIcon from '@mui/icons-material/Save'
 import SearchIcon from '@mui/icons-material/Search'
 import TextSnippetIcon from '@mui/icons-material/TextSnippet'
 import UndoIcon from '@mui/icons-material/Undo'
-import Button from '@mui/material/Button'
+import Alert from '@mui/material/Alert'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
+import Snackbar from '@mui/material/Snackbar'
 import Stack from '@mui/material/Stack'
+
 import {
     $createParagraphNode,
     $getSelection,
     $isRangeSelection,
     CAN_REDO_COMMAND,
     CAN_UNDO_COMMAND,
-    CONTROLLED_TEXT_INSERTION_COMMAND,
     FORMAT_ELEMENT_COMMAND,
     FORMAT_TEXT_COMMAND,
     REDO_COMMAND,
@@ -45,8 +50,9 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useOnKeyPressed } from '@sl/utils/useKeyPress'
 import Search from '../Search'
+import { ToolbarPluginProps } from './types'
 
-const ToolbarPlugin = (): ReactElement => {
+const ToolbarPlugin = ({ onSave }: ToolbarPluginProps): ReactElement => {
     const [canUndo, setCanUndo] = useState<boolean>(false)
     const [canRedo, setCanRedo] = useState<boolean>(false)
     const [blockType, setBlockType] = useState<string>('paragraph')
@@ -55,6 +61,8 @@ const ToolbarPlugin = (): ReactElement => {
     const [isUnderline, setIsUnderline] = useState<boolean>(false)
     const [isStrikethrough, setIsStrikethrough] = useState<boolean>(false)
     const [showSearch, setShowSearch] = useState<boolean>(false)
+    const [isSaving, setIsSaving] = useState<boolean>(false)
+    const [showAlert, setShowAlert] = useState<boolean>(false)
 
     const [editor] = useLexicalComposerContext()
     const { t } = useTranslation()
@@ -228,18 +236,23 @@ const ToolbarPlugin = (): ReactElement => {
                     <FormatAlignJustifyIcon />
                 </IconButton>
                 <Divider orientation='vertical' flexItem />
-                <Button
-                    size='small'
-                    onClick={() => {
-                        editor.dispatchCommand(CONTROLLED_TEXT_INSERTION_COMMAND, '—')
-                    }}
-                    aria-label={t('component.richtext.toolbar.emdash')}>
-                    —
-                </Button>
                 <IconButton
                     aria-label={t('component.richtext.toolbar.excerpt')}
                     onClick={formatQuote}>
                     <TextSnippetIcon />
+                </IconButton>
+                <IconButton
+                    aria-label={t('component.richtext.toolbar.character')}
+                    onClick={formatQuote}>
+                    <PersonIcon />
+                </IconButton>
+                <IconButton
+                    aria-label={t('component.richtext.toolbar.location')}
+                    onClick={formatQuote}>
+                    <LocationOnIcon />
+                </IconButton>
+                <IconButton aria-label={t('component.richtext.toolbar.item')} onClick={formatQuote}>
+                    <CategoryIcon />
                 </IconButton>
                 <Divider orientation='vertical' flexItem />
                 <IconButton
@@ -247,11 +260,34 @@ const ToolbarPlugin = (): ReactElement => {
                     onClick={() => setShowSearch(!showSearch)}>
                     <SearchIcon />
                 </IconButton>
-                <IconButton aria-label={t('component.richtext.toolbar.save')}>
-                    <SaveIcon />
-                </IconButton>
+                {onSave ? (
+                    <IconButton
+                        disabled={isSaving}
+                        aria-label={t('component.richtext.toolbar.save')}
+                        onClick={() => {
+                            setIsSaving(true)
+                            editor.update(() => {
+                                const htmlString = $generateHtmlFromNodes(editor, null)
+                                onSave(htmlString).then(() => {
+                                    setIsSaving(false)
+                                    setShowAlert(true)
+                                })
+                            })
+                        }}>
+                        <SaveIcon />
+                    </IconButton>
+                ) : null}
             </Stack>
             {showSearch ? <Search /> : null}
+            <Snackbar
+                open={showAlert}
+                autoHideDuration={6000}
+                onClose={() => setShowAlert(false)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+                <Alert onClose={() => setShowAlert(false)} severity='success'>
+                    Saved
+                </Alert>
+            </Snackbar>
         </>
     )
 }

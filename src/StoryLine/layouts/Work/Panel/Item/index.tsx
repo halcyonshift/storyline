@@ -9,11 +9,13 @@ import { useTranslation } from 'react-i18next'
 import { GLOBAL_ICONS, ITEM_ICONS } from '@sl/constants/icons'
 import Panel from '@sl/components/Panel'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
+import useTabs from '@sl/layouts/Work/useTabs'
 
 import { ItemPanelProps } from '../types'
 
-const ItemPanel = ({ items, loadTab }: ItemPanelProps) => {
+const ItemPanel = ({ items }: ItemPanelProps) => {
     const { t } = useTranslation()
+    const tabs = useTabs()
 
     return (
         <Panel
@@ -28,7 +30,7 @@ const ItemPanel = ({ items, loadTab }: ItemPanelProps) => {
                                 <Box className='flex justify-between align-middle'>
                                     <ListItemButton
                                         onClick={() =>
-                                            loadTab({
+                                            tabs.loadTab({
                                                 id: item.id,
                                                 label: item.displayName,
                                                 link: `item/${item.id}`

@@ -11,10 +11,12 @@ import { GLOBAL_ICONS, LOCATION_ICONS } from '@sl/constants/icons'
 import Panel from '@sl/components/Panel'
 import GroupToggle from '@sl/components/Panel/GroupToggle'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
+import useTabs from '@sl/layouts/Work/useTabs'
 import { LocationPanelProps } from '../types'
 
-const LocationPanel = ({ locations, loadTab }: LocationPanelProps) => {
+const LocationPanel = ({ locations }: LocationPanelProps) => {
     const { t } = useTranslation()
+    const tabs = useTabs()
     const [group, setGroup] = useState<boolean>(false)
 
     return (
@@ -35,7 +37,7 @@ const LocationPanel = ({ locations, loadTab }: LocationPanelProps) => {
                                 <Box className='flex justify-between align-middle'>
                                     <ListItemButton
                                         onClick={() =>
-                                            loadTab({
+                                            tabs.loadTab({
                                                 id: location.id,
                                                 label: location.displayName,
                                                 link: `location/${location.id}`

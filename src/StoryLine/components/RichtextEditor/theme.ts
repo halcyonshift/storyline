@@ -2,7 +2,7 @@ const theme = {
     ltr: 'ltr',
     rtl: 'rtl',
     paragraph: 'indent-4 mb-2',
-    quote: 'bg-slate-50',
+    quote: 'bg-slate-50 mb-2',
     list: {
         nested: {
             listitem: 'list-none'

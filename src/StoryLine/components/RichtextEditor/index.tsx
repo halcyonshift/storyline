@@ -1,4 +1,4 @@
-import { $generateHtmlFromNodes } from '@lexical/html'
+import { useState } from 'react'
 import { ListItemNode, ListNode } from '@lexical/list'
 import { QuoteNode } from '@lexical/rich-text'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
@@ -7,12 +7,10 @@ import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { ListPlugin } from '@lexical/react/LexicalListPlugin'
-import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { GrammarlyEditorPlugin } from '@grammarly/editor-sdk-react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { EditorState, LexicalEditor } from 'lexical'
 import { useTranslation } from 'react-i18next'
 import { useSettings } from '@sl/theme'
 import InitialValuePlugin from './plugins/InitialValue'
@@ -20,7 +18,7 @@ import ToolbarPlugin from './plugins/Toolbar'
 import theme from './theme'
 import { RichtextEditorProps } from './types'
 
-const RichtextEditor = ({ onChange, initialValue }: RichtextEditorProps) => {
+const RichtextEditor = ({ onSave, initialValue }: RichtextEditorProps) => {
     const { indentParagraph, spellCheck } = useSettings()
     const { t } = useTranslation()
 
@@ -50,7 +48,7 @@ const RichtextEditor = ({ onChange, initialValue }: RichtextEditorProps) => {
 
     return (
         <LexicalComposer initialConfig={initialConfig}>
-            <ToolbarPlugin />
+            <ToolbarPlugin onSave={onSave} />
             <Box className='rte-container relative flex-grow overflow-auto h-0 p-3'>
                 <RichTextPlugin
                     contentEditable={<Editor />}
@@ -68,14 +66,6 @@ const RichtextEditor = ({ onChange, initialValue }: RichtextEditorProps) => {
                 <HistoryPlugin />
                 {initialValue ? <InitialValuePlugin text={initialValue} /> : null}
                 <ListPlugin />
-                <OnChangePlugin
-                    onChange={(editorState: EditorState, editor: LexicalEditor) => {
-                        editor.update(() => {
-                            const htmlString = $generateHtmlFromNodes(editor, null)
-                            onChange(htmlString)
-                        })
-                    }}
-                />
             </Box>
         </LexicalComposer>
     )

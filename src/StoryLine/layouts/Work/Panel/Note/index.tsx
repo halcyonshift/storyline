@@ -11,11 +11,13 @@ import Panel from '@sl/components/Panel'
 import GroupToggle from '@sl/components/Panel/GroupToggle'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { GLOBAL_ICONS, NOTE_ICONS } from '@sl/constants/icons'
+import useTabs from '@sl/layouts/Work/useTabs'
 import { NotePanelProps } from '../types'
 
-const NotePanel = ({ notes, loadTab }: NotePanelProps) => {
+const NotePanel = ({ notes }: NotePanelProps) => {
     const [group, setGroup] = useState<boolean>(false)
     const { t } = useTranslation()
+    const tabs = useTabs()
 
     return (
         <Panel
@@ -31,7 +33,7 @@ const NotePanel = ({ notes, loadTab }: NotePanelProps) => {
                                 <Box className='flex justify-between align-middle'>
                                     <ListItemButton
                                         onClick={() =>
-                                            loadTab({
+                                            tabs.loadTab({
                                                 id: note.id,
                                                 label: note.title,
                                                 link: `note/${note.id}`

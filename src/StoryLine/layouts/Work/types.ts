@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 import {
     CharacterModel,
     ItemModel,
@@ -7,7 +9,7 @@ import {
     WorkModel
 } from '@sl/db/models'
 
-export type WorkLayoutProps = {
+export type TabbedWorkLayoutProps = {
     characters: CharacterModel[]
     items: ItemModel[]
     locations: LocationModel[]
@@ -21,3 +23,22 @@ export type TabType = {
     label: string
     link: string
 }
+
+export type TabsDataType = {
+    active: number
+    tabs: TabType[]
+    showTabs: boolean
+}
+
+export type TabsProviderProps = {
+    children: ReactNode
+} & TabbedWorkLayoutProps
+
+export type TabsContextType = {
+    loadTab: (focusTab: TabType) => void
+    removeTab: (id: string) => void
+    setActive: (index: number) => void
+    setShowTabs: (state: boolean) => void
+    setTabs: (tabs: TabType[] | null) => void
+} & TabsDataType &
+    TabbedWorkLayoutProps

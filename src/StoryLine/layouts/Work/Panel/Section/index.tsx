@@ -9,12 +9,13 @@ import ChapterAccordion from './ChapterAccordion'
 import PartAccordion from './PartAccordion'
 import SceneList from './SceneList'
 
-const SectionPanel = ({ sections, loadTab }: SectionPanelProps) => {
+const SectionPanel = ({ sections }: SectionPanelProps) => {
     const [parts, setParts] = useState<SectionModel[]>([])
     const [chapters, setChapters] = useState<SectionModel[]>([])
     const [scenes, setScenes] = useState<SectionModel[]>([])
     const [navigation, setNavigation] = useState<TooltipIconButtonProps[]>([])
     const work = useRouteLoaderData('work') as WorkModel
+
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -60,16 +61,11 @@ const SectionPanel = ({ sections, loadTab }: SectionPanelProps) => {
     return (
         <Panel navigation={navigation}>
             {parts.length > 1 ? (
-                <PartAccordion
-                    parts={parts}
-                    chapters={chapters}
-                    scenes={scenes}
-                    loadTab={loadTab}
-                />
+                <PartAccordion parts={parts} chapters={chapters} scenes={scenes} />
             ) : chapters.length > 1 ? (
-                <ChapterAccordion chapters={chapters} scenes={scenes} loadTab={loadTab} />
+                <ChapterAccordion chapters={chapters} scenes={scenes} />
             ) : (
-                <SceneList scenes={scenes} loadTab={loadTab} />
+                <SceneList scenes={scenes} />
             )}
         </Panel>
     )

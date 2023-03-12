@@ -1,4 +1,4 @@
 export type RichtextEditorProps = {
-    onChange: (value: string) => void
+    onSave?: (value: string) => Promise<void>
     initialValue?: string
 }
