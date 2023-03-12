@@ -7,24 +7,31 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 
-import { NoteDataType } from '@sl/db/models/types'
+import DateField from '@sl/components/DateField'
 import ImageField from '@sl/components/ImageField'
+import { NoteDataType } from '@sl/db/models/types'
 
 import { NoteFormProps } from './types'
 
 const ItemForm = ({
     work,
     note,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     character,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     item,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     location,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     section,
     initialValues = {
         title: '',
         body: '',
         url: '',
         image: '',
-        date: ''
+        date: '',
+        color: '#000000',
+        order: null
     }
 }: NoteFormProps) => {
     const navigate = useNavigate()
@@ -35,7 +42,9 @@ const ItemForm = ({
         body: yup.string().nullable(),
         url: yup.string().url().nullable(),
         image: yup.string().nullable(),
-        date: yup.string().nullable()
+        date: yup.string().nullable(),
+        color: yup.string().nullable(),
+        order: yup.number().min(0).nullable()
     })
 
     const form: FormikProps<NoteDataType> = useFormik<NoteDataType>({
@@ -43,12 +52,14 @@ const ItemForm = ({
         validationSchema,
         onSubmit: async (values: NoteDataType) => {
             if (initialValues.title) {
-                //
+                note.updateNote(values)
+                navigate(`/works/${note.work.id}/note/${note.id}`)
             } else {
-                //
+                const newNote = note ? await note.addNote(values) : await work.addNote(values)
+
                 form.resetForm()
+                navigate(`/works/${work.id}/note/${newNote.id}`)
             }
-            navigate(`/works/${note.work.id}/note/${note.id}`)
         }
     })
 
@@ -57,9 +68,9 @@ const ItemForm = ({
             <TextField
                 autoFocus
                 margin='dense'
-                id='name'
-                label={t('form.item.name.label')}
-                name='name'
+                id='title'
+                label={t('form.work.note.title.label')}
+                name='title'
                 fullWidth
                 variant='standard'
                 value={form.values.title}
@@ -70,7 +81,7 @@ const ItemForm = ({
             <TextField
                 margin='dense'
                 id='body'
-                label={t('form.item.body')}
+                label={t('form.work.note.body')}
                 name='body'
                 fullWidth
                 multiline
@@ -84,7 +95,7 @@ const ItemForm = ({
             <TextField
                 margin='dense'
                 id='url'
-                label={t('form.item.url')}
+                label={t('form.work.note.url')}
                 name='url'
                 fullWidth
                 variant='standard'
@@ -93,10 +104,28 @@ const ItemForm = ({
                 error={form.touched.url && Boolean(form.errors.url)}
                 helperText={form.touched.url && form.errors.url}
             />
-            <ImageField label={t('form.item.image')} form={form} dir='items' />
+            <TextField
+                margin='dense'
+                id='color'
+                label={t('form.work.note.color')}
+                name='color'
+                fullWidth
+                type='color'
+                variant='standard'
+                value={form.values.color}
+                onChange={form.handleChange}
+                error={form.touched.color && Boolean(form.errors.color)}
+                helperText={form.touched.color && form.errors.color}
+            />
+            <ImageField label={t('form.work.note.image')} form={form} dir='notes' />
+            <DateField form={form} />
             <Box className='text-center border-t pt-3'>
                 <Button type='submit' variant='contained'>
-                    {t(initialValues.title ? 'form.item.button.update' : 'form.item.button.create')}
+                    {t(
+                        initialValues.title
+                            ? 'form.work.note.button.update'
+                            : 'form.work.note.button.create'
+                    )}
                 </Button>
             </Box>
         </Stack>

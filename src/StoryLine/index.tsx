@@ -6,7 +6,7 @@ import { createHashRouter, RouterProvider } from 'react-router-dom'
 
 import App from '@sl/App'
 import database from '@sl/db'
-import { LocationModel, SectionModel, WorkModel } from '@sl/db/models'
+import { LocationModel, NoteModel, SectionModel, WorkModel } from '@sl/db/models'
 import '@sl/i18n'
 import * as StoryLineViews from '@sl/views/StoryLine'
 import * as WorkViews from '@sl/views/Work'
@@ -133,6 +133,26 @@ const router = createHashRouter([
                             {
                                 path: 'edit',
                                 element: <WorkViews.EditLocationView />
+                            }
+                        ]
+                    },
+                    {
+                        path: 'note/:note_id',
+                        id: 'note',
+                        loader: async ({ params }) =>
+                            await database.get<NoteModel>('note').find(params.note_id),
+                        children: [
+                            {
+                                index: true,
+                                element: <WorkViews.NoteView />
+                            },
+                            {
+                                path: 'add',
+                                element: <WorkViews.AddNoteView />
+                            },
+                            {
+                                path: 'edit',
+                                element: <WorkViews.EditNoteView />
                             }
                         ]
                     },

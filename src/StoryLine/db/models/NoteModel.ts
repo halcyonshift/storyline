@@ -1,12 +1,21 @@
 import { Model, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
-import { children, date, field, readonly, relation, text } from '@nozbe/watermelondb/decorators'
+import {
+    children,
+    date,
+    field,
+    readonly,
+    relation,
+    text,
+    writer
+} from '@nozbe/watermelondb/decorators'
 
 import CharacterModel from './CharacterModel'
 import ItemModel from './ItemModel'
 import LocationModel from './LocationModel'
 import SectionModel from './SectionModel'
 import WorkModel from './WorkModel'
+import { NoteDataType } from './types'
 
 export default class NoteModel extends Model {
     static table = 'note'
@@ -34,4 +43,34 @@ export default class NoteModel extends Model {
     @relation('section', 'section_id') section!: Relation<SectionModel>
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @children('note') notes!: Query<NoteModel>
+
+    @writer async addNote(data: NoteDataType) {
+        const work = await this.work.fetch()
+        return await this.collections.get<NoteModel>('note').create((note) => {
+            note.note.set(this)
+            note.work.set(work)
+            note.title = data.title
+            note.body = data.body
+            note.color = data.color
+            note.date = data.date
+            note.url = data.url
+            note.image = data.image
+        })
+    }
+
+    @writer async updateNote(data: NoteDataType) {
+        await this.update((note) => {
+            note.title = data.title
+            note.body = data.body
+            note.color = data.color
+            note.date = data.date
+            note.url = data.url
+            note.image = data.image
+        })
+    }
+
+    @writer async delete() {
+        await this.destroyPermanently()
+        return true
+    }
 }

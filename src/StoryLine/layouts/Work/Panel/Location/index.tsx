@@ -5,24 +5,13 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
-import Switch from '@mui/material/Switch'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { GLOBAL_ICONS, LOCATION_ICONS } from '@sl/constants/icons'
+import GroupToggle from '@sl/components/Panel/GroupToggle'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { LocationPanelProps } from '../types'
 import Panel from '../'
-import { DisplaySwitchProps } from './types'
-
-const DisplaySwitch = ({ group, setGroup }: DisplaySwitchProps) => {
-    return (
-        <Switch
-            checked={group}
-            onChange={() => setGroup(!group)}
-            inputProps={{ 'aria-label': 'controlled' }}
-        />
-    )
-}
 
 const LocationPanel = ({ locations, loadTab }: LocationPanelProps) => {
     const { t } = useTranslation()
@@ -30,7 +19,7 @@ const LocationPanel = ({ locations, loadTab }: LocationPanelProps) => {
 
     return (
         <Panel
-            action={<DisplaySwitch group={group} setGroup={setGroup} />}
+            action={<GroupToggle group={group} setGroup={setGroup} />}
             navigation={[
                 {
                     link: 'addLocation',

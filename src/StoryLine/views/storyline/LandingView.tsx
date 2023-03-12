@@ -1,7 +1,6 @@
 import AddIcon from '@mui/icons-material/Add'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import FileOpenIcon from '@mui/icons-material/FileOpen'
 import SettingsIcon from '@mui/icons-material/Settings'
 import InfoIcon from '@mui/icons-material/Info'

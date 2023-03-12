@@ -125,6 +125,7 @@ export default class WorkModel extends Model {
             note.url = data.url
             note.image = data.image
             note.color = data.color
+            note.date = data.date
         })
     }
 

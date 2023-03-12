@@ -67,6 +67,19 @@
     },
     "form": {
         "work": {
+            "item": {
+                "name": {
+                    "label": "Name",
+                    "required": "Please give the location name"
+                },
+                "body": "Description",
+                "url": "Link",
+                "image": "Image",
+                "button": {
+                    "create": "Add",
+                    "update": "Edit"
+                }
+            },
             "location": {
                 "name": {
                     "label": "Name",
@@ -81,13 +94,14 @@
                     "update": "Edit"
                 }
             },
-            "item": {
-                "name": {
-                    "label": "Name",
-                    "required": "Please give the location name"
+            "note": {
+                "title": {
+                    "label": "Title",
+                    "required": "Please give the note title"
                 },
-                "body": "Description",
+                "body": "Text",
                 "url": "Link",
+                "color": "Color",
                 "image": "Image",
                 "button": {
                     "create": "Add",
