@@ -4,4 +4,5 @@ export type AccordionProps = {
     title: ReactElement
     children: ReactElement
     className?: string
+    sx?: object
 }

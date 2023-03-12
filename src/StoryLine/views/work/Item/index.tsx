@@ -1,9 +1,17 @@
+import { useEffect } from 'react'
 import { useRouteLoaderData } from 'react-router-dom'
-import ItemModel from '@sl/db/models/ItemModel'
+import ItemModel from '@sl/db/models/LocationModel'
+import useTabs from '@sl/layouts/Work/useTabs'
 
 const ItemView = () => {
-    const item = useRouteLoaderData('item') as ItemModel
-    return <p>{item.body}</p>
+    const tabs = useTabs()
+    const location = useRouteLoaderData('item') as ItemModel
+
+    useEffect(() => {
+        tabs.setShowTabs(true)
+    }, [])
+
+    return <p>{location.body}</p>
 }
 
 export default ItemView

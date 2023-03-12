@@ -5,21 +5,24 @@ import { $generateNodesFromDOM } from '@lexical/html'
 
 import { $getRoot, $insertNodes } from 'lexical'
 
-const InitialPlugin = ({ text }: { text: string }) => {
+const InitialPlugin = ({ text }: { text: string }): null => {
     const [editor] = useLexicalComposerContext()
 
     useEffect(() => {
-        const parser = new DOMParser()
-        const dom = parser.parseFromString(text, 'text/html')
-
         editor.update(() => {
-            const nodes = $generateNodesFromDOM(editor, dom)
-            $getRoot().select()
-            $insertNodes(nodes)
+            $getRoot().clear()
+
+            if (text) {
+                const parser = new DOMParser()
+                const dom = parser.parseFromString(text, 'text/html')
+                const nodes = $generateNodesFromDOM(editor, dom)
+                $getRoot().select()
+                $insertNodes(nodes)
+            }
         })
     }, [text, editor])
 
-    return <></>
+    return null
 }
 
 export default InitialPlugin

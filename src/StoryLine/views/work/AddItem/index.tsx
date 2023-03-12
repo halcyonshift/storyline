@@ -1,15 +1,22 @@
+import { useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { WorkModel } from '@sl/db/models'
+import useTabs from '@sl/layouts/Work/useTabs'
 
 import ItemForm from '@sl/forms/Work/Item'
 
 const AddItemView = () => {
     const work = useRouteLoaderData('work') as WorkModel
     const { t } = useTranslation()
+    const tabs = useTabs()
+
+    useEffect(() => {
+        tabs.setShowTabs(false)
+    }, [])
 
     return (
         <Box className='flex flex-col flex-grow'>

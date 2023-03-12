@@ -20,22 +20,17 @@ const TabsProvider = ({
 
     const navigate = useNavigate()
 
-    const params = useParams()
-    const location = useLocation()
-
-    useEffect(() => {
-        if (tabs.length) {
-            setShowTabs(true)
-        } else {
-            setShowTabs(false)
-        }
-    }, [tabs, params, location])
-
     useEffect(() => {
         if (tabs[active]) {
             loadTab(tabs[active])
         }
     }, [active])
+
+    useEffect(() => {
+        if (!tabs.length) {
+            setShowTabs(false)
+        }
+    }, [tabs.length])
 
     const loadTab = (focusTab: TabType) => {
         const focus = tabs.findIndex((tab) => tab.id === focusTab.id)
@@ -52,20 +47,16 @@ const TabsProvider = ({
     const removeTab = (id: string) => {
         const tabIndex = tabs.findIndex((tab) => tab.id === id)
 
-        let newIndex = 0
-
-        if (tabIndex > 0) {
-            newIndex = tabIndex - 1
-        } else if (tabIndex < tabIndex - 1) {
-            newIndex = newIndex = tabIndex + 1
+        if (tabs[tabIndex + 1]) {
+            loadTab(tabs[tabIndex + 1])
+        } else if (tabs[tabIndex - 1]) {
+            loadTab(tabs[tabIndex - 1])
         }
 
         const newTabs = tabs.filter((tab) => tab.id !== id)
         setTabs(newTabs)
 
-        if (newTabs.length) {
-            loadTab(newTabs[newIndex])
-        } else {
+        if (!newTabs.length) {
             navigate(`/works/${work.id}`)
         }
     }

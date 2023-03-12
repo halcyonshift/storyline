@@ -57,7 +57,10 @@ const ItemPanel = ({ items }: ItemPanelProps) => {
                                             confirm={t('layout.work.panel.item.deleteConfirm', {
                                                 name: item.displayName
                                             })}
-                                            onClick={() => item.delete()}
+                                            onClick={() => {
+                                                tabs.removeTab(item.id)
+                                                return item.delete()
+                                            }}
                                         />
                                     </Stack>
                                 </Box>

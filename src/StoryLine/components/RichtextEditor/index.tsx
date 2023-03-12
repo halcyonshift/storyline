@@ -1,3 +1,4 @@
+import { $generateHtmlFromNodes } from '@lexical/html'
 import { ListItemNode, ListNode } from '@lexical/list'
 import { QuoteNode } from '@lexical/rich-text'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
@@ -6,10 +7,12 @@ import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { ListPlugin } from '@lexical/react/LexicalListPlugin'
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { GrammarlyEditorPlugin } from '@grammarly/editor-sdk-react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import debounce from 'lodash.debounce'
 import { useTranslation } from 'react-i18next'
 import { useSettings } from '@sl/theme'
 import { TagNode } from './nodes/Tag'
@@ -19,18 +22,11 @@ import ToolbarPlugin from './plugins/Toolbar'
 import theme from './theme'
 import { RichtextEditorProps } from './types'
 
-const RichtextEditor = ({ onSave, initialValue }: RichtextEditorProps) => {
-    const { indentParagraph, spellCheck } = useSettings()
+const RichtextEditor = ({ id, onSave, initialValue }: RichtextEditorProps) => {
+    const { autoSave, indentParagraph, spellCheck } = useSettings()
     const { t } = useTranslation()
 
-    const initialConfig = {
-        namespace: 'rte',
-        theme: { ...theme, ['paragraph']: indentParagraph ? 'indent-4 mb-2' : 'mb-2' },
-        nodes: [ListItemNode, ListNode, QuoteNode, TagNode],
-        onError(error: Error) {
-            throw error
-        }
-    }
+    const doSave = debounce((html) => onSave(html), 1000)
 
     const Editor = () =>
         spellCheck ? (
@@ -48,15 +44,23 @@ const RichtextEditor = ({ onSave, initialValue }: RichtextEditorProps) => {
         )
 
     return (
-        <LexicalComposer initialConfig={initialConfig}>
-            <ToolbarPlugin onSave={onSave} />
+        <LexicalComposer
+            initialConfig={{
+                namespace: `rte-${id}`,
+                theme: { ...theme, ['paragraph']: indentParagraph ? 'indent-4 mb-2' : 'mb-2' },
+                nodes: [ListItemNode, ListNode, QuoteNode, TagNode],
+                onError(error: Error) {
+                    throw error
+                }
+            }}>
+            <ToolbarPlugin onSave={autoSave ? null : onSave} />
             <Box className='rte-container relative flex-grow overflow-auto h-0 p-3'>
                 <RichTextPlugin
                     contentEditable={<Editor />}
                     placeholder={
                         <Typography
                             variant='body1'
-                            className='text-slate-500 overflow-hidden absolute text-ellipsis
+                            className='text-slate-500 overflow-hidden absolute
                             top-[15px] left-[10px] inline-block pointer-events-none'>
                             {t('component.richtextEditor.placeholder')}
                         </Typography>
@@ -65,8 +69,17 @@ const RichtextEditor = ({ onSave, initialValue }: RichtextEditorProps) => {
                 />
                 <AutoFocusPlugin />
                 <HistoryPlugin />
-                {initialValue ? <InitialValuePlugin text={initialValue} /> : null}
+                <InitialValuePlugin text={initialValue} />
                 <ListPlugin />
+                {autoSave ? (
+                    <OnChangePlugin
+                        onChange={(_, editor) => {
+                            editor.update(() => {
+                                doSave($generateHtmlFromNodes(editor, null))
+                            })
+                        }}
+                    />
+                ) : null}
                 <TagPlugin />
             </Box>
         </LexicalComposer>

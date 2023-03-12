@@ -70,7 +70,10 @@ const LocationPanel = ({ locations }: LocationPanelProps) => {
                                             confirm={t('layout.work.panel.location.deleteConfirm', {
                                                 name: location.displayName
                                             })}
-                                            onClick={() => location.delete()}
+                                            onClick={() => {
+                                                tabs.removeTab(location.id)
+                                                return location.delete()
+                                            }}
                                         />
                                     </Stack>
                                 </Box>

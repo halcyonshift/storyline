@@ -66,7 +66,10 @@ const NotePanel = ({ notes }: NotePanelProps) => {
                                             confirm={t('layout.work.panel.note.deleteConfirm', {
                                                 name: note.title
                                             })}
-                                            onClick={() => note.delete()}
+                                            onClick={() => {
+                                                tabs.removeTab(note.id)
+                                                return note.delete()
+                                            }}
                                         />
                                     </Stack>
                                 </Box>
