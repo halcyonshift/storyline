@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 
 import { ResultType } from './types'
 
-const Search = () => {
+const Search = ({ open }: { open: boolean }) => {
     const [fullWord, setFullWord] = useState<boolean>(false)
     const [caseSensitive, setCaseSensitive] = useState<boolean>(false)
     const [keyWords, setKeyWords] = useState<string>('')
@@ -66,7 +66,7 @@ const Search = () => {
         })
     }
 
-    return (
+    return open ? (
         <Box className='rounded p-2 shadow-md'>
             <Box className='flex'>
                 <Box className='flex-grow'>
@@ -118,6 +118,8 @@ const Search = () => {
                 ) : null}
             </Box>
         </Box>
+    ) : (
+        <></>
     )
 }
 

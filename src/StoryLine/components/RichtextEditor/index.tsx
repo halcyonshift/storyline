@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { ListItemNode, ListNode } from '@lexical/list'
 import { QuoteNode } from '@lexical/rich-text'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
@@ -13,7 +12,9 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { useSettings } from '@sl/theme'
+import { TagNode } from './nodes/Tag'
 import InitialValuePlugin from './plugins/InitialValue'
+import TagPlugin from './plugins/Tag'
 import ToolbarPlugin from './plugins/Toolbar'
 import theme from './theme'
 import { RichtextEditorProps } from './types'
@@ -25,7 +26,7 @@ const RichtextEditor = ({ onSave, initialValue }: RichtextEditorProps) => {
     const initialConfig = {
         namespace: 'rte',
         theme: { ...theme, ['paragraph']: indentParagraph ? 'indent-4 mb-2' : 'mb-2' },
-        nodes: [ListItemNode, ListNode, QuoteNode],
+        nodes: [ListItemNode, ListNode, QuoteNode, TagNode],
         onError(error: Error) {
             throw error
         }
@@ -66,6 +67,7 @@ const RichtextEditor = ({ onSave, initialValue }: RichtextEditorProps) => {
                 <HistoryPlugin />
                 {initialValue ? <InitialValuePlugin text={initialValue} /> : null}
                 <ListPlugin />
+                <TagPlugin />
             </Box>
         </LexicalComposer>
     )

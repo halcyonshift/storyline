@@ -34,7 +34,6 @@ import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Snackbar from '@mui/material/Snackbar'
 import Stack from '@mui/material/Stack'
-
 import {
     $createParagraphNode,
     $getSelection,
@@ -49,8 +48,11 @@ import {
 } from 'lexical'
 import { useTranslation } from 'react-i18next'
 import { useOnKeyPressed } from '@sl/utils/useKeyPress'
+import { TOGGLE_TAG_COMMAND, $isTagNode } from '../../nodes/Tag'
 import Search from '../Search'
 import { ToolbarPluginProps } from './types'
+import TagEdit from '../../ui/Tag'
+import { getSelectedNode } from '../../utils/getSelectedNode'
 
 const ToolbarPlugin = ({ onSave }: ToolbarPluginProps): ReactElement => {
     const [canUndo, setCanUndo] = useState<boolean>(false)
@@ -60,6 +62,7 @@ const ToolbarPlugin = ({ onSave }: ToolbarPluginProps): ReactElement => {
     const [isItalic, setIsItalic] = useState<boolean>(false)
     const [isUnderline, setIsUnderline] = useState<boolean>(false)
     const [isStrikethrough, setIsStrikethrough] = useState<boolean>(false)
+    const [isTag, setIsTag] = useState<boolean>(false)
     const [showSearch, setShowSearch] = useState<boolean>(false)
     const [isSaving, setIsSaving] = useState<boolean>(false)
     const [showAlert, setShowAlert] = useState<boolean>(false)
@@ -68,6 +71,17 @@ const ToolbarPlugin = ({ onSave }: ToolbarPluginProps): ReactElement => {
     const { t } = useTranslation()
 
     useOnKeyPressed('Meta+f', () => setShowSearch(!showSearch))
+
+    const insertTag = useCallback(
+        (mode: string) => {
+            if (!isTag) {
+                editor.dispatchCommand(TOGGLE_TAG_COMMAND, mode)
+            } else {
+                editor.dispatchCommand(TOGGLE_TAG_COMMAND, null)
+            }
+        },
+        [editor, isTag]
+    )
 
     const formatQuote = () => {
         editor.update(() => {
@@ -100,6 +114,11 @@ const ToolbarPlugin = ({ onSave }: ToolbarPluginProps): ReactElement => {
                     setBlockType(element.getType())
                 }
             }
+
+            const node = getSelectedNode(selection)
+            const parent = node.getParent()
+
+            setIsTag($isTagNode(node) || $isTagNode(parent))
             setIsBold(selection.hasFormat('bold'))
             setIsItalic(selection.hasFormat('italic'))
             setIsUnderline(selection.hasFormat('underline'))
@@ -243,15 +262,17 @@ const ToolbarPlugin = ({ onSave }: ToolbarPluginProps): ReactElement => {
                 </IconButton>
                 <IconButton
                     aria-label={t('component.richtext.toolbar.character')}
-                    onClick={formatQuote}>
+                    onClick={() => insertTag('character')}>
                     <PersonIcon />
                 </IconButton>
                 <IconButton
                     aria-label={t('component.richtext.toolbar.location')}
-                    onClick={formatQuote}>
+                    onClick={() => insertTag('location')}>
                     <LocationOnIcon />
                 </IconButton>
-                <IconButton aria-label={t('component.richtext.toolbar.item')} onClick={formatQuote}>
+                <IconButton
+                    aria-label={t('component.richtext.toolbar.item')}
+                    onClick={() => insertTag('item')}>
                     <CategoryIcon />
                 </IconButton>
                 <Divider orientation='vertical' flexItem />
@@ -278,7 +299,8 @@ const ToolbarPlugin = ({ onSave }: ToolbarPluginProps): ReactElement => {
                     </IconButton>
                 ) : null}
             </Stack>
-            {showSearch ? <Search /> : null}
+            <Search open={showSearch} />
+            <TagEdit isTag={isTag} />
             <Snackbar
                 open={showAlert}
                 autoHideDuration={6000}
