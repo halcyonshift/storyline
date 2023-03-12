@@ -8,7 +8,7 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import { $getRoot, TextNode, SELECTION_CHANGE_COMMAND } from 'lexical'
+import { $getRoot, TextNode } from 'lexical'
 import debounce from 'lodash.debounce'
 import { useTranslation } from 'react-i18next'
 
@@ -62,7 +62,6 @@ const Search = () => {
         editor.update(() => {
             const result = results[i]
             result.node.select(result.match.index, result.match.index + keyWords.length)
-            editor.dispatchCommand(SELECTION_CHANGE_COMMAND, undefined)
             setResultIndex(i)
         })
     }

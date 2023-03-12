@@ -59,7 +59,7 @@ const ToolbarPlugin = (): ReactElement => {
     const [editor] = useLexicalComposerContext()
     const { t } = useTranslation()
 
-    useOnKeyPressed('Meta+f', () => setShowSearch(true))
+    useOnKeyPressed('Meta+f', () => setShowSearch(!showSearch))
 
     const formatQuote = () => {
         editor.update(() => {
@@ -244,7 +244,7 @@ const ToolbarPlugin = (): ReactElement => {
                 <Divider orientation='vertical' flexItem />
                 <IconButton
                     aria-label={t('component.richtext.toolbar.search')}
-                    onClick={() => setShowSearch(true)}>
+                    onClick={() => setShowSearch(!showSearch)}>
                     <SearchIcon />
                 </IconButton>
                 <IconButton aria-label={t('component.richtext.toolbar.save')}>
