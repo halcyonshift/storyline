@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react'
 import { Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
+import Panel from '@sl/components/Panel'
 import CharacterModel from '@sl/db/models/CharacterModel'
 import { CHARACTER_ICONS } from '@sl/constants/icons'
 import { CharacterPanelProps } from '../types'
-
-import Panel from '../'
 
 const CharacterPanel = ({ characters }: CharacterPanelProps) => {
     const [primary, setPrimary] = useState<CharacterModel[]>([])

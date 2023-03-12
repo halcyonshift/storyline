@@ -8,10 +8,10 @@ import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { GLOBAL_ICONS, LOCATION_ICONS } from '@sl/constants/icons'
+import Panel from '@sl/components/Panel'
 import GroupToggle from '@sl/components/Panel/GroupToggle'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { LocationPanelProps } from '../types'
-import Panel from '../'
 
 const LocationPanel = ({ locations, loadTab }: LocationPanelProps) => {
     const { t } = useTranslation()

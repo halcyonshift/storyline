@@ -7,11 +7,10 @@ import { styled } from '@mui/material/styles'
 import debounce from 'lodash.debounce'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
-
+import Panel from '@sl/components/Panel'
 import { SEARCH_ICONS } from '@sl/constants/icons'
 import WorkModel from '@sl/db/models/WorkModel'
 import { PanelType } from '../types'
-import Panel from '..'
 
 const SearchInput = styled(InputBase)(() => ({
     '& .MuiInputBase-input': {

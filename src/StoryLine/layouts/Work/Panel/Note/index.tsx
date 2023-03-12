@@ -7,11 +7,11 @@ import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
+import Panel from '@sl/components/Panel'
 import GroupToggle from '@sl/components/Panel/GroupToggle'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { GLOBAL_ICONS, NOTE_ICONS } from '@sl/constants/icons'
 import { NotePanelProps } from '../types'
-import Panel from '..'
 
 const NotePanel = ({ notes, loadTab }: NotePanelProps) => {
     const [group, setGroup] = useState<boolean>(false)

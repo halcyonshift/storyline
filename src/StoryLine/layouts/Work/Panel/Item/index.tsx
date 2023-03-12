@@ -7,10 +7,10 @@ import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { GLOBAL_ICONS, ITEM_ICONS } from '@sl/constants/icons'
+import Panel from '@sl/components/Panel'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 
 import { ItemPanelProps } from '../types'
-import Panel from '../'
 
 const ItemPanel = ({ items, loadTab }: ItemPanelProps) => {
     const { t } = useTranslation()
