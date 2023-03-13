@@ -19,7 +19,7 @@ const SceneView = ({ section }: SectionViewType) => {
         return await section.updateBody(html)
     }
 
-    return <RichtextEditor id={section.id} onSave={onSave} initialValue={initialValue} />
+    return <RichtextEditor scene={section} onSave={onSave} initialValue={initialValue} />
 }
 
 export default SceneView

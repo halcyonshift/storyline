@@ -13,7 +13,8 @@ import {
     PersonAddAlt,
     PersonAddAlt1,
     PostAdd,
-    Queue
+    Queue,
+    RestorePage
 } from '@mui/icons-material'
 
 export const GLOBAL_ICONS = {
@@ -49,7 +50,8 @@ export const SEARCH_ICONS = {
 export const SECTION_ICONS = {
     addPart: <Queue fontSize='inherit' color='inherit' />,
     addChapter: <LibraryBooks fontSize='inherit' color='inherit' />,
-    addScene: <Article fontSize='inherit' color='inherit' />
+    addScene: <Article fontSize='inherit' color='inherit' />,
+    revision: <RestorePage fontSize='inherit' color='inherit' />
 }
 
 export default {

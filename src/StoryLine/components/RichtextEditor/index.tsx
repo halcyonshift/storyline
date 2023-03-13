@@ -22,7 +22,7 @@ import ToolbarPlugin from './plugins/Toolbar'
 import theme from './theme'
 import { RichtextEditorProps } from './types'
 
-const RichtextEditor = ({ id, onSave, initialValue }: RichtextEditorProps) => {
+const RichtextEditor = ({ scene, onSave, initialValue }: RichtextEditorProps) => {
     const { autoSave, indentParagraph, spellCheck } = useSettings()
     const { t } = useTranslation()
 
@@ -46,14 +46,14 @@ const RichtextEditor = ({ id, onSave, initialValue }: RichtextEditorProps) => {
     return (
         <LexicalComposer
             initialConfig={{
-                namespace: `rte-${id}`,
+                namespace: 'rte',
                 theme: { ...theme, ['paragraph']: indentParagraph ? 'indent-4 mb-2' : 'mb-2' },
                 nodes: [ListItemNode, ListNode, QuoteNode, TagNode],
                 onError(error: Error) {
                     throw error
                 }
             }}>
-            <ToolbarPlugin onSave={autoSave ? null : onSave} />
+            <ToolbarPlugin scene={scene} onSave={autoSave ? null : onSave} />
             <Box className='rte-container relative flex-grow overflow-auto h-0 p-3'>
                 <RichTextPlugin
                     contentEditable={<Editor />}

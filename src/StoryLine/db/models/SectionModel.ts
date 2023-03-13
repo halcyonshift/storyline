@@ -166,6 +166,20 @@ export default class SectionModel extends Model {
         })
     }
 
+    async addRevision() {
+        const count = await this.revisions.fetchCount()
+        return await this.addSection({
+            mode: 'revision',
+            order: count + 1,
+            title: this.title,
+            description: this.description,
+            body: this.body,
+            date: this.date,
+            words: this.words,
+            deadlineAt: this.deadlineAt
+        })
+    }
+
     async addChapter() {
         const count = await this.chapters.fetchCount()
         return await this.addSection({

@@ -169,6 +169,10 @@ const router = createHashRouter([
                             {
                                 path: 'edit',
                                 element: <p>Edit section</p>
+                            },
+                            {
+                                path: 'revisions',
+                                element: <p>Revisions</p>
                             }
                         ]
                     },

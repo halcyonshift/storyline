@@ -207,8 +207,10 @@
                     "addPart": "Add part",
                     "addChapter": "Add chapter",
                     "addScene": "Add scene",
+                    "addRevision": "Create revision",
                     "edit": "Edit",
-                    "delete": "Delete"
+                    "delete": "Delete",
+                    "deleteConfirm": "Are you sure you want to delete {{name}}?"
                 }
             }
         }

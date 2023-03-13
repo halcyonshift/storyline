@@ -5,7 +5,7 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import { GLOBAL_ICONS } from '@sl/constants/icons'
+import { GLOBAL_ICONS, SECTION_ICONS } from '@sl/constants/icons'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import useTabs from '@sl/layouts/Work/useTabs'
 
@@ -39,6 +39,12 @@ const SceneList = ({ scenes }: SceneListProps) => {
                                     </Typography>
                                 </ListItemButton>
                                 <Stack spacing={0} direction='row'>
+                                    <TooltipIconButton
+                                        size='small'
+                                        text='layout.work.panel.section.addRevision'
+                                        icon={SECTION_ICONS.revision}
+                                        onClick={() => scene.addRevision()}
+                                    />
                                     <TooltipIconButton
                                         size='small'
                                         text='layout.work.panel.section.edit'

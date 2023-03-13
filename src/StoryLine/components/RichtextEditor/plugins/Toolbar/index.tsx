@@ -22,6 +22,7 @@ import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft'
 import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter'
 import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight'
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify'
+import RestorePage from '@mui/icons-material/RestorePage'
 import PersonIcon from '@mui/icons-material/Person'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import RedoIcon from '@mui/icons-material/Redo'
@@ -32,6 +33,8 @@ import UndoIcon from '@mui/icons-material/Undo'
 import Alert from '@mui/material/Alert'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
 import Snackbar from '@mui/material/Snackbar'
 import Stack from '@mui/material/Stack'
 import {
@@ -47,14 +50,16 @@ import {
     UNDO_COMMAND
 } from 'lexical'
 import { useTranslation } from 'react-i18next'
+import SectionModel from '@sl/db/models/SectionModel'
 import { useOnKeyPressed } from '@sl/utils/useKeyPress'
 import { TOGGLE_TAG_COMMAND, $isTagNode } from '../../nodes/Tag'
 import Search from '../Search'
 import { ToolbarPluginProps } from './types'
 import TagEdit from '../../ui/Tag'
 import { getSelectedNode } from '../../utils/getSelectedNode'
+import useTabs from '@sl/layouts/Work/useTabs'
 
-const ToolbarPlugin = ({ onSave }: ToolbarPluginProps): ReactElement => {
+const ToolbarPlugin = ({ onSave, scene }: ToolbarPluginProps): ReactElement => {
     const [canUndo, setCanUndo] = useState<boolean>(false)
     const [canRedo, setCanRedo] = useState<boolean>(false)
     const [blockType, setBlockType] = useState<string>('paragraph')
@@ -66,9 +71,12 @@ const ToolbarPlugin = ({ onSave }: ToolbarPluginProps): ReactElement => {
     const [showSearch, setShowSearch] = useState<boolean>(false)
     const [isSaving, setIsSaving] = useState<boolean>(false)
     const [showAlert, setShowAlert] = useState<boolean>(false)
+    const [revisionMenu, setRevisionMenu] = useState<HTMLElement | null>()
+    const [revisions, setRevisions] = useState<SectionModel[]>([])
 
     const [editor] = useLexicalComposerContext()
     const { t } = useTranslation()
+    const tabs = useTabs()
 
     useOnKeyPressed('Meta+f', () => setShowSearch(!showSearch))
 
@@ -161,6 +169,11 @@ const ToolbarPlugin = ({ onSave }: ToolbarPluginProps): ReactElement => {
             ),
         [editor, updateToolbar]
     )
+
+    useEffect(() => {
+        const currentScene = tabs.sections.find((cs) => cs.id === scene.id)
+        currentScene.revisions.fetch().then((revisions) => setRevisions(revisions))
+    }, [tabs.sections])
 
     return (
         <>
@@ -281,22 +294,34 @@ const ToolbarPlugin = ({ onSave }: ToolbarPluginProps): ReactElement => {
                     onClick={() => setShowSearch(!showSearch)}>
                     <SearchIcon />
                 </IconButton>
+                <IconButton
+                    aria-label={t('component.richtext.toolbar.revision')}
+                    id='revision-button'
+                    aria-controls={revisionMenu ? 'revision-menu' : undefined}
+                    aria-haspopup={true}
+                    aria-expanded={revisionMenu ? 'true' : undefined}
+                    onClick={(e) => setRevisionMenu(e.currentTarget)}>
+                    <RestorePage />
+                </IconButton>
                 {onSave ? (
-                    <IconButton
-                        disabled={isSaving}
-                        aria-label={t('component.richtext.toolbar.save')}
-                        onClick={() => {
-                            setIsSaving(true)
-                            editor.update(() => {
-                                const htmlString = $generateHtmlFromNodes(editor, null)
-                                onSave(htmlString).then(() => {
-                                    setIsSaving(false)
-                                    setShowAlert(true)
+                    <>
+                        <Divider orientation='vertical' flexItem />
+                        <IconButton
+                            disabled={isSaving}
+                            aria-label={t('component.richtext.toolbar.save')}
+                            onClick={() => {
+                                setIsSaving(true)
+                                editor.update(() => {
+                                    const htmlString = $generateHtmlFromNodes(editor, null)
+                                    onSave(htmlString).then(() => {
+                                        setIsSaving(false)
+                                        setShowAlert(true)
+                                    })
                                 })
-                            })
-                        }}>
-                        <SaveIcon />
-                    </IconButton>
+                            }}>
+                            <SaveIcon />
+                        </IconButton>
+                    </>
                 ) : null}
             </Stack>
             <Search open={showSearch} />
@@ -310,6 +335,20 @@ const ToolbarPlugin = ({ onSave }: ToolbarPluginProps): ReactElement => {
                     Saved
                 </Alert>
             </Snackbar>
+            <Menu
+                id='revision-menu'
+                anchorEl={revisionMenu}
+                open={Boolean(revisionMenu)}
+                onClose={() => setRevisionMenu(null)}
+                MenuListProps={{
+                    'aria-labelledby': 'revision-button'
+                }}>
+                {revisions.map((revision) => (
+                    <MenuItem key={revision.id} onClick={() => setRevisionMenu(null)}>
+                        Version {revision.order}
+                    </MenuItem>
+                ))}
+            </Menu>
         </>
     )
 }
