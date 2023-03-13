@@ -146,7 +146,7 @@ export default class SectionModel extends Model {
         .query(
             Q.where('section_id', this.id),
             Q.where('mode', 'revision'),
-            Q.sortBy('order', Q.asc)
+            Q.sortBy('order', Q.desc)
         )
 
     @writer async addSection(data: SectionDataType) {

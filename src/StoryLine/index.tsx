@@ -159,8 +159,6 @@ const router = createHashRouter([
                     {
                         path: 'section/:section_id',
                         id: 'section',
-                        loader: async ({ params }) =>
-                            await database.get<SectionModel>('section').find(params.section_id),
                         children: [
                             {
                                 index: true,
