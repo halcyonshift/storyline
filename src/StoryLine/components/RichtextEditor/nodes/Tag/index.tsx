@@ -6,7 +6,8 @@ import {
     $getSelection,
     $setSelection,
     ElementNode,
-    EditorConfig
+    EditorConfig,
+    RangeSelection
 } from 'lexical'
 import { LinkNode, SerializedLinkNode } from '@lexical/link'
 import utils from '@lexical/utils'
@@ -47,7 +48,7 @@ export class TagNode extends LinkNode {
         return {
             a: () => ({
                 conversion: convertAnchorElement,
-                priority: 2 as const // higher than link node (ie: 1)
+                priority: 2 as const
             })
         }
     }
@@ -66,6 +67,16 @@ export class TagNode extends LinkNode {
             ...super.exportJSON(),
             type: this.getType()
         }
+    }
+
+    insertNewAfter(selection: RangeSelection, restoreSelection = true): null | ElementNode {
+        const element = this.getParentOrThrow().insertNewAfter(selection, restoreSelection)
+        if ($isElementNode(element)) {
+            const tagNode = $createTagNode(this.__url)
+            element.append(tagNode)
+            return tagNode
+        }
+        return null
     }
 }
 

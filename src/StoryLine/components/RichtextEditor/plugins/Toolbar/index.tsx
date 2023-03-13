@@ -28,6 +28,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn'
 import RedoIcon from '@mui/icons-material/Redo'
 import SaveIcon from '@mui/icons-material/Save'
 import SearchIcon from '@mui/icons-material/Search'
+import StickyNote2Icon from '@mui/icons-material/StickyNote2'
 import TextSnippetIcon from '@mui/icons-material/TextSnippet'
 import UndoIcon from '@mui/icons-material/Undo'
 import Alert from '@mui/material/Alert'
@@ -274,6 +275,7 @@ const ToolbarPlugin = ({ onSave, scene, setInitialValue }: ToolbarPluginProps): 
                     onClick={formatQuote}>
                     <TextSnippetIcon />
                 </IconButton>
+                <Divider orientation='vertical' flexItem />
                 <IconButton
                     aria-label={t('component.richtext.toolbar.character')}
                     onClick={() => insertTag('character')}>
@@ -288,6 +290,11 @@ const ToolbarPlugin = ({ onSave, scene, setInitialValue }: ToolbarPluginProps): 
                     aria-label={t('component.richtext.toolbar.item')}
                     onClick={() => insertTag('item')}>
                     <CategoryIcon />
+                </IconButton>
+                <IconButton
+                    aria-label={t('component.richtext.toolbar.note')}
+                    onClick={() => insertTag('note')}>
+                    <StickyNote2Icon />
                 </IconButton>
                 <Divider orientation='vertical' flexItem />
                 <IconButton

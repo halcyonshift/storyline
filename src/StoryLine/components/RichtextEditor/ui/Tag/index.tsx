@@ -12,6 +12,7 @@ const TagEdit = ({ isTag }: { isTag: boolean }) => {
     const [editor] = useLexicalComposerContext()
     const [linkUrl, setLinkUrl] = useState<string>('')
     const [editedUrl, setEditedUrl] = useState<string>('')
+    const [id, setId] = useState<string>('')
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
 
     const transformNode = (evt: React.FormEvent<HTMLFormElement>) => {
