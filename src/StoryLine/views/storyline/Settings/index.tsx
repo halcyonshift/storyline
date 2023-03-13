@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import SettingsForm from '@sl/forms/StoryLine/Settings'
-import { useSettings } from '@sl/theme'
+import useSettings from '@sl/theme/useSettings'
 import { SettingsDataType } from '@sl/theme/types'
 
 const SettingsView = () => {

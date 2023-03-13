@@ -4,7 +4,7 @@ import { ThemeProvider } from '@mui/material/styles'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { Outlet } from 'react-router-dom'
-import { useSettings } from '@sl/theme'
+import useSettings from '@sl/theme/useSettings'
 
 const App = () => {
     const settings = useSettings()

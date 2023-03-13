@@ -11,7 +11,7 @@ import '@sl/i18n'
 import * as StoryLineViews from '@sl/views/StoryLine'
 import * as WorkViews from '@sl/views/Work'
 import * as Layouts from '@sl/layouts'
-import { SettingsProvider } from '@sl/theme'
+import { SettingsProvider } from '@sl/theme/useSettings'
 
 const router = createHashRouter([
     {

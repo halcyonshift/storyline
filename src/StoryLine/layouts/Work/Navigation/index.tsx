@@ -17,7 +17,7 @@ import Tooltip from '@mui/material/Tooltip'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { NavigationProps, TogglePanelType } from '@sl/layouts/Work/Navigation/types'
-import { useSettings } from '@sl/theme'
+import useSettings from '@sl/theme/useSettings'
 
 const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) => {
     const { t } = useTranslation()

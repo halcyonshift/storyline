@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import Accordion from '@sl/components/Accordion'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { GLOBAL_ICONS, SECTION_ICONS } from '@sl/constants/icons'
-import { useSettings } from '@sl/theme'
+import useSettings from '@sl/theme/useSettings'
 import ChapterAccordion from '../ChapterAccordion'
 import { PartAccordionProps } from '../types'
 

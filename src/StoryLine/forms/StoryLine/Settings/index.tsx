@@ -39,7 +39,7 @@ import {
     DEFAULT_PARAGRAPH_SPACING,
     DEFAULT_SPELL_CHECK
 } from '@sl/constants/defaults'
-import { useSettings } from '@sl/theme'
+import useSettings from '@sl/theme/useSettings'
 import { SettingsDataType } from '@sl/theme/types'
 import { SettingsFormProps } from './types'
 

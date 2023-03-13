@@ -1,11 +1,11 @@
-import { createContext, useEffect, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { TabType, TabsContextType, TabsProviderProps } from './types'
 
-export const TabsContext = createContext({} as TabsContextType)
+const TabsContext = createContext({} as TabsContextType)
 
-const TabsProvider = ({
+export const TabsProvider = ({
     children,
     characters,
     items,
@@ -84,4 +84,6 @@ const TabsProvider = ({
     )
 }
 
-export default TabsProvider
+const useTabs = () => useContext(TabsContext)
+
+export default useTabs

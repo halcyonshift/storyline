@@ -15,9 +15,8 @@ import { withDatabase } from '@nozbe/watermelondb/DatabaseProvider'
 import withObservables from '@nozbe/with-observables'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useNavigate } from 'react-router-dom'
-import { useSettings } from '@sl/theme'
-import TabsProvider from './context'
-import useTabs from './useTabs'
+import useSettings from '@sl/theme/useSettings'
+import useTabs, { TabsProvider } from './useTabs'
 import {
     CharacterModel,
     ItemModel,

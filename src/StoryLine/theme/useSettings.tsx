@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useState } from 'react'
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { orange } from '@mui/material/colors'
 import { createTheme } from '@mui/material/styles'
 import { Theme } from '@mui/system'
@@ -23,9 +23,9 @@ import { colors } from '@sl/theme/utils'
 import { LanguageType } from '@sl/i18n/types'
 import { SettingsContextType, FontType, DisplayModeType } from './types'
 
-export const SettingsContext = createContext({} as SettingsContextType)
+const SettingsContext = createContext({} as SettingsContextType)
 
-const SettingsProvider = ({ children }: { children: ReactNode }) => {
+export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     const database = useDatabase()
     const [autoBackupFreq, setAutoBackupFreq] = useState<number>(DEFAULT_AUTO_BACKUP_FREQ)
     const [autoBackupMax, setAutoBackupMax] = useState<number>(DEFAULT_AUTO_BACKUP_MAX)
@@ -174,4 +174,6 @@ const SettingsProvider = ({ children }: { children: ReactNode }) => {
     )
 }
 
-export default SettingsProvider
+const useSettings = () => useContext(SettingsContext)
+
+export default useSettings
