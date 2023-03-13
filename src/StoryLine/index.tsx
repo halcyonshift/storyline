@@ -6,12 +6,12 @@ import { createHashRouter, RouterProvider } from 'react-router-dom'
 
 import App from '@sl/App'
 import database from '@sl/db'
-import { LocationModel, NoteModel, SectionModel, WorkModel } from '@sl/db/models'
+import { LocationModel, NoteModel, WorkModel } from '@sl/db/models'
 import '@sl/i18n'
-import * as StoryLineViews from '@sl/views/StoryLine'
-import * as WorkViews from '@sl/views/Work'
 import * as Layouts from '@sl/layouts'
 import { SettingsProvider } from '@sl/theme/useSettings'
+import * as StoryLineViews from '@sl/views/StoryLine'
+import * as WorkViews from '@sl/views/Work'
 
 const router = createHashRouter([
     {

@@ -59,7 +59,7 @@ import TagEdit from '../../ui/Tag'
 import { getSelectedNode } from '../../utils/getSelectedNode'
 import useTabs from '@sl/layouts/Work/useTabs'
 
-const ToolbarPlugin = ({ onSave, scene }: ToolbarPluginProps): ReactElement => {
+const ToolbarPlugin = ({ onSave, scene, setInitialValue }: ToolbarPluginProps): ReactElement => {
     const [canUndo, setCanUndo] = useState<boolean>(false)
     const [canRedo, setCanRedo] = useState<boolean>(false)
     const [blockType, setBlockType] = useState<string>('paragraph')
@@ -73,6 +73,7 @@ const ToolbarPlugin = ({ onSave, scene }: ToolbarPluginProps): ReactElement => {
     const [showAlert, setShowAlert] = useState<boolean>(false)
     const [revisionMenu, setRevisionMenu] = useState<HTMLElement | null>()
     const [revisions, setRevisions] = useState<SectionModel[]>([])
+    const [current, setCurrent] = useState<string>()
 
     const [editor] = useLexicalComposerContext()
     const { t } = useTranslation()
@@ -343,8 +344,21 @@ const ToolbarPlugin = ({ onSave, scene }: ToolbarPluginProps): ReactElement => {
                 MenuListProps={{
                     'aria-labelledby': 'revision-button'
                 }}>
+                <MenuItem
+                    onClick={() => {
+                        setInitialValue(current)
+                        setRevisionMenu(null)
+                    }}>
+                    Current
+                </MenuItem>
                 {revisions.map((revision) => (
-                    <MenuItem key={revision.id} onClick={() => setRevisionMenu(null)}>
+                    <MenuItem
+                        key={revision.id}
+                        onClick={() => {
+                            setCurrent(scene.body)
+                            setInitialValue(revision.body)
+                            setRevisionMenu(null)
+                        }}>
                         Version {revision.order}
                     </MenuItem>
                 ))}

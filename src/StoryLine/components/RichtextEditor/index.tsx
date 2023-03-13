@@ -22,7 +22,7 @@ import ToolbarPlugin from './plugins/Toolbar'
 import theme from './theme'
 import { RichtextEditorProps } from './types'
 
-const RichtextEditor = ({ scene, onSave, initialValue }: RichtextEditorProps) => {
+const RichtextEditor = ({ scene, onSave, initialValue, setInitialValue }: RichtextEditorProps) => {
     const { autoSave, indentParagraph, spellCheck } = useSettings()
     const { t } = useTranslation()
 
@@ -53,7 +53,11 @@ const RichtextEditor = ({ scene, onSave, initialValue }: RichtextEditorProps) =>
                     throw error
                 }
             }}>
-            <ToolbarPlugin scene={scene} onSave={autoSave ? null : onSave} />
+            <ToolbarPlugin
+                scene={scene}
+                onSave={autoSave ? null : onSave}
+                setInitialValue={setInitialValue}
+            />
             <Box className='rte-container relative flex-grow overflow-auto h-0 p-3'>
                 <RichTextPlugin
                     contentEditable={<Editor />}
