@@ -73,4 +73,8 @@ export default class NoteModel extends Model {
         await this.destroyPermanently()
         return true
     }
+
+    get displayName() {
+        return this.title
+    }
 }

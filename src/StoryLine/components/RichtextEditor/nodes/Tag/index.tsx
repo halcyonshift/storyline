@@ -17,9 +17,8 @@ function convertAnchorElement(domNode: Node) {
 
     if (domNode instanceof HTMLAnchorElement) {
         const href = domNode.getAttribute('href')
-        if (href?.includes('doctrine.fr/l/')) {
-            node = $createTagNode(href)
-        }
+        // ToDo Regex
+        node = $createTagNode(href)
     }
 
     return {
@@ -40,7 +39,9 @@ export class TagNode extends LinkNode {
 
     createDOM(config: EditorConfig): HTMLAnchorElement {
         const element = super.createDOM(config)
-        utils.addClassNamesToElement(element, 'tag text-emerald-500')
+        element.href = `${element}/0`
+        const parts = element.href.split('/')
+        utils.addClassNamesToElement(element, `tag tag-${parts[1]}`)
         return element
     }
 
@@ -101,7 +102,6 @@ export function toggleTag(url: null | string): void {
         const nodes = sel.extract()
 
         if (url === null) {
-            // Remove LinkNodes
             nodes.forEach((node) => {
                 const parent = node.getParent()
 
@@ -116,12 +116,9 @@ export function toggleTag(url: null | string): void {
                 }
             })
         } else {
-            // Add or merge LinkNodes
             if (nodes.length === 1) {
                 const firstNode = nodes[0]
 
-                // if the first node is a LinkNode or if its
-                // parent is a LinkNode, we update the URL.
                 if ($isTagNode(firstNode)) {
                     firstNode.setURL(url)
                     return
@@ -129,9 +126,6 @@ export function toggleTag(url: null | string): void {
                     const parent = firstNode.getParent()
 
                     if ($isTagNode(parent)) {
-                        // set parent to be the current linkNode
-                        // so that other nodes in the same parent
-                        // aren't handled separately below.
                         parent.setURL(url)
                         return
                     }
