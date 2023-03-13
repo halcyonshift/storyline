@@ -17,7 +17,6 @@ import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautif
 
 import { useTranslation } from 'react-i18next'
 import { Outlet, useNavigate } from 'react-router-dom'
-import useSettings from '@sl/theme/useSettings'
 import useTabs, { TabsProvider } from './useTabs'
 import {
     CharacterModel,
@@ -41,7 +40,6 @@ import { TabbedWorkLayoutProps } from './types'
 const WorkLayout = () => {
     const navigate = useNavigate()
     const { t } = useTranslation()
-    const settings = useSettings()
     const tabs = useTabs()
 
     const [currentPanel, setCurrentPanel] = useState<string | null>()
@@ -87,24 +85,14 @@ const WorkLayout = () => {
                     currentPanel={currentPanel}
                     setCurrentPanel={setCurrentPanel}
                 />
-                {currentPanel ? (
-                    <Box
-                        sx={{ backgroundColor: settings.getHex(50) }}
-                        className={`flex flex-col border-r-slate-400 border-r w-1/5`}>
-                        {currentPanel === 'character' ? (
-                            <CharacterPanel characters={tabs.characters} />
-                        ) : null}
-                        {currentPanel === 'item' ? <ItemPanel items={tabs.items} /> : null}
-                        {currentPanel === 'location' ? (
-                            <LocationPanel locations={tabs.locations} />
-                        ) : null}
-                        {currentPanel === 'note' ? <NotePanel notes={tabs.notes} /> : null}
-                        {currentPanel === 'search' ? <SearchPanel /> : null}
-                        {currentPanel === 'section' ? (
-                            <SectionPanel sections={tabs.sections} />
-                        ) : null}
-                    </Box>
+                {currentPanel === 'character' ? (
+                    <CharacterPanel characters={tabs.characters} />
                 ) : null}
+                {currentPanel === 'item' ? <ItemPanel items={tabs.items} /> : null}
+                {currentPanel === 'location' ? <LocationPanel locations={tabs.locations} /> : null}
+                {currentPanel === 'note' ? <NotePanel notes={tabs.notes} /> : null}
+                {currentPanel === 'search' ? <SearchPanel /> : null}
+                {currentPanel === 'section' ? <SectionPanel sections={tabs.sections} /> : null}
                 <Box className='flex flex-col flex-grow'>
                     {tabs.showTabs ? (
                         <DragDropContext onDragEnd={onDragEnd}>
