@@ -10,8 +10,8 @@ import {
     writer
 } from '@nozbe/watermelondb/decorators'
 import { LatLngExpression } from 'leaflet'
+import { Status, type StatusType } from '@sl/constants/status'
 import { LocationDataType } from './types'
-
 import NoteModel from './NoteModel'
 import WorkModel from './WorkModel'
 
@@ -22,7 +22,7 @@ export default class LocationModel extends Model {
         note: { type: 'has_many', foreignKey: 'character_id' },
         location: { type: 'has_many', foreignKey: 'location_id' }
     }
-
+    @field('status') status!: string
     @text('name') name!: string
     @text('body') body!: string
     @text('latitude') latitude!: string
@@ -37,6 +37,17 @@ export default class LocationModel extends Model {
     @children('note') note!: Query<NoteModel>
     @children('location') locations!: Query<LocationModel>
 
+    get displayName() {
+        return this.name
+    }
+
+    get latLng(): LatLngExpression | null {
+        if (this.latitude && this.longitude) {
+            return [parseFloat(this.latitude), parseFloat(this.longitude)]
+        }
+        return null
+    }
+
     @writer async addLocation(data: LocationDataType) {
         const work = await this.work.fetch()
         // eslint-disable-next-line max-statements
@@ -49,6 +60,7 @@ export default class LocationModel extends Model {
             location.longitude = data.longitude
             location.url = data.url
             location.image = data.image
+            location.status = Status.TODO
         })
     }
 
@@ -71,14 +83,9 @@ export default class LocationModel extends Model {
         return true
     }
 
-    get displayName() {
-        return this.name
-    }
-
-    get latLng(): LatLngExpression | null {
-        if (this.latitude && this.longitude) {
-            return [parseFloat(this.latitude), parseFloat(this.longitude)]
-        }
-        return null
+    @writer async updateStatus(status: StatusType) {
+        await this.update((location) => {
+            location.status = status
+        })
     }
 }

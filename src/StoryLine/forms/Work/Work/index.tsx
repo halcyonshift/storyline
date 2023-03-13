@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 import ImageField from '@sl/components/ImageField'
+import { Status } from '@sl/constants/status'
 import { WorkModel } from '@sl/db/models'
 import { WorkDataType } from '@sl/db/models/types'
 import { WorkFormProps } from './types'
@@ -54,6 +55,7 @@ const WorkForm = ({
                         work.title = values.title
                         work.author = values.author
                         work.language = values.language
+                        work.status = Status.TODO
                     })
                 })
 

@@ -10,7 +10,7 @@ const databaseTables: string[] = [
     'work'
 ]
 
-const exportDB = async () => {
+export const exportDB = async () => {
     const database = useDatabase()
 
     const data = []
@@ -21,4 +21,6 @@ const exportDB = async () => {
     }
 }
 
-export default exportDB
+export const importDB = () => {
+    // ToDo import data
+}

@@ -1,7 +1,15 @@
 import { Model, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
-import { children, date, field, readonly, relation, text } from '@nozbe/watermelondb/decorators'
-
+import {
+    children,
+    date,
+    field,
+    readonly,
+    relation,
+    text,
+    writer
+} from '@nozbe/watermelondb/decorators'
+import { StatusType } from '@sl/constants/status'
 import NoteModel from './NoteModel'
 import WorkModel from './WorkModel'
 
@@ -13,6 +21,7 @@ export default class CharacterModel extends Model {
     }
 
     @field('mode') mode!: 'primary' | 'secondary' | 'tertiary'
+    @field('status') status!: string
     @text('display_name') displayName!: string
     @text('pronouns') pronouns!: string
     @text('first_name') firstName!: string
@@ -58,5 +67,11 @@ export default class CharacterModel extends Model {
 
     get isTertiary() {
         return Boolean(this.mode === 'tertiary')
+    }
+
+    @writer async updateStatus(status: StatusType) {
+        await this.update((character) => {
+            character.status = status
+        })
     }
 }

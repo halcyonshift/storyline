@@ -1,7 +1,7 @@
 import { Model, Q, Query } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, readonly, text, writer } from '@nozbe/watermelondb/decorators'
-
+import { Status, type StatusType } from '@sl/constants/status'
 import {
     CharacterDataType,
     ItemDataType,
@@ -25,6 +25,7 @@ export default class WorkModel extends Model {
         note: { type: 'has_many', foreignKey: 'work_id' },
         section: { type: 'has_many', foreignKey: 'work_id' }
     }
+    @field('status') status!: string
     @text('title') title!: string
     @text('author') author!: string
     @text('summary') summary!: string
@@ -41,6 +42,17 @@ export default class WorkModel extends Model {
     @children('location') location!: Query<LocationModel>
     @children('note') note!: Query<NoteModel>
     @children('section') section!: Query<SectionModel>
+
+    // ToDo finish search
+    async search(query: string, sceneOnly: boolean, caseSensitive: boolean, fullWord: boolean) {
+        const regex = new RegExp(fullWord ? `\\b${query}\\b` : query, caseSensitive ? 'g' : 'gi')
+
+        if (sceneOnly) {
+            const scenes = await this.scenes.fetch()
+            const results = scenes.filter((scene) => scene.body.match(regex))
+            return results
+        }
+    }
 
     @lazy parts = this.section.extend(Q.where('mode', 'part'), Q.sortBy('order', Q.asc))
 
@@ -106,6 +118,7 @@ export default class WorkModel extends Model {
             character.work.set(this)
             character.displayName = data.displayName
             character.mode = data.mode
+            character.status = Status.TODO
         })
     }
 
@@ -116,6 +129,7 @@ export default class WorkModel extends Model {
             item.body = data.body
             item.url = data.url
             item.image = data.image
+            item.status = Status.TODO
         })
     }
 
@@ -128,6 +142,7 @@ export default class WorkModel extends Model {
             note.image = data.image
             note.color = data.color
             note.date = data.date
+            note.status = Status.TODO
         })
     }
 
@@ -140,6 +155,7 @@ export default class WorkModel extends Model {
             location.longitude = data.longitude
             location.url = data.url
             location.image = data.image
+            location.status = Status.TODO
         })
     }
 
@@ -149,17 +165,13 @@ export default class WorkModel extends Model {
             section.work.set(this)
             section.order = count + 1
             section.mode = 'part'
+            section.status = Status.TODO
         })
     }
 
-    // ToDo finish search
-    async search(query: string, sceneOnly: boolean, caseSensitive: boolean, fullWord: boolean) {
-        const regex = new RegExp(fullWord ? `\\b${query}\\b` : query, caseSensitive ? 'g' : 'gi')
-
-        if (sceneOnly) {
-            const scenes = await this.scenes.fetch()
-            const results = scenes.filter((scene) => scene.body.match(regex))
-            return results
-        }
+    @writer async updateStatus(status: StatusType) {
+        await this.update((work) => {
+            work.status = status
+        })
     }
 }

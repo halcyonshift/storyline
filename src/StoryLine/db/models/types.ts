@@ -1,5 +1,6 @@
 export type CharacterDataType = {
     mode: 'primary' | 'secondary' | 'tertiary'
+    status?: string
     displayName: string
     pronouns?: string
     firstName?: string
@@ -33,6 +34,7 @@ export type CharacterDataType = {
 }
 
 export type ItemDataType = {
+    status?: string
     name: string
     body?: string
     url?: string
@@ -40,6 +42,7 @@ export type ItemDataType = {
 }
 
 export type LocationDataType = {
+    status?: string
     name: string
     body?: string
     latitude?: string
@@ -49,6 +52,7 @@ export type LocationDataType = {
 }
 
 export type NoteDataType = {
+    status?: string
     title?: string
     body?: string
     date?: string
@@ -59,6 +63,7 @@ export type NoteDataType = {
 }
 
 export type SectionDataType = {
+    status?: string
     title?: string
     mode?: 'chapter' | 'scene' | 'part' | 'revision'
     body?: string
@@ -74,6 +79,7 @@ export type StatisticDataType = {
 }
 
 export type WorkDataType = {
+    status?: string
     title: string
     author: string
     summary?: string

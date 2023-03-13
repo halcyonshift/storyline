@@ -9,7 +9,7 @@ import {
     text,
     writer
 } from '@nozbe/watermelondb/decorators'
-
+import { type StatusType } from '@sl/constants/status'
 import NoteModel from './NoteModel'
 import WorkModel from './WorkModel'
 import { ItemDataType } from './types'
@@ -20,7 +20,7 @@ export default class ItemModel extends Model {
         work: { type: 'belongs_to', key: 'work_id' },
         note: { type: 'has_many', foreignKey: 'character_id' }
     }
-
+    @field('status') status!: string
     @text('name') name!: string
     @text('body') body!: string
     @text('url') url!: string
@@ -30,6 +30,10 @@ export default class ItemModel extends Model {
 
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @children('note') note!: Query<NoteModel>
+
+    get displayName() {
+        return this.name
+    }
 
     @writer async updateItem(data: ItemDataType) {
         await this.update((item) => {
@@ -45,7 +49,9 @@ export default class ItemModel extends Model {
         return true
     }
 
-    get displayName() {
-        return this.name
+    @writer async updateStatus(status: StatusType) {
+        await this.update((item) => {
+            item.status = status
+        })
     }
 }

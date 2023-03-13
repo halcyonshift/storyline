@@ -3,7 +3,7 @@ import { Model, Q, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { date, field, readonly, relation, text, writer, lazy } from '@nozbe/watermelondb/decorators'
 import { DateTime } from 'luxon'
-
+import { Status, type StatusType } from '@sl/constants/status'
 import { htmlExtractExcerpts, htmlParse } from '@sl/utils'
 import { SectionDataType, StatisticDataType } from './types'
 import { CharacterModel, ItemModel, LocationModel, StatisticModel, WorkModel } from './'
@@ -14,7 +14,7 @@ export default class SectionModel extends Model {
         work: { type: 'belongs_to', key: 'work_id' },
         section: { type: 'belongs_to', key: 'section_id' }
     }
-
+    @field('status') status!: string
     @text('title') title!: string
     @field('mode') mode!: 'chapter' | 'scene' | 'part' | 'revision'
     @text('body') body!: string
@@ -119,20 +119,6 @@ export default class SectionModel extends Model {
         return []
     }
 
-    @writer async delete() {
-        if (this.isScene) {
-            await this.destroyPermanently()
-        } else if (this.isChapter) {
-            const sceneCount = await this.scenes.fetchCount()
-            if (!sceneCount) await this.destroyPermanently()
-        } else if (this.isPart) {
-            const chapterCount = await this.chapters.fetchCount()
-            if (!chapterCount) await this.destroyPermanently()
-        }
-
-        return true
-    }
-
     @lazy scenes = this.collections
         .get<SectionModel>('section')
         .query(Q.where('section_id', this.id), Q.where('mode', 'scene'), Q.sortBy('order', Q.asc))
@@ -149,22 +135,6 @@ export default class SectionModel extends Model {
             Q.sortBy('order', Q.desc)
         )
 
-    @writer async addSection(data: SectionDataType) {
-        const work = await this.work.fetch()
-        return await this.collections.get<SectionModel>('section').create((section) => {
-            section.section.set(this)
-            section.work.set(work)
-            section.title = (data.title || '').toString()
-            section.description = (data.description || '').toString()
-            section.body = (data.body || '').toString()
-            section.date = data.date
-            section.order = data.order
-            section.wordGoal = data.wordGoal
-            section.mode = data.mode
-            section.deadlineAt = data.deadlineAt
-        })
-    }
-
     async addRevision() {
         const count = await this.revisions.fetchCount()
         return await this.addSection({
@@ -175,7 +145,8 @@ export default class SectionModel extends Model {
             body: this.body,
             date: this.date,
             wordGoal: this.wordGoal,
-            deadlineAt: this.deadlineAt
+            deadlineAt: this.deadlineAt,
+            status: this.status
         })
     }
 
@@ -192,6 +163,37 @@ export default class SectionModel extends Model {
         return await this.addSection({
             mode: 'scene',
             order: count + 1
+        })
+    }
+
+    @writer async delete() {
+        if (this.isScene) {
+            await this.destroyPermanently()
+        } else if (this.isChapter) {
+            const sceneCount = await this.scenes.fetchCount()
+            if (!sceneCount) await this.destroyPermanently()
+        } else if (this.isPart) {
+            const chapterCount = await this.chapters.fetchCount()
+            if (!chapterCount) await this.destroyPermanently()
+        }
+
+        return true
+    }
+
+    @writer async addSection(data: SectionDataType) {
+        const work = await this.work.fetch()
+        return await this.collections.get<SectionModel>('section').create((section) => {
+            section.section.set(this)
+            section.work.set(work)
+            section.title = (data.title || '').toString()
+            section.description = (data.description || '').toString()
+            section.body = (data.body || '').toString()
+            section.date = data.date
+            section.order = data.order
+            section.wordGoal = data.wordGoal
+            section.mode = data.mode
+            section.deadlineAt = data.deadlineAt
+            section.status = Status.TODO
         })
     }
 
@@ -235,6 +237,12 @@ export default class SectionModel extends Model {
     @writer async setPart(part: SectionModel) {
         await this.update((section) => {
             section.section.set(part)
+        })
+    }
+
+    @writer async updateStatus(status: StatusType) {
+        await this.update((section) => {
+            section.status = status
         })
     }
 }

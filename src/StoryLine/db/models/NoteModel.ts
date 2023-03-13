@@ -9,7 +9,7 @@ import {
     text,
     writer
 } from '@nozbe/watermelondb/decorators'
-
+import { Status, type StatusType } from '@sl/constants/status'
 import CharacterModel from './CharacterModel'
 import ItemModel from './ItemModel'
 import LocationModel from './LocationModel'
@@ -25,7 +25,7 @@ export default class NoteModel extends Model {
         location: { type: 'belongs_to', key: 'location_id' },
         note: { type: 'has_many', foreignKey: 'note_id' }
     }
-
+    @field('status') status!: string
     @text('title') title!: string
     @text('body') body!: string
     @date('date') date!: string
@@ -44,6 +44,10 @@ export default class NoteModel extends Model {
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @children('note') notes!: Query<NoteModel>
 
+    get displayName() {
+        return this.title
+    }
+
     @writer async addNote(data: NoteDataType) {
         const work = await this.work.fetch()
         return await this.collections.get<NoteModel>('note').create((note) => {
@@ -55,6 +59,7 @@ export default class NoteModel extends Model {
             note.date = data.date
             note.url = data.url
             note.image = data.image
+            note.status = Status.TODO
         })
     }
 
@@ -74,7 +79,9 @@ export default class NoteModel extends Model {
         return true
     }
 
-    get displayName() {
-        return this.title
+    @writer async updateStatus(status: StatusType) {
+        await this.update((note) => {
+            note.status = status
+        })
     }
 }

@@ -70,7 +70,10 @@ const WorkLayout = () => {
                         </IconButton>
                     </Box>
                     <Box className='flex flex-grow justify-between'>
-                        <Typography variant='h6' className='w-[70vw] text-ellipsis'>
+                        <Typography
+                            variant='h6'
+                            className='w-[70vw] text-ellipsis'
+                            onClick={() => navigate(`/works/${tabs.work.id}`)}>
                             {tabs.work.title}
                         </Typography>
                         <Typography variant='h6' onClick={() => navigate('/')}>
