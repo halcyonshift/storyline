@@ -14,5 +14,5 @@ export default class StatisticModel extends Model {
     @readonly @date('created_at') createdAt!: Date
     @readonly @date('updated_at') updatedAt!: Date
 
-    @relation('section', 'section_id') work!: Relation<SectionModel>
+    @relation('section', 'section_id') section!: Relation<SectionModel>
 }

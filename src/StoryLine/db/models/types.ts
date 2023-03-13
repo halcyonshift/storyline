@@ -64,7 +64,7 @@ export type SectionDataType = {
     body?: string
     description?: string
     date?: string
-    words?: number | null
+    wordGoal?: number | null
     order?: number
     deadlineAt?: Date
 }
@@ -75,9 +75,10 @@ export type StatisticDataType = {
 
 export type WorkDataType = {
     title: string
-    author?: string
+    author: string
     summary?: string
-    language?: string
+    language: string
+    image?: string
     wordGoal?: number
     deadlineAt?: Date
     lastOpenedAt?: Date

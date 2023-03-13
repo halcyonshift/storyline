@@ -30,6 +30,7 @@ export default class WorkModel extends Model {
     @text('summary') summary!: string
     @text('language') language!: string
     @field('word_goal') wordGoal!: number
+    @field('image') image!: string
     @date('deadline_at') deadlineAt!: Date
     @date('last_opened_at') lastOpenedAt!: Date
     @readonly @date('created_at') createdAt!: Date
@@ -95,6 +96,7 @@ export default class WorkModel extends Model {
             work.language = data.language
             work.summary = data.summary
             work.wordGoal = data.wordGoal || null
+            work.image = data.image
             work.deadlineAt = data.deadlineAt || null
         })
     }

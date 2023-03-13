@@ -21,6 +21,7 @@ const EditWorkView = () => {
                     summary: work.summary,
                     language: 'en-gb',
                     wordGoal: work.wordGoal || 0,
+                    image: work.image,
                     deadlineAt: work.deadlineAt
                 }}
             />

@@ -12,6 +12,7 @@ const schema = appSchema({
                 { name: 'language', type: 'string' },
                 { name: 'word_goal', type: 'number', isOptional: true },
                 { name: 'deadline_at', type: 'number', isOptional: true },
+                { name: 'image', type: 'string', isOptional: true },
                 { name: 'last_opened_at', type: 'number', isOptional: true },
                 { name: 'created_at', type: 'number' },
                 { name: 'updated_at', type: 'number' }
@@ -25,10 +26,10 @@ const schema = appSchema({
                 { name: 'body', type: 'string', isOptional: true },
                 { name: 'description', type: 'string', isOptional: true },
                 { name: 'order', type: 'number' },
-                { name: 'words', type: 'number', isOptional: true },
                 { name: 'date', type: 'string', isOptional: true },
                 { name: 'work_id', type: 'string', isIndexed: true },
                 { name: 'section_id', type: 'string', isIndexed: true, isOptional: true },
+                { name: 'word_goal', type: 'number', isOptional: true },
                 { name: 'deadline_at', type: 'number', isOptional: true },
                 { name: 'created_at', type: 'number' },
                 { name: 'updated_at', type: 'number' }

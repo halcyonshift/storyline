@@ -4,9 +4,9 @@ import { Associations } from '@nozbe/watermelondb/Model'
 import { date, field, readonly, relation, text, writer, lazy } from '@nozbe/watermelondb/decorators'
 import { DateTime } from 'luxon'
 
-import { htmlExtractExcerpts, htmlParse, wordCount } from '@sl/utils'
+import { htmlExtractExcerpts, htmlParse } from '@sl/utils'
 import { SectionDataType, StatisticDataType } from './types'
-import { CharacterModel, ItemModel, LocationModel, WorkModel } from './'
+import { CharacterModel, ItemModel, LocationModel, StatisticModel, WorkModel } from './'
 
 export default class SectionModel extends Model {
     static table = 'section'
@@ -20,8 +20,8 @@ export default class SectionModel extends Model {
     @text('body') body!: string
     @text('description') description!: string
     @text('date') date!: string
-    @field('words') words!: number
     @field('order') order!: number
+    @field('word_goal') wordGoal!: number
     @date('deadline_at') deadlineAt!: Date
     @readonly @date('created_at') createdAt!: Date
     @readonly @date('updated_at') updatedAt!: Date
@@ -151,7 +151,6 @@ export default class SectionModel extends Model {
 
     @writer async addSection(data: SectionDataType) {
         const work = await this.work.fetch()
-        // eslint-disable-next-line max-statements
         return await this.collections.get<SectionModel>('section').create((section) => {
             section.section.set(this)
             section.work.set(work)
@@ -160,7 +159,7 @@ export default class SectionModel extends Model {
             section.body = (data.body || '').toString()
             section.date = data.date
             section.order = data.order
-            section.words = data.words
+            section.wordGoal = data.wordGoal
             section.mode = data.mode
             section.deadlineAt = data.deadlineAt
         })
@@ -175,7 +174,7 @@ export default class SectionModel extends Model {
             description: this.description,
             body: this.body,
             date: this.date,
-            words: this.words,
+            wordGoal: this.wordGoal,
             deadlineAt: this.deadlineAt
         })
     }
@@ -197,9 +196,9 @@ export default class SectionModel extends Model {
     }
 
     @writer async addStatistic(data: StatisticDataType) {
-        return await this.collections.get<SectionModel>('section').create((section) => {
-            section.section.set(this)
-            section.words = data.words
+        return await this.collections.get<StatisticModel>('statistic').create((statistic) => {
+            statistic.section.set(this)
+            statistic.words = data.words
         })
     }
 
@@ -218,7 +217,6 @@ export default class SectionModel extends Model {
     @writer async updateBody(data: string) {
         await this.update((section) => {
             section.body = data.toString()
-            section.words = wordCount(data.toString())
         })
     }
 
@@ -239,5 +237,4 @@ export default class SectionModel extends Model {
             section.section.set(part)
         })
     }
-    // eslint-disable-next-line max-lines
 }

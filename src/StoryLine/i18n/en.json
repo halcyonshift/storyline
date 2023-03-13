@@ -118,6 +118,7 @@
                 "summary": "Summary",
                 "wordGoal": "Word goal",
                 "deadline": "Deadline",
+                "image": "Cover",
                 "button": {
                     "create": "Add",
                     "update": "Edit"

@@ -10,7 +10,7 @@ import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
-
+import ImageField from '@sl/components/ImageField'
 import { WorkModel } from '@sl/db/models'
 import { WorkDataType } from '@sl/db/models/types'
 import { WorkFormProps } from './types'
@@ -22,6 +22,7 @@ const WorkForm = ({
         title: '',
         author: '',
         summary: '',
+        image: '',
         language: 'en-gb',
         wordGoal: null,
         deadlineAt: null
@@ -33,9 +34,10 @@ const WorkForm = ({
 
     const validationSchema = yup.object({
         title: yup.string().required(t('form.work.work.title.required')),
-        author: yup.string(),
+        author: yup.string().nullable(),
         language: yup.string(),
-        summary: yup.string(),
+        image: yup.string().nullable(),
+        summary: yup.string().nullable(),
         wordGoal: yup.number().nullable(),
         deadlineAt: yup.date().nullable()
     })
@@ -58,7 +60,6 @@ const WorkForm = ({
                 const part = await work.addPart()
                 const chapter = await part.addChapter()
                 await chapter.addScene()
-
                 form.resetForm()
             }
 
@@ -134,6 +135,7 @@ const WorkForm = ({
                         error={form.touched.wordGoal && Boolean(form.errors.wordGoal)}
                         helperText={form.touched.wordGoal && form.errors.wordGoal}
                     />
+                    <ImageField form={form} label={t('form.work.work.image')} dir='works' />
                     <DatePicker
                         label={t('form.work.work.deadline')}
                         inputFormat='d/M/yyyy'

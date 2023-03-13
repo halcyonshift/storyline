@@ -22,7 +22,7 @@ const Form = ({ work }: { work: WorkModel }) => {
         title: yup.string(),
         description: yup.string(),
         date: yup.string().nullable(),
-        words: yup.number().positive().integer().nullable(),
+        wordGoal: yup.number().positive().integer().nullable(),
         deadlineAt: yup.date().nullable()
     })
 
@@ -31,7 +31,7 @@ const Form = ({ work }: { work: WorkModel }) => {
             title: '',
             description: '',
             date: null,
-            words: 0,
+            wordGoal: 0,
             deadlineAt: null
         },
         validationSchema: validationSchema,
@@ -78,14 +78,14 @@ const Form = ({ work }: { work: WorkModel }) => {
             <DateField form={form} />
             <Stack direction='row' spacing={2}>
                 <TextField
-                    id='words'
+                    id='wordGoal'
                     label={t('view.work.addPart.form.wordGoal')}
-                    name='words'
+                    name='wordGoal'
                     type='number'
-                    value={form.values.words}
+                    value={form.values.wordGoal}
                     onChange={form.handleChange}
-                    error={form.touched.words && Boolean(form.errors.words)}
-                    helperText={form.touched.words && form.errors.words}
+                    error={form.touched.wordGoal && Boolean(form.errors.wordGoal)}
+                    helperText={form.touched.wordGoal && form.errors.wordGoal}
                     InputProps={{ inputProps: { min: 0, step: 100 } }}
                 />
                 <DatePicker
