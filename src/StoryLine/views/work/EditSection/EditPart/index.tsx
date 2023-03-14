@@ -1,22 +1,17 @@
 import Container from '@mui/material/Container'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
-import { useTranslation } from 'react-i18next'
-import { useRouteLoaderData } from 'react-router-dom'
-import { WorkModel } from '@sl/db/models'
-import Form from './form'
+import SectionModel from '@sl/db/models/SectionModel'
 
-const AddPartView = () => {
-    const work = useRouteLoaderData('work') as WorkModel
-    const { t } = useTranslation()
-
+import PartForm from '@sl/forms/Work/Section/Part'
+const EditPartView = ({ part }: { part: SectionModel }) => {
     return (
         <Container className='p-5'>
-            <Typography variant='h6'>{t('view.work.addPart.title')}</Typography>
+            <Typography variant='h6'>{part.displayTitle}</Typography>
             <Divider />
-            <Form work={work} />
+            <PartForm part={part} />
         </Container>
     )
 }
 
-export default AddPartView
+export default EditPartView

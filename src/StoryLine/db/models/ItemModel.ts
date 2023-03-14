@@ -20,7 +20,7 @@ export default class ItemModel extends Model {
         work: { type: 'belongs_to', key: 'work_id' },
         note: { type: 'has_many', foreignKey: 'character_id' }
     }
-    @field('status') status!: string
+    @field('status') status!: StatusType
     @text('name') name!: string
     @text('body') body!: string
     @text('url') url!: string

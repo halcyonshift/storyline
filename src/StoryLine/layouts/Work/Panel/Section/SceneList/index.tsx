@@ -6,6 +6,7 @@ import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { GLOBAL_ICONS, SECTION_ICONS } from '@sl/constants/icons'
+import { status } from '@sl/theme/utils'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import useTabs from '@sl/layouts/Work/useTabs'
 
@@ -22,7 +23,9 @@ const SceneList = ({ scenes }: SceneListProps) => {
                 <ListItem key={scene.id} disablePadding disableGutters divider>
                     <ListItemText
                         primary={
-                            <Box className='flex justify-between align-middle'>
+                            <Box
+                                className='flex justify-between align-middle'
+                                sx={{ backgroundColor: status(scene.status).color }}>
                                 <ListItemButton
                                     onClick={() =>
                                         tabs.loadTab({
@@ -33,8 +36,7 @@ const SceneList = ({ scenes }: SceneListProps) => {
                                     }>
                                     <Typography
                                         variant='body1'
-                                        className='whitespace-nowrap text-ellipsis
-                                            overflow-hidden'>
+                                        className='whitespace-nowrap text-ellipsis overflow-hidden'>
                                         {scene.displayTitle}
                                     </Typography>
                                 </ListItemButton>

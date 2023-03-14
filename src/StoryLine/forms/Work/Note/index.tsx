@@ -13,7 +13,7 @@ import { NoteDataType } from '@sl/db/models/types'
 
 import { NoteFormProps } from './types'
 
-const ItemForm = ({
+const NoteForm = ({
     work,
     note,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -132,4 +132,4 @@ const ItemForm = ({
     )
 }
 
-export default ItemForm
+export default NoteForm

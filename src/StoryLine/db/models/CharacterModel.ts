@@ -21,7 +21,7 @@ export default class CharacterModel extends Model {
     }
 
     @field('mode') mode!: 'primary' | 'secondary' | 'tertiary'
-    @field('status') status!: string
+    @field('status') status!: StatusType
     @text('display_name') displayName!: string
     @text('pronouns') pronouns!: string
     @text('first_name') firstName!: string

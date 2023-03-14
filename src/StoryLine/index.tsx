@@ -166,7 +166,7 @@ const router = createHashRouter([
                             },
                             {
                                 path: 'edit',
-                                element: <p>Edit section</p>
+                                element: <WorkViews.EditSectionView />
                             },
                             {
                                 path: 'revisions',

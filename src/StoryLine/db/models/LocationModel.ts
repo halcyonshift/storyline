@@ -22,7 +22,7 @@ export default class LocationModel extends Model {
         note: { type: 'has_many', foreignKey: 'character_id' },
         location: { type: 'has_many', foreignKey: 'location_id' }
     }
-    @field('status') status!: string
+    @field('status') status!: StatusType
     @text('name') name!: string
     @text('body') body!: string
     @text('latitude') latitude!: string

@@ -14,7 +14,7 @@ export default class SectionModel extends Model {
         work: { type: 'belongs_to', key: 'work_id' },
         section: { type: 'belongs_to', key: 'section_id' }
     }
-    @field('status') status!: string
+    @field('status') status!: StatusType
     @text('title') title!: string
     @field('mode') mode!: 'chapter' | 'scene' | 'part' | 'revision'
     @text('body') body!: string
@@ -204,39 +204,20 @@ export default class SectionModel extends Model {
         })
     }
 
-    @writer async updateTitle(data: string) {
+    @writer async updateSection(data: SectionDataType) {
         await this.update((section) => {
-            section.title = data.toString()
-        })
-    }
-
-    @writer async updateDate(data: string) {
-        await this.update((section) => {
-            section.date = data
+            section.title = data.title
+            section.description = data.description
+            section.date = data.date
+            section.order = data.order
+            section.wordGoal = data.wordGoal
+            section.deadlineAt = data.deadlineAt
         })
     }
 
     @writer async updateBody(data: string) {
         await this.update((section) => {
-            section.body = data.toString()
-        })
-    }
-
-    @writer async updateDescription(data: string) {
-        await this.update((section) => {
-            section.description = data.toString()
-        })
-    }
-
-    @writer async updateOrder(data: number) {
-        await this.update((section) => {
-            section.order = data
-        })
-    }
-
-    @writer async setPart(part: SectionModel) {
-        await this.update((section) => {
-            section.section.set(part)
+            section.body = data
         })
     }
 

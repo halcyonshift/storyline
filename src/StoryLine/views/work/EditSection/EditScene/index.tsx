@@ -2,21 +2,17 @@ import Container from '@mui/material/Container'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
-import { useRouteLoaderData } from 'react-router-dom'
-import { WorkModel } from '@sl/db/models'
-import Form from './form'
+import SectionModel from '@sl/db/models/SectionModel'
 
-const AddSceneView = () => {
-    const work = useRouteLoaderData('work') as WorkModel
+const EditSceneView = ({ scene }: { scene: SectionModel }) => {
     const { t } = useTranslation()
 
     return (
         <Container className='p-5'>
-            <Typography variant='h6'>{t('view.work.addChapter.title')}</Typography>
+            <Typography variant='h6'>{scene.displayTitle}</Typography>
             <Divider />
-            <Form work={work} />
         </Container>
     )
 }
 
-export default AddSceneView
+export default EditSceneView

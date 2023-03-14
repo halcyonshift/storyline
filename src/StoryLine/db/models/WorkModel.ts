@@ -25,7 +25,7 @@ export default class WorkModel extends Model {
         note: { type: 'has_many', foreignKey: 'work_id' },
         section: { type: 'has_many', foreignKey: 'work_id' }
     }
-    @field('status') status!: string
+    @field('status') status!: StatusType
     @text('title') title!: string
     @text('author') author!: string
     @text('summary') summary!: string

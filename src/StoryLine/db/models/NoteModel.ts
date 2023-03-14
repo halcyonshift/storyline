@@ -25,7 +25,7 @@ export default class NoteModel extends Model {
         location: { type: 'belongs_to', key: 'location_id' },
         note: { type: 'has_many', foreignKey: 'note_id' }
     }
-    @field('status') status!: string
+    @field('status') status!: StatusType
     @text('title') title!: string
     @text('body') body!: string
     @date('date') date!: string

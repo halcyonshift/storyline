@@ -108,6 +108,19 @@
                     "update": "Edit"
                 }
             },
+            "section": {
+                "title": "Title",
+                "description": "Description",
+                "wordGoal": "Word goal",
+                "deadline": "Deadline",
+                "order": "Order",
+                "button": {
+                    "update": "Edit"
+                },
+                "alert": {
+                    "success": "The {{name}} has been saved"
+                }
+            },
             "work": {
                 "title": {
                     "label": "Title",
@@ -253,24 +266,7 @@
                 "title": "Add note"
             },
             "addPart": {
-                "title": "Add part",
-                "form": {
-                    "title": "Title",
-                    "description": "Description",
-                    "wordGoal": "Word goal",
-                    "deadline": "Deadline",
-                    "create": "Add"
-                }
-            },
-            "editLocation": {
-                "form": {
-                    "name": "Name",
-                    "body": "Description",
-                    "url": "Link",
-                    "location": "Location",
-                    "image": "Image",
-                    "button": "Update"
-                }
+                "title": "Add part"
             }
         }
     }
