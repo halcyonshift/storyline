@@ -6,7 +6,7 @@ import { createHashRouter, RouterProvider } from 'react-router-dom'
 
 import App from '@sl/App'
 import database from '@sl/db'
-import { LocationModel, NoteModel, WorkModel } from '@sl/db/models'
+import { CharacterModel, ItemModel, LocationModel, NoteModel, WorkModel } from '@sl/db/models'
 import '@sl/i18n'
 import * as Layouts from '@sl/layouts'
 import { SettingsProvider } from '@sl/theme/useSettings'
@@ -101,10 +101,28 @@ const router = createHashRouter([
                         element: <p>Relation</p>
                     },
                     {
+                        path: 'character/:character_id',
+                        id: 'character',
+                        loader: async ({ params }) =>
+                            await database
+                                .get<CharacterModel>('character')
+                                .find(params.character_id),
+                        children: [
+                            {
+                                index: true,
+                                element: <WorkViews.CharacterView />
+                            },
+                            {
+                                path: 'edit',
+                                element: <WorkViews.EditCharacterView />
+                            }
+                        ]
+                    },
+                    {
                         path: 'item/:item_id',
                         id: 'item',
                         loader: async ({ params }) =>
-                            await database.get<LocationModel>('item').find(params.item_id),
+                            await database.get<ItemModel>('item').find(params.item_id),
                         children: [
                             {
                                 index: true,

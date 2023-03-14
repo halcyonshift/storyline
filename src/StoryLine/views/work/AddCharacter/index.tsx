@@ -1,14 +1,15 @@
 import { useEffect } from 'react'
-import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { useParams, useRouteLoaderData } from 'react-router-dom'
+import { CharacterModeType } from '@sl/constants/characterMode'
 import { WorkModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/useTabs'
+import CharacterForm from '@sl/forms/Work/Character'
 
 const AddCharacterView = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const work = useRouteLoaderData('work') as WorkModel
     const params = useParams()
     const { t } = useTranslation()
@@ -19,14 +20,17 @@ const AddCharacterView = () => {
     }, [])
 
     return (
-        <Container className='p-5'>
+        <Box className='flex-grow flex flex-col'>
             <Typography variant='h6'>
                 {t('view.work.addCharacter.title', {
-                    mode: t(`model.character.${params.mode}`).toLowerCase()
+                    mode: t(`constant.characterMode.${params.mode}`).toLowerCase()
                 })}
             </Typography>
             <Divider />
-        </Container>
+            <Box className='flex-grow h-0 overflow-auto p-5'>
+                <CharacterForm work={work} mode={params.mode as CharacterModeType} />
+            </Box>
+        </Box>
     )
 }
 

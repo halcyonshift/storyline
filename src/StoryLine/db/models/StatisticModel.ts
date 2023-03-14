@@ -7,6 +7,7 @@ import SectionModel from './SectionModel'
 export default class StatisticModel extends Model {
     static table = 'statistic'
     public static associations: Associations = {
+        work: { type: 'belongs_to', key: 'work_id' },
         section: { type: 'belongs_to', key: 'section_id' }
     }
 

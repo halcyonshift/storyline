@@ -1,17 +1,17 @@
 import { useEffect } from 'react'
 import { useRouteLoaderData } from 'react-router-dom'
-import ItemModel from '@sl/db/models/ItemModel'
+import CharacterModel from '@sl/db/models/CharacterModel'
 import useTabs from '@sl/layouts/Work/useTabs'
 
-const ItemView = () => {
+const CharacterView = () => {
     const tabs = useTabs()
-    const item = useRouteLoaderData('item') as ItemModel
+    const character = useRouteLoaderData('character') as CharacterModel
 
     useEffect(() => {
         tabs.setShowTabs(true)
     }, [])
 
-    return <p>{item.body}</p>
+    return <p>{character.displayName}</p>
 }
 
-export default ItemView
+export default CharacterView

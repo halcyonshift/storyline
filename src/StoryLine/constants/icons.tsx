@@ -2,6 +2,7 @@ import {
     AddCircle,
     AddLocationAlt,
     Article,
+    Casino,
     ChangeCircle,
     Clear,
     Delete,
@@ -22,7 +23,8 @@ export const GLOBAL_ICONS = {
     delete: <Delete fontSize='inherit' color='inherit' />,
     edit: <Edit fontSize='inherit' color='inherit' />,
     expand: <ExpandMore fontSize='inherit' color='inherit' />,
-    history: <History fontSize='inherit' color='inherit' />
+    history: <History fontSize='inherit' color='inherit' />,
+    random: <Casino fontSize='inherit' color='inherit' />
 }
 
 export const CHARACTER_ICONS = {

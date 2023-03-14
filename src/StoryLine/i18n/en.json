@@ -65,8 +65,74 @@
             }
         }
     },
+    "constant" : {
+        "characterMode": {
+            "PRIMARY": "Primary",
+            "SECONDARY": "Secondary",
+            "TERTIARY": "Tertiary"
+        },
+        "pointOfView": {
+            "FIRST": "First",
+            "SECOND": "Second",
+            "THIRD_OMN": "Third Omniscient",
+            "THIRD_LIM": "Third Limited",
+            "THIRD_OBJ": "Third Objective"
+        },
+        "status": {
+            "TODO": "To do",
+            "DRAFT": "Draft",
+            "REVIEW": "Review",
+            "COMPLETE": "Complete",
+            "ARCHIVE": "Archive"
+        }
+    },
     "form": {
         "work": {
+            "character": {
+                "pronouns": "Pronouns",
+                "displayName": {
+                    "label": "Display name",
+                    "required": "Please give the display name"
+                },
+                "firstName": "First name",
+                "lastName": "Last name",
+                "nickname": "Nickname",
+                "image": "Image",
+                "nationality": "Nationality",
+                "ethnicity": "Ethnicity",
+                "placeOfBirth": "Place of birth",
+                "residence": "Current residence",
+                "religion": "Religion",
+                "dateOfBirth": "Date of birth",
+                "apparentAge": "Apparent age",
+                "gender": "Gender",
+                "sexualOrientation": "Sexual orientation",
+                "finances": "Finances",
+                "politicalLeaning": "Political leaning",
+                "socialClass": "Social class",
+                "education": "Education",
+                "profession": "Profession",
+                "description": "Description",
+                "history": "History",
+                "face": "Facial features",
+                "build": "Body build",
+                "height": "Height",
+                "weight": "Weight",
+                "hair": "Hair",
+                "hairNatural": "Hair's natural appearance",
+                "personalityPositive": "Positive personality traits",
+                "personalityNegative": "Negative personality traits",
+                "distinguishingFeatures": "Distinguishing features",
+                "ambitions": "Ambitions",
+                "fears": "Fears",
+                "alert": {
+                    "success": "The character has been added"
+                },
+                "button": {
+                    "create": "Add",
+                    "update": "Edit"
+                }
+            },
             "item": {
                 "name": {
                     "label": "Name",
@@ -188,7 +254,11 @@
                 "character": {
                     "addPrimary": "Add primary character",
                     "addSecondary": "Add secondary character",
-                    "addTertiary": "Add tertiary character"
+                    "addTertiary": "Add tertiary character",
+                    "random": "Generate a random character",
+                    "edit": "Edit",
+                    "delete": "Delete",
+                    "deleteConfirm": "Are you sure you want to delete {{name}}?"
                 },
                 "item": {
                     "add": "Add item",
@@ -227,13 +297,6 @@
                     "deleteConfirm": "Are you sure you want to delete {{name}}?"
                 }
             }
-        }
-    },
-    "model": {
-        "character": {
-            "primary": "Primary",
-            "secondary": "Secondary",
-            "tertiary": "Tertiary"
         }
     },
     "view": {

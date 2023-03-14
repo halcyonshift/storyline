@@ -1,9 +1,12 @@
 import { FormikProps } from 'formik'
-import { NoteDataType, SectionDataType } from '@sl/db/models/types'
+import { CharacterDataType, NoteDataType, SectionDataType } from '@sl/db/models/types'
 
 export type FieldType = 'picker' | 'custom'
 
 export type DateFieldProps = {
     fieldType?: FieldType
-    form: FormikProps<NoteDataType | SectionDataType>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    form: FormikProps<any>
+    label?: string
+    fieldName?: string
 }

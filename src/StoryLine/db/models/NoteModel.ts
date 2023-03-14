@@ -20,6 +20,7 @@ import { NoteDataType } from './types'
 export default class NoteModel extends Model {
     static table = 'note'
     public static associations: Associations = {
+        work: { type: 'belongs_to', key: 'work_id' },
         character: { type: 'belongs_to', key: 'character_id' },
         item: { type: 'belongs_to', key: 'item_id' },
         location: { type: 'belongs_to', key: 'location_id' },

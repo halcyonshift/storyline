@@ -1,6 +1,7 @@
 import { Model, Q, Query } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, readonly, text, writer } from '@nozbe/watermelondb/decorators'
+import { type CharacterModeType } from '@sl/constants/characterMode'
 import { Status, type StatusType } from '@sl/constants/status'
 import {
     CharacterDataType,
@@ -15,6 +16,7 @@ import ItemModel from './ItemModel'
 import LocationModel from './LocationModel'
 import NoteModel from './NoteModel'
 import SectionModel from './SectionModel'
+import StatisticModel from './StatisticModel'
 
 export default class WorkModel extends Model {
     static table = 'work'
@@ -23,7 +25,8 @@ export default class WorkModel extends Model {
         item: { type: 'has_many', foreignKey: 'work_id' },
         location: { type: 'has_many', foreignKey: 'work_id' },
         note: { type: 'has_many', foreignKey: 'work_id' },
-        section: { type: 'has_many', foreignKey: 'work_id' }
+        section: { type: 'has_many', foreignKey: 'work_id' },
+        statistic: { type: 'has_many', foreignKey: 'work_id' }
     }
     @field('status') status!: StatusType
     @text('title') title!: string
@@ -42,6 +45,7 @@ export default class WorkModel extends Model {
     @children('location') location!: Query<LocationModel>
     @children('note') note!: Query<NoteModel>
     @children('section') section!: Query<SectionModel>
+    @children('statistic') statistic!: Query<StatisticModel>
 
     // ToDo finish search
     async search(query: string, sceneOnly: boolean, caseSensitive: boolean, fullWord: boolean) {
@@ -113,11 +117,43 @@ export default class WorkModel extends Model {
         })
     }
 
-    @writer async addCharacter(data: CharacterDataType) {
+    @writer async addCharacter(mode: CharacterModeType, data: CharacterDataType) {
         return await this.collections.get<CharacterModel>('character').create((character) => {
             character.work.set(this)
+            character.mode = mode
+            character.image = data.image
             character.displayName = data.displayName
-            character.mode = data.mode
+            character.description = data.description
+            character.history = data.history
+            character.pronouns = data.pronouns
+            character.firstName = data.firstName
+            character.lastName = data.lastName
+            character.nickname = data.nickname
+            character.nationality = data.nationality
+            character.ethnicity = data.ethnicity
+            character.placeOfBirth = data.placeOfBirth
+            character.residence = data.residence
+            character.gender = data.gender
+            character.sexualOrientation = data.sexualOrientation
+            character.dateOfBirth = data.dateOfBirth
+            character.apparentAge = data.apparentAge
+            character.religion = data.religion
+            character.socialClass = data.socialClass
+            character.education = data.education
+            character.profession = data.profession
+            character.finances = data.finances
+            character.politicalLeaning = data.politicalLeaning
+            character.face = data.face
+            character.build = data.build
+            character.height = data.height
+            character.weight = data.weight
+            character.hair = data.hair
+            character.hairNatural = data.hairNatural
+            character.distinguishingFeatures = data.distinguishingFeatures
+            character.personalityPositive = data.personalityPositive
+            character.personalityNegative = data.personalityNegative
+            character.ambitions = data.ambitions
+            character.fears = data.fears
             character.status = Status.TODO
         })
     }
