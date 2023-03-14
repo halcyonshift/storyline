@@ -13,51 +13,43 @@ import * as yup from 'yup'
 import SectionModel from '@sl/db/models/SectionModel'
 import { SectionDataType } from '@sl/db/models/types'
 
+const validationSchema = yup.object({
+    title: yup.string(),
+    description: yup.string().nullable(),
+    date: yup.string().nullable(),
+    wordGoal: yup.number().positive().integer().nullable(),
+    deadlineAt: yup.date().nullable(),
+    order: yup.number().positive().min(0)
+})
+
 // eslint-disable-next-line complexity
 const PartForm = ({ part }: { part: SectionModel }) => {
     const { t } = useTranslation()
     const [open, setOpen] = useState<boolean>(false)
     const [reRender, setReRender] = useState<boolean>(false)
-    const [initialValues, setInitialvalues] = useState<SectionDataType>({
-        title: part.title,
-        description: part.description || '',
-        wordGoal: part.wordGoal,
-        deadlineAt: part.deadlineAt,
-        order: part.order
-    })
 
     useEffect(() => {
-        setInitialvalues({
+        setReRender(true)
+        setTimeout(() => setReRender(false), 1)
+    }, [part.id])
+
+    const form: FormikProps<SectionDataType> = useFormik<SectionDataType>({
+        enableReinitialize: true,
+        initialValues: {
             title: part.title,
             description: part.description || '',
             wordGoal: part.wordGoal,
             deadlineAt: part.deadlineAt,
             order: part.order
-        })
-        setReRender(true)
-        setTimeout(() => setReRender(false), 1)
-    }, [part.id])
-
-    const validationSchema = yup.object({
-        title: yup.string(),
-        description: yup.string().nullable(),
-        date: yup.string().nullable(),
-        wordGoal: yup.number().positive().integer().nullable(),
-        deadlineAt: yup.date().nullable(),
-        order: yup.number().positive().min(0)
-    })
-
-    const form: FormikProps<SectionDataType> = useFormik<SectionDataType>({
-        enableReinitialize: true,
-        initialValues,
-        validationSchema: validationSchema,
-        onSubmit: async (values) => {
+        },
+        validationSchema,
+        onSubmit: async (values: SectionDataType) => {
             await part.updateSection(values)
             setOpen(true)
         }
     })
 
-    if (reRender) return <></>
+    if (reRender) return null
 
     return (
         <Stack component={'form'} spacing={2} onSubmit={form.handleSubmit} autoComplete='off'>

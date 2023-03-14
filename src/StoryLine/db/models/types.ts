@@ -1,6 +1,10 @@
+import { PointOfViewType } from '@sl/constants/pov'
+import { StatusType } from '@sl/constants/status'
+import CharacterModel from '@sl/db/models/CharacterModel'
+
 export type CharacterDataType = {
     mode: 'primary' | 'secondary' | 'tertiary'
-    status?: string
+    status?: StatusType
     displayName: string
     pronouns?: string
     firstName?: string
@@ -34,7 +38,7 @@ export type CharacterDataType = {
 }
 
 export type ItemDataType = {
-    status?: string
+    status?: StatusType
     name: string
     body?: string
     url?: string
@@ -42,7 +46,7 @@ export type ItemDataType = {
 }
 
 export type LocationDataType = {
-    status?: string
+    status?: StatusType
     name: string
     body?: string
     latitude?: string
@@ -52,7 +56,7 @@ export type LocationDataType = {
 }
 
 export type NoteDataType = {
-    status?: string
+    status?: StatusType
     title?: string
     body?: string
     date?: string
@@ -63,7 +67,9 @@ export type NoteDataType = {
 }
 
 export type SectionDataType = {
-    status?: string
+    status?: StatusType
+    pointOfView?: PointOfViewType
+    pointOfViewCharacter?: CharacterModel
     title?: string
     mode?: 'chapter' | 'scene' | 'part' | 'revision'
     body?: string
@@ -79,7 +85,7 @@ export type StatisticDataType = {
 }
 
 export type WorkDataType = {
-    status?: string
+    status?: StatusType
     title: string
     author: string
     summary?: string

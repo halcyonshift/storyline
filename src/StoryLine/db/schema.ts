@@ -33,6 +33,8 @@ const schema = appSchema({
                 { name: 'word_goal', type: 'number', isOptional: true },
                 { name: 'deadline_at', type: 'number', isOptional: true },
                 { name: 'status', type: 'string', isIndexed: true },
+                { name: 'pov', type: 'string', isOptional: true },
+                { name: 'pov_character_id', type: 'string', isOptional: true },
                 { name: 'created_at', type: 'number' },
                 { name: 'updated_at', type: 'number' }
             ]

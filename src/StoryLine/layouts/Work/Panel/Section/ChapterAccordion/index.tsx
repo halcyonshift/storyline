@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-
+import { useNavigate } from 'react-router-dom'
 import { GLOBAL_ICONS, SECTION_ICONS } from '@sl/constants/icons'
 import Accordion from '@sl/components/Accordion'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
@@ -10,6 +10,7 @@ import SceneList from '../SceneList'
 import { ChapterAccordionProps } from '../types'
 
 const ChapterAccordion = ({ chapters, scenes }: ChapterAccordionProps) => {
+    const navigate = useNavigate()
     const { t } = useTranslation()
 
     return (
@@ -46,7 +47,10 @@ const ChapterAccordion = ({ chapters, scenes }: ChapterAccordionProps) => {
                                     confirm={t('layout.work.panel.section.deleteConfirm', {
                                         name: chapter.displayTitle
                                     })}
-                                    onClick={() => chapter.delete()}
+                                    onClick={async () => {
+                                        await chapter.delete()
+                                        navigate(`/works/${chapter.work.id}`)
+                                    }}
                                 />
                             </Stack>
                         </Box>
