@@ -1,4 +1,4 @@
-import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
@@ -8,10 +8,10 @@ const EditChapterView = ({ chapter }: { chapter: SectionModel }) => {
     const { t } = useTranslation()
 
     return (
-        <Container className='p-5'>
+        <Box className='p-5'>
             <Typography variant='h6'>{chapter.displayTitle}</Typography>
             <Divider />
-        </Container>
+        </Box>
     )
 }
 

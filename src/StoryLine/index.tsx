@@ -93,14 +93,6 @@ const router = createHashRouter([
                         element: <p>backupRestore</p>
                     },
                     {
-                        path: 'insight',
-                        element: <p>Insights</p>
-                    },
-                    {
-                        path: 'relation',
-                        element: <p>Relation</p>
-                    },
-                    {
                         path: 'character/:character_id',
                         id: 'character',
                         loader: async ({ params }) =>
@@ -117,6 +109,14 @@ const router = createHashRouter([
                                 element: <WorkViews.EditCharacterView />
                             }
                         ]
+                    },
+                    {
+                        path: 'edit',
+                        element: <WorkViews.EditWorkView />
+                    },
+                    {
+                        path: 'insight',
+                        element: <p>Insights</p>
                     },
                     {
                         path: 'item/:item_id',
@@ -175,6 +175,10 @@ const router = createHashRouter([
                         ]
                     },
                     {
+                        path: 'relation',
+                        element: <p>Relation</p>
+                    },
+                    {
                         path: 'section/:section_id',
                         id: 'section',
                         children: [
@@ -185,20 +189,12 @@ const router = createHashRouter([
                             {
                                 path: 'edit',
                                 element: <WorkViews.EditSectionView />
-                            },
-                            {
-                                path: 'revisions',
-                                element: <p>Revisions</p>
                             }
                         ]
                     },
                     {
-                        path: 'edit',
-                        element: <WorkViews.EditWorkView />
-                    },
-                    {
                         path: 'timeline',
-                        element: <p>Timeline</p>
+                        element: <WorkViews.TimelineView />
                     }
                 ]
             }

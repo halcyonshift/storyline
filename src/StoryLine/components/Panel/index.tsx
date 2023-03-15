@@ -6,9 +6,12 @@ import useResize from './useResize'
 
 const Panel = ({ navigation, children, action }: PanelProps) => {
     const settings = useSettings()
-    const { width, enableResize } = useResize({ minWidth: 200, offSet: 40 })
+    const { width, enableResize } = useResize({
+        minWidth: Math.round(window.innerWidth / 6),
+        offSet: 40
+    })
 
-    return (
+    return open ? (
         <Box
             sx={{ backgroundColor: settings.getHex(50), width }}
             className='relative flex flex-col'>
@@ -31,7 +34,7 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
                 onMouseDown={enableResize}
             />
         </Box>
-    )
+    ) : null
 }
 
 export default Panel

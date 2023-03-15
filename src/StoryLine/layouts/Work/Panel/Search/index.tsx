@@ -58,6 +58,7 @@ const SearchPanel = () => {
                     />
                     <Box className='grid grid-cols-1 xl:grid-cols-2 gap-0 px-2'>
                         <FormControlLabel
+                            className='whitespace-nowrap'
                             control={
                                 <Checkbox
                                     checked={fullWord}
@@ -69,6 +70,7 @@ const SearchPanel = () => {
                             labelPlacement='end'
                         />
                         <FormControlLabel
+                            className='whitespace-nowrap'
                             control={
                                 <Checkbox
                                     checked={caseSensitive}
@@ -80,6 +82,7 @@ const SearchPanel = () => {
                             labelPlacement='end'
                         />
                         <FormControlLabel
+                            className='whitespace-nowrap'
                             control={
                                 <Checkbox
                                     checked={sceneOnly}
