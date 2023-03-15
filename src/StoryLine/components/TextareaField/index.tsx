@@ -16,49 +16,54 @@ import ToolbarPlugin from './plugins/Toolbar'
 import theme from './theme'
 import { TextareaFieldProps } from './types'
 
-const TextareaField = ({ form, label, fieldName = 'description' }: TextareaFieldProps) => {
+const TextareaField = ({ form, label, fieldName }: TextareaFieldProps) => {
     const { t } = useTranslation()
 
     return (
-        <Box className='border'>
+        <Box>
             <InputLabel>{label}</InputLabel>
-            <LexicalComposer
-                initialConfig={{
-                    namespace: 'rte',
-                    theme: theme,
-                    nodes: [ListItemNode, ListNode],
-                    onError(error: Error) {
-                        throw error
-                    }
-                }}>
-                <ToolbarPlugin />
-                <Box className='rte-container relative min-h-[100px]'>
-                    <RichTextPlugin
-                        contentEditable={
-                            <ContentEditable className='resize-none caret-slate-500 outline-none' />
+            <Box className='border border-t-0 mt-1'>
+                <LexicalComposer
+                    initialConfig={{
+                        namespace: 'rte',
+                        theme: theme,
+                        nodes: [ListItemNode, ListNode],
+                        onError(error: Error) {
+                            throw error
                         }
-                        placeholder={
-                            <Typography
-                                variant='body1'
-                                className='text-slate-500 overflow-hidden absolute
+                    }}>
+                    <ToolbarPlugin />
+                    <Box className='rte-container relative min-h-[100px]'>
+                        <RichTextPlugin
+                            contentEditable={
+                                <ContentEditable className='resize-none outline-none p-3' />
+                            }
+                            placeholder={
+                                <Typography
+                                    variant='body1'
+                                    className='text-slate-500 overflow-hidden absolute
                             top-[15px] left-[10px] inline-block pointer-events-none'>
-                                {t('component.textareaField.placeholder')}
-                            </Typography>
-                        }
-                        ErrorBoundary={LexicalErrorBoundary}
-                    />
-                    <HistoryPlugin />
-                    <InitialValuePlugin text={form.initialValues[fieldName]} />
-                    <ListPlugin />
-                    <OnChangePlugin
-                        onChange={(_, editor) => {
-                            editor.update(() => {
-                                form.setFieldValue(fieldName, $generateHtmlFromNodes(editor, null))
-                            })
-                        }}
-                    />
-                </Box>
-            </LexicalComposer>
+                                    {t('component.textareaField.placeholder')}
+                                </Typography>
+                            }
+                            ErrorBoundary={LexicalErrorBoundary}
+                        />
+                        <HistoryPlugin />
+                        <InitialValuePlugin text={form.initialValues[fieldName]} />
+                        <ListPlugin />
+                        <OnChangePlugin
+                            onChange={(_, editor) => {
+                                editor.update(() => {
+                                    form.setFieldValue(
+                                        fieldName,
+                                        $generateHtmlFromNodes(editor, null)
+                                    )
+                                })
+                            }}
+                        />
+                    </Box>
+                </LexicalComposer>
+            </Box>
         </Box>
     )
 }
