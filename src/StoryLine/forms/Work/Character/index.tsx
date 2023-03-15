@@ -12,6 +12,7 @@ import DateField from '@sl/components/DateField'
 import { CharacterDataType } from '@sl/db/models/types'
 import { CharacterFormProps } from './types'
 import ImageField from '@sl/components/ImageField'
+import TextareaField from '@sl/components/TextareaField'
 
 // eslint-disable-next-line complexity
 const CharacterForm = ({
@@ -190,18 +191,10 @@ const CharacterForm = ({
                     />
                 </Box>
             </Box>
-            <TextField
-                margin='dense'
-                id='description'
+            <TextareaField
+                form={form}
+                fieldName='description'
                 label={t('form.work.character.description')}
-                name='description'
-                fullWidth
-                multiline
-                variant='standard'
-                value={form.values.description}
-                onChange={form.handleChange}
-                error={form.touched.description && Boolean(form.errors.description)}
-                helperText={form.touched.description && form.errors.description}
             />
             <Box className='grid grid-cols-2 gap-5'>
                 <Box>
@@ -218,7 +211,6 @@ const CharacterForm = ({
                         helperText={form.touched.nationality && form.errors.nationality}
                     />
                     <TextField
-                        autoFocus
                         margin='dense'
                         id='ethnicity'
                         label={t('form.work.character.ethnicity')}
@@ -231,7 +223,6 @@ const CharacterForm = ({
                         helperText={form.touched.ethnicity && form.errors.ethnicity}
                     />
                     <TextField
-                        autoFocus
                         margin='dense'
                         id='placeOfBirth'
                         label={t('form.work.character.placeOfBirth')}
@@ -244,7 +235,6 @@ const CharacterForm = ({
                         helperText={form.touched.placeOfBirth && form.errors.placeOfBirth}
                     />
                     <TextField
-                        autoFocus
                         margin='dense'
                         id='residence'
                         label={t('form.work.character.residence')}
@@ -318,7 +308,6 @@ const CharacterForm = ({
                         helperText={form.touched.religion && form.errors.religion}
                     />
                     <TextField
-                        autoFocus
                         margin='dense'
                         id='socialClass'
                         label={t('form.work.character.socialClass')}
@@ -331,7 +320,6 @@ const CharacterForm = ({
                         helperText={form.touched.socialClass && form.errors.socialClass}
                     />
                     <TextField
-                        autoFocus
                         margin='dense'
                         id='education'
                         label={t('form.work.character.education')}
@@ -344,7 +332,6 @@ const CharacterForm = ({
                         helperText={form.touched.education && form.errors.education}
                     />
                     <TextField
-                        autoFocus
                         margin='dense'
                         id='profession'
                         label={t('form.work.character.profession')}
@@ -557,18 +544,10 @@ const CharacterForm = ({
                     />
                 </Box>
             </Box>
-            <TextField
-                margin='dense'
-                id='history'
+            <TextareaField
+                form={form}
+                fieldName='history'
                 label={t('form.work.character.history')}
-                name='history'
-                fullWidth
-                multiline
-                variant='standard'
-                value={form.values.history}
-                onChange={form.handleChange}
-                error={form.touched.history && Boolean(form.errors.history)}
-                helperText={form.touched.history && form.errors.history}
             />
             <Box className='text-center border-t pt-3'>
                 <Button type='submit' variant='contained'>

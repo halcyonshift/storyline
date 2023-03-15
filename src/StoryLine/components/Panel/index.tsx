@@ -8,11 +8,13 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
     const settings = useSettings()
     const { width, enableResize } = useResize({
         minWidth: Math.round(window.innerWidth / 6),
-        offSet: 40
+        offSet: document.getElementById('navigation').offsetWidth,
+        name: 'panelWidth'
     })
 
     return open ? (
         <Box
+            id='panel'
             sx={{ backgroundColor: settings.getHex(50), width }}
             className='relative flex flex-col'>
             <Stack direction='row' alignItems='center'>

@@ -1,8 +1,10 @@
+import { useDatabase } from '@nozbe/watermelondb/hooks'
 import { useCallback, useEffect, useState } from 'react'
 
 type UseResizeProps = {
     minWidth: number
     offSet?: number
+    name?: string
 }
 
 type UseResizeReturn = {
@@ -10,9 +12,18 @@ type UseResizeReturn = {
     enableResize: () => void
 }
 
-const useResize = ({ minWidth, offSet }: UseResizeProps): UseResizeReturn => {
+const useResize = ({ minWidth, offSet, name }: UseResizeProps): UseResizeReturn => {
+    const database = useDatabase()
     const [isResizing, setIsResizing] = useState(false)
     const [width, setWidth] = useState(minWidth)
+
+    useEffect(() => {
+        if (name) {
+            database.localStorage.get<number>(name).then((val) => {
+                setWidth(val || minWidth)
+            })
+        }
+    }, [])
 
     const enableResize = useCallback(() => {
         setIsResizing(true)
@@ -20,7 +31,8 @@ const useResize = ({ minWidth, offSet }: UseResizeProps): UseResizeReturn => {
 
     const disableResize = useCallback(() => {
         setIsResizing(false)
-    }, [setIsResizing])
+        if (name) database.localStorage.set(name, width)
+    }, [setIsResizing, width])
 
     const resize = useCallback(
         (e: MouseEvent) => {

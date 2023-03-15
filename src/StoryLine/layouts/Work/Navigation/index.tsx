@@ -30,6 +30,7 @@ const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) =>
 
     return (
         <Box
+            id='navigation'
             sx={{ backgroundColor: settings.getHex() }}
             className='text-white flex flex-col justify-between'>
             <Stack>

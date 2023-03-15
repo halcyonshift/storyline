@@ -59,6 +59,9 @@
                 "placeholder": "Keywords"
             }
         },
+        "textareaField": {
+            "placeholder": ""
+        },
         "tooltipIconButton": {
             "dialog": {
                 "yes": "Yes",
