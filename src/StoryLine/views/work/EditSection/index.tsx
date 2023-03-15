@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { SectionModel } from '@sl/db/models'
-import useTabs from '@sl/layouts/Work/useTabs'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import EditChapterView from './EditChapter'
 import EditPartView from './EditPart'
 import EditSceneView from './EditScene'

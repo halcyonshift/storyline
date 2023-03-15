@@ -26,21 +26,25 @@ const useResize = ({ minWidth, offSet }: UseResizeProps): UseResizeReturn => {
         (e: MouseEvent) => {
             if (isResizing) {
                 const newWidth = e.clientX - (offSet || 0)
-                if (newWidth >= minWidth) {
-                    setWidth(newWidth)
-                }
+                setWidth(newWidth >= minWidth ? newWidth : minWidth)
             }
         },
         [minWidth, isResizing, setWidth]
     )
 
+    const updateWidth = () => {
+        const newWidth = Math.round(window.innerWidth / 5)
+        setWidth(newWidth >= minWidth ? newWidth : minWidth)
+    }
+
     useEffect(() => {
         document.addEventListener('mousemove', resize)
         document.addEventListener('mouseup', disableResize)
-
+        window.addEventListener('resize', updateWidth)
         return () => {
             document.removeEventListener('mousemove', resize)
             document.removeEventListener('mouseup', disableResize)
+            window.removeEventListener('resize', updateWidth)
         }
     }, [disableResize, resize])
 

@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { TabType, TabsContextType, TabsProviderProps } from './types'
+import { TabType, TabsContextType, TabsProviderProps } from '../types'
 
 const TabsContext = createContext({} as TabsContextType)
 

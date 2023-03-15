@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { WorkModel } from '@sl/db/models'
-import useTabs from '@sl/layouts/Work/useTabs'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 import ItemForm from '@sl/forms/Work/Item'
 

@@ -10,7 +10,6 @@ import { useRouteLoaderData } from 'react-router-dom'
 import Panel from '@sl/components/Panel'
 import { SEARCH_ICONS } from '@sl/constants/icons'
 import WorkModel from '@sl/db/models/WorkModel'
-import { PanelType } from '../types'
 
 const SearchInput = styled(InputBase)(() => ({
     '& .MuiInputBase-input': {
@@ -21,7 +20,7 @@ const SearchInput = styled(InputBase)(() => ({
 }))
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const SearchPanel = ({ loadTab }: PanelType) => {
+const SearchPanel = () => {
     const [fullWord, setFullWord] = useState<boolean>(false)
     const [caseSensitive, setCaseSensitive] = useState<boolean>(false)
     const [sceneOnly, setSceneOnly] = useState<boolean>(false)

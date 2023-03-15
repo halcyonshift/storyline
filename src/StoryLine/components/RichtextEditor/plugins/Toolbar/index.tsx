@@ -58,7 +58,7 @@ import Search from '../Search'
 import { ToolbarPluginProps } from './types'
 import TagEdit from '../../ui/Tag'
 import { getSelectedNode } from '../../utils/getSelectedNode'
-import useTabs from '@sl/layouts/Work/useTabs'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 const ToolbarPlugin = ({ onSave, scene, setInitialValue }: ToolbarPluginProps): ReactElement => {
     const [canUndo, setCanUndo] = useState<boolean>(false)

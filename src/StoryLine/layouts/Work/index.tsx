@@ -1,40 +1,23 @@
 import { useState } from 'react'
-
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import CloseIcon from '@mui/icons-material/Close'
-import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import IconButton from '@mui/material/IconButton'
-import Stack from '@mui/material/Stack'
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
+import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
 import { type Database, Q } from '@nozbe/watermelondb'
 import { withDatabase } from '@nozbe/watermelondb/DatabaseProvider'
 import withObservables from '@nozbe/with-observables'
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
-
 import { useTranslation } from 'react-i18next'
 import { Outlet, useNavigate } from 'react-router-dom'
-import useTabs, { TabsProvider } from './useTabs'
+import { GLOBAL_ICONS } from '@sl/constants/icons'
 import {
-    CharacterModel,
-    ItemModel,
-    LocationModel,
-    NoteModel,
-    SectionModel,
-    WorkModel
+    type CharacterModel,
+    type ItemModel,
+    type LocationModel,
+    type NoteModel,
+    type SectionModel,
+    type WorkModel
 } from '@sl/db/models'
+import * as Panel from './Panel'
 import Navigation from './Navigation'
-import {
-    CharacterPanel,
-    ItemPanel,
-    LocationPanel,
-    NotePanel,
-    SearchPanel,
-    SectionPanel
-} from './Panel'
+import Tabs from './Tabs'
+import useTabs, { TabsProvider } from './Tabs/useTabs'
 import { TabbedWorkLayoutProps } from './types'
 
 const WorkLayout = () => {
@@ -43,17 +26,6 @@ const WorkLayout = () => {
     const tabs = useTabs()
 
     const [currentPanel, setCurrentPanel] = useState<string | null>()
-
-    const onDragEnd = (result: DropResult) => {
-        if (!result.destination) return
-        if (result.destination.index === result.source.index) return
-
-        const newTabs = Array.from(tabs.tabs)
-        const [removed] = newTabs.splice(result.source.index, 1)
-        newTabs.splice(result.destination.index, 0, removed)
-        tabs.setTabs(newTabs)
-        tabs.setActive(result.destination.index)
-    }
 
     return (
         <Box className={`flex flex-col flex-grow`}>
@@ -66,7 +38,7 @@ const WorkLayout = () => {
                             color='inherit'
                             aria-label={t('navigation.back')}
                             onClick={() => navigate(-1)}>
-                            <ArrowBackIcon />
+                            {GLOBAL_ICONS.back}
                         </IconButton>
                     </Box>
                     <Box className='flex flex-grow justify-between'>
@@ -77,7 +49,7 @@ const WorkLayout = () => {
                             {tabs.work.title}
                         </Typography>
                         <Typography variant='h6' onClick={() => navigate('/')}>
-                            StoryLine
+                            {t('storyline')}
                         </Typography>
                     </Box>
                 </Toolbar>
@@ -88,68 +60,14 @@ const WorkLayout = () => {
                     currentPanel={currentPanel}
                     setCurrentPanel={setCurrentPanel}
                 />
-                {currentPanel === 'character' ? (
-                    <CharacterPanel characters={tabs.characters} />
-                ) : null}
-                {currentPanel === 'item' ? <ItemPanel items={tabs.items} /> : null}
-                {currentPanel === 'location' ? <LocationPanel locations={tabs.locations} /> : null}
-                {currentPanel === 'note' ? <NotePanel notes={tabs.notes} /> : null}
-                {currentPanel === 'search' ? <SearchPanel /> : null}
-                {currentPanel === 'section' ? <SectionPanel sections={tabs.sections} /> : null}
+                {currentPanel === 'character' ? <Panel.CharacterPanel /> : null}
+                {currentPanel === 'item' ? <Panel.ItemPanel /> : null}
+                {currentPanel === 'location' ? <Panel.LocationPanel /> : null}
+                {currentPanel === 'note' ? <Panel.NotePanel /> : null}
+                {currentPanel === 'search' ? <Panel.SearchPanel /> : null}
+                {currentPanel === 'section' ? <Panel.SectionPanel /> : null}
                 <Box className='flex flex-col flex-grow'>
-                    {tabs.showTabs ? (
-                        <DragDropContext onDragEnd={onDragEnd}>
-                            <Droppable droppableId='tabs'>
-                                {(props) => (
-                                    <Tabs
-                                        ref={props.innerRef}
-                                        {...props.droppableProps}
-                                        value={tabs.active}
-                                        onChange={(_, value) => tabs.setActive(value)}
-                                        variant='scrollable'
-                                        scrollButtons={false}
-                                        aria-label={t('layout.work.tabs')}>
-                                        {tabs.tabs.map((tab, index) => (
-                                            <Draggable
-                                                key={tab.id}
-                                                draggableId={`id-${tab.id}`}
-                                                index={index}
-                                                disableInteractiveElementBlocking={true}>
-                                                {(props) => (
-                                                    <Tab
-                                                        ref={props.innerRef}
-                                                        {...props.draggableProps}
-                                                        {...props.dragHandleProps}
-                                                        onClick={() => tabs.setActive(index)}
-                                                        iconPosition='start'
-                                                        wrapped
-                                                        label={
-                                                            <Stack
-                                                                direction='row'
-                                                                className='justify-middle'
-                                                                spacing={2}>
-                                                                <Typography variant='body2'>
-                                                                    {tab.label}
-                                                                </Typography>
-                                                                <CloseIcon
-                                                                    fontSize='small'
-                                                                    color='action'
-                                                                    onClick={() =>
-                                                                        tabs.removeTab(tab.id)
-                                                                    }
-                                                                />
-                                                            </Stack>
-                                                        }
-                                                    />
-                                                )}
-                                            </Draggable>
-                                        ))}
-                                        {props.placeholder}
-                                    </Tabs>
-                                )}
-                            </Droppable>
-                        </DragDropContext>
-                    ) : null}
+                    {tabs.showTabs ? <Tabs /> : null}
                     <Outlet />
                 </Box>
             </Box>
@@ -184,24 +102,24 @@ export default withDatabase(
             work: database.get<WorkModel>('work').findAndObserve(workId),
             characters: database
                 .get<CharacterModel>('character')
-                .query(Q.where('work_id', workId), Q.sortBy('first_name', Q.asc))
-                .observe(),
+                .query(Q.where('work_id', workId), Q.sortBy('display_name', Q.asc))
+                .observeWithColumns(['display_name', 'status']),
             items: database
                 .get<ItemModel>('item')
                 .query(Q.where('work_id', workId), Q.sortBy('name', Q.asc))
-                .observe(),
+                .observeWithColumns(['name', 'status']),
             locations: database
                 .get<LocationModel>('location')
                 .query(Q.where('work_id', workId), Q.sortBy('name', Q.asc))
-                .observe(),
+                .observeWithColumns(['name', 'status']),
             notes: database
                 .get<NoteModel>('note')
-                .query(Q.where('work_id', workId), Q.sortBy('title', Q.asc))
-                .observe(),
+                .query(Q.where('work_id', workId), Q.sortBy('order', Q.asc))
+                .observeWithColumns(['title', 'status', 'order']),
             sections: database
                 .get<SectionModel>('section')
                 .query(Q.where('work_id', workId), Q.sortBy('order', Q.asc))
-                .observe()
+                .observeWithColumns(['title', 'status', 'order'])
         }
     })(TabbedWorkLayout)
 )

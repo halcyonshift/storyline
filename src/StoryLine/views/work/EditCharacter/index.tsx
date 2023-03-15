@@ -4,7 +4,7 @@ import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import { useRouteLoaderData } from 'react-router-dom'
 import { CharacterModel } from '@sl/db/models'
-import useTabs from '@sl/layouts/Work/useTabs'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 import CharacterForm from '@sl/forms/Work/Character'
 

@@ -4,12 +4,12 @@ import Panel from '@sl/components/Panel'
 import { TooltipIconButtonProps } from '@sl/components/TooltipIconButton/types'
 import { SECTION_ICONS } from '@sl/constants/icons'
 import { SectionModel, WorkModel } from '@sl/db/models'
-import { SectionPanelProps } from '../types'
 import ChapterAccordion from './ChapterAccordion'
 import PartAccordion from './PartAccordion'
 import SceneList from './SceneList'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
-const SectionPanel = ({ sections }: SectionPanelProps) => {
+const SectionPanel = () => {
     const [parts, setParts] = useState<SectionModel[]>([])
     const [chapters, setChapters] = useState<SectionModel[]>([])
     const [scenes, setScenes] = useState<SectionModel[]>([])
@@ -17,12 +17,13 @@ const SectionPanel = ({ sections }: SectionPanelProps) => {
     const work = useRouteLoaderData('work') as WorkModel
 
     const navigate = useNavigate()
+    const tabs = useTabs()
 
     useEffect(() => {
-        setParts(sections.filter((section) => section.isPart))
-        setChapters(sections.filter((section) => section.isChapter))
-        setScenes(sections.filter((section) => section.isScene))
-    }, [sections])
+        setParts(tabs.sections.filter((section) => section.isPart))
+        setChapters(tabs.sections.filter((section) => section.isChapter))
+        setScenes(tabs.sections.filter((section) => section.isScene))
+    }, [tabs.sections])
 
     useEffect(() => {
         const newNavigation: TooltipIconButtonProps[] = [

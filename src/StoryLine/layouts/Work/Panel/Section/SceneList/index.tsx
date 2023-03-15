@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography'
 import { GLOBAL_ICONS, SECTION_ICONS } from '@sl/constants/icons'
 import { status } from '@sl/theme/utils'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
-import useTabs from '@sl/layouts/Work/useTabs'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 import { SceneListProps } from '../types'
 import { useTranslation } from 'react-i18next'

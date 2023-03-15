@@ -11,10 +11,9 @@ import { GLOBAL_ICONS, LOCATION_ICONS } from '@sl/constants/icons'
 import Panel from '@sl/components/Panel'
 import GroupToggle from '@sl/components/Panel/GroupToggle'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
-import useTabs from '@sl/layouts/Work/useTabs'
-import { LocationPanelProps } from '../types'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
-const LocationPanel = ({ locations }: LocationPanelProps) => {
+const LocationPanel = () => {
     const { t } = useTranslation()
     const tabs = useTabs()
     const [group, setGroup] = useState<boolean>(false)
@@ -30,7 +29,7 @@ const LocationPanel = ({ locations }: LocationPanelProps) => {
                 }
             ]}>
             <List dense disablePadding>
-                {locations.map((location) => (
+                {tabs.locations.map((location) => (
                     <ListItem key={location.id} disablePadding disableGutters divider>
                         <ListItemText
                             primary={

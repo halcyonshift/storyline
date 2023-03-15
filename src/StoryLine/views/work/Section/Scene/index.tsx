@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import RichtextEditor from '@sl/components/RichtextEditor'
-import useTabs from '@sl/layouts/Work/useTabs'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { SectionViewType } from '../types'
 
 const SceneView = ({ section }: SectionViewType) => {

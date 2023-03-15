@@ -1,4 +1,5 @@
 {
+    "storyline": "StoryLine",
     "error": {
         "connection": "Some features of this area aren't available without an internet connection",
         "404": {
@@ -6,7 +7,7 @@
             "link": "Go back to StoryLine"
         },
         "500": {
-            "title": "The database has hiccuped",
+            "title": "Sorry, there's been a hiccup",
             "link": "Go back to StoryLine"
         }
     },
@@ -126,7 +127,7 @@
                 "ambitions": "Ambitions",
                 "fears": "Fears",
                 "alert": {
-                    "success": "The character has been added"
+                    "success": "The character has been saved"
                 },
                 "button": {
                     "create": "Add",

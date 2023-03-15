@@ -11,10 +11,9 @@ import Panel from '@sl/components/Panel'
 import GroupToggle from '@sl/components/Panel/GroupToggle'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { GLOBAL_ICONS, NOTE_ICONS } from '@sl/constants/icons'
-import useTabs from '@sl/layouts/Work/useTabs'
-import { NotePanelProps } from '../types'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
-const NotePanel = ({ notes }: NotePanelProps) => {
+const NotePanel = () => {
     const [group, setGroup] = useState<boolean>(false)
     const { t } = useTranslation()
     const tabs = useTabs()
@@ -26,7 +25,7 @@ const NotePanel = ({ notes }: NotePanelProps) => {
                 { link: 'addNote', text: 'layout.work.panel.note.add', icon: NOTE_ICONS.add }
             ]}>
             <List dense disablePadding>
-                {notes.map((note) => (
+                {tabs.notes.map((note) => (
                     <ListItem key={note.id} disablePadding disableGutters divider>
                         <ListItemText
                             primary={

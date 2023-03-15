@@ -73,15 +73,48 @@ export default class CharacterModel extends Model {
         return Boolean(this.mode === CharacterMode.TERTIARY)
     }
 
-    @writer async updateStatus(status: StatusType) {
+    @writer async updateCharacter(data: CharacterDataType) {
         await this.update((character) => {
-            character.status = status
+            character.mode = data.mode
+            character.image = data.image
+            character.displayName = data.displayName
+            character.description = data.description
+            character.history = data.history
+            character.pronouns = data.pronouns
+            character.firstName = data.firstName
+            character.lastName = data.lastName
+            character.nickname = data.nickname
+            character.nationality = data.nationality
+            character.ethnicity = data.ethnicity
+            character.placeOfBirth = data.placeOfBirth
+            character.residence = data.residence
+            character.gender = data.gender
+            character.sexualOrientation = data.sexualOrientation
+            character.dateOfBirth = data.dateOfBirth
+            character.apparentAge = data.apparentAge
+            character.religion = data.religion
+            character.socialClass = data.socialClass
+            character.education = data.education
+            character.profession = data.profession
+            character.finances = data.finances
+            character.politicalLeaning = data.politicalLeaning
+            character.face = data.face
+            character.build = data.build
+            character.height = data.height
+            character.weight = data.weight
+            character.hair = data.hair
+            character.hairNatural = data.hairNatural
+            character.distinguishingFeatures = data.distinguishingFeatures
+            character.personalityPositive = data.personalityPositive
+            character.personalityNegative = data.personalityNegative
+            character.ambitions = data.ambitions
+            character.fears = data.fears
         })
     }
 
-    @writer async updateCharacter(data: CharacterDataType) {
+    @writer async updateStatus(status: StatusType) {
         await this.update((character) => {
-            character.firstName = data.firstName
+            character.status = status
         })
     }
 

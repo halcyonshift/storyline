@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useRouteLoaderData } from 'react-router-dom'
 import LocationModel from '@sl/db/models/LocationModel'
-import useTabs from '@sl/layouts/Work/useTabs'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 const LocationView = () => {
     const tabs = useTabs()

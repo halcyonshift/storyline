@@ -8,10 +8,10 @@ import CharacterModel from '@sl/db/models/CharacterModel'
 import { CHARACTER_ICONS } from '@sl/constants/icons'
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
 import useSettings from '@sl/theme/useSettings'
-import { CharacterPanelProps } from '../types'
 import ListItem from './ListItem'
+import useTabs from '../../Tabs/useTabs'
 
-const CharacterPanel = ({ characters }: CharacterPanelProps) => {
+const CharacterPanel = () => {
     const [modeCharacters, setModeCharacters] = useState<{
         [CharacterMode.PRIMARY]: CharacterModel[]
         [CharacterMode.SECONDARY]: CharacterModel[]
@@ -22,6 +22,7 @@ const CharacterPanel = ({ characters }: CharacterPanelProps) => {
         [CharacterMode.TERTIARY]: []
     })
 
+    const { characters } = useTabs()
     const settings = useSettings()
     const { t } = useTranslation()
 
@@ -56,12 +57,13 @@ const CharacterPanel = ({ characters }: CharacterPanelProps) => {
                 (mode: CharacterModeType) =>
                     modeCharacters[mode].length ? (
                         <Accordion
+                            key={mode}
                             title={<Typography>{t(`constant.characterMode.${mode}`)}</Typography>}
                             sx={{ backgroundColor: settings.getHex(400) }}
                             className='text-white p-1 border-b'>
                             <List dense disablePadding className='bg-white'>
                                 {modeCharacters[mode].map((character) => (
-                                    <ListItem character={character} />
+                                    <ListItem key={character.id} character={character} />
                                 ))}
                             </List>
                         </Accordion>

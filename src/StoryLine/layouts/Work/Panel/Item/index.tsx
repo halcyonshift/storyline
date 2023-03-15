@@ -9,11 +9,9 @@ import { useTranslation } from 'react-i18next'
 import { GLOBAL_ICONS, ITEM_ICONS } from '@sl/constants/icons'
 import Panel from '@sl/components/Panel'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
-import useTabs from '@sl/layouts/Work/useTabs'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
-import { ItemPanelProps } from '../types'
-
-const ItemPanel = ({ items }: ItemPanelProps) => {
+const ItemPanel = () => {
     const { t } = useTranslation()
     const tabs = useTabs()
 
@@ -23,7 +21,7 @@ const ItemPanel = ({ items }: ItemPanelProps) => {
                 { link: 'addItem', text: 'layout.work.panel.item.add', icon: ITEM_ICONS.add }
             ]}>
             <List dense disablePadding>
-                {items.map((item) => (
+                {tabs.items.map((item) => (
                     <ListItem key={item.id} disablePadding disableGutters divider>
                         <ListItemText
                             primary={

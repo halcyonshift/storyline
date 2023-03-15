@@ -1,6 +1,7 @@
 import {
     AddCircle,
     AddLocationAlt,
+    ArrowBack,
     Article,
     Casino,
     ChangeCircle,
@@ -19,6 +20,7 @@ import {
 } from '@mui/icons-material'
 
 export const GLOBAL_ICONS = {
+    back: <ArrowBack fontSize='inherit' color='inherit' />,
     change: <ChangeCircle fontSize='inherit' color='inherit' />,
     delete: <Delete fontSize='inherit' color='inherit' />,
     edit: <Edit fontSize='inherit' color='inherit' />,

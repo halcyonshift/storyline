@@ -27,6 +27,10 @@ const createWindow = (): void => {
         }
     })
 
+    mainWindow.on('will-resize', (_, newBounds) => {
+        mainWindow.webContents.send('window-will-resize', newBounds)
+    })
+
     mainWindow
         .loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
         .then(() => {

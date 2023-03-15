@@ -8,7 +8,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Popover from '@mui/material/Popover'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import { $getSelection, $isRangeSelection } from 'lexical'
-import useTabs from '@sl/layouts/Work/useTabs'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { $isTagNode, TOGGLE_TAG_COMMAND } from '../../nodes/Tag'
 import { getSelectedNode } from '../../utils/getSelectedNode'
 

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useRouteLoaderData } from 'react-router-dom'
 import ItemModel from '@sl/db/models/ItemModel'
-import useTabs from '@sl/layouts/Work/useTabs'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 const ItemView = () => {
     const tabs = useTabs()

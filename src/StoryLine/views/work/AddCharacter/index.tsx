@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useParams, useRouteLoaderData } from 'react-router-dom'
 import { CharacterModeType } from '@sl/constants/characterMode'
 import { WorkModel } from '@sl/db/models'
-import useTabs from '@sl/layouts/Work/useTabs'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import CharacterForm from '@sl/forms/Work/Character'
 
 const AddCharacterView = () => {

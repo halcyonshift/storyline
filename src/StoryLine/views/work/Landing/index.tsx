@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import Box from '@mui/material/Box'
-import useTabs from '@sl/layouts/Work/useTabs'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 const LandingView = () => {
     const tabs = useTabs()

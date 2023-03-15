@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import { useRouteLoaderData } from 'react-router-dom'
 import { WorkModel } from '@sl/db/models'
 import WorkForm from '@sl/forms/Work/Work'
-import useTabs from '@sl/layouts/Work/useTabs'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 const EditWorkView = () => {
     const work = useRouteLoaderData('work') as WorkModel

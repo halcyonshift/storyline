@@ -9,7 +9,7 @@ import { GLOBAL_ICONS } from '@sl/constants/icons'
 import CharacterModel from '@sl/db/models/CharacterModel'
 import { status } from '@sl/theme/utils'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
-import useTabs from '@sl/layouts/Work/useTabs'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 const ListItem = ({ character }: { character: CharacterModel }) => {
     const tabs = useTabs()
