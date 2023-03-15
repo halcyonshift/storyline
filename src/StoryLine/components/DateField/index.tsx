@@ -1,14 +1,13 @@
 import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Stack from '@mui/material/Stack'
-import TextField from '@mui/material/TextField'
+import { TextField as MuiTextField } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 import { DateTime } from 'luxon'
 import { FieldType, DateFieldProps } from './types'
 import { useTranslation } from 'react-i18next'
-
+import TextField from '../TextField'
 const DateField = ({
     form,
     fieldType,
@@ -19,7 +18,7 @@ const DateField = ({
     const { t } = useTranslation()
 
     return (
-        <Stack direction='row'>
+        <Box className='flex'>
             <Box>
                 {mode === 'picker' ? (
                     <DatePicker
@@ -33,30 +32,29 @@ const DateField = ({
                                 value ? value.toFormat('yyyy-MM-dd') : null
                             )
                         }}
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => (
+                            <MuiTextField fullWidth margin='dense' {...params} />
+                        )}
                     />
                 ) : (
-                    <TextField
-                        label={t(label)}
-                        autoFocus
-                        value={form.values[fieldName] ? form.values[fieldName].toString() : ''}
-                        onChange={(e) => form.setFieldValue(fieldName, e.target.value)}
-                        error={form.touched[fieldName] && Boolean(form.errors[fieldName])}
-                    />
+                    <TextField form={form} label={t(label)} name={fieldName} autoFocus />
                 )}
             </Box>
-            <Button
-                variant='text'
-                size='small'
-                startIcon={GLOBAL_ICONS.change}
-                onClick={() => setMode(mode === 'picker' ? 'custom' : 'picker')}>
-                {t(
-                    mode === 'picker'
-                        ? 'component.dateField.toggle.custom'
-                        : 'component.dateField.toggle.picker'
-                )}
-            </Button>
-        </Stack>
+            <Box className='pl-1 flex flex-col justify-center'>
+                <Button
+                    className='whitespace-nowrap'
+                    variant='text'
+                    size='small'
+                    startIcon={GLOBAL_ICONS.change}
+                    onClick={() => setMode(mode === 'picker' ? 'custom' : 'picker')}>
+                    {t(
+                        mode === 'picker'
+                            ? 'component.dateField.toggle.custom'
+                            : 'component.dateField.toggle.picker'
+                    )}
+                </Button>
+            </Box>
+        </Box>
     )
 }
 

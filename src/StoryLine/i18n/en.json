@@ -93,6 +93,12 @@
     "form": {
         "work": {
             "character": {
+                "tab": {
+                    "general": "General",
+                    "demographics": "Demographics",
+                    "appearance": "Appearance",
+                    "about": "About"
+                },
                 "pronouns": "Pronouns",
                 "displayName": {
                     "label": "Display name",

@@ -21,13 +21,13 @@ const AddCharacterView = () => {
 
     return (
         <Box className='flex-grow flex flex-col'>
-            <Typography variant='h6'>
+            <Typography variant='h6' className='px-4 py-2'>
                 {t('view.work.addCharacter.title', {
                     mode: t(`constant.characterMode.${params.mode}`).toLowerCase()
                 })}
             </Typography>
             <Divider />
-            <Box className='flex-grow h-0 overflow-auto p-5'>
+            <Box className='flex-grow h-0 overflow-auto'>
                 <CharacterForm work={work} mode={params.mode as CharacterModeType} />
             </Box>
         </Box>

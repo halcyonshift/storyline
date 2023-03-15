@@ -3,6 +3,7 @@ import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import { useRouteLoaderData } from 'react-router-dom'
+import Status from '@sl/components/Status'
 import { CharacterModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
@@ -12,19 +13,16 @@ const EditCharacterView = () => {
     const character = useRouteLoaderData('character') as CharacterModel
     const tabs = useTabs()
 
-    useEffect(() => {
-        tabs.setShowTabs(false)
-    }, [])
+    useEffect(() => tabs.setShowTabs(false), [])
 
     return (
         <Box className='flex flex-col flex-grow'>
-            <Box>
-                <Typography variant='h6' className='px-3 py-1'>
-                    {character.displayName}
-                </Typography>
-                <Divider />
+            <Box className='px-4 py-2 flex justify-between'>
+                <Typography variant='h6'>{character.displayName}</Typography>
+                <Status model={character} />
             </Box>
-            <Box className='flex-grow h-0 overflow-auto p-5'>
+            <Divider />
+            <Box className='flex-grow h-0 overflow-auto'>
                 <CharacterForm
                     character={character}
                     initialValues={{

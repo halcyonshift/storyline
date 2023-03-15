@@ -16,7 +16,7 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
         <Box
             id='panel'
             sx={{ backgroundColor: settings.getHex(50), width }}
-            className='relative flex flex-col'>
+            className='relative flex flex-col shrink-0'>
             <Stack direction='row' alignItems='center'>
                 {navigation.map((item) => (
                     <TooltipIconButton
