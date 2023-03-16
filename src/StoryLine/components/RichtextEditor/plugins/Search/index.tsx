@@ -25,6 +25,13 @@ const Search = ({ open }: { open: boolean }) => {
     const { t } = useTranslation()
 
     useEffect(() => {
+        setResults([])
+        setKeyWords('')
+        setCaseSensitive(false)
+        setFullWord(false)
+    }, [open])
+
+    useEffect(() => {
         editor.registerRootListener((rootElement, prevRootElement) => {
             rootElement?.addEventListener('click', () => setResultIndex(null))
             prevRootElement?.removeEventListener('click', () => setResultIndex(null))
@@ -135,9 +142,7 @@ const Search = ({ open }: { open: boolean }) => {
                 ) : null}
             </Box>
         </Box>
-    ) : (
-        <></>
-    )
+    ) : null
 }
 
 export default Search
