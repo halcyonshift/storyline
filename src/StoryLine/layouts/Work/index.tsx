@@ -119,7 +119,7 @@ export default withDatabase(
             sections: database
                 .get<SectionModel>('section')
                 .query(Q.where('work_id', workId), Q.sortBy('order', Q.asc))
-                .observeWithColumns(['title', 'status', 'order'])
+                .observeWithColumns(['title', 'status', 'order', 'updated_at'])
         }
     })(TabbedWorkLayout)
 )

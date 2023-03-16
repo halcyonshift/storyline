@@ -21,15 +21,21 @@ const Search = ({ open }: { open: boolean }) => {
     const [results, setResults] = useState<ResultType[]>([])
     const [resultIndex, setResultIndex] = useState<number | null>(null)
 
-    const { t } = useTranslation()
     const [editor] = useLexicalComposerContext()
-
-    const doSearch = debounce((query) => setKeyWords(query), 500)
+    const { t } = useTranslation()
 
     useEffect(() => {
-        if (!keyWords) return
+        editor.registerRootListener((rootElement, prevRootElement) => {
+            rootElement?.addEventListener('click', () => setResultIndex(null))
+            prevRootElement?.removeEventListener('click', () => setResultIndex(null))
+        })
+    }, [editor])
+
+    useEffect(() => {
         setResults([])
-        setResultIndex(null)
+
+        if (!keyWords) return
+
         editor.update(() => {
             const children = $getRoot().getChildren()
             const _results: ResultType[] = []
@@ -47,6 +53,13 @@ const Search = ({ open }: { open: boolean }) => {
 
     useEffect(() => doSearch(keyWords), [fullWord, caseSensitive])
 
+    useEffect(() => {
+        setResultIndex(null)
+        if (results.length) navigate('next')
+    }, [results])
+
+    const doSearch = debounce((query) => setKeyWords(query), 500)
+
     const regex = (): RegExp =>
         new RegExp(fullWord ? `\\b${keyWords}\\b` : keyWords, caseSensitive ? 'g' : 'gi')
 
@@ -62,6 +75,10 @@ const Search = ({ open }: { open: boolean }) => {
         editor.update(() => {
             const result = results[i]
             result.node.select(result.match.index, result.match.index + keyWords.length)
+            editor.getElementByKey(result.node.getKey()).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            })
             setResultIndex(i)
         })
     }
@@ -106,7 +123,7 @@ const Search = ({ open }: { open: boolean }) => {
                 {results.length ? (
                     <Box className='flex'>
                         <Typography variant='body1' className='flex-grow self-center'>
-                            {resultIndex + 1}/{results.length}
+                            {resultIndex === null ? 0 : resultIndex + 1}/{results.length}
                         </Typography>
                         <IconButton size='small' onClick={() => navigate('back')}>
                             <ArrowUpwardIcon />
