@@ -12,7 +12,7 @@ export const status = (status?: StatusType, shade?: number) => {
     const statusList = {
         [Status.TODO]: {
             label: 'status.todo',
-            color: colors.white
+            color: colors.red[shade]
         },
         [Status.DRAFT]: {
             label: 'status.draft',
