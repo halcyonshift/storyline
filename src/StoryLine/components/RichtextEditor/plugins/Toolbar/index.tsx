@@ -279,22 +279,22 @@ const ToolbarPlugin = ({ onSave, scene, setInitialValue }: ToolbarPluginProps): 
                 <IconButton
                     aria-label={t('component.richtext.toolbar.character')}
                     onClick={() => insertTag('character')}>
-                    <PersonIcon />
+                    <PersonIcon className='text-emerald-600' />
                 </IconButton>
                 <IconButton
                     aria-label={t('component.richtext.toolbar.location')}
                     onClick={() => insertTag('location')}>
-                    <LocationOnIcon />
+                    <LocationOnIcon className='text-amber-600' />
                 </IconButton>
                 <IconButton
                     aria-label={t('component.richtext.toolbar.item')}
                     onClick={() => insertTag('item')}>
-                    <CategoryIcon />
+                    <CategoryIcon className='text-purple-600' />
                 </IconButton>
                 <IconButton
                     aria-label={t('component.richtext.toolbar.note')}
                     onClick={() => insertTag('note')}>
-                    <StickyNote2Icon />
+                    <StickyNote2Icon className='text-sky-600' />
                 </IconButton>
                 <Divider orientation='vertical' flexItem />
                 <IconButton

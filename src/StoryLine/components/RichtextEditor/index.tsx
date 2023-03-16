@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { $generateHtmlFromNodes } from '@lexical/html'
 import { ListItemNode, ListNode } from '@lexical/list'
 import { QuoteNode } from '@lexical/rich-text'
@@ -25,6 +26,7 @@ import { RichtextEditorProps } from './types'
 const RichtextEditor = ({ scene, onSave, initialValue, setInitialValue }: RichtextEditorProps) => {
     const { autoSave, indentParagraph, spellCheck } = useSettings()
     const { t } = useTranslation()
+    const [iv] = useState(initialValue)
 
     const doSave = debounce((html) => onSave(html), 1000)
 
@@ -73,13 +75,13 @@ const RichtextEditor = ({ scene, onSave, initialValue, setInitialValue }: Richte
                 />
                 <AutoFocusPlugin />
                 <HistoryPlugin />
-                <InitialValuePlugin text={initialValue} />
+                <InitialValuePlugin text={iv} />
                 <ListPlugin />
                 {autoSave ? (
                     <OnChangePlugin
                         onChange={(_, editor) => {
                             editor.update(() => {
-                                doSave($generateHtmlFromNodes(editor, null))
+                                // doSave($generateHtmlFromNodes(editor, null))
                             })
                         }}
                     />

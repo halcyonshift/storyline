@@ -18,7 +18,9 @@ function convertAnchorElement(domNode: Node) {
     if (domNode instanceof HTMLAnchorElement) {
         const href = domNode.getAttribute('href')
         // ToDo Regex
-        node = $createTagNode(href)
+        const url = new URL(href)
+        const parts = url.pathname.replace(/^\s*\/*\s*|\s*\/*\s*$/gm, '').split('/')
+        node = $createTagNode(`/${parts[0]}/${parts[1]}/${[parts[2]]}`)
     }
 
     return {
@@ -39,9 +41,14 @@ export class TagNode extends LinkNode {
 
     createDOM(config: EditorConfig): HTMLAnchorElement {
         const element = super.createDOM(config)
-        element.href = `${element}/0`
-        const parts = element.href.split('/')
-        utils.addClassNamesToElement(element, `tag tag-${parts[1]}`)
+        const url = new URL(element.href)
+        const parts = url.pathname.replace(/^\s*\/*\s*|\s*\/*\s*$/gm, '').split('/')
+        if (parts.length === 1) {
+            element.href = `${element}/0`
+        } else {
+            element.href = `/${parts.join('/')}`
+        }
+        utils.addClassNamesToElement(element, config.theme.tag[parts[0]])
         return element
     }
 

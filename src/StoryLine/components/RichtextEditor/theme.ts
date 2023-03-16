@@ -11,10 +11,10 @@ const theme = {
         ul: 'list-disc mb-2 ml-4'
     },
     tag: {
-        character: 'tag tag-character',
-        item: 'tag tag-item',
-        location: 'tag tag-location',
-        empty: 'tag tag-empty'
+        character: 'tag tag-character text-emerald-600',
+        item: 'tag tag-item text-amber-600',
+        location: 'tag tag-location text-purple-600',
+        note: 'tag tag-note text-sky-600'
     },
     text: {
         bold: 'font-bold',
