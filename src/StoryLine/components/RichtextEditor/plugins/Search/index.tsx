@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 
 import { ResultType } from './types'
 
-const Search = ({ open }: { open: boolean }) => {
+const Search = () => {
     const [fullWord, setFullWord] = useState<boolean>(false)
     const [caseSensitive, setCaseSensitive] = useState<boolean>(false)
     const [keyWords, setKeyWords] = useState<string>('')
@@ -23,13 +23,6 @@ const Search = ({ open }: { open: boolean }) => {
 
     const [editor] = useLexicalComposerContext()
     const { t } = useTranslation()
-
-    useEffect(() => {
-        setResults([])
-        setKeyWords('')
-        setCaseSensitive(false)
-        setFullWord(false)
-    }, [open])
 
     useEffect(() => {
         editor.registerRootListener((rootElement, prevRootElement) => {

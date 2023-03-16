@@ -332,7 +332,7 @@ const ToolbarPlugin = ({ onSave, scene, setInitialValue }: ToolbarPluginProps): 
                     </>
                 ) : null}
             </Stack>
-            <Search open={showSearch} />
+            {showSearch ? <Search /> : null}
             <TagEdit isTag={isTag} />
             <Snackbar
                 open={showAlert}
