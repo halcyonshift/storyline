@@ -35,6 +35,11 @@
                 "picker": "Switch to picker"
             }
         },
+        "panel": {
+            "groupToggle": {
+                "default": "Switch view"
+            }
+        },
         "richtextEditor": {
             "placeholder": "It was a dark and stormy night...",
             "toolbar": {
@@ -304,7 +309,8 @@
                     "addRevision": "Create revision",
                     "edit": "Edit",
                     "delete": "Delete",
-                    "deleteConfirm": "Are you sure you want to delete {{name}}?"
+                    "deleteConfirm": "Are you sure you want to delete {{name}}?",
+                    "groupToggle": "Show archived"
                 }
             }
         }

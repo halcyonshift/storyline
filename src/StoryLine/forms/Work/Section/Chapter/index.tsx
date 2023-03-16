@@ -86,7 +86,7 @@ const Form = ({ work }: { work: WorkModel }) => {
                     onChange={form.handleChange}
                     error={form.touched.wordGoal && Boolean(form.errors.wordGoal)}
                     helperText={form.touched.wordGoal && form.errors.wordGoal}
-                    InputProps={{ inputProps: { min: 0, step: 100 } }}
+                    InputProps={{ inputProps: { min: 0, step: 1 } }}
                 />
                 <DatePicker
                     label={t('view.work.addPart.form.deadline')}

@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useRouteLoaderData } from 'react-router-dom'
 import Panel from '@sl/components/Panel'
+import GroupToggle from '@sl/components/Panel/GroupToggle'
 import { TooltipIconButtonProps } from '@sl/components/TooltipIconButton/types'
 import { SECTION_ICONS } from '@sl/constants/icons'
+import { Status } from '@sl/constants/status'
 import { SectionModel, WorkModel } from '@sl/db/models'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import ChapterAccordion from './ChapterAccordion'
 import PartAccordion from './PartAccordion'
 import SceneList from './SceneList'
-import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 const SectionPanel = () => {
+    const [group, setGroup] = useState<boolean>(false)
     const [parts, setParts] = useState<SectionModel[]>([])
     const [chapters, setChapters] = useState<SectionModel[]>([])
     const [scenes, setScenes] = useState<SectionModel[]>([])
@@ -22,8 +25,13 @@ const SectionPanel = () => {
     useEffect(() => {
         setParts(tabs.sections.filter((section) => section.isPart))
         setChapters(tabs.sections.filter((section) => section.isChapter))
-        setScenes(tabs.sections.filter((section) => section.isScene))
-    }, [tabs.sections])
+        setScenes(
+            tabs.sections.filter(
+                (section) =>
+                    section.isScene && (group === true || section.status !== Status.ARCHIVE)
+            )
+        )
+    }, [tabs.sections, group])
 
     useEffect(() => {
         const newNavigation: TooltipIconButtonProps[] = [
@@ -60,7 +68,15 @@ const SectionPanel = () => {
     }, [parts.length, chapters.length])
 
     return (
-        <Panel navigation={navigation}>
+        <Panel
+            action={
+                <GroupToggle
+                    label={'layout.work.panel.section.groupToggle'}
+                    group={group}
+                    setGroup={setGroup}
+                />
+            }
+            navigation={navigation}>
             {parts.length > 1 ? (
                 <PartAccordion parts={parts} chapters={chapters} scenes={scenes} />
             ) : chapters.length > 1 ? (
