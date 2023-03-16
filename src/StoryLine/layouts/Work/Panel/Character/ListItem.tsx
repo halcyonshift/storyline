@@ -5,13 +5,13 @@ import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
-import { GLOBAL_ICONS } from '@sl/constants/icons'
-import CharacterModel from '@sl/db/models/CharacterModel'
+import { CHARACTER_ICONS, GLOBAL_ICONS } from '@sl/constants/icons'
 import { status } from '@sl/theme/utils'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import { ListItemProps } from './types'
 
-const ListItem = ({ character }: { character: CharacterModel }) => {
+const ListItem = ({ character, showIcon }: ListItemProps) => {
     const tabs = useTabs()
     const { t } = useTranslation()
 
@@ -30,6 +30,16 @@ const ListItem = ({ character }: { character: CharacterModel }) => {
                                     link: `character/${character.id}`
                                 })
                             }>
+                            {showIcon ? (
+                                <Box className='pr-1'>
+                                    {
+                                        CHARACTER_ICONS[
+                                            // eslint-disable-next-line max-len
+                                            character.mode.toLowerCase() as keyof typeof CHARACTER_ICONS
+                                        ]
+                                    }
+                                </Box>
+                            ) : null}
                             <Typography
                                 variant='body1'
                                 className='whitespace-nowrap text-ellipsis overflow-hidden'>

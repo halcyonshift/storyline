@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import Accordion from '@sl/components/Accordion'
 import Panel from '@sl/components/Panel'
+import GroupToggle from '@sl/components/Panel/GroupToggle'
 import CharacterModel from '@sl/db/models/CharacterModel'
 import { CHARACTER_ICONS } from '@sl/constants/icons'
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
@@ -12,6 +13,11 @@ import ListItem from './ListItem'
 import useTabs from '../../Tabs/useTabs'
 
 const CharacterPanel = () => {
+    const { characters } = useTabs()
+    const settings = useSettings()
+    const { t } = useTranslation()
+
+    const [group, setGroup] = useState<boolean>(true)
     const [modeCharacters, setModeCharacters] = useState<{
         [CharacterMode.PRIMARY]: CharacterModel[]
         [CharacterMode.SECONDARY]: CharacterModel[]
@@ -21,10 +27,6 @@ const CharacterPanel = () => {
         [CharacterMode.SECONDARY]: [],
         [CharacterMode.TERTIARY]: []
     })
-
-    const { characters } = useTabs()
-    const settings = useSettings()
-    const { t } = useTranslation()
 
     useEffect(() => {
         setModeCharacters({
@@ -36,6 +38,7 @@ const CharacterPanel = () => {
 
     return (
         <Panel
+            action={<GroupToggle group={group} setGroup={setGroup} />}
             navigation={[
                 {
                     link: `addCharacter/${CharacterMode.PRIMARY}`,
@@ -53,21 +56,31 @@ const CharacterPanel = () => {
                     icon: CHARACTER_ICONS.addTertiary
                 }
             ]}>
-            {[CharacterMode.PRIMARY, CharacterMode.SECONDARY, CharacterMode.TERTIARY].map(
-                (mode: CharacterModeType) =>
-                    modeCharacters[mode].length ? (
-                        <Accordion
-                            key={mode}
-                            title={<Typography>{t(`constant.characterMode.${mode}`)}</Typography>}
-                            sx={{ backgroundColor: settings.getHex(400) }}
-                            className='text-white p-1 border-b'>
-                            <List dense disablePadding className='bg-white'>
-                                {modeCharacters[mode].map((character) => (
-                                    <ListItem key={character.id} character={character} />
-                                ))}
-                            </List>
-                        </Accordion>
-                    ) : null
+            {group ? (
+                [CharacterMode.PRIMARY, CharacterMode.SECONDARY, CharacterMode.TERTIARY].map(
+                    (mode: CharacterModeType) =>
+                        modeCharacters[mode].length ? (
+                            <Accordion
+                                key={mode}
+                                title={
+                                    <Typography>{t(`constant.characterMode.${mode}`)}</Typography>
+                                }
+                                sx={{ backgroundColor: settings.getHex(400) }}
+                                className='text-white p-1 border-b'>
+                                <List dense disablePadding className='bg-white'>
+                                    {modeCharacters[mode].map((character) => (
+                                        <ListItem key={character.id} character={character} />
+                                    ))}
+                                </List>
+                            </Accordion>
+                        ) : null
+                )
+            ) : (
+                <List dense disablePadding className='bg-white'>
+                    {characters.map((character) => (
+                        <ListItem showIcon={true} key={character.id} character={character} />
+                    ))}
+                </List>
             )}
         </Panel>
     )

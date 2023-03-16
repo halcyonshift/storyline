@@ -5,9 +5,8 @@ import Typography from '@mui/material/Typography'
 import { useRouteLoaderData } from 'react-router-dom'
 import Status from '@sl/components/Status'
 import { CharacterModel } from '@sl/db/models'
-import useTabs from '@sl/layouts/Work/Tabs/useTabs'
-
 import CharacterForm from '@sl/forms/Work/Character'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 const EditCharacterView = () => {
     const character = useRouteLoaderData('character') as CharacterModel

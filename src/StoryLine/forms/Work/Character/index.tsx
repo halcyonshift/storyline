@@ -204,6 +204,9 @@ const CharacterForm = ({
                                 />
                                 <TextField
                                     name='apparentAge'
+                                    type='number'
+                                    InputProps={{ inputProps: { min: 0, step: 1 } }}
+                                    fullWidth={false}
                                     label={t('form.work.character.apparentAge')}
                                     form={form}
                                 />
@@ -290,17 +293,17 @@ const CharacterForm = ({
                                 label={t('form.work.character.hairNatural')}
                                 form={form}
                             />
+                            <TextareaField
+                                fieldName='distinguishingFeatures'
+                                label={t('form.work.character.distinguishingFeatures')}
+                                form={form}
+                            />
                         </Box>
                         <Box>
                             <ImageField
                                 label={t('form.work.character.image')}
                                 form={form}
                                 dir='characters'
-                            />
-                            <TextareaField
-                                fieldName='distinguishingFeatures'
-                                label={t('form.work.character.distinguishingFeatures')}
-                                form={form}
                             />
                         </Box>
                     </Box>

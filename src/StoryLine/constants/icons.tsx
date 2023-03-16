@@ -12,8 +12,11 @@ import {
     GroupAdd,
     History,
     LibraryBooks,
+    PeopleAlt,
     PersonAddAlt,
     PersonAddAlt1,
+    Person,
+    PersonOutline,
     PostAdd,
     Queue,
     RestorePage
@@ -32,7 +35,10 @@ export const GLOBAL_ICONS = {
 export const CHARACTER_ICONS = {
     addPrimary: <PersonAddAlt1 fontSize='inherit' color='inherit' />,
     addSecondary: <PersonAddAlt fontSize='inherit' color='inherit' />,
-    addTertiary: <GroupAdd fontSize='inherit' color='inherit' />
+    addTertiary: <GroupAdd fontSize='inherit' color='inherit' />,
+    primary: <Person fontSize='inherit' color='inherit' />,
+    secondary: <PersonOutline fontSize='inherit' color='inherit' />,
+    tertiary: <PeopleAlt fontSize='inherit' color='inherit' />
 }
 
 export const ITEM_ICONS = {
