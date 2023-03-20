@@ -112,6 +112,8 @@ const TagEdit = ({ isTag }: { isTag: boolean }) => {
         )
     }, [linkUrl])
 
+    return <></>
+
     return anchorEl && options.length ? (
         <Popover
             open={Boolean(anchorEl)}

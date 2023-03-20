@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { $generateHtmlFromNodes } from '@lexical/html'
 import { ListItemNode, ListNode } from '@lexical/list'
 import { QuoteNode } from '@lexical/rich-text'
@@ -16,79 +16,85 @@ import Typography from '@mui/material/Typography'
 import debounce from 'lodash.debounce'
 import { useTranslation } from 'react-i18next'
 import useSettings from '@sl/theme/useSettings'
-import { TagNode } from './nodes/Tag'
+
 import InitialValuePlugin from './plugins/InitialValue'
-import TagPlugin from './plugins/Tag'
+import SavePlugin from './plugins/Save'
+import SearchPlugin from './plugins/Search'
 import ToolbarPlugin from './plugins/Toolbar'
 import theme from './theme'
 import { RichtextEditorProps } from './types'
 
-const RichtextEditor = ({ scene, onSave, initialValue, setInitialValue }: RichtextEditorProps) => {
+const RichtextEditor = ({ id, onSave, initialValue }: RichtextEditorProps) => {
+    const [isSaving, setIsSaving] = useState<boolean>(false)
     const { autoSave, indentParagraph, spellCheck } = useSettings()
     const { t } = useTranslation()
-    const [iv] = useState(initialValue)
 
-    const doSave = debounce((html) => onSave(html), 1000)
+    const doSave = debounce((html) => {
+        if (isSaving) return
+        setIsSaving(true)
+        onSave(html)
+        setIsSaving(false)
+    }, 1000)
 
-    const Editor = () =>
-        spellCheck ? (
-            <GrammarlyEditorPlugin clientId='client_PJGNpq8df12athMYk8jcSr'>
-                <ContentEditable
-                    className='resize-none caret-slate-500 outline-none'
-                    spellCheck={true}
-                />
-            </GrammarlyEditorPlugin>
-        ) : (
-            <ContentEditable
-                className='resize-none caret-slate-500 outline-none'
-                spellCheck={false}
-            />
-        )
-
-    return (
-        <LexicalComposer
-            initialConfig={{
-                namespace: 'rte',
-                theme: { ...theme, ['paragraph']: indentParagraph ? 'indent-4 mb-2' : 'mb-2' },
-                nodes: [ListItemNode, ListNode, QuoteNode, TagNode],
-                onError(error: Error) {
-                    throw error
-                }
-            }}>
-            <ToolbarPlugin
-                scene={scene}
-                onSave={autoSave ? null : onSave}
-                setInitialValue={setInitialValue}
-            />
-            <Box className='rte-container relative flex-grow overflow-auto h-0 p-3'>
-                <RichTextPlugin
-                    contentEditable={<Editor />}
-                    placeholder={
-                        <Typography
-                            variant='body1'
-                            className='text-slate-500 overflow-hidden absolute
-                            top-[15px] left-[10px] inline-block pointer-events-none'>
-                            {t('component.richtextEditor.placeholder')}
-                        </Typography>
+    return useMemo(
+        () => (
+            <LexicalComposer
+                initialConfig={{
+                    namespace: 'rte',
+                    theme: { ...theme, ['paragraph']: indentParagraph ? 'indent-4 mb-2' : 'mb-2' },
+                    nodes: [ListItemNode, ListNode, QuoteNode],
+                    onError(error: Error) {
+                        throw error
                     }
-                    ErrorBoundary={LexicalErrorBoundary}
-                />
-                <AutoFocusPlugin />
-                <HistoryPlugin />
-                <InitialValuePlugin text={iv} />
-                <ListPlugin />
-                {autoSave ? (
+                }}>
+                <ToolbarPlugin />
+                <SearchPlugin />
+                <Box className='rte-container relative flex-grow overflow-auto h-0 p-3'>
+                    <RichTextPlugin
+                        contentEditable={
+                            spellCheck ? (
+                                <GrammarlyEditorPlugin clientId='client_PJGNpq8df12athMYk8jcSr'>
+                                    <ContentEditable
+                                        className='resize-none caret-slate-500 outline-none'
+                                        spellCheck={true}
+                                    />
+                                </GrammarlyEditorPlugin>
+                            ) : (
+                                <ContentEditable
+                                    className='resize-none caret-slate-500 outline-none'
+                                    spellCheck={false}
+                                />
+                            )
+                        }
+                        placeholder={
+                            <Typography
+                                variant='body1'
+                                className='text-slate-500 overflow-hidden absolute
+                    top-[15px] left-[10px] inline-block pointer-events-none'>
+                                {t('component.richtextEditor.placeholder')}
+                            </Typography>
+                        }
+                        ErrorBoundary={LexicalErrorBoundary}
+                    />
+                    <AutoFocusPlugin />
+                    <HistoryPlugin />
+                    <InitialValuePlugin value={initialValue} />
+                    <ListPlugin />
                     <OnChangePlugin
-                        onChange={(_, editor) => {
-                            editor.update(() => {
-                                // doSave($generateHtmlFromNodes(editor, null))
+                        onChange={(editorState, editor) => {
+                            editorState.read(() => {
+                                const html = $generateHtmlFromNodes(editor, null)
+                                if (autoSave) {
+                                    doSave(html)
+                                }
                             })
                         }}
                     />
-                ) : null}
-                <TagPlugin />
-            </Box>
-        </LexicalComposer>
+                    <SavePlugin onSave={onSave} />
+                </Box>
+            </LexicalComposer>
+        ),
+        [id, initialValue]
     )
 }
 

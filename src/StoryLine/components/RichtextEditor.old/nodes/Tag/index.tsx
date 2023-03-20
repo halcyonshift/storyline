@@ -18,9 +18,13 @@ function convertAnchorElement(domNode: Node) {
     if (domNode instanceof HTMLAnchorElement) {
         const href = domNode.getAttribute('href')
         // ToDo Regex
-        const url = new URL(href)
-        const parts = url.pathname.replace(/^\s*\/*\s*|\s*\/*\s*$/gm, '').split('/')
-        node = $createTagNode(`/${parts[0]}/${parts[1]}/${[parts[2]]}`)
+        try {
+            const url = new URL(href)
+            const parts = url.pathname.replace(/^\s*\/*\s*|\s*\/*\s*$/gm, '').split('/')
+            node = $createTagNode(`/${parts[0]}/${parts[1]}/${[parts[2]]}`)
+        } catch {
+            //
+        }
     }
 
     return {
@@ -47,6 +51,8 @@ export class TagNode extends LinkNode {
             element.href = `${element}/0`
         } else {
             element.href = `/${parts.join('/')}`
+            element.title = parts[2]
+            // element.onclick = () => loadTab(parts[0], parts[1], parts[2])
         }
         utils.addClassNamesToElement(element, config.theme.tag[parts[0]])
         return element

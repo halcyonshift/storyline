@@ -5,3 +5,8 @@ export type ToolbarPluginProps = {
     onSave?: (html: string) => Promise<void>
     setInitialValue: (value: string) => void
 }
+
+export type AutocompleteOption = {
+    id: string
+    label: string
+}

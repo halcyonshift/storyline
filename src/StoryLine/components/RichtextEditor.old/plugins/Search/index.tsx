@@ -8,26 +8,21 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import { $getRoot, createCommand, LexicalCommand, TextNode } from 'lexical'
+import { $getRoot, TextNode } from 'lexical'
 import debounce from 'lodash.debounce'
-import { useOnKeyPressed } from '@sl/utils/useKeyPress'
 import { useTranslation } from 'react-i18next'
+
 import { ResultType } from './types'
 
-export const TOGGLE_SEARCH_COMMAND: LexicalCommand<boolean> = createCommand()
-
-const SearchPlugin = () => {
+const Search = () => {
     const [fullWord, setFullWord] = useState<boolean>(false)
     const [caseSensitive, setCaseSensitive] = useState<boolean>(false)
     const [keyWords, setKeyWords] = useState<string>('')
     const [results, setResults] = useState<ResultType[]>([])
     const [resultIndex, setResultIndex] = useState<number | null>(null)
-    const [open, setOpen] = useState<boolean>(false)
 
     const [editor] = useLexicalComposerContext()
     const { t } = useTranslation()
-
-    useOnKeyPressed('Meta+f', () => setOpen(!open))
 
     useEffect(() => {
         editor.registerRootListener((rootElement, prevRootElement) => {
@@ -35,17 +30,6 @@ const SearchPlugin = () => {
             prevRootElement?.removeEventListener('click', () => setResultIndex(null))
         })
     }, [editor])
-
-    useEffect(() => {
-        return editor.registerCommand<boolean>(
-            TOGGLE_SEARCH_COMMAND,
-            () => {
-                setOpen(!open)
-                return true
-            },
-            1
-        )
-    }, [open])
 
     useEffect(() => {
         setResults([])
@@ -154,4 +138,4 @@ const SearchPlugin = () => {
     ) : null
 }
 
-export default SearchPlugin
+export default Search

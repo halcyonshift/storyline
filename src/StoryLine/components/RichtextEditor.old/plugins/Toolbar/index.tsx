@@ -55,16 +55,19 @@ import {
     UNDO_COMMAND
 } from 'lexical'
 import { useTranslation } from 'react-i18next'
-import useTabs from '@sl/layouts/Work/Tabs/useTabs'
-
+import SectionModel from '@sl/db/models/SectionModel'
+import { useOnKeyPressed } from '@sl/utils/useKeyPress'
+import { TOGGLE_TAG_COMMAND, $isTagNode } from '../../nodes/Tag'
+import Search from '../Search'
 import { getSelectedNode } from '../../utils/getSelectedNode'
-import { SAVE_COMMAND } from '../Save'
-import { TOGGLE_SEARCH_COMMAND } from '../Search'
-import { $isTagNode } from '../Tag/TagNode'
-import { TagModeType } from '../Tag/types'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import { ToolbarPluginProps, AutocompleteOption } from './types'
+import TabPlugin from '../Tab'
+
+type TagModeType = 'character' | 'location' | 'item' | 'note'
 
 // eslint-disable-next-line complexity
-const ToolbarPlugin = (): ReactElement => {
+const ToolbarPlugin = ({ onSave, scene, setInitialValue }: ToolbarPluginProps): ReactElement => {
     const [canUndo, setCanUndo] = useState<boolean>(false)
     const [canRedo, setCanRedo] = useState<boolean>(false)
     const [blockType, setBlockType] = useState<string>('paragraph')
@@ -73,11 +76,23 @@ const ToolbarPlugin = (): ReactElement => {
     const [isUnderline, setIsUnderline] = useState<boolean>(false)
     const [isStrikethrough, setIsStrikethrough] = useState<boolean>(false)
     const [isTag, setIsTag] = useState<boolean>(false)
-    const [menu, setMenu] = useState<string | null>(null)
+    const [showSearch, setShowSearch] = useState<boolean>(false)
+    const [isSaving, setIsSaving] = useState<boolean>(false)
+    const [showAlert, setShowAlert] = useState<boolean>(false)
+    const [revisionMenu, setRevisionMenu] = useState<HTMLElement | null>()
+    const [revisions, setRevisions] = useState<SectionModel[]>([])
+    const [tagMenu, setTagMenu] = useState<HTMLElement | null>()
+    const [tagMode, setTagMode] = useState<TagModeType>('character')
+    const [tagOptions, setTagOptions] = useState<AutocompleteOption[]>([])
+    const [tagId, setTagId] = useState<string>('')
+    const [tagLabel, setTagLabel] = useState<string>('')
+    const [current, setCurrent] = useState<string>()
 
     const [editor] = useLexicalComposerContext()
     const { t } = useTranslation()
     const tabs = useTabs()
+
+    useOnKeyPressed('Meta+f', () => setShowSearch(!showSearch))
 
     const formatQuote = () => {
         editor.update(() => {
@@ -93,6 +108,7 @@ const ToolbarPlugin = (): ReactElement => {
         })
     }
 
+    // eslint-disable-next-line complexity
     const updateToolbar = useCallback(() => {
         const selection = $getSelection()
         if ($isRangeSelection(selection)) {
@@ -113,6 +129,35 @@ const ToolbarPlugin = (): ReactElement => {
 
             const node = getSelectedNode(selection)
             const parent = node.getParent()
+
+            if ($isTagNode(node) || $isTagNode(parent)) {
+                const regex = /^\s*\/*\s*|\s*\/*\s*$/gm
+                const tagNode = $isTagNode(parent) ? parent : node
+                const linkUrl = tagNode.getURL()
+                let parts
+                try {
+                    const url = new URL(linkUrl)
+                    parts = url.pathname.replace(regex, '').split('/')
+                } catch {
+                    parts = linkUrl.replace(regex, '').split('/')
+                }
+
+                const [_mode, _id, _title] = parts
+
+                if (!_mode || !['character', 'item', 'location', 'note'].includes(_mode)) {
+                    setTagMode('character')
+                    setTagId('')
+                    setTagLabel('')
+                    return
+                }
+
+                setTagMode(_mode)
+                setTagId(_id || '')
+                setTagLabel(_title || '')
+            } else {
+                setTagId('')
+                setTagLabel('')
+            }
 
             setIsTag($isTagNode(node) || $isTagNode(parent))
             setIsBold(selection.hasFormat('bold'))
@@ -157,6 +202,25 @@ const ToolbarPlugin = (): ReactElement => {
             ),
         [editor, updateToolbar]
     )
+
+    useEffect(() => {
+        const currentScene = tabs.sections.find((cs) => cs.id === scene.id)
+        currentScene.revisions.fetch().then((revisions) => setRevisions(revisions))
+    }, [tabs.sections])
+
+    useEffect(() => {
+        setTagOptions(
+            {
+                character: tabs.characters,
+                item: tabs.items,
+                location: tabs.locations,
+                note: tabs.notes
+            }[tagMode].map((option) => ({
+                id: option.id,
+                label: option.displayName
+            }))
+        )
+    }, [tagMode])
 
     return (
         <>
@@ -260,42 +324,145 @@ const ToolbarPlugin = (): ReactElement => {
                 <IconButton
                     aria-label={t('component.richtext.toolbar.tag')}
                     id='tag-button'
-                    aria-controls={menu === 'tag' ? 'tag-menu' : undefined}
+                    aria-controls={tagMenu ? 'tag-menu' : undefined}
                     aria-haspopup={true}
-                    aria-expanded={menu === 'tag' ? 'true' : undefined}
-                    onClick={() => {
-                        setMenu(menu === 'tag' ? null : 'tag')
+                    aria-expanded={tagMenu ? 'true' : undefined}
+                    onClick={(e) => {
+                        editor.update(() => {
+                            const selection = $getSelection()
+                            if (selection.getTextContent() || isTag) {
+                                setTagMenu(e.currentTarget)
+                                if (isTag) {
+                                    editor.dispatchCommand(TOGGLE_TAG_COMMAND, null)
+                                }
+                            }
+                        })
                     }}>
                     <LocalOfferIcon />
                 </IconButton>
                 <Divider orientation='vertical' flexItem />
                 <IconButton
                     aria-label={t('component.richtext.toolbar.search')}
-                    onClick={() => {
-                        editor.dispatchCommand(TOGGLE_SEARCH_COMMAND, null)
-                    }}>
+                    onClick={() => setShowSearch(!showSearch)}>
                     <SearchIcon />
                 </IconButton>
                 <IconButton
                     aria-label={t('component.richtext.toolbar.revision')}
                     id='revision-button'
-                    aria-controls={menu === 'revision' ? 'revision-menu' : undefined}
+                    aria-controls={revisionMenu ? 'revision-menu' : undefined}
                     aria-haspopup={true}
-                    aria-expanded={menu === 'revision' ? 'true' : undefined}
-                    onClick={() => {
-                        setMenu(menu === 'revision' ? null : 'revision')
-                    }}>
+                    aria-expanded={revisionMenu ? 'true' : undefined}
+                    onClick={(e) => setRevisionMenu(e.currentTarget)}>
                     <RestorePageIcon />
                 </IconButton>
-                <Divider orientation='vertical' flexItem />
-                <IconButton
-                    aria-label={t('component.richtext.toolbar.save')}
-                    onClick={() => {
-                        editor.dispatchCommand(SAVE_COMMAND, null)
-                    }}>
-                    <SaveIcon />
-                </IconButton>
+                {onSave ? (
+                    <>
+                        <Divider orientation='vertical' flexItem />
+                        <IconButton
+                            disabled={isSaving}
+                            aria-label={t('component.richtext.toolbar.save')}
+                            onClick={() => {
+                                setIsSaving(true)
+                                editor.update(() => {
+                                    const htmlString = $generateHtmlFromNodes(editor, null)
+                                    onSave(htmlString).then(() => {
+                                        setIsSaving(false)
+                                        setShowAlert(true)
+                                    })
+                                })
+                            }}>
+                            <SaveIcon />
+                        </IconButton>
+                    </>
+                ) : null}
             </Stack>
+            {showSearch ? <Search /> : null}
+
+            <Snackbar
+                open={showAlert}
+                autoHideDuration={6000}
+                onClose={() => setShowAlert(false)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+                <Alert onClose={() => setShowAlert(false)} severity='success'>
+                    Saved
+                </Alert>
+            </Snackbar>
+            <Menu
+                id='revision-menu'
+                anchorEl={revisionMenu}
+                open={Boolean(revisionMenu)}
+                onClose={() => setRevisionMenu(null)}
+                MenuListProps={{
+                    'aria-labelledby': 'revision-button'
+                }}>
+                <MenuItem
+                    onClick={() => {
+                        setInitialValue(current)
+                        setRevisionMenu(null)
+                    }}>
+                    Current
+                </MenuItem>
+                {revisions.map((revision) => (
+                    <MenuItem
+                        key={revision.id}
+                        onClick={() => {
+                            setCurrent(scene.body)
+                            setInitialValue(revision.body)
+                            setRevisionMenu(null)
+                        }}>
+                        Version {revision.order}
+                    </MenuItem>
+                ))}
+            </Menu>
+            <Menu
+                id='tag-menu'
+                anchorEl={tagMenu}
+                open={Boolean(tagMenu)}
+                onClose={() => setTagMenu(null)}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center'
+                }}
+                MenuListProps={{
+                    'aria-labelledby': 'tag-button'
+                }}>
+                <Box className='flex justify-around'>
+                    <IconButton onClick={() => setTagMode('character')}>
+                        <PersonIcon className='text-emerald-600' />
+                    </IconButton>
+                    <IconButton onClick={() => setTagMode('location')}>
+                        <LocationOnIcon className='text-amber-600' />
+                    </IconButton>
+                    <IconButton onClick={() => setTagMode('item')}>
+                        <CategoryIcon className='text-purple-600' />
+                    </IconButton>
+                    <IconButton onClick={() => setTagMode('note')}>
+                        <StickyNote2Icon className='text-sky-600' />
+                    </IconButton>
+                </Box>
+                <Box className='px-3 py-1'>
+                    <Autocomplete
+                        sx={{ width: '300px' }}
+                        getOptionLabel={(option: AutocompleteOption) => option.label}
+                        options={tagOptions}
+                        value={{ id: tagId, label: tagLabel }}
+                        forcePopupIcon={true}
+                        onChange={(event: SyntheticEvent, value: AutocompleteOption) => {
+                            const url = value ? `/${tagMode}/${value.id}/${value.label}` : null
+                            editor.dispatchCommand(TOGGLE_TAG_COMMAND, url)
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label={t('component.richtextEditor.toolbar.tag.label', {
+                                    mode: t(`component.richtextEditor.toolbar.tag.${tagMode}`)
+                                })}
+                            />
+                        )}
+                    />
+                </Box>
+            </Menu>
+            <TabPlugin isTag={isTag} />
         </>
     )
 }

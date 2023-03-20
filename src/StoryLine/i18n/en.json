@@ -55,7 +55,13 @@
                 "alignCenter": "Center align",
                 "alignRight": "Right align",
                 "alignJustify": "Justify",
-                "emdash": "Em dash",
+                "tag": {
+                    "label": "Select {{mode}}",
+                    "character": "character",
+                    "item": "item",
+                    "location": "location",
+                    "note": "note"
+                },
                 "excerpt": "Excerpt",
                 "search": "Search",
                 "save": "Save"
