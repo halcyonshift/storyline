@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { $generateHtmlFromNodes } from '@lexical/html'
 import { ListItemNode, ListNode } from '@lexical/list'
 import { QuoteNode } from '@lexical/rich-text'
@@ -16,18 +16,20 @@ import Typography from '@mui/material/Typography'
 import debounce from 'lodash.debounce'
 import { useTranslation } from 'react-i18next'
 import useSettings from '@sl/theme/useSettings'
-
 import InitialValuePlugin from './plugins/InitialValue'
 import SavePlugin from './plugins/Save'
 import SearchPlugin from './plugins/Search'
 import TagPlugin from './plugins/Tag'
 import { TagNode } from './plugins/Tag/Node'
 import ToolbarPlugin from './plugins/Toolbar'
+import VersionPlugin from './plugins/Version'
 import theme from './theme'
 import { RichtextEditorProps } from './types'
 
 const RichtextEditor = ({ id, onSave, initialValue }: RichtextEditorProps) => {
     const [isSaving, setIsSaving] = useState<boolean>(false)
+    const [menu, setMenu] = useState<string | null>(null)
+    const [menuElement, setMenuElement] = useState<HTMLElement | null>(null)
     const { autoSave, indentParagraph, spellCheck } = useSettings()
     const { t } = useTranslation()
 
@@ -49,7 +51,7 @@ const RichtextEditor = ({ id, onSave, initialValue }: RichtextEditorProps) => {
                         throw error
                     }
                 }}>
-                <ToolbarPlugin />
+                <ToolbarPlugin menu={menu} setMenu={setMenu} setMenuElement={setMenuElement} />
                 <SearchPlugin />
                 <Box className='rte-container relative flex-grow overflow-auto h-0 p-3'>
                     <RichTextPlugin
@@ -92,12 +94,23 @@ const RichtextEditor = ({ id, onSave, initialValue }: RichtextEditorProps) => {
                             })
                         }}
                     />
+                    <VersionPlugin
+                        menu={menu}
+                        menuElement={menuElement}
+                        setMenu={setMenu}
+                        setMenuElement={setMenuElement}
+                    />
                     <SavePlugin onSave={onSave} />
-                    <TagPlugin />
+                    <TagPlugin
+                        menu={menu}
+                        menuElement={menuElement}
+                        setMenu={setMenu}
+                        setMenuElement={setMenuElement}
+                    />
                 </Box>
             </LexicalComposer>
         ),
-        [id, initialValue]
+        [id, initialValue, menu, menuElement]
     )
 }
 

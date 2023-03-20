@@ -1,7 +1,8 @@
 import { Model, Q, Query } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, readonly, text, writer } from '@nozbe/watermelondb/decorators'
-import { type CharacterModeType } from '@sl/constants/characterMode'
+import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
+import { SectionMode } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
 import {
     CharacterDataType,
@@ -58,38 +59,32 @@ export default class WorkModel extends Model {
         }
     }
 
-    @lazy parts = this.section.extend(Q.where('mode', 'part'), Q.sortBy('order', Q.asc))
+    @lazy parts = this.section.extend(Q.where('mode', SectionMode.PART), Q.sortBy('order', Q.asc))
 
     @lazy chapters = this.section.extend(
         Q.where('work_id', this.id),
-        Q.where('mode', 'chapter'),
+        Q.where('mode', SectionMode.CHAPTER),
         Q.sortBy('order', Q.asc)
     )
 
     @lazy scenes = this.section.extend(
         Q.where('work_id', this.id),
-        Q.where('mode', 'scene'),
+        Q.where('mode', SectionMode.SCENE),
         Q.sortBy('order', Q.asc)
     )
 
-    @lazy fabula = this.section.extend(
-        Q.where('work_id', this.id),
-        Q.where('mode', 'scene'),
-        Q.sortBy('date', Q.asc)
-    )
-
     @lazy mainCharacters = this.character.extend(
-        Q.where('mode', 'primary'),
+        Q.where('mode', CharacterMode.PRIMARY),
         Q.sortBy('display_name', Q.asc)
     )
 
     @lazy secondaryCharacters = this.character.extend(
-        Q.where('mode', 'secondary'),
+        Q.where('mode', CharacterMode.SECONDARY),
         Q.sortBy('display_name', Q.asc)
     )
 
     @lazy tertiaryCharacters = this.character.extend(
-        Q.where('mode', 'tertiary'),
+        Q.where('mode', CharacterMode.TERTIARY),
         Q.sortBy('display_name', Q.asc)
     )
 
@@ -200,7 +195,7 @@ export default class WorkModel extends Model {
         return await this.collections.get<SectionModel>('section').create((section) => {
             section.work.set(this)
             section.order = count + 1
-            section.mode = 'part'
+            section.mode = SectionMode.PART
             section.status = Status.TODO
         })
     }

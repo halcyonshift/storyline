@@ -61,7 +61,7 @@ export const SECTION_ICONS = {
     addPart: <Queue fontSize='inherit' color='inherit' />,
     addChapter: <LibraryBooks fontSize='inherit' color='inherit' />,
     addScene: <Article fontSize='inherit' color='inherit' />,
-    revision: <RestorePage fontSize='inherit' color='inherit' />
+    version: <RestorePage fontSize='inherit' color='inherit' />
 }
 
 export default {

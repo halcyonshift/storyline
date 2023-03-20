@@ -7,14 +7,16 @@ import LocationOnIcon from '@mui/icons-material/LocationOn'
 import StickyNote2Icon from '@mui/icons-material/StickyNote2'
 import Autocomplete from '@mui/material/Autocomplete'
 import Box from '@mui/material/Box'
+import Menu from '@mui/material/Menu'
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import { useTranslation } from 'react-i18next'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import { MenuProps } from '../../types'
 import { TOGGLE_TAG_COMMAND } from './Node'
 import { AutocompleteOption, TagModeType } from './types'
 
-const TagMenu = ({ open }: { open: boolean }): ReactElement => {
+const TagMenu = ({ open, menuElement, setMenu, setMenuElement }: MenuProps): ReactElement => {
     const [mode, setMode] = useState<TagModeType>('character')
     const [options, setOptions] = useState<AutocompleteOption[]>([])
     const [id, setId] = useState<string>('')
@@ -40,8 +42,22 @@ const TagMenu = ({ open }: { open: boolean }): ReactElement => {
         )
     }, [mode])
 
-    return open ? (
-        <>
+    return (
+        <Menu
+            id='menu'
+            anchorEl={menuElement}
+            open={Boolean(open && menuElement)}
+            onClose={() => {
+                setMenu(null)
+                setMenuElement(null)
+            }}
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'center'
+            }}
+            MenuListProps={{
+                'aria-labelledby': `menu-tag`
+            }}>
             <Box className='flex justify-around'>
                 <IconButton onClick={() => setMode('character')}>
                     <PersonIcon className='text-emerald-600' />
@@ -88,8 +104,8 @@ const TagMenu = ({ open }: { open: boolean }): ReactElement => {
                     )}
                 />
             </Box>
-        </>
-    ) : null
+        </Menu>
+    )
 }
 
 export default TagMenu

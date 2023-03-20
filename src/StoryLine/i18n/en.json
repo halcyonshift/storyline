@@ -312,7 +312,7 @@
                     "addPart": "Add part",
                     "addChapter": "Add chapter",
                     "addScene": "Add scene",
-                    "addRevision": "Create revision",
+                    "addVersion": "Create version",
                     "edit": "Edit",
                     "delete": "Delete",
                     "deleteConfirm": "Are you sure you want to delete {{name}}?",

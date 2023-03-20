@@ -54,9 +54,9 @@ const SceneList = ({ scenes }: SceneListProps) => {
                                     <Stack spacing={0} direction='row'>
                                         <TooltipIconButton
                                             size='small'
-                                            text='layout.work.panel.section.addRevision'
-                                            icon={SECTION_ICONS.revision}
-                                            onClick={() => scene.addRevision()}
+                                            text='layout.work.panel.section.addVersion'
+                                            icon={SECTION_ICONS.version}
+                                            onClick={() => scene.addVersion()}
                                         />
                                         <TooltipIconButton
                                             size='small'

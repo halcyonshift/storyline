@@ -8,6 +8,7 @@ import { type PointOfViewType } from '@sl/constants/pov'
 import { htmlExtractExcerpts, htmlParse } from '@sl/utils'
 import { type SectionDataType, type StatisticDataType } from './types'
 import { CharacterModel, ItemModel, LocationModel, StatisticModel, WorkModel } from './'
+import { SectionMode, type SectionModeType } from '@sl/constants/sectionMode'
 
 export default class SectionModel extends Model {
     static table = 'section'
@@ -19,10 +20,9 @@ export default class SectionModel extends Model {
     @field('status') status!: StatusType
     @field('pov') pointOfView!: PointOfViewType
     @text('title') title!: string
-    @field('mode') mode!: 'chapter' | 'scene' | 'part' | 'revision'
+    @field('mode') mode!: SectionModeType
     @text('body') body!: string
     @text('description') description!: string
-
     @text('date') date!: string
     @field('order') order!: number
     @field('word_goal') wordGoal!: number
@@ -35,11 +35,14 @@ export default class SectionModel extends Model {
     @relation('character', 'pov_character_id') pointOfViewCharacter!: Relation<CharacterModel>
 
     get displayTitle() {
-        if (this.mode === 'revision') {
-            return this.id
+        const title =
+            this.title || `${capitalize(SectionMode[this.mode].toLowerCase())} ${this.order}`
+
+        if (this.isVersion) {
+            return this.title ? `${this.title} (${this.order})` : title
         }
 
-        return this.title || `${capitalize(this.mode)} ${this.order}`
+        return title
     }
 
     get displayBody() {
@@ -75,19 +78,19 @@ export default class SectionModel extends Model {
     }
 
     get isChapter() {
-        return Boolean(this.mode === 'chapter')
+        return Boolean(this.mode === SectionMode.CHAPTER)
     }
 
     get isScene() {
-        return Boolean(this.mode === 'scene')
+        return Boolean(this.mode === SectionMode.SCENE)
     }
 
     get isPart() {
-        return Boolean(this.mode === 'part')
+        return Boolean(this.mode === SectionMode.PART)
     }
 
-    get isRevision() {
-        return Boolean(this.mode === 'revision')
+    get isVersion() {
+        return Boolean(this.mode === SectionMode.VERSION)
     }
 
     async characters() {
@@ -126,24 +129,33 @@ export default class SectionModel extends Model {
 
     @lazy scenes = this.collections
         .get<SectionModel>('section')
-        .query(Q.where('section_id', this.id), Q.where('mode', 'scene'), Q.sortBy('order', Q.asc))
+        .query(
+            Q.where('section_id', this.id),
+            Q.where('mode', SectionMode.SCENE),
+            Q.sortBy('order', Q.asc)
+        )
 
     @lazy chapters = this.collections
         .get<SectionModel>('section')
-        .query(Q.where('section_id', this.id), Q.where('mode', 'chapter'), Q.sortBy('order', Q.asc))
+        .query(
+            Q.where('section_id', this.id),
+            Q.where('mode', SectionMode.CHAPTER),
+            Q.sortBy('order', Q.asc)
+        )
 
-    @lazy revisions = this.collections
+    @lazy versions = this.collections
         .get<SectionModel>('section')
         .query(
             Q.where('section_id', this.id),
-            Q.where('mode', 'revision'),
+            Q.where('mode', SectionMode.VERSION),
             Q.sortBy('order', Q.desc)
         )
 
-    async addRevision() {
-        const count = await this.revisions.fetchCount()
+    async addVersion() {
+        const count = await this.versions.fetchCount()
         return await this.addSection({
-            mode: 'revision',
+            mode: SectionMode.VERSION,
+            pointOfView: this.pointOfView,
             order: count + 1,
             title: this.title,
             description: this.description,
@@ -158,7 +170,7 @@ export default class SectionModel extends Model {
     async addChapter() {
         const count = await this.chapters.fetchCount()
         return await this.addSection({
-            mode: 'chapter',
+            mode: SectionMode.CHAPTER,
             order: count + 1
         })
     }
@@ -166,7 +178,7 @@ export default class SectionModel extends Model {
     async addScene() {
         const count = await this.scenes.fetchCount()
         return await this.addSection({
-            mode: 'scene',
+            mode: SectionMode.SCENE,
             order: count + 1
         })
     }

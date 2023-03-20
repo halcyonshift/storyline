@@ -29,7 +29,6 @@ import TextSnippetIcon from '@mui/icons-material/TextSnippet'
 import UndoIcon from '@mui/icons-material/Undo'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
-import Menu from '@mui/material/Menu'
 import Stack from '@mui/material/Stack'
 import {
     $createParagraphNode,
@@ -49,12 +48,12 @@ import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { getSelectedNode } from '../../utils/getSelectedNode'
 import { SAVE_COMMAND } from '../Save'
 import { TOGGLE_SEARCH_COMMAND } from '../Search'
-import TagMenu from '../Tag/Menu'
 import { $isTagNode, TOGGLE_TAG_COMMAND } from '../Tag/Node'
 import { stripSlashes } from '../Tag/utils'
+import { ToolbarPluginProps } from './types'
 
 // eslint-disable-next-line complexity
-const ToolbarPlugin = (): ReactElement => {
+const ToolbarPlugin = ({ menu, setMenu, setMenuElement }: ToolbarPluginProps): ReactElement => {
     const [canUndo, setCanUndo] = useState<boolean>(false)
     const [canRedo, setCanRedo] = useState<boolean>(false)
     const [blockType, setBlockType] = useState<string>('paragraph')
@@ -63,8 +62,6 @@ const ToolbarPlugin = (): ReactElement => {
     const [isUnderline, setIsUnderline] = useState<boolean>(false)
     const [isStrikethrough, setIsStrikethrough] = useState<boolean>(false)
     const [isTag, setIsTag] = useState<boolean>(false)
-    const [menu, setMenu] = useState<string | null>(null)
-    const [menuElement, setMenuElement] = useState<HTMLElement | null>(null)
 
     const [editor] = useLexicalComposerContext()
     const { t } = useTranslation()
@@ -298,13 +295,13 @@ const ToolbarPlugin = (): ReactElement => {
                     <SearchIcon />
                 </IconButton>
                 <IconButton
-                    id='menu-revision'
-                    aria-label={t('component.richtext.toolbar.revision')}
+                    id='menu-version'
+                    aria-label={t('component.richtext.toolbar.version')}
                     aria-controls={menu ? 'menu' : undefined}
                     aria-haspopup={true}
                     aria-expanded={menu ? 'true' : undefined}
                     onClick={(e) => {
-                        setMenu('revision')
+                        setMenu('version')
                         setMenuElement(menu ? null : e.currentTarget)
                     }}>
                     <RestorePageIcon />
@@ -318,23 +315,6 @@ const ToolbarPlugin = (): ReactElement => {
                     <SaveIcon />
                 </IconButton>
             </Stack>
-            <Menu
-                id='menu'
-                anchorEl={menuElement}
-                open={Boolean(menu)}
-                onClose={() => {
-                    setMenu(null)
-                    setMenuElement(null)
-                }}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center'
-                }}
-                MenuListProps={{
-                    'aria-labelledby': `menu-${menu}`
-                }}>
-                <TagMenu open={Boolean(menu === 'tag')} />
-            </Menu>
         </>
     )
 }

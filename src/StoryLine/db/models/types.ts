@@ -1,7 +1,7 @@
 import { PointOfViewType } from '@sl/constants/pov'
+import { SectionModeType } from '@sl/constants/sectionMode'
 import { StatusType } from '@sl/constants/status'
 import CharacterModel from '@sl/db/models/CharacterModel'
-
 import { CharacterModeType } from '@sl/constants/characterMode'
 
 export type CharacterDataType = {
@@ -76,7 +76,7 @@ export type SectionDataType = {
     pointOfView?: PointOfViewType
     pointOfViewCharacter?: CharacterModel
     title?: string
-    mode?: 'chapter' | 'scene' | 'part' | 'revision'
+    mode?: SectionModeType
     body?: string
     description?: string
     date?: string
