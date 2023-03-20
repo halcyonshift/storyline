@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useState, ReactElement, SyntheticEvent } from 'react'
-import { $generateHtmlFromNodes } from '@lexical/html'
+import { useCallback, useEffect, useState, ReactElement } from 'react'
 import {
     INSERT_ORDERED_LIST_COMMAND,
     INSERT_UNORDERED_LIST_COMMAND,
@@ -11,7 +10,6 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { $createQuoteNode } from '@lexical/rich-text'
 import { $wrapNodes } from '@lexical/selection'
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils'
-import CategoryIcon from '@mui/icons-material/Category'
 import FormatBoldIcon from '@mui/icons-material/FormatBold'
 import FormatItalicIcon from '@mui/icons-material/FormatItalic'
 import FormatStrikethroughIcon from '@mui/icons-material/FormatStrikethrough'
@@ -24,30 +22,22 @@ import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight'
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify'
 import LocalOfferIcon from '@mui/icons-material/LocalOffer'
 import RestorePageIcon from '@mui/icons-material/RestorePage'
-import PersonIcon from '@mui/icons-material/Person'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
 import RedoIcon from '@mui/icons-material/Redo'
 import SaveIcon from '@mui/icons-material/Save'
 import SearchIcon from '@mui/icons-material/Search'
-import StickyNote2Icon from '@mui/icons-material/StickyNote2'
 import TextSnippetIcon from '@mui/icons-material/TextSnippet'
 import UndoIcon from '@mui/icons-material/Undo'
-import Alert from '@mui/material/Alert'
-import Autocomplete from '@mui/material/Autocomplete'
-import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
-import Snackbar from '@mui/material/Snackbar'
 import Stack from '@mui/material/Stack'
-import TextField from '@mui/material/TextField'
 import {
     $createParagraphNode,
     $getSelection,
     $isRangeSelection,
     CAN_REDO_COMMAND,
     CAN_UNDO_COMMAND,
+    COMMAND_PRIORITY_LOW,
     FORMAT_ELEMENT_COMMAND,
     FORMAT_TEXT_COMMAND,
     REDO_COMMAND,
@@ -56,12 +46,12 @@ import {
 } from 'lexical'
 import { useTranslation } from 'react-i18next'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
-
 import { getSelectedNode } from '../../utils/getSelectedNode'
 import { SAVE_COMMAND } from '../Save'
 import { TOGGLE_SEARCH_COMMAND } from '../Search'
-import { $isTagNode } from '../Tag/TagNode'
-import { TagModeType } from '../Tag/types'
+import TagMenu from '../Tag/Menu'
+import { $isTagNode, TOGGLE_TAG_COMMAND } from '../Tag/Node'
+import { stripSlashes } from '../Tag/utils'
 
 // eslint-disable-next-line complexity
 const ToolbarPlugin = (): ReactElement => {
@@ -74,10 +64,11 @@ const ToolbarPlugin = (): ReactElement => {
     const [isStrikethrough, setIsStrikethrough] = useState<boolean>(false)
     const [isTag, setIsTag] = useState<boolean>(false)
     const [menu, setMenu] = useState<string | null>(null)
+    const [menuElement, setMenuElement] = useState<HTMLElement | null>(null)
 
     const [editor] = useLexicalComposerContext()
     const { t } = useTranslation()
-    const tabs = useTabs()
+    const { loadTab } = useTabs()
 
     const formatQuote = () => {
         editor.update(() => {
@@ -122,6 +113,29 @@ const ToolbarPlugin = (): ReactElement => {
         }
     }, [editor])
 
+    useEffect(() => {
+        if (!isTag) return
+        editor.update(() => {
+            const selection = $getSelection()
+            if ($isRangeSelection(selection)) {
+                const node = getSelectedNode(selection)
+                const parent = node.getParent()
+                const tagNode = $isTagNode(node) ? node : parent
+                const linkUrl = tagNode.getURL()
+                const parts = stripSlashes(linkUrl).split('/')
+
+                loadTab(
+                    {
+                        id: parts[1],
+                        label: parts[2],
+                        link: `${parts[0]}/${parts[1]}`
+                    },
+                    false
+                )
+            }
+        })
+    }, [isTag, editor])
+
     useEffect(
         () =>
             mergeRegister(
@@ -136,7 +150,7 @@ const ToolbarPlugin = (): ReactElement => {
                         updateToolbar()
                         return false
                     },
-                    1
+                    COMMAND_PRIORITY_LOW
                 ),
                 editor.registerCommand(
                     CAN_UNDO_COMMAND,
@@ -144,7 +158,7 @@ const ToolbarPlugin = (): ReactElement => {
                         setCanUndo(payload)
                         return false
                     },
-                    1
+                    COMMAND_PRIORITY_LOW
                 ),
                 editor.registerCommand(
                     CAN_REDO_COMMAND,
@@ -152,7 +166,7 @@ const ToolbarPlugin = (): ReactElement => {
                         setCanRedo(payload)
                         return false
                     },
-                    1
+                    COMMAND_PRIORITY_LOW
                 )
             ),
         [editor, updateToolbar]
@@ -258,13 +272,20 @@ const ToolbarPlugin = (): ReactElement => {
                 </IconButton>
                 <Divider orientation='vertical' flexItem />
                 <IconButton
+                    id='menu-tag'
                     aria-label={t('component.richtext.toolbar.tag')}
-                    id='tag-button'
-                    aria-controls={menu === 'tag' ? 'tag-menu' : undefined}
+                    aria-controls={menu ? 'menu' : undefined}
                     aria-haspopup={true}
-                    aria-expanded={menu === 'tag' ? 'true' : undefined}
-                    onClick={() => {
-                        setMenu(menu === 'tag' ? null : 'tag')
+                    aria-expanded={menu ? 'true' : undefined}
+                    onClick={(e) => {
+                        editor.update(() => {
+                            const selection = $getSelection()
+                            if (selection.getTextContent() || isTag) {
+                                editor.dispatchCommand(TOGGLE_TAG_COMMAND, null)
+                                setMenu('tag')
+                                setMenuElement(menu ? null : e.currentTarget)
+                            }
+                        })
                     }}>
                     <LocalOfferIcon />
                 </IconButton>
@@ -277,13 +298,14 @@ const ToolbarPlugin = (): ReactElement => {
                     <SearchIcon />
                 </IconButton>
                 <IconButton
+                    id='menu-revision'
                     aria-label={t('component.richtext.toolbar.revision')}
-                    id='revision-button'
-                    aria-controls={menu === 'revision' ? 'revision-menu' : undefined}
+                    aria-controls={menu ? 'menu' : undefined}
                     aria-haspopup={true}
-                    aria-expanded={menu === 'revision' ? 'true' : undefined}
-                    onClick={() => {
-                        setMenu(menu === 'revision' ? null : 'revision')
+                    aria-expanded={menu ? 'true' : undefined}
+                    onClick={(e) => {
+                        setMenu('revision')
+                        setMenuElement(menu ? null : e.currentTarget)
                     }}>
                     <RestorePageIcon />
                 </IconButton>
@@ -296,6 +318,23 @@ const ToolbarPlugin = (): ReactElement => {
                     <SaveIcon />
                 </IconButton>
             </Stack>
+            <Menu
+                id='menu'
+                anchorEl={menuElement}
+                open={Boolean(menu)}
+                onClose={() => {
+                    setMenu(null)
+                    setMenuElement(null)
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center'
+                }}
+                MenuListProps={{
+                    'aria-labelledby': `menu-${menu}`
+                }}>
+                <TagMenu open={Boolean(menu === 'tag')} />
+            </Menu>
         </>
     )
 }

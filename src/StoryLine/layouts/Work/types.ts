@@ -35,7 +35,7 @@ export type TabsProviderProps = {
 } & TabbedWorkLayoutProps
 
 export type TabsContextType = {
-    loadTab: (focusTab: TabType) => void
+    loadTab: (focusTab: TabType, switchTab?: boolean) => void
     removeTab: (id: string) => void
     setActive: (index: number) => void
     setShowTabs: (state: boolean) => void

@@ -8,7 +8,7 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import { $getRoot, createCommand, LexicalCommand, TextNode } from 'lexical'
+import { $getRoot, COMMAND_PRIORITY_EDITOR, createCommand, LexicalCommand, TextNode } from 'lexical'
 import debounce from 'lodash.debounce'
 import { useOnKeyPressed } from '@sl/utils/useKeyPress'
 import { useTranslation } from 'react-i18next'
@@ -43,7 +43,7 @@ const SearchPlugin = () => {
                 setOpen(!open)
                 return true
             },
-            1
+            COMMAND_PRIORITY_EDITOR
         )
     }, [open])
 

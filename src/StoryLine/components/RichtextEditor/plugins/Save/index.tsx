@@ -2,10 +2,10 @@ import { useCallback, useEffect, useState, ReactElement } from 'react'
 import { $generateHtmlFromNodes } from '@lexical/html'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { Alert, Snackbar } from '@mui/material'
-import { createCommand, LexicalCommand } from 'lexical'
+import { createCommand, COMMAND_PRIORITY_EDITOR, LexicalCommand } from 'lexical'
 import debounce from 'lodash.debounce'
-import { useOnKeyPressed } from '@sl/utils/useKeyPress'
 import { useTranslation } from 'react-i18next'
+import { useOnKeyPressed } from '@sl/utils/useKeyPress'
 
 export const SAVE_COMMAND: LexicalCommand<boolean> = createCommand()
 
@@ -49,13 +49,13 @@ const SavePlugin = ({
                 }
                 return true
             },
-            1
+            COMMAND_PRIORITY_EDITOR
         )
     }, [isSaving])
 
-    return showSnackbar ? (
+    return (
         <Snackbar
-            open={true}
+            open={showSnackbar}
             autoHideDuration={6000}
             onClose={() => setShowSnackbar(false)}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
@@ -63,8 +63,6 @@ const SavePlugin = ({
                 {t('component.richtextEditor.save.success')}
             </Alert>
         </Snackbar>
-    ) : (
-        <></>
     )
 }
 

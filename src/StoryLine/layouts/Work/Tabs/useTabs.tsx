@@ -32,16 +32,19 @@ export const TabsProvider = ({
         }
     }, [tabs.length])
 
-    const loadTab = (focusTab: TabType) => {
+    const loadTab = (focusTab: TabType, switchTab = true) => {
         const focus = tabs.findIndex((tab) => tab.id === focusTab.id)
         if (focus === -1) {
             setTabs(tabs.concat([focusTab]))
-            setActive(tabs.length)
+            if (switchTab) {
+                setActive(tabs.length)
+            }
         } else {
             setActive(focus)
         }
-
-        navigate(`/works/${work.id}/${focusTab.link}`)
+        if (switchTab) {
+            navigate(`/works/${work.id}/${focusTab.link}`)
+        }
     }
 
     const removeTab = (id: string) => {

@@ -20,6 +20,8 @@ import useSettings from '@sl/theme/useSettings'
 import InitialValuePlugin from './plugins/InitialValue'
 import SavePlugin from './plugins/Save'
 import SearchPlugin from './plugins/Search'
+import TagPlugin from './plugins/Tag'
+import { TagNode } from './plugins/Tag/Node'
 import ToolbarPlugin from './plugins/Toolbar'
 import theme from './theme'
 import { RichtextEditorProps } from './types'
@@ -42,7 +44,7 @@ const RichtextEditor = ({ id, onSave, initialValue }: RichtextEditorProps) => {
                 initialConfig={{
                     namespace: 'rte',
                     theme: { ...theme, ['paragraph']: indentParagraph ? 'indent-4 mb-2' : 'mb-2' },
-                    nodes: [ListItemNode, ListNode, QuoteNode],
+                    nodes: [ListItemNode, ListNode, QuoteNode, TagNode],
                     onError(error: Error) {
                         throw error
                     }
@@ -91,6 +93,7 @@ const RichtextEditor = ({ id, onSave, initialValue }: RichtextEditorProps) => {
                         }}
                     />
                     <SavePlugin onSave={onSave} />
+                    <TagPlugin />
                 </Box>
             </LexicalComposer>
         ),
