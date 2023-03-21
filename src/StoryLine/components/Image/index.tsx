@@ -1,6 +1,7 @@
-import { ImgHTMLAttributes, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { ImageProps } from './types'
 
-const Image = ({ path, ...props }: { path: string } & ImgHTMLAttributes<HTMLImageElement>) => {
+const Image = ({ path, ...props }: ImageProps) => {
     const [src, setSrc] = useState<string | null>()
 
     useEffect(() => {

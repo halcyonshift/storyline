@@ -6,14 +6,11 @@ import { createCommand, COMMAND_PRIORITY_EDITOR, LexicalCommand } from 'lexical'
 import debounce from 'lodash.debounce'
 import { useTranslation } from 'react-i18next'
 import { useOnKeyPressed } from '@sl/utils/useKeyPress'
+import { SavePluginProps } from './types'
 
 export const SAVE_COMMAND: LexicalCommand<boolean> = createCommand()
 
-const SavePlugin = ({
-    onSave
-}: {
-    onSave: (html: string) => Promise<void>
-}): ReactElement | null => {
+const SavePlugin = ({ onSave }: SavePluginProps): ReactElement | null => {
     const [isSaving, setIsSaving] = useState<boolean>(false)
     const [showSnackbar, setShowSnackbar] = useState<boolean>(false)
 

@@ -6,11 +6,11 @@ import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import { DateTime } from 'luxon'
-import { GLOBAL_ICONS, SECTION_ICONS } from '@sl/constants/icons'
+import { GLOBAL_ICONS } from '@sl/constants/icons'
 import { status } from '@sl/theme/utils'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import { dateFormat } from '@sl/utils'
 
 import { SceneListProps } from '../types'
 import { useTranslation } from 'react-i18next'
@@ -43,21 +43,13 @@ const SceneList = ({ scenes }: SceneListProps) => {
                                         <br />
                                         <Tooltip title={t('layout.work.panel.section.updatedAt')}>
                                             <Typography component='span' variant='body2'>
-                                                {DateTime.fromJSDate(
-                                                    scene.updatedAt
-                                                ).toLocaleString(DateTime.DATETIME_SHORT)}
+                                                {dateFormat(scene.updatedAt)}
                                             </Typography>
                                         </Tooltip>
                                     </Typography>
                                 </ListItemButton>
-                                <Box className='flex flex-col justify-center'>
+                                <Box className='flex flex-col justify-center pr-1'>
                                     <Stack spacing={0} direction='row'>
-                                        <TooltipIconButton
-                                            size='small'
-                                            text='layout.work.panel.section.addVersion'
-                                            icon={SECTION_ICONS.version}
-                                            onClick={() => scene.addVersion()}
-                                        />
                                         <TooltipIconButton
                                             size='small'
                                             text='layout.work.panel.section.edit'

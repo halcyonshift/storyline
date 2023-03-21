@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
 import { type Database, Q } from '@nozbe/watermelondb'
 import { withDatabase } from '@nozbe/watermelondb/DatabaseProvider'
@@ -67,7 +67,7 @@ const WorkLayout = () => {
                 {currentPanel === 'search' ? <Panel.SearchPanel /> : null}
                 {currentPanel === 'section' ? <Panel.SectionPanel /> : null}
                 <Box className='flex flex-col flex-grow'>
-                    {tabs.showTabs ? <Tabs /> : null}
+                    <Tabs />
                     <Outlet />
                 </Box>
             </Box>

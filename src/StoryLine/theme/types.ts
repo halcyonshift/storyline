@@ -3,7 +3,33 @@ import { LanguageType } from '@sl/i18n/types'
 
 export type FontType = 'arial' | 'roboto' | 'OpenDyslexic' | 'times new roman'
 export type DisplayModeType = 'dark' | 'light'
+export type ColorType =
+    | 'black'
+    | 'white'
+    | 'slate'
+    | 'gray'
+    | 'zinc'
+    | 'neutral'
+    | 'stone'
+    | 'red'
+    | 'orange'
+    | 'amber'
+    | 'yellow'
+    | 'lime'
+    | 'green'
+    | 'emerald'
+    | 'teal'
+    | 'cyan'
+    | 'sky'
+    | 'blue'
+    | 'indigo'
+    | 'violet'
+    | 'purple'
+    | 'fuschia'
+    | 'pink'
+    | 'rose'
 
+export type ShadeType = 50 | 100 | 200 | 300 | 400 | 500 | 700 | 800 | 900
 export type SettingsDataType = {
     language: LanguageType
     displayMode: DisplayModeType
@@ -31,7 +57,7 @@ export type SettingsContextType = {
     setAutoSave: (autoSave: boolean) => void
     setAutoBackupFreq: (autoBackupFreq: number) => void
     setAutoBackupMax: (autoBackupMax: number) => void
-    setPalette: (palette: string) => void
+    setPalette: (palette: ColorType) => void
     theme: Theme
-    getHex: (shade?: number) => string
+    getHex: (shade?: ShadeType) => string
 } & SettingsDataType

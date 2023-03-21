@@ -34,6 +34,7 @@ export const TabsProvider = ({
 
     const loadTab = (focusTab: TabType, switchTab = true) => {
         const focus = tabs.findIndex((tab) => tab.id === focusTab.id)
+
         if (focus === -1) {
             setTabs(tabs.concat([focusTab]))
             if (switchTab) {
@@ -48,18 +49,18 @@ export const TabsProvider = ({
     }
 
     const removeTab = (id: string) => {
-        const tabIndex = tabs.findIndex((tab) => tab.id === id)
-
-        if (tabs[tabIndex + 1]) {
-            loadTab(tabs[tabIndex + 1])
-        } else if (tabs[tabIndex - 1]) {
-            loadTab(tabs[tabIndex - 1])
-        }
-
         const newTabs = tabs.filter((tab) => tab.id !== id)
+        const activeTab = tabs.find((tab) => tab.id === id)
+
         setTabs(newTabs)
 
-        if (!newTabs.length) {
+        if (newTabs.length) {
+            if (activeTab.id === id) {
+                setActive(newTabs[active] ? active : newTabs[active - 1] ? active - 1 : 0)
+            } else {
+                setActive(newTabs.findIndex((tab) => tab.id === activeTab.id))
+            }
+        } else {
             navigate(`/works/${work.id}`)
         }
     }

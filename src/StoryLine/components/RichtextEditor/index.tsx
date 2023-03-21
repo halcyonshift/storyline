@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import { $generateHtmlFromNodes } from '@lexical/html'
 import { ListItemNode, ListNode } from '@lexical/list'
-import { QuoteNode } from '@lexical/rich-text'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary'
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin'
@@ -10,9 +9,9 @@ import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { ListPlugin } from '@lexical/react/LexicalListPlugin'
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
-import { GrammarlyEditorPlugin } from '@grammarly/editor-sdk-react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import { EditorState, LexicalEditor } from 'lexical'
 import debounce from 'lodash.debounce'
 import { useTranslation } from 'react-i18next'
 import useSettings from '@sl/theme/useSettings'
@@ -26,7 +25,7 @@ import VersionPlugin from './plugins/Version'
 import theme from './theme'
 import { RichtextEditorProps } from './types'
 
-const RichtextEditor = ({ id, onSave, initialValue }: RichtextEditorProps) => {
+const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: RichtextEditorProps) => {
     const [isSaving, setIsSaving] = useState<boolean>(false)
     const [menu, setMenu] = useState<string | null>(null)
     const [menuElement, setMenuElement] = useState<HTMLElement | null>(null)
@@ -40,35 +39,53 @@ const RichtextEditor = ({ id, onSave, initialValue }: RichtextEditorProps) => {
         setIsSaving(false)
     }, 1000)
 
+    const handleChange = (editorState: EditorState, editor: LexicalEditor) => {
+        editorState.read(() => {
+            const html = $generateHtmlFromNodes(editor, null)
+            if (onChange) {
+                onChange(html)
+            }
+            if (autoSave) {
+                doSave(html)
+            }
+        })
+    }
+
     return useMemo(
         () => (
             <LexicalComposer
                 initialConfig={{
                     namespace: 'rte',
-                    theme: { ...theme, ['paragraph']: indentParagraph ? 'indent-4 mb-2' : 'mb-2' },
-                    nodes: [ListItemNode, ListNode, QuoteNode, TagNode],
+                    theme: {
+                        ...theme,
+                        ...{
+                            paragraph: indentParagraph
+                                ? `indent-4 ${theme.paragraph}`
+                                : theme.paragraph,
+                            quote: indentParagraph ? `indent-4 ${theme.quote}` : theme.quote
+                        }
+                    },
+                    nodes: [ListItemNode, ListNode, TagNode],
                     onError(error: Error) {
                         throw error
                     }
                 }}>
-                <ToolbarPlugin menu={menu} setMenu={setMenu} setMenuElement={setMenuElement} />
+                <ToolbarPlugin
+                    menu={menu}
+                    setMenu={setMenu}
+                    setMenuElement={setMenuElement}
+                    config={toolbar}
+                />
                 <SearchPlugin />
-                <Box className='rte-container relative flex-grow overflow-auto h-0 p-3'>
+                <Box
+                    className='rte-container relative flex-grow overflow-auto h-0 p-3'
+                    id={`rte-${id}`}>
                     <RichTextPlugin
                         contentEditable={
-                            spellCheck ? (
-                                <GrammarlyEditorPlugin clientId='client_PJGNpq8df12athMYk8jcSr'>
-                                    <ContentEditable
-                                        className='resize-none caret-slate-500 outline-none'
-                                        spellCheck={true}
-                                    />
-                                </GrammarlyEditorPlugin>
-                            ) : (
-                                <ContentEditable
-                                    className='resize-none caret-slate-500 outline-none'
-                                    spellCheck={false}
-                                />
-                            )
+                            <ContentEditable
+                                className='resize-none caret-slate-500 outline-none'
+                                spellCheck={spellCheck}
+                            />
                         }
                         placeholder={
                             <Typography
@@ -82,18 +99,9 @@ const RichtextEditor = ({ id, onSave, initialValue }: RichtextEditorProps) => {
                     />
                     <AutoFocusPlugin />
                     <HistoryPlugin />
-                    <InitialValuePlugin value={initialValue} />
+                    <InitialValuePlugin parent={`rte-${id}`} value={initialValue} />
                     <ListPlugin />
-                    <OnChangePlugin
-                        onChange={(editorState, editor) => {
-                            editorState.read(() => {
-                                const html = $generateHtmlFromNodes(editor, null)
-                                if (autoSave) {
-                                    doSave(html)
-                                }
-                            })
-                        }}
-                    />
+                    <OnChangePlugin onChange={handleChange} />
                     <VersionPlugin
                         menu={menu}
                         menuElement={menuElement}

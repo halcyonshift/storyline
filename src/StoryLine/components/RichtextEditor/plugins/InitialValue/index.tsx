@@ -2,10 +2,10 @@ import { useEffect } from 'react'
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { $generateNodesFromDOM } from '@lexical/html'
-
 import { $getRoot, $insertNodes } from 'lexical'
+import { InitialValueProps } from './types'
 
-const InitialValuePlugin = ({ value }: { value: string }): null => {
+const InitialValuePlugin = ({ parent, value }: InitialValueProps): null => {
     const [editor] = useLexicalComposerContext()
 
     useEffect(() => {
@@ -17,7 +17,13 @@ const InitialValuePlugin = ({ value }: { value: string }): null => {
                 const dom = parser.parseFromString(value, 'text/html')
                 const nodes = $generateNodesFromDOM(editor, dom)
                 $getRoot().select()
-                $insertNodes(nodes)
+
+                try {
+                    $insertNodes(nodes)
+                    setTimeout(() => document.getElementById(parent).scrollTo(0, 0), 10)
+                } catch {
+                    //
+                }
             }
         })
     }, [value, editor])

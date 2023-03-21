@@ -19,9 +19,9 @@ import {
     DEFAULT_PARAGRAPH_SPACING,
     DEFAULT_SPELL_CHECK
 } from '@sl/constants/defaults'
-import { colors } from '@sl/theme/utils'
+import { getHex as _getHex } from '@sl/theme/utils'
 import { LanguageType } from '@sl/i18n/types'
-import { SettingsContextType, FontType, DisplayModeType } from './types'
+import { SettingsContextType, FontType, DisplayModeType, ColorType, ShadeType } from './types'
 
 const SettingsContext = createContext({} as SettingsContextType)
 
@@ -36,7 +36,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     const [indentParagraph, setIndentParagraph] = useState<boolean>(DEFAULT_INDENT_PARAGRAPH)
     const [language, setLanguage] = useState<LanguageType>(DEFAULT_LANGUAGE)
     const [lineSpacing, setLineSpacing] = useState<number>(DEFAULT_LINE_SPACING)
-    const [palette, setPalette] = useState<string>(DEFAULT_PALETTE)
+    const [palette, setPalette] = useState<ColorType>(DEFAULT_PALETTE)
     const [paragraphSpacing, setParagraphSpacing] = useState<number>(DEFAULT_PARAGRAPH_SPACING)
     const [spellCheck, setSpellCheck] = useState<boolean>(DEFAULT_SPELL_CHECK)
     const [theme, setTheme] = useState<Theme>(createTheme({}))
@@ -72,7 +72,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
             .get<number>('lineSpacing')
             .then((lineSpacing) => setLineSpacing(lineSpacing || DEFAULT_LINE_SPACING))
         database.localStorage
-            .get<string>('palette')
+            .get<ColorType>('palette')
             .then((palette) => setPalette(palette || DEFAULT_PALETTE))
         database.localStorage
             .get<number>('paragraphSpacing')
@@ -118,7 +118,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
                 palette: {
                     mode: displayMode,
                     primary: {
-                        main: '#1976d2'
+                        main: '#1976d2' // todo update to tailwind palette
                     }
                 },
                 status: {
@@ -132,11 +132,12 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
         )
     }, [displayMode, font, fontSize])
 
-    const getHex = (shade?: number): string => {
+    const getHex = (shade?: ShadeType): string => {
         if (!shade) {
             shade = displayMode === 'light' ? 400 : 800
         }
-        return colors[palette][shade]
+
+        return _getHex(palette, shade)
     }
 
     return (

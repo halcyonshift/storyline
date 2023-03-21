@@ -19,7 +19,16 @@ const SceneView = ({ section }: SectionViewType) => {
         return await section.updateBody(html)
     }
 
-    return <RichtextEditor id={section.id} onSave={onSave} initialValue={initialValue} />
+    const plugins = ['excerpt', 'tag', 'search', 'save']
+
+    return (
+        <RichtextEditor
+            id={section.id}
+            onSave={onSave}
+            initialValue={initialValue}
+            toolbar={section.isVersion ? plugins : plugins.concat('version')}
+        />
+    )
 }
 
 export default SceneView

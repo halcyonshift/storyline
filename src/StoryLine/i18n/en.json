@@ -62,6 +62,9 @@
                     "location": "location",
                     "note": "note"
                 },
+                "version": {
+                    "addVersion": "Create version"
+                },
                 "excerpt": "Excerpt",
                 "search": "Search",
                 "save": "Save"
@@ -312,7 +315,6 @@
                     "addPart": "Add part",
                     "addChapter": "Add chapter",
                     "addScene": "Add scene",
-                    "addVersion": "Create version",
                     "edit": "Edit",
                     "delete": "Delete",
                     "deleteConfirm": "Are you sure you want to delete {{name}}?",

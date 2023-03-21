@@ -1,8 +1,8 @@
 const theme = {
     ltr: 'ltr',
     rtl: 'rtl',
-    paragraph: 'indent-4 mb-2',
-    quote: 'bg-slate-50 mb-2',
+    paragraph: 'mb-2',
+    quote: 'bg-yellow-100 mb-2',
     list: {
         nested: {
             listitem: 'list-none'
@@ -20,7 +20,8 @@ const theme = {
         bold: 'font-bold',
         italic: 'italic',
         underline: 'underline-offset-4',
-        strikethrough: 'line-through'
+        strikethrough: 'line-through',
+        highlight: 'bg-green-100'
     }
 }
 

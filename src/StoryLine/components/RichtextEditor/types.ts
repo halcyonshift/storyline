@@ -1,7 +1,9 @@
 export type RichtextEditorProps = {
     id: string
-    onSave: (value: string) => Promise<void>
     initialValue: string
+    onSave?: (value: string) => Promise<void>
+    onChange?: (value: string) => void
+    toolbar?: string[]
 }
 
 export type MenuProps = {
