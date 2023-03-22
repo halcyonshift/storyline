@@ -1,24 +1,22 @@
 import { useEffect, useState, SyntheticEvent } from 'react'
-import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Tab from '@mui/material/Tab'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
-import Snackbar from '@mui/material/Snackbar'
 import Stack from '@mui/material/Stack'
 import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 import DateField from '@sl/components/DateField'
-import { CharacterDataType } from '@sl/db/models/types'
-import { CharacterFormProps } from './types'
 import ImageField from '@sl/components/ImageField'
 import TextField from '@sl/components/TextField'
 import TextareaField from '@sl/components/TextareaField'
+import { CharacterDataType } from '@sl/db/models/types'
+import useMessenger from '@sl/layouts/useMessenger'
+import { CharacterFormProps } from './types'
 
-// eslint-disable-next-line complexity
 const CharacterForm = ({
     work,
     character,
@@ -60,10 +58,10 @@ const CharacterForm = ({
         fears: ''
     }
 }: CharacterFormProps) => {
-    const { t } = useTranslation()
-    const [open, setOpen] = useState<boolean>(false)
     const [reRender, setReRender] = useState<boolean>(false)
     const [value, setValue] = useState<string>('1')
+    const messenger = useMessenger()
+    const { t } = useTranslation()
 
     useEffect(() => {
         setReRender(true)
@@ -116,7 +114,7 @@ const CharacterForm = ({
             } else {
                 await work.addCharacter(mode, values)
             }
-            setOpen(true)
+            messenger.success(t('form.work.character.alert.success'))
         }
     })
 
@@ -359,15 +357,6 @@ const CharacterForm = ({
                     )}
                 </Button>
             </Box>
-            <Snackbar
-                open={open}
-                autoHideDuration={6000}
-                onClose={() => setOpen(false)}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-                <Alert onClose={() => setOpen(false)} severity='success'>
-                    {t('form.work.character.alert.success')}
-                </Alert>
-            </Snackbar>
         </form>
     )
 }

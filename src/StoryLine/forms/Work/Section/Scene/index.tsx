@@ -10,10 +10,12 @@ import { FormikProps, useFormik } from 'formik'
 import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
+import { SectionMode } from '@sl/constants/sectionMode'
 import TextField from '@sl/components/TextField'
 import TextareaField from '@sl/components/TextareaField'
 import SectionModel from '@sl/db/models/SectionModel'
 import { SectionDataType } from '@sl/db/models/types'
+import useMessenger from '@sl/layouts/useMessenger'
 
 const validationSchema = yup.object({
     title: yup.string(),
@@ -26,11 +28,11 @@ const validationSchema = yup.object({
     pointOfViewCharacter: yup.string().nullable()
 })
 
-// eslint-disable-next-line complexity
 const SceneForm = ({ scene }: { scene: SectionModel }) => {
-    const { t } = useTranslation()
-    const [open, setOpen] = useState<boolean>(false)
     const [reRender, setReRender] = useState<boolean>(false)
+
+    const { t } = useTranslation()
+    const messenger = useMessenger()
 
     useEffect(() => {
         setReRender(true)
@@ -49,7 +51,11 @@ const SceneForm = ({ scene }: { scene: SectionModel }) => {
         validationSchema,
         onSubmit: async (values: SectionDataType) => {
             await scene.updateSection(values)
-            setOpen(true)
+            messenger.success(
+                t('form.work.section.alert.success', {
+                    name: SectionMode.SCENE.toLowerCase()
+                })
+            )
         }
     })
 
@@ -88,15 +94,6 @@ const SceneForm = ({ scene }: { scene: SectionModel }) => {
                     {t('form.work.section.button.update')}
                 </Button>
             </Box>
-            <Snackbar
-                open={open}
-                autoHideDuration={6000}
-                onClose={() => setOpen(false)}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-                <Alert onClose={() => setOpen(false)} severity='success'>
-                    {t('form.work.section.alert.success', { name: 'part' })}
-                </Alert>
-            </Snackbar>
         </Stack>
     )
 }

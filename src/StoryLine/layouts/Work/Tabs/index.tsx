@@ -6,9 +6,12 @@ import Tab from '@mui/material/Tab'
 import Typography from '@mui/material/Typography'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
 import { useTranslation } from 'react-i18next'
+import useSettings from '@sl/theme/useSettings'
+import { getHex } from '@sl/theme/utils'
 import useTabs from './useTabs'
 
 const Tabs = () => {
+    const settings = useSettings()
     const { t } = useTranslation()
     const tabs = useTabs()
 
@@ -30,7 +33,6 @@ const Tabs = () => {
                     <Droppable droppableId='tabs'>
                         {(props) => (
                             <MuiTabs
-                                className='border-b'
                                 ref={props.innerRef}
                                 {...props.droppableProps}
                                 value={tabs.active}
@@ -40,7 +42,8 @@ const Tabs = () => {
                                 aria-label={t('layout.work.tabs')}
                                 TabIndicatorProps={{
                                     style: {
-                                        display: 'none'
+                                        display: 'none',
+                                        backgroundColor: getHex('slate', 100)
                                     }
                                 }}>
                                 {tabs.tabs.map((tab, index) => (
@@ -52,15 +55,12 @@ const Tabs = () => {
                                         {(props) => (
                                             <Tab
                                                 sx={{
-                                                    borderRight: '1px solid #999999',
-                                                    borderBottom:
-                                                        index === tabs.active
-                                                            ? '1px solid #FFFFFF'
-                                                            : '1px solid #CCCCCC',
+                                                    marginLeft: '1px',
+                                                    opacity: 1,
                                                     backgroundColor:
                                                         index === tabs.active
-                                                            ? '#FFFFFF'
-                                                            : '#CCCCCC'
+                                                            ? getHex('slate', 100)
+                                                            : 'white'
                                                 }}
                                                 ref={props.innerRef}
                                                 {...props.draggableProps}

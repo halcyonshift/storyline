@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { $generateHtmlFromNodes } from '@lexical/html'
 import { ListItemNode, ListNode } from '@lexical/list'
+import { QuoteNode } from '@lexical/rich-text'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary'
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin'
@@ -65,7 +66,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                             quote: indentParagraph ? `indent-4 ${theme.quote}` : theme.quote
                         }
                     },
-                    nodes: [ListItemNode, ListNode, TagNode],
+                    nodes: [ListItemNode, ListNode, QuoteNode, TagNode],
                     onError(error: Error) {
                         throw error
                     }

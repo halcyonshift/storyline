@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
-import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Snackbar from '@mui/material/Snackbar'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
@@ -10,8 +8,11 @@ import { FormikProps, useFormik } from 'formik'
 import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
+import { SectionMode } from '@sl/constants/sectionMode'
 import SectionModel from '@sl/db/models/SectionModel'
 import { SectionDataType } from '@sl/db/models/types'
+import useMessenger from '@sl/layouts/useMessenger'
+import { PartFormProps } from './types'
 
 const validationSchema = yup.object({
     title: yup.string(),
@@ -23,9 +24,9 @@ const validationSchema = yup.object({
 })
 
 // eslint-disable-next-line complexity
-const PartForm = ({ part }: { part: SectionModel }) => {
+const PartForm = ({ part }: PartFormProps) => {
+    const messenger = useMessenger()
     const { t } = useTranslation()
-    const [open, setOpen] = useState<boolean>(false)
     const [reRender, setReRender] = useState<boolean>(false)
 
     useEffect(() => {
@@ -45,7 +46,9 @@ const PartForm = ({ part }: { part: SectionModel }) => {
         validationSchema,
         onSubmit: async (values: SectionDataType) => {
             await part.updateSection(values)
-            setOpen(true)
+            messenger.success(
+                t('form.work.section.alert.success', { name: SectionMode.PART.toLowerCase() })
+            )
         }
     })
 
@@ -119,15 +122,6 @@ const PartForm = ({ part }: { part: SectionModel }) => {
                     {t('form.work.section.button.update')}
                 </Button>
             </Box>
-            <Snackbar
-                open={open}
-                autoHideDuration={6000}
-                onClose={() => setOpen(false)}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-                <Alert onClose={() => setOpen(false)} severity='success'>
-                    {t('form.work.section.alert.success', { name: 'part' })}
-                </Alert>
-            </Snackbar>
         </Stack>
     )
 }

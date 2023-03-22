@@ -1,5 +1,4 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
-import { orange } from '@mui/material/colors'
 import { createTheme } from '@mui/material/styles'
 import { Theme } from '@mui/system'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
@@ -117,12 +116,43 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
             createTheme({
                 palette: {
                     mode: displayMode,
+                    contrastThreshold: 4.5,
                     primary: {
-                        main: '#1976d2' // todo update to tailwind palette
+                        light: getHex(100),
+                        main: getHex(500),
+                        dark: getHex(900),
+                        contrastText: _getHex('white')
+                    },
+                    secondary: {
+                        light: _getHex('slate', 100),
+                        main: _getHex('slate', 500),
+                        dark: _getHex('slate', 900),
+                        contrastText: _getHex('white')
+                    },
+                    error: {
+                        light: _getHex('rose', 100),
+                        main: _getHex('rose', 500),
+                        dark: _getHex('rose', 900),
+                        contrastText: _getHex('white')
+                    },
+                    warning: {
+                        light: _getHex('amber', 100),
+                        main: _getHex('amber', 500),
+                        dark: _getHex('amber', 900),
+                        contrastText: _getHex('white')
+                    },
+                    info: {
+                        light: _getHex('sky', 100),
+                        main: _getHex('sky', 500),
+                        dark: _getHex('sky', 900),
+                        contrastText: _getHex('white')
+                    },
+                    success: {
+                        light: _getHex('emerald', 100),
+                        main: _getHex('emerald', 500),
+                        dark: _getHex('emerald', 900),
+                        contrastText: _getHex('white')
                     }
-                },
-                status: {
-                    danger: orange[500]
                 },
                 typography: {
                     fontSize,
@@ -130,11 +160,11 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
                 }
             })
         )
-    }, [displayMode, font, fontSize])
+    }, [displayMode, font, fontSize, palette])
 
     const getHex = (shade?: ShadeType): string => {
         if (!shade) {
-            shade = displayMode === 'light' ? 400 : 800
+            shade = displayMode === 'light' ? 400 : 900
         }
 
         return _getHex(palette, shade)

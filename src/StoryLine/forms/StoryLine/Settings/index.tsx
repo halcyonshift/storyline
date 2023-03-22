@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import TextDecreaseIcon from '@mui/icons-material/TextDecrease'
 import TextIncreaseIcon from '@mui/icons-material/TextIncrease'
-import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox'
@@ -14,7 +13,6 @@ import FormLabel from '@mui/material/FormLabel'
 import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
 import Select from '@mui/material/Select'
-import Snackbar from '@mui/material/Snackbar'
 import Stack from '@mui/material/Stack'
 import Slider from '@mui/material/Slider'
 import TextField from '@mui/material/TextField'
@@ -22,7 +20,7 @@ import Typography from '@mui/material/Typography'
 import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
-
+import useMessenger from '@sl/layouts/useMessenger'
 import { colors } from '@sl/theme/utils'
 
 import {
@@ -59,7 +57,7 @@ const SettingsForm = ({
         spellCheck: DEFAULT_SPELL_CHECK
     }
 }: SettingsFormProps) => {
-    const [open, setOpen] = useState<boolean>(false)
+    const messenger = useMessenger()
     const { t } = useTranslation()
     const settings = useSettings()
     const validationSchema = yup.object({
@@ -81,7 +79,6 @@ const SettingsForm = ({
         initialValues,
         validationSchema,
         onSubmit: async (values: SettingsDataType) => {
-            setOpen(true)
             settings.setAutoSave(values.autoSave)
             settings.setAutoBackupFreq(values.autoBackupFreq)
             settings.setAutoBackupMax(values.autoBackupMax)
@@ -94,6 +91,7 @@ const SettingsForm = ({
             settings.setPalette(values.palette)
             settings.setParagraphSpacing(values.paragraphSpacing)
             settings.setSpellCheck(values.spellCheck)
+            messenger.success(t('form.storyline.settings.alert.success'))
         }
     })
 
@@ -360,15 +358,6 @@ const SettingsForm = ({
                     {t('form.storyline.settings.button.save')}
                 </Button>
             </Box>
-            <Snackbar
-                open={open}
-                autoHideDuration={6000}
-                onClose={() => setOpen(false)}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-                <Alert onClose={() => setOpen(false)} severity='success'>
-                    {t('form.storyline.settings.alert.success')}
-                </Alert>
-            </Snackbar>
         </Box>
     )
 }

@@ -6,6 +6,8 @@ import {
     $isListNode,
     ListNode
 } from '@lexical/list'
+import { $createQuoteNode, $isQuoteNode } from '@lexical/rich-text'
+import { $wrapNodes } from '@lexical/selection'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils'
 import FormatBoldIcon from '@mui/icons-material/FormatBold'
@@ -25,10 +27,10 @@ import SaveIcon from '@mui/icons-material/Save'
 import SearchIcon from '@mui/icons-material/Search'
 import LabelImportantIcon from '@mui/icons-material/LabelImportant'
 import UndoIcon from '@mui/icons-material/Undo'
-import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import {
+    $createParagraphNode,
     $getSelection,
     $isRangeSelection,
     CAN_REDO_COMMAND,
@@ -42,6 +44,7 @@ import {
 } from 'lexical'
 import { useTranslation } from 'react-i18next'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import { getHex } from '@sl/theme/utils'
 import { getSelectedNode } from '../../utils/getSelectedNode'
 import { SAVE_COMMAND } from '../Save'
 import { TOGGLE_SEARCH_COMMAND } from '../Search'
@@ -63,11 +66,25 @@ const ToolbarPlugin = ({
     const [isItalic, setIsItalic] = useState<boolean>(false)
     const [isUnderline, setIsUnderline] = useState<boolean>(false)
     const [isStrikethrough, setIsStrikethrough] = useState<boolean>(false)
-    const [isHighlight, setIsHighlight] = useState<boolean>(false)
+    const [isQuote, setIsQuote] = useState<boolean>(false)
     const [isTag, setIsTag] = useState<boolean>(false)
     const [editor] = useLexicalComposerContext()
     const { t } = useTranslation()
     const { loadTab } = useTabs()
+
+    const formatQuote = () => {
+        editor.update(() => {
+            const selection = $getSelection()
+
+            if ($isRangeSelection(selection)) {
+                if (blockType !== 'quote') {
+                    $wrapNodes(selection, () => $createQuoteNode())
+                } else {
+                    $wrapNodes(selection, () => $createParagraphNode())
+                }
+            }
+        })
+    }
 
     const updateToolbar = useCallback(() => {
         const selection = $getSelection()
@@ -92,11 +109,11 @@ const ToolbarPlugin = ({
             const parent = node.getParent()
 
             setIsTag($isTagNode(node) || $isTagNode(parent))
+            setIsQuote($isQuoteNode(node) || $isQuoteNode(parent))
             setIsBold(selection.hasFormat('bold'))
             setIsItalic(selection.hasFormat('italic'))
             setIsUnderline(selection.hasFormat('underline'))
             setIsStrikethrough(selection.hasFormat('strikethrough'))
-            setIsHighlight(selection.hasFormat('highlight'))
         }
     }, [editor])
 
@@ -162,7 +179,11 @@ const ToolbarPlugin = ({
 
     return (
         <>
-            <Stack direction='row' spacing={1} className='border-b'>
+            <Stack
+                direction='row'
+                spacing={1}
+                className='border-b'
+                sx={{ backgroundColor: getHex('slate', 100) }}>
                 <IconButton
                     disabled={!canUndo}
                     aria-label={t('component.richtext.toolbar.undo')}
@@ -175,7 +196,6 @@ const ToolbarPlugin = ({
                     onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}>
                     <RedoIcon />
                 </IconButton>
-                <Divider orientation='vertical' flexItem />
                 <IconButton
                     color={isBold ? 'primary' : 'default'}
                     aria-label={t('component.richtext.toolbar.bold')}
@@ -201,19 +221,13 @@ const ToolbarPlugin = ({
                     <FormatStrikethroughIcon />
                 </IconButton>
                 {config.includes('excerpt') ? (
-                    <>
-                        <Divider orientation='vertical' flexItem />
-                        <IconButton
-                            color={isHighlight ? 'primary' : 'default'}
-                            aria-label={t('component.richtext.toolbar.excerpt')}
-                            onClick={() =>
-                                editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'highlight')
-                            }>
-                            <LabelImportantIcon />
-                        </IconButton>
-                    </>
+                    <IconButton
+                        color={isQuote ? 'primary' : 'default'}
+                        aria-label={t('component.richtext.toolbar.excerpt')}
+                        onClick={formatQuote}>
+                        <LabelImportantIcon />
+                    </IconButton>
                 ) : null}
-                <Divider orientation='vertical' flexItem />
                 <IconButton
                     aria-label={t('component.richtext.toolbar.listBulleted')}
                     onClick={() =>
@@ -236,7 +250,6 @@ const ToolbarPlugin = ({
                     }>
                     <FormatListNumberedIcon />
                 </IconButton>
-                <Divider orientation='vertical' flexItem />
                 <IconButton
                     aria-label={t('component.richtext.toolbar.alignLeft')}
                     onClick={() => {
@@ -266,68 +279,56 @@ const ToolbarPlugin = ({
                     <FormatAlignJustifyIcon />
                 </IconButton>
                 {config.includes('tag') ? (
-                    <>
-                        <Divider orientation='vertical' flexItem />
-                        <IconButton
-                            id='menu-tag'
-                            aria-label={t('component.richtext.toolbar.tag')}
-                            aria-controls={menu ? 'menu' : undefined}
-                            aria-haspopup={true}
-                            aria-expanded={menu ? 'true' : undefined}
-                            onClick={(e) => {
-                                editor.update(() => {
-                                    const selection = $getSelection()
-                                    if (selection.getTextContent() || isTag) {
-                                        editor.dispatchCommand(TOGGLE_TAG_COMMAND, null)
-                                        setMenu('tag')
-                                        setMenuElement(menu ? null : e.currentTarget)
-                                    }
-                                })
-                            }}>
-                            <LocalOfferIcon />
-                        </IconButton>
-                    </>
+                    <IconButton
+                        id='menu-tag'
+                        aria-label={t('component.richtext.toolbar.tag')}
+                        aria-controls={menu ? 'menu' : undefined}
+                        aria-haspopup={true}
+                        aria-expanded={menu ? 'true' : undefined}
+                        onClick={(e) => {
+                            editor.update(() => {
+                                const selection = $getSelection()
+                                if (selection.getTextContent() || isTag) {
+                                    editor.dispatchCommand(TOGGLE_TAG_COMMAND, null)
+                                    setMenu('tag')
+                                    setMenuElement(menu ? null : e.currentTarget)
+                                }
+                            })
+                        }}>
+                        <LocalOfferIcon />
+                    </IconButton>
                 ) : null}
                 {config.includes('search') ? (
-                    <>
-                        <Divider orientation='vertical' flexItem />
-                        <IconButton
-                            aria-label={t('component.richtext.toolbar.search')}
-                            onClick={() => {
-                                editor.dispatchCommand(TOGGLE_SEARCH_COMMAND, null)
-                            }}>
-                            <SearchIcon />
-                        </IconButton>
-                    </>
+                    <IconButton
+                        aria-label={t('component.richtext.toolbar.search')}
+                        onClick={() => {
+                            editor.dispatchCommand(TOGGLE_SEARCH_COMMAND, null)
+                        }}>
+                        <SearchIcon />
+                    </IconButton>
                 ) : null}
                 {config.includes('version') ? (
-                    <>
-                        <Divider orientation='vertical' flexItem />
-                        <IconButton
-                            id='menu-version'
-                            aria-label={t('component.richtext.toolbar.version')}
-                            aria-controls={menu ? 'menu' : undefined}
-                            aria-haspopup={true}
-                            aria-expanded={menu ? 'true' : undefined}
-                            onClick={(e) => {
-                                setMenu('version')
-                                setMenuElement(menu ? null : e.currentTarget)
-                            }}>
-                            <RestorePageIcon />
-                        </IconButton>
-                    </>
+                    <IconButton
+                        id='menu-version'
+                        aria-label={t('component.richtext.toolbar.version')}
+                        aria-controls={menu ? 'menu' : undefined}
+                        aria-haspopup={true}
+                        aria-expanded={menu ? 'true' : undefined}
+                        onClick={(e) => {
+                            setMenu('version')
+                            setMenuElement(menu ? null : e.currentTarget)
+                        }}>
+                        <RestorePageIcon />
+                    </IconButton>
                 ) : null}
                 {config.includes('save') ? (
-                    <>
-                        <Divider orientation='vertical' flexItem />
-                        <IconButton
-                            aria-label={t('component.richtext.toolbar.save')}
-                            onClick={() => {
-                                editor.dispatchCommand(SAVE_COMMAND, null)
-                            }}>
-                            <SaveIcon />
-                        </IconButton>
-                    </>
+                    <IconButton
+                        aria-label={t('component.richtext.toolbar.save')}
+                        onClick={() => {
+                            editor.dispatchCommand(SAVE_COMMAND, null)
+                        }}>
+                        <SaveIcon />
+                    </IconButton>
                 ) : null}
             </Stack>
         </>

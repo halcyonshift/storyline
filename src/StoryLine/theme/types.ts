@@ -29,7 +29,7 @@ export type ColorType =
     | 'pink'
     | 'rose'
 
-export type ShadeType = 50 | 100 | 200 | 300 | 400 | 500 | 700 | 800 | 900
+export type ShadeType = 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900
 export type SettingsDataType = {
     language: LanguageType
     displayMode: DisplayModeType
@@ -42,7 +42,7 @@ export type SettingsDataType = {
     autoSave: boolean
     autoBackupFreq: number
     autoBackupMax: number
-    palette: string
+    palette: ColorType
 }
 
 export type SettingsContextType = {

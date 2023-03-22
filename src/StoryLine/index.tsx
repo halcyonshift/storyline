@@ -9,6 +9,7 @@ import database from '@sl/db'
 import { CharacterModel, ItemModel, LocationModel, NoteModel, WorkModel } from '@sl/db/models'
 import '@sl/i18n'
 import * as Layouts from '@sl/layouts'
+import { MessengerProvider } from '@sl/layouts/useMessenger'
 import { SettingsProvider } from '@sl/theme/useSettings'
 import * as StoryLineViews from '@sl/views/StoryLine'
 import * as WorkViews from '@sl/views/Work'
@@ -207,7 +208,9 @@ const root = createRoot(document.getElementById('root'))
 root.render(
     <DatabaseProvider database={database}>
         <SettingsProvider>
-            <RouterProvider router={router} />
+            <MessengerProvider>
+                <RouterProvider router={router} />
+            </MessengerProvider>
         </SettingsProvider>
     </DatabaseProvider>
 )
