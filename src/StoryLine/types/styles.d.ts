@@ -2,14 +2,11 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 declare module '@mui/material/styles' {
-    interface Theme {
-        status: {
-            danger: string
-        }
+    interface Palette {
+        neutral?: Palette['primary']
     }
-    interface ThemeOptions {
-        status?: {
-            danger?: string
-        }
+
+    interface PaletteOptions {
+        neutral?: PaletteOptions['primary']
     }
 }

@@ -103,7 +103,7 @@ export default withDatabase(
             characters: database
                 .get<CharacterModel>('character')
                 .query(Q.where('work_id', workId), Q.sortBy('display_name', Q.asc))
-                .observeWithColumns(['display_name', 'status']),
+                .observeWithColumns(['display_name', 'status', 'mode']),
             items: database
                 .get<ItemModel>('item')
                 .query(Q.where('work_id', workId), Q.sortBy('name', Q.asc))

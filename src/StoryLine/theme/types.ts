@@ -61,3 +61,7 @@ export type SettingsContextType = {
     theme: Theme
     getHex: (shade?: ShadeType) => string
 } & SettingsDataType
+
+export type StatusMapType = {
+    [key: string]: 'error' | 'warning' | 'info' | 'success' | 'secondary'
+}

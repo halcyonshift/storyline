@@ -1,21 +1,17 @@
 import { useEffect, useState } from 'react'
-import Alert from '@mui/material/Alert'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Snackbar from '@mui/material/Snackbar'
-import Stack from '@mui/material/Stack'
-import { TextField as MuiTextField } from '@mui/material'
+import { Box, Button, Stack, TextField as MuiTextField } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { FormikProps, useFormik } from 'formik'
 import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 import { SectionMode } from '@sl/constants/sectionMode'
+import DateField from '@sl/components/DateField'
 import TextField from '@sl/components/TextField'
 import TextareaField from '@sl/components/TextareaField'
-import SectionModel from '@sl/db/models/SectionModel'
 import { SectionDataType } from '@sl/db/models/types'
 import useMessenger from '@sl/layouts/useMessenger'
+import { SceneFormProps } from './types'
 
 const validationSchema = yup.object({
     title: yup.string(),
@@ -28,11 +24,10 @@ const validationSchema = yup.object({
     pointOfViewCharacter: yup.string().nullable()
 })
 
-const SceneForm = ({ scene }: { scene: SectionModel }) => {
+const SceneForm = ({ scene, initialValues }: SceneFormProps) => {
     const [reRender, setReRender] = useState<boolean>(false)
-
-    const { t } = useTranslation()
     const messenger = useMessenger()
+    const { t } = useTranslation()
 
     useEffect(() => {
         setReRender(true)
@@ -41,13 +36,7 @@ const SceneForm = ({ scene }: { scene: SectionModel }) => {
 
     const form: FormikProps<SectionDataType> = useFormik<SectionDataType>({
         enableReinitialize: true,
-        initialValues: {
-            title: scene.title || '',
-            description: scene.description || '',
-            wordGoal: scene.wordGoal,
-            deadlineAt: scene.deadlineAt,
-            order: scene.order
-        },
+        initialValues,
         validationSchema,
         onSubmit: async (values: SectionDataType) => {
             await scene.updateSection(values)
@@ -69,14 +58,21 @@ const SceneForm = ({ scene }: { scene: SectionModel }) => {
                 label={t('form.work.section.description')}
                 fieldName='description'
             />
-            <Box className='grid grid-cols-2 gap-4'>
+            <Box className='grid grid-cols-4 gap-4'>
+                <DateField form={form} label={'form.work.section.date'} fieldName='date' />
                 <TextField
+                    form={form}
+                    label={t('form.work.section.order')}
+                    name='order'
                     type='number'
                     InputProps={{ inputProps: { min: 0, step: 1 } }}
-                    fullWidth={false}
+                />
+                <TextField
                     form={form}
-                    name='wordGoal'
                     label={t('form.work.section.wordGoal')}
+                    name='wordGoal'
+                    type='number'
+                    InputProps={{ inputProps: { min: 0, step: 1 } }}
                 />
                 <DatePicker
                     label={t('form.work.section.deadline')}

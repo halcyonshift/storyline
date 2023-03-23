@@ -34,6 +34,8 @@ export default class SectionModel extends Model {
     @relation('section', 'section_id') section!: Relation<SectionModel>
     @relation('character', 'pov_character_id') pointOfViewCharacter!: Relation<CharacterModel>
 
+    sortDate: number
+
     get displayTitle() {
         const title =
             this.title || `${capitalize(SectionMode[this.mode].toLowerCase())} ${this.order}`
@@ -54,27 +56,41 @@ export default class SectionModel extends Model {
     }
 
     get displayDate() {
-        try {
-            return DateTime.fromISO(this.date).toFormat('EEEE dd LLL yyyy')
-        } catch {
-            return this.date
-        }
+        const date = DateTime.fromSQL(this.date)
+        return date.isValid ? date.toFormat('EEEE dd LLL yyyy') : this.date
     }
 
     get displayTime() {
-        try {
-            return DateTime.fromISO(this.date).toFormat('H:mm')
-        } catch {
-            return this.date
-        }
+        const date = DateTime.fromSQL(this.date)
+        return date.isValid ? date.toFormat('H:mm') : this.date
     }
 
     get displayDateTime() {
-        try {
-            return DateTime.fromISO(this.date).toFormat('EEEE dd LLL yyyy H:mm')
-        } catch {
-            return this.date
+        const date = DateTime.fromSQL(this.date)
+        return date.isValid ? date.toFormat('EEEE dd LLL yyyy H:mm') : this.date
+    }
+
+    async getSortDate() {
+        let date: string | DateTime = this.date
+
+        if (!date) {
+            if (this.isScene) {
+                const chapter = await this.section.fetch()
+
+                if (!chapter.date) {
+                    const part = await chapter.section.fetch()
+                    date = part.date
+                } else {
+                    date = chapter.date
+                }
+            } else if (this.isChapter) {
+                const part = await this.section.fetch()
+                date = part.date
+            }
         }
+
+        date = DateTime.fromSQL(date)
+        this.sortDate = date.isValid ? date.toSeconds() : 0
     }
 
     get isChapter() {
@@ -226,8 +242,8 @@ export default class SectionModel extends Model {
             section.title = data.title
             section.description = data.description
             section.date = data.date
-            section.order = data.order
-            section.wordGoal = data.wordGoal
+            section.order = Number(data.order)
+            section.wordGoal = Number(data.wordGoal)
             section.deadlineAt = data.deadlineAt
             section.pointOfViewCharacter.set(data.pointOfViewCharacter)
             section.pointOfView = data.pointOfView

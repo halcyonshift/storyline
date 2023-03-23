@@ -20,7 +20,9 @@ const InitialValuePlugin = ({ parent, value }: InitialValueProps): null => {
 
                 try {
                     $insertNodes(nodes)
-                    setTimeout(() => document.getElementById(parent).scrollTo(0, 0), 10)
+                    if (parent) {
+                        setTimeout(() => document.getElementById(parent).scrollTo(0, 0), 10)
+                    }
                 } catch {
                     //
                 }

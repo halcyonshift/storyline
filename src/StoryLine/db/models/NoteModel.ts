@@ -9,6 +9,7 @@ import {
     text,
     writer
 } from '@nozbe/watermelondb/decorators'
+import { DateTime } from 'luxon'
 import { Status, type StatusType } from '@sl/constants/status'
 import CharacterModel from './CharacterModel'
 import ItemModel from './ItemModel'
@@ -47,6 +48,26 @@ export default class NoteModel extends Model {
 
     get displayName() {
         return this.title
+    }
+
+    get displayDate() {
+        const date = DateTime.fromSQL(this.date)
+        return date.isValid ? date.toFormat('EEEE dd LLL yyyy') : this.date
+    }
+
+    get displayTime() {
+        const date = DateTime.fromSQL(this.date)
+        return date.isValid ? date.toFormat('H:mm') : this.date
+    }
+
+    get displayDateTime() {
+        const date = DateTime.fromSQL(this.date)
+        return date.isValid ? date.toFormat('EEEE dd LLL yyyy H:mm') : this.date
+    }
+
+    get sortDate() {
+        const date = DateTime.fromSQL(this.date)
+        return date.isValid ? date.toSeconds() : 0
     }
 
     @writer async addNote(data: NoteDataType) {

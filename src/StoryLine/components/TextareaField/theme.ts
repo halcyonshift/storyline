@@ -12,7 +12,7 @@ const theme = {
     text: {
         bold: 'font-bold',
         italic: 'italic',
-        underline: 'underline-offset-4',
+        underline: 'underline underline-offset-4',
         strikethrough: 'line-through'
     }
 }

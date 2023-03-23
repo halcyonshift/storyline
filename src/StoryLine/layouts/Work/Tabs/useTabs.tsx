@@ -43,6 +43,7 @@ export const TabsProvider = ({
         } else {
             setActive(focus)
         }
+
         if (switchTab) {
             navigate(`/works/${work.id}/${focusTab.link}`)
         }

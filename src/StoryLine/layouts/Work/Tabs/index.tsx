@@ -6,12 +6,10 @@ import Tab from '@mui/material/Tab'
 import Typography from '@mui/material/Typography'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
 import { useTranslation } from 'react-i18next'
-import useSettings from '@sl/theme/useSettings'
 import { getHex } from '@sl/theme/utils'
 import useTabs from './useTabs'
 
 const Tabs = () => {
-    const settings = useSettings()
     const { t } = useTranslation()
     const tabs = useTabs()
 

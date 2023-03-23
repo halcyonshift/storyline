@@ -18,11 +18,13 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { NavigationProps, TogglePanelType } from '@sl/layouts/Work/Navigation/types'
 import useSettings from '@sl/theme/useSettings'
+import useTabs from '../Tabs/useTabs'
 
 const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const settings = useSettings()
+    const { loadTab } = useTabs()
 
     const togglePanel = (panel?: TogglePanelType) => {
         setCurrentPanel(panel !== currentPanel ? panel : null)
@@ -85,13 +87,16 @@ const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) =>
                         <SearchIcon />
                     </IconButton>
                 </Tooltip>
-                <Tooltip title={t('layout.work.navigation.timeline')} placement='right'>
+                <Tooltip title={t('layout.work.navigation.overview')} placement='right'>
                     <IconButton
                         color='inherit'
-                        aria-label={t('layout.work.navigation.timeline')}
+                        aria-label={t('layout.work.navigation.overview')}
                         onClick={() => {
-                            togglePanel()
-                            navigate(`/works/${work.id}/timeline`)
+                            loadTab({
+                                id: 'overview',
+                                label: t('layout.work.navigation.overview'),
+                                link: 'overview'
+                            })
                         }}>
                         <FormatListBulletedIcon />
                     </IconButton>
@@ -101,8 +106,11 @@ const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) =>
                         color='inherit'
                         aria-label={t('layout.work.navigation.relation')}
                         onClick={() => {
-                            togglePanel()
-                            navigate(`/works/${work.id}/relation`)
+                            loadTab({
+                                id: 'relation',
+                                label: t('layout.work.navigation.relation'),
+                                link: 'relation'
+                            })
                         }}>
                         <HubIcon />
                     </IconButton>

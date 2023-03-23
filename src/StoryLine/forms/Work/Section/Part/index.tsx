@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Stack from '@mui/material/Stack'
-import TextField from '@mui/material/TextField'
+import { Box, Button, Stack, TextField as MuiTextField } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { FormikProps, useFormik } from 'formik'
 import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
+import TextField from '@sl/components/TextField'
 import { SectionMode } from '@sl/constants/sectionMode'
-import SectionModel from '@sl/db/models/SectionModel'
 import { SectionDataType } from '@sl/db/models/types'
 import useMessenger from '@sl/layouts/useMessenger'
 import { PartFormProps } from './types'
@@ -23,8 +20,7 @@ const validationSchema = yup.object({
     order: yup.number().positive().min(0)
 })
 
-// eslint-disable-next-line complexity
-const PartForm = ({ part }: PartFormProps) => {
+const PartForm = ({ part, initialValues }: PartFormProps) => {
     const messenger = useMessenger()
     const { t } = useTranslation()
     const [reRender, setReRender] = useState<boolean>(false)
@@ -36,13 +32,7 @@ const PartForm = ({ part }: PartFormProps) => {
 
     const form: FormikProps<SectionDataType> = useFormik<SectionDataType>({
         enableReinitialize: true,
-        initialValues: {
-            title: part.title,
-            description: part.description || '',
-            wordGoal: part.wordGoal,
-            deadlineAt: part.deadlineAt,
-            order: part.order
-        },
+        initialValues,
         validationSchema,
         onSubmit: async (values: SectionDataType) => {
             await part.updateSection(values)
@@ -56,54 +46,21 @@ const PartForm = ({ part }: PartFormProps) => {
 
     return (
         <Stack component={'form'} spacing={2} onSubmit={form.handleSubmit} autoComplete='off'>
-            <TextField
-                autoFocus
-                margin='dense'
-                id='title'
-                label={t('form.work.section.title')}
-                name='title'
-                fullWidth
-                variant='standard'
-                value={form.values.title}
-                onChange={form.handleChange}
-                error={form.touched.title && Boolean(form.errors.title)}
-                helperText={form.touched.title && form.errors.title}
-            />
-            <TextField
-                margin='dense'
-                id='description'
-                label={t('form.work.section.description')}
-                name='description'
-                fullWidth
-                multiline
-                variant='standard'
-                spellCheck={true}
-                value={form.values.description}
-                onChange={form.handleChange}
-                error={form.touched.description && Boolean(form.errors.description)}
-                helperText={form.touched.description && form.errors.description}
-            />
+            <TextField autoFocus label={t('form.work.section.title')} name='title' form={form} />
+            <TextField label={t('form.work.section.description')} name='description' form={form} />
             <Stack direction='row' spacing={2}>
                 <TextField
-                    id='order'
                     label={t('form.work.section.order')}
+                    form={form}
                     name='order'
                     type='number'
-                    value={form.values.order}
-                    onChange={form.handleChange}
-                    error={form.touched.order && Boolean(form.errors.order)}
-                    helperText={form.touched.order && form.errors.order}
                     InputProps={{ inputProps: { min: 0 } }}
                 />
                 <TextField
-                    id='wordGoal'
+                    form={form}
                     label={t('form.work.section.wordGoal')}
                     name='wordGoal'
                     type='number'
-                    value={form.values.wordGoal}
-                    onChange={form.handleChange}
-                    error={form.touched.wordGoal && Boolean(form.errors.wordGoal)}
-                    helperText={form.touched.wordGoal && form.errors.wordGoal}
                     InputProps={{ inputProps: { min: 0, step: 1 } }}
                 />
                 <DatePicker
@@ -114,7 +71,7 @@ const PartForm = ({ part }: PartFormProps) => {
                     onChange={(newValue: DateTime | null) => {
                         form.setFieldValue('deadlineAt', newValue ? newValue.toJSDate() : null)
                     }}
-                    renderInput={(params) => <TextField {...params} />}
+                    renderInput={(params) => <MuiTextField margin='dense' {...params} />}
                 />
             </Stack>
             <Box className='text-center border-t pt-3'>

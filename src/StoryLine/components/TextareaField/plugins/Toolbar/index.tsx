@@ -18,27 +18,18 @@ import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft'
 import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter'
 import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight'
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify'
-import RedoIcon from '@mui/icons-material/Redo'
-import UndoIcon from '@mui/icons-material/Undo'
-import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import {
     $getSelection,
     $isRangeSelection,
-    CAN_REDO_COMMAND,
-    CAN_UNDO_COMMAND,
     FORMAT_ELEMENT_COMMAND,
     FORMAT_TEXT_COMMAND,
-    REDO_COMMAND,
-    SELECTION_CHANGE_COMMAND,
-    UNDO_COMMAND
+    SELECTION_CHANGE_COMMAND
 } from 'lexical'
 import { useTranslation } from 'react-i18next'
 
 const ToolbarPlugin = (): ReactElement => {
-    const [canUndo, setCanUndo] = useState<boolean>(false)
-    const [canRedo, setCanRedo] = useState<boolean>(false)
     const [blockType, setBlockType] = useState<string>('paragraph')
     const [isBold, setIsBold] = useState<boolean>(false)
     const [isItalic, setIsItalic] = useState<boolean>(false)
@@ -88,22 +79,6 @@ const ToolbarPlugin = (): ReactElement => {
                         return false
                     },
                     1
-                ),
-                editor.registerCommand(
-                    CAN_UNDO_COMMAND,
-                    (payload) => {
-                        setCanUndo(payload)
-                        return false
-                    },
-                    1
-                ),
-                editor.registerCommand(
-                    CAN_REDO_COMMAND,
-                    (payload) => {
-                        setCanRedo(payload)
-                        return false
-                    },
-                    1
                 )
             ),
         [editor, updateToolbar]
@@ -112,19 +87,6 @@ const ToolbarPlugin = (): ReactElement => {
     return (
         <>
             <Stack direction='row' spacing={1} className='border-b border-t'>
-                <IconButton
-                    disabled={!canUndo}
-                    aria-label={t('component.richtext.toolbar.undo')}
-                    onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}>
-                    <UndoIcon />
-                </IconButton>
-                <IconButton
-                    disabled={!canRedo}
-                    aria-label={t('component.richtext.toolbar.redo')}
-                    onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}>
-                    <RedoIcon />
-                </IconButton>
-                <Divider orientation='vertical' flexItem />
                 <IconButton
                     color={isBold ? 'primary' : 'default'}
                     aria-label={t('component.richtext.toolbar.bold')}
@@ -149,7 +111,6 @@ const ToolbarPlugin = (): ReactElement => {
                     onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough')}>
                     <FormatStrikethroughIcon />
                 </IconButton>
-                <Divider orientation='vertical' flexItem />
                 <IconButton
                     aria-label={t('component.richtext.toolbar.listBulleted')}
                     onClick={() =>
@@ -172,7 +133,6 @@ const ToolbarPlugin = (): ReactElement => {
                     }>
                     <FormatListNumberedIcon />
                 </IconButton>
-                <Divider orientation='vertical' flexItem />
                 <IconButton
                     aria-label={t('component.richtext.toolbar.alignLeft')}
                     onClick={() => {

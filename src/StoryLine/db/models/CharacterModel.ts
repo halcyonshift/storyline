@@ -9,6 +9,7 @@ import {
     text,
     writer
 } from '@nozbe/watermelondb/decorators'
+import { DateTime } from 'luxon'
 import { StatusType } from '@sl/constants/status'
 import NoteModel from './NoteModel'
 import WorkModel from './WorkModel'
@@ -73,6 +74,16 @@ export default class CharacterModel extends Model {
         return Boolean(this.mode === CharacterMode.TERTIARY)
     }
 
+    get displayDateOfBirth() {
+        const date = DateTime.fromSQL(this.dateOfBirth)
+        return date.isValid ? date.toFormat('EEEE dd LLL yyyy') : this.dateOfBirth
+    }
+
+    get sortDate() {
+        const date = DateTime.fromSQL(this.dateOfBirth)
+        return date.isValid ? date.toSeconds() : 0
+    }
+
     @writer async updateCharacter(data: CharacterDataType) {
         await this.update((character) => {
             character.mode = data.mode
@@ -115,6 +126,12 @@ export default class CharacterModel extends Model {
     @writer async updateStatus(status: StatusType) {
         await this.update((character) => {
             character.status = status
+        })
+    }
+
+    @writer async updateMode(mode: CharacterModeType) {
+        await this.update((character) => {
+            character.mode = mode
         })
     }
 

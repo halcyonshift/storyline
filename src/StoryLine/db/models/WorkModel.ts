@@ -106,7 +106,7 @@ export default class WorkModel extends Model {
             work.author = (data.author || '').toString()
             work.language = data.language
             work.summary = data.summary
-            work.wordGoal = data.wordGoal || null
+            work.wordGoal = Number(data.wordGoal) || null
             work.image = data.image
             work.deadlineAt = data.deadlineAt || null
         })

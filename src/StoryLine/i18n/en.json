@@ -204,6 +204,7 @@
                 "wordGoal": "Word goal",
                 "deadline": "Deadline",
                 "order": "Order",
+                "date": "Date",
                 "button": {
                     "update": "Edit"
                 },
@@ -268,7 +269,7 @@
                 "item": "Items",
                 "note": "Notes",
                 "search": "Search",
-                "timeline": "Timeline",
+                "overview": "Overview",
                 "relation": "Relationships",
                 "insight": "Insights",
                 "backupRestore": "Backup, restore & export",

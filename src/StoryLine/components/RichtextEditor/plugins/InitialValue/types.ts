@@ -1,4 +1,4 @@
 export type InitialValueProps = {
-    parent: string
+    parent?: string
     value: string
 }

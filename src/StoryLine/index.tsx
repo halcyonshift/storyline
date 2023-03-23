@@ -194,8 +194,8 @@ const router = createHashRouter([
                         ]
                     },
                     {
-                        path: 'timeline',
-                        element: <WorkViews.TimelineView />
+                        path: 'overview',
+                        element: <WorkViews.OverviewView />
                     }
                 ]
             }

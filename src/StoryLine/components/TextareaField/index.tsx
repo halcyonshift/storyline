@@ -11,7 +11,7 @@ import Box from '@mui/material/Box'
 import InputLabel from '@mui/material/InputLabel'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
-import InitialValuePlugin from './plugins/InitialValue'
+import InitialValuePlugin from '@sl/components/RichtextEditor/plugins/InitialValue'
 import ToolbarPlugin from './plugins/Toolbar'
 import theme from './theme'
 import { TextareaFieldProps } from './types'
@@ -49,7 +49,7 @@ const TextareaField = ({ form, label, fieldName }: TextareaFieldProps) => {
                             ErrorBoundary={LexicalErrorBoundary}
                         />
                         <HistoryPlugin />
-                        <InitialValuePlugin text={form.initialValues[fieldName]} />
+                        <InitialValuePlugin value={form.initialValues[fieldName]} />
                         <ListPlugin />
                         <OnChangePlugin
                             onChange={(_, editor) => {

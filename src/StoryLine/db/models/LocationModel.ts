@@ -50,7 +50,6 @@ export default class LocationModel extends Model {
 
     @writer async addLocation(data: LocationDataType) {
         const work = await this.work.fetch()
-        // eslint-disable-next-line max-statements
         return await this.collections.get<LocationModel>('location').create((location) => {
             location.location.set(this)
             location.work.set(work)
