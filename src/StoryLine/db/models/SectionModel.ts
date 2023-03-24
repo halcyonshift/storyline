@@ -247,8 +247,14 @@ export default class SectionModel extends Model {
             section.order = Number(data.order)
             section.wordGoal = Number(data.wordGoal)
             section.deadlineAt = data.deadlineAt
-            section.pointOfViewCharacter.set(data.pointOfViewCharacter)
             section.pointOfView = data.pointOfView
+        })
+    }
+
+    @writer async updatePoVCharacter(character: CharacterModel | null) {
+        console.log(character)
+        await this.update((section) => {
+            section.pointOfViewCharacter.set(character)
         })
     }
 

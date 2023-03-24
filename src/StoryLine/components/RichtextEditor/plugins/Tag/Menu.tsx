@@ -15,9 +15,10 @@ import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
 import { WorkModel } from '@sl/db/models'
+import { AutocompleteOption } from '@sl/types'
 import { MenuProps } from '../../types'
 import { TOGGLE_TAG_COMMAND } from './Node'
-import { AutocompleteOption, TagModeType } from './types'
+import { TagModeType } from './types'
 
 const TagMenu = ({ open, menuElement, setMenu, setMenuElement }: MenuProps): ReactElement => {
     const work = useRouteLoaderData('work') as WorkModel

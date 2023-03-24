@@ -110,6 +110,9 @@
     },
     "form": {
         "work": {
+            "global": {
+                "none": "None"
+            },
             "character": {
                 "tab": {
                     "general": "General",
@@ -216,6 +219,8 @@
                 "deadline": "Deadline",
                 "order": "Order",
                 "date": "Date",
+                "pointOfView": "Point of view",
+                "pointOfViewCharacter": "Point of view character",
                 "button": {
                     "update": "Edit"
                 },

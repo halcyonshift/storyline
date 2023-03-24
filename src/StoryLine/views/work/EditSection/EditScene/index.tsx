@@ -2,7 +2,7 @@ import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import Status from '@sl/components/Status'
-import SceneForm from '@sl/forms/Work/Section/Scene'
+import SectionForm from '@sl/forms/Work/Section'
 import { EditSceneViewProps } from './types'
 
 const EditSceneView = ({ scene }: EditSceneViewProps) => (
@@ -17,15 +17,17 @@ const EditSceneView = ({ scene }: EditSceneViewProps) => (
         </Box>
         <Divider />
         <Box className='flex-grow overflow-auto h-0 px-3 py-1'>
-            <SceneForm
-                scene={scene}
+            <SectionForm
+                section={scene}
                 initialValues={{
                     title: scene.title,
                     description: scene.description,
                     wordGoal: scene.wordGoal,
                     deadlineAt: scene.deadlineAt,
                     order: scene.order,
-                    date: scene.date
+                    date: scene.date,
+                    pointOfView: scene.pointOfView,
+                    pointOfViewCharacter: scene.pointOfViewCharacter?.id
                 }}
             />
         </Box>
