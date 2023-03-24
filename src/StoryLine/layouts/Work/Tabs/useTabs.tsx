@@ -1,22 +1,15 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { TabType, TabsContextType, TabsProviderProps } from '../types'
 
 const TabsContext = createContext({} as TabsContextType)
 
-export const TabsProvider = ({
-    children,
-    characters,
-    items,
-    locations,
-    notes,
-    sections,
-    work
-}: TabsProviderProps) => {
+export const TabsProvider = ({ children }: TabsProviderProps) => {
     const [tabs, setTabs] = useState<TabType[]>([])
     const [active, setActive] = useState<number>()
     const [showTabs, setShowTabs] = useState<boolean>(false)
+    const params = useParams()
 
     const navigate = useNavigate()
 
@@ -45,7 +38,7 @@ export const TabsProvider = ({
         }
 
         if (switchTab) {
-            navigate(`/works/${work.id}/${focusTab.link}`)
+            navigate(`/works/${params.work_id}/${focusTab.link}`)
         }
     }
 
@@ -62,7 +55,7 @@ export const TabsProvider = ({
                 setActive(newTabs.findIndex((tab) => tab.id === activeTab.id))
             }
         } else {
-            navigate(`/works/${work.id}`)
+            navigate(`/works/${params.work_id}`)
         }
     }
 
@@ -76,13 +69,7 @@ export const TabsProvider = ({
                 loadTab,
                 removeTab,
                 showTabs,
-                setShowTabs,
-                characters,
-                items,
-                locations,
-                notes,
-                sections,
-                work
+                setShowTabs
             }}>
             {children}
         </TabsContext.Provider>

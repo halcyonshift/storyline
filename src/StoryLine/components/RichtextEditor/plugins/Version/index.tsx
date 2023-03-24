@@ -1,18 +1,21 @@
 import { useEffect, useState } from 'react'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { createCommand, LexicalCommand, COMMAND_PRIORITY_LOW } from 'lexical'
-import { useParams } from 'react-router-dom'
+import { useRouteLoaderData } from 'react-router-dom'
+import { SectionModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { MenuProps } from '../../types'
 import VersionMenu from './Menu'
+import { useDatabase } from '@nozbe/watermelondb/hooks'
 
 export const LOAD_VERSION_COMMAND: LexicalCommand<string | null> = createCommand()
 
 const VersionPlugin = (props: MenuProps) => {
+    const database = useDatabase()
+    const section = useRouteLoaderData('section') as SectionModel
     const [editor] = useLexicalComposerContext()
     const [open, setOpen] = useState<boolean>(false)
-    const params = useParams()
-    const { sections, loadTab } = useTabs()
+    const { loadTab } = useTabs()
 
     useEffect(() => setOpen(Boolean(props.menu === 'version')), [props.menu])
 
@@ -20,21 +23,23 @@ const VersionPlugin = (props: MenuProps) => {
         editor.registerCommand<string | null>(
             LOAD_VERSION_COMMAND,
             (id) => {
-                const scene = sections.find((section) => section.id === params.section_id)
-
                 if (id) {
-                    const version = sections.find((section) => section.id === id)
-                    loadTab({
-                        id,
-                        label: `${scene.displayTitle} - ${version.displayTitle}`,
-                        link: `section/${id}`
-                    })
+                    database
+                        .get<SectionModel>('section')
+                        .find(id)
+                        .then((version) => {
+                            loadTab({
+                                id,
+                                label: `${section.displayTitle} - ${version.displayTitle}`,
+                                link: `section/${id}`
+                            })
+                        })
                 } else {
-                    scene.addVersion().then((version) => {
+                    section.addVersion().then((version) => {
                         loadTab({
-                            id,
-                            label: `${scene.displayTitle} - ${version.displayTitle}`,
-                            link: `section/${id}`
+                            id: version.id,
+                            label: `${section.displayTitle} - ${version.displayTitle}`,
+                            link: `section/${version.id}`
                         })
                     })
                 }

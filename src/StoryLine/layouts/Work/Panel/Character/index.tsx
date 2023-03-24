@@ -1,21 +1,31 @@
 import { useEffect, useState } from 'react'
 import { List, Typography } from '@mui/material'
+import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { useTranslation } from 'react-i18next'
-
+import { useRouteLoaderData } from 'react-router-dom'
+import { useObservable } from 'rxjs-hooks'
 import Accordion from '@sl/components/Accordion'
 import Panel from '@sl/components/Panel'
 import GroupToggle from '@sl/components/Panel/GroupToggle'
 import CharacterModel from '@sl/db/models/CharacterModel'
 import { CHARACTER_ICONS } from '@sl/constants/icons'
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
+import { WorkModel } from '@sl/db/models'
 import useSettings from '@sl/theme/useSettings'
 import ListItem from './ListItem'
-import useTabs from '../../Tabs/useTabs'
 
 const CharacterPanel = () => {
-    const { characters } = useTabs()
+    const work = useRouteLoaderData('work') as WorkModel
     const settings = useSettings()
     const { t } = useTranslation()
+    const characters = useObservable(
+        () =>
+            work.character
+                .extend(Q.sortBy('display_name', Q.asc))
+                .observeWithColumns(['display_name', 'status', 'mode']),
+        [],
+        []
+    )
 
     const [group, setGroup] = useState<boolean>(true)
     const [modeCharacters, setModeCharacters] = useState<{

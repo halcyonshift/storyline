@@ -10,21 +10,47 @@ import Box from '@mui/material/Box'
 import Menu from '@mui/material/Menu'
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
+import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { useTranslation } from 'react-i18next'
-import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import { useObservable } from 'rxjs-hooks'
 import { MenuProps } from '../../types'
 import { TOGGLE_TAG_COMMAND } from './Node'
 import { AutocompleteOption, TagModeType } from './types'
+import { useRouteLoaderData } from 'react-router-dom'
+import { WorkModel } from '@sl/db/models'
 
 const TagMenu = ({ open, menuElement, setMenu, setMenuElement }: MenuProps): ReactElement => {
+    const work = useRouteLoaderData('work') as WorkModel
     const [mode, setMode] = useState<TagModeType>('character')
     const [options, setOptions] = useState<AutocompleteOption[]>([])
     const [id, setId] = useState<string>('')
     const [label, setLabel] = useState<string>('')
-
     const [editor] = useLexicalComposerContext()
     const { t } = useTranslation()
-    const { characters, items, locations, notes } = useTabs()
+
+    const characters = useObservable(
+        () =>
+            work.character
+                .extend(Q.sortBy('display_name', Q.asc))
+                .observeWithColumns(['display_name', 'mode']),
+        [],
+        []
+    )
+    const items = useObservable(
+        () => work.item.extend(Q.sortBy('name', Q.asc)).observeWithColumns(['name']),
+        [],
+        []
+    )
+    const locations = useObservable(
+        () => work.location.extend(Q.sortBy('name', Q.asc)).observeWithColumns(['name']),
+        [],
+        []
+    )
+    const notes = useObservable(
+        () => work.note.extend(Q.sortBy('title', Q.asc)).observeWithColumns(['title']),
+        [],
+        []
+    )
 
     useEffect(() => {
         const data = {

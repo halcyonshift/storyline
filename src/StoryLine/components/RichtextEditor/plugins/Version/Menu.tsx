@@ -1,29 +1,22 @@
-import { useEffect, useState, ReactElement } from 'react'
-
+import { ReactElement } from 'react'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import Box from '@mui/material/Box'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useRouteLoaderData } from 'react-router-dom'
+import { useObservable } from 'rxjs-hooks'
 import SectionModel from '@sl/db/models/SectionModel'
-import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { dateFormat } from '@sl/utils'
 import { MenuProps } from '../../types'
 import { LOAD_VERSION_COMMAND } from '.'
 
 const VersionMenu = ({ open, menuElement, setMenu, setMenuElement }: MenuProps): ReactElement => {
+    const section = useRouteLoaderData('section') as SectionModel
     const [editor] = useLexicalComposerContext()
-    const [versions, setVersions] = useState<SectionModel[]>([])
-    const params = useParams()
-    const { sections } = useTabs()
+    const versions = useObservable(() => section.versions.observe(), [], [])
     const { t } = useTranslation()
-
-    useEffect(() => {
-        const section = sections.find((section) => section.id === params.section_id)
-        section.versions.fetch().then((versions) => setVersions(versions))
-    }, [sections.length, params.section_id])
 
     const handleClose = () => {
         setMenu(null)

@@ -73,7 +73,7 @@ export default class WorkModel extends Model {
         Q.sortBy('order', Q.asc)
     )
 
-    @lazy mainCharacters = this.character.extend(
+    @lazy primaryCharacters = this.character.extend(
         Q.where('mode', CharacterMode.PRIMARY),
         Q.sortBy('display_name', Q.asc)
     )

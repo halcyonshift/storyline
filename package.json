@@ -112,6 +112,7 @@
     "react-joyride": "^2.5.3",
     "react-leaflet": "^4.2.1",
     "react-router-dom": "6.8.1",
+    "rxjs-hooks": "^0.8.0-alpha.0",
     "yup": "^1.0.2"
   }
 }

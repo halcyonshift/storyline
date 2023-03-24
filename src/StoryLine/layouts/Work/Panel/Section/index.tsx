@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
+import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { useNavigate, useRouteLoaderData } from 'react-router-dom'
+import { useObservable } from 'rxjs-hooks'
 import Panel from '@sl/components/Panel'
 import GroupToggle from '@sl/components/Panel/GroupToggle'
 import { TooltipIconButtonProps } from '@sl/components/TooltipIconButton/types'
 import { SECTION_ICONS } from '@sl/constants/icons'
 import { Status } from '@sl/constants/status'
 import { SectionModel, WorkModel } from '@sl/db/models'
-import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import ChapterAccordion from './ChapterAccordion'
 import PartAccordion from './PartAccordion'
 import SceneList from './SceneList'
@@ -18,20 +19,26 @@ const SectionPanel = () => {
     const [scenes, setScenes] = useState<SectionModel[]>([])
     const [navigation, setNavigation] = useState<TooltipIconButtonProps[]>([])
     const work = useRouteLoaderData('work') as WorkModel
-
+    const sections = useObservable(
+        () =>
+            work.section
+                .extend(Q.sortBy('order', Q.asc))
+                .observeWithColumns(['title', 'status', 'order', 'updated_at']),
+        [],
+        []
+    )
     const navigate = useNavigate()
-    const tabs = useTabs()
 
     useEffect(() => {
-        setParts(tabs.sections.filter((section) => section.isPart))
-        setChapters(tabs.sections.filter((section) => section.isChapter))
+        setParts(sections.filter((section) => section.isPart))
+        setChapters(sections.filter((section) => section.isChapter))
         setScenes(
-            tabs.sections.filter(
+            sections.filter(
                 (section) =>
                     section.isScene && (group === true || section.status !== Status.ARCHIVE)
             )
         )
-    }, [tabs.sections, group])
+    }, [sections, group])
 
     useEffect(() => {
         const newNavigation: TooltipIconButtonProps[] = [

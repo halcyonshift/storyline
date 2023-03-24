@@ -1,23 +1,5 @@
 import { MutableRefObject, ReactNode } from 'react'
 
-import {
-    CharacterModel,
-    ItemModel,
-    LocationModel,
-    NoteModel,
-    SectionModel,
-    WorkModel
-} from '@sl/db/models'
-
-export type TabbedWorkLayoutProps = {
-    characters: CharacterModel[]
-    items: ItemModel[]
-    locations: LocationModel[]
-    notes: NoteModel[]
-    sections: SectionModel[]
-    work: WorkModel
-}
-
 export type TabType = {
     id: string
     label: string
@@ -32,7 +14,7 @@ export type TabsDataType = {
 
 export type TabsProviderProps = {
     children: ReactNode
-} & TabbedWorkLayoutProps
+}
 
 export type TabsContextType = {
     loadTab: (focusTab: TabType, switchTab?: boolean) => void
@@ -40,8 +22,7 @@ export type TabsContextType = {
     setActive: (index: number) => void
     setShowTabs: (state: boolean) => void
     setTabs: (tabs: TabType[] | null) => void
-} & TabsDataType &
-    TabbedWorkLayoutProps
+} & TabsDataType
 
 export type LayoutContextType = {
     navigationRef: MutableRefObject<HTMLElement>

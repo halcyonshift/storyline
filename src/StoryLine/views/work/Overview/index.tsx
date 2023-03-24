@@ -7,12 +7,12 @@ import { DateObject, ViewOptionType } from './types'
 
 const OverviewView = () => {
     const [view, setView] = useState<ViewOptionType>('summary')
-    const { setShowTabs, sections, characters, notes } = useTabs()
+    const { setShowTabs } = useTabs()
 
     useEffect(() => {
         setShowTabs(true)
     }, [])
-
+    /*
     useEffect(() => {
         Promise.all(
             [].concat(
@@ -26,7 +26,7 @@ const OverviewView = () => {
                 ]
             )
         ).then((sections) => {
-            /*
+
             const dates = sections
                 .filter((section) => section.sortDate > 0)
                 .map((section) => section.sortDate)
@@ -49,10 +49,10 @@ const OverviewView = () => {
                 .sort((a, b) => a.sortDate - b.sortDate)
 
             console.log(intervals)
-            */
+
         })
     }, [sections, characters, notes])
-
+    */
     return <Box className='p-5 border-t-8 border-slate-100'>OverView here</Box>
 }
 

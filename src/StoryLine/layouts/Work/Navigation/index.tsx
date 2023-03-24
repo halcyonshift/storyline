@@ -15,14 +15,15 @@ import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import Tooltip from '@mui/material/Tooltip'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { NavigationProps, TogglePanelType } from '@sl/layouts/Work/Navigation/types'
 import useSettings from '@sl/theme/useSettings'
 import useTabs from '../Tabs/useTabs'
 import useLayout from '../useLayout'
 
-const Navigation = ({ work, currentPanel, setCurrentPanel, forwardRef }: NavigationProps) => {
+const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationProps) => {
     const { t } = useTranslation()
+    const params = useParams()
     const navigate = useNavigate()
     const settings = useSettings()
     const { loadTab } = useTabs()
@@ -125,7 +126,7 @@ const Navigation = ({ work, currentPanel, setCurrentPanel, forwardRef }: Navigat
                         aria-label={t('layout.work.navigation.insight')}
                         onClick={() => {
                             togglePanel()
-                            navigate(`/works/${work.id}/insight`)
+                            navigate(`/works/${params.work_id}/insight`)
                         }}>
                         <InsightsIcon />
                     </IconButton>
@@ -136,7 +137,7 @@ const Navigation = ({ work, currentPanel, setCurrentPanel, forwardRef }: Navigat
                         aria-label={t('layout.work.navigation.backupRestore')}
                         onClick={() => {
                             togglePanel()
-                            navigate(`/works/${work.id}/backupRestore`)
+                            navigate(`/works/${params.work_id}/backupRestore`)
                         }}>
                         <ImportExportIcon />
                     </IconButton>
@@ -147,7 +148,7 @@ const Navigation = ({ work, currentPanel, setCurrentPanel, forwardRef }: Navigat
                         aria-label={t('layout.work.navigation.setting')}
                         onClick={() => {
                             togglePanel()
-                            navigate(`/works/${work.id}/edit`)
+                            navigate(`/works/${params.work_id}/edit`)
                         }}>
                         <SettingsIcon />
                     </IconButton>

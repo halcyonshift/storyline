@@ -77,7 +77,7 @@ const CharacterForm = ({
     const messenger = useMessenger()
     const navigate = useNavigate()
     const { t } = useTranslation()
-    const { notes } = useTabs()
+    const notes = []
 
     useEffect(() => {
         setReRender(true)

@@ -6,16 +6,26 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
+import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { useTranslation } from 'react-i18next'
+import { useRouteLoaderData } from 'react-router-dom'
+import { useObservable } from 'rxjs-hooks'
 import { GLOBAL_ICONS, LOCATION_ICONS } from '@sl/constants/icons'
 import Panel from '@sl/components/Panel'
 import GroupToggle from '@sl/components/Panel/GroupToggle'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
+import { WorkModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 const LocationPanel = () => {
+    const work = useRouteLoaderData('work') as WorkModel
     const { t } = useTranslation()
-    const tabs = useTabs()
+    const { loadTab, removeTab } = useTabs()
+    const locations = useObservable(
+        () => work.location.extend(Q.sortBy('name', Q.asc)).observeWithColumns(['name', 'status']),
+        [],
+        []
+    )
     const [group, setGroup] = useState<boolean>(false)
 
     return (
@@ -29,14 +39,14 @@ const LocationPanel = () => {
                 }
             ]}>
             <List dense disablePadding>
-                {tabs.locations.map((location) => (
+                {locations.map((location) => (
                     <ListItem key={location.id} disablePadding disableGutters divider>
                         <ListItemText
                             primary={
                                 <Box className='flex justify-between align-middle'>
                                     <ListItemButton
                                         onClick={() =>
-                                            tabs.loadTab({
+                                            loadTab({
                                                 id: location.id,
                                                 label: location.displayName,
                                                 link: `location/${location.id}`
@@ -70,7 +80,7 @@ const LocationPanel = () => {
                                                 name: location.displayName
                                             })}
                                             onClick={() => {
-                                                tabs.removeTab(location.id)
+                                                removeTab(location.id)
                                                 return location.delete()
                                             }}
                                         />
