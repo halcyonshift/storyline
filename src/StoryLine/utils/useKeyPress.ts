@@ -9,6 +9,7 @@ export const useKeyPress = (targetKey: string) => {
     const [keyPressed, setKeyPressed] = useState<boolean>(false)
 
     useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         function downHandler({ key }: any) {
             if (!keyPressed && key === targetKey) {
                 setKeyPressed(true)

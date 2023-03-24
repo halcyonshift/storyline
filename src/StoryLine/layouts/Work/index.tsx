@@ -1,21 +1,11 @@
 import { useRef, useState } from 'react'
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
-import { type Database, Q } from '@nozbe/watermelondb'
-import { withDatabase } from '@nozbe/watermelondb/DatabaseProvider'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
-import withObservables from '@nozbe/with-observables'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLoaderData, useNavigate, useParams } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
-import {
-    type CharacterModel,
-    type ItemModel,
-    type LocationModel,
-    type NoteModel,
-    type SectionModel,
-    type WorkModel
-} from '@sl/db/models'
+import { type WorkModel } from '@sl/db/models'
 import * as Panel from './Panel'
 import Navigation from './Navigation'
 import Tabs from './Tabs'

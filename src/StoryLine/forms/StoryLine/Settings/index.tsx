@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import TextDecreaseIcon from '@mui/icons-material/TextDecrease'
 import TextIncreaseIcon from '@mui/icons-material/TextIncrease'
 import Box from '@mui/material/Box'
