@@ -7,5 +7,5 @@ export type TooltipIconButtonProps = {
     link?: string
     confirm?: string
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onClick?: () => Promise<any>
+    onClick?: () => Promise<void> | void
 } & IconButtonProps

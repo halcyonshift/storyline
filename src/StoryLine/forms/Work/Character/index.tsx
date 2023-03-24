@@ -26,7 +26,6 @@ import { GLOBAL_ICONS } from '@sl/constants/icons'
 import { NoteModel } from '@sl/db/models'
 import { CharacterDataType } from '@sl/db/models/types'
 import useMessenger from '@sl/layouts/useMessenger'
-import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { CharacterFormProps } from './types'
 
 const CharacterForm = ({
@@ -77,7 +76,6 @@ const CharacterForm = ({
     const messenger = useMessenger()
     const navigate = useNavigate()
     const { t } = useTranslation()
-    const notes = []
 
     useEffect(() => {
         setReRender(true)
@@ -85,9 +83,9 @@ const CharacterForm = ({
     }, [character?.id])
 
     useEffect(() => {
-        setCharacterNotes(notes.filter((note) => note.character.id === character.id))
-        setCharacterImages(notes.filter((note) => note.character.id === character.id && note.image))
-    }, [notes])
+        // setCharacterNotes(notes.filter((note) => note.character.id === character.id))
+        // setCharacterImages(notes.filter((note) => note.image))
+    }, [])
 
     const validationSchema = yup.object({
         image: yup.string().nullable(),

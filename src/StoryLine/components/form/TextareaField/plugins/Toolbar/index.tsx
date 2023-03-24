@@ -81,7 +81,7 @@ const ToolbarPlugin = (): ReactElement => {
 
     return (
         <>
-            <Stack direction='row' spacing={1} className='border-b border-t'>
+            <Stack direction='row' spacing={1} className='border-b'>
                 <IconButton
                     color={isBold ? 'primary' : 'default'}
                     aria-label={t('component.richtext.toolbar.bold')}

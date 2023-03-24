@@ -12,12 +12,12 @@ import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { useTranslation } from 'react-i18next'
+import { useRouteLoaderData } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
+import { WorkModel } from '@sl/db/models'
 import { MenuProps } from '../../types'
 import { TOGGLE_TAG_COMMAND } from './Node'
 import { AutocompleteOption, TagModeType } from './types'
-import { useRouteLoaderData } from 'react-router-dom'
-import { WorkModel } from '@sl/db/models'
 
 const TagMenu = ({ open, menuElement, setMenu, setMenuElement }: MenuProps): ReactElement => {
     const work = useRouteLoaderData('work') as WorkModel
@@ -66,7 +66,7 @@ const TagMenu = ({ open, menuElement, setMenu, setMenuElement }: MenuProps): Rea
                 label: item.displayName
             }))
         )
-    }, [mode])
+    }, [mode, characters, items, locations, notes])
 
     return (
         <Menu

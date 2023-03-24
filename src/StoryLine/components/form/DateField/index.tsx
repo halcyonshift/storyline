@@ -3,6 +3,7 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import { TextField as MuiTextField } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 import { DateTime } from 'luxon'
 import { FieldType, DateFieldProps } from './types'
@@ -19,7 +20,7 @@ const DateField = ({
 
     return (
         <Box className='flex'>
-            <Box>
+            <Box className='flex-grow'>
                 {mode === 'picker' ? (
                     <DatePicker
                         label={t(label)}
@@ -41,18 +42,15 @@ const DateField = ({
                 )}
             </Box>
             <Box className='pl-1 flex flex-col justify-center'>
-                <Button
-                    className='whitespace-nowrap'
-                    variant='text'
-                    size='small'
-                    startIcon={GLOBAL_ICONS.change}
-                    onClick={() => setMode(mode === 'picker' ? 'custom' : 'picker')}>
-                    {t(
+                <TooltipIconButton
+                    text={t(
                         mode === 'picker'
                             ? 'component.dateField.toggle.custom'
                             : 'component.dateField.toggle.picker'
                     )}
-                </Button>
+                    icon={GLOBAL_ICONS.change}
+                    onClick={() => setMode(mode === 'picker' ? 'custom' : 'picker')}
+                />
             </Box>
         </Box>
     )

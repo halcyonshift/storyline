@@ -25,14 +25,8 @@ const validationSchema = yup.object({
 })
 
 const SceneForm = ({ scene, initialValues }: SceneFormProps) => {
-    const [reRender, setReRender] = useState<boolean>(false)
     const messenger = useMessenger()
     const { t } = useTranslation()
-
-    useEffect(() => {
-        setReRender(true)
-        setTimeout(() => setReRender(false), 1)
-    }, [scene.id])
 
     const form: FormikProps<SectionDataType> = useFormik<SectionDataType>({
         enableReinitialize: true,
@@ -48,17 +42,11 @@ const SceneForm = ({ scene, initialValues }: SceneFormProps) => {
         }
     })
 
-    if (reRender) return null
-
     return (
         <Stack component={'form'} spacing={2} onSubmit={form.handleSubmit} autoComplete='off'>
             <TextField autoFocus form={form} name='title' label={t('form.work.section.title')} />
-            <TextareaField
-                form={form}
-                label={t('form.work.section.description')}
-                fieldName='description'
-            />
-            <Box className='grid grid-cols-4 gap-4'>
+            <TextareaField form={form} label='' fieldName='description' />
+            <Box className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
                 <DateField form={form} label={'form.work.section.date'} fieldName='date' />
                 <TextField
                     form={form}

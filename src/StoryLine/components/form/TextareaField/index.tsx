@@ -21,8 +21,8 @@ const TextareaField = ({ form, label, fieldName }: TextareaFieldProps) => {
 
     return (
         <Box>
-            <InputLabel>{label}</InputLabel>
-            <Box className='border border-t-0 mt-1'>
+            {label ? <InputLabel className='mb-1'>{label}</InputLabel> : null}
+            <Box className='border border-neutral-300 rounded-md'>
                 <LexicalComposer
                     initialConfig={{
                         namespace: 'rte',

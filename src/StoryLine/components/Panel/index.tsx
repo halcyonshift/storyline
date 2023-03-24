@@ -11,8 +11,8 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
     return (
         <Box
             sx={{ backgroundColor: settings.getHex(50), width }}
-            className='flex flex-col flex-grow h-1'>
-            <Stack direction='row' alignItems='center'>
+            className='flex flex-col flex-grow h-0'>
+            <Stack direction='row' alignItems='center' className='px-1 h-12'>
                 {navigation.map((item) => (
                     <TooltipIconButton
                         key={item.text}
