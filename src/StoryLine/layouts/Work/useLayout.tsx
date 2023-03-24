@@ -14,7 +14,7 @@ export const LayoutProvider = ({
     const [mainWidth, setMainWidth] = useState<number>(0)
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth)
 
-    const updateWidths = () => {
+    const updateWidths = async () => {
         setNavigationWidth(navigationRef.current.offsetWidth)
         setPanelWidth(panelRef.current.offsetWidth)
         setMainWidth(mainRef.current.offsetWidth)

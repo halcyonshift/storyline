@@ -6,3 +6,8 @@ export type PanelProps = {
     children?: ReactElement | ReactElement[]
     action?: ReactElement
 }
+
+export type UseResize = {
+    width: number
+    enableResize: () => void
+}
