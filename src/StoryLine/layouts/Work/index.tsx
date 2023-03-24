@@ -1,4 +1,4 @@
-import { useState, Suspense } from 'react'
+import { useRef, useState } from 'react'
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
 import { type Database, Q } from '@nozbe/watermelondb'
 import { withDatabase } from '@nozbe/watermelondb/DatabaseProvider'
@@ -14,64 +14,74 @@ import {
     type SectionModel,
     type WorkModel
 } from '@sl/db/models'
+
 import * as Panel from './Panel'
 import Navigation from './Navigation'
 import Tabs from './Tabs'
 import useTabs, { TabsProvider } from './Tabs/useTabs'
 import { TabbedWorkLayoutProps } from './types'
+import { LayoutProvider } from './useLayout'
 
 const WorkLayout = () => {
     const navigate = useNavigate()
     const { t } = useTranslation()
     const tabs = useTabs()
+    const navigationRef = useRef<HTMLElement>()
+    const panelRef = useRef<HTMLElement>()
+    const mainRef = useRef<HTMLElement>()
 
     const [currentPanel, setCurrentPanel] = useState<string | null>()
 
     return (
-        <Box className={`flex flex-col flex-grow`}>
-            <AppBar position='static' color='transparent' className='z-10'>
-                <Toolbar variant='dense'>
-                    <Box>
-                        <IconButton
-                            size='large'
-                            edge='start'
-                            color='inherit'
-                            aria-label={t('navigation.back')}
-                            onClick={() => navigate(-1)}>
-                            {GLOBAL_ICONS.back}
-                        </IconButton>
+        <LayoutProvider navigationRef={navigationRef} panelRef={panelRef} mainRef={mainRef}>
+            <Box className={`flex flex-col flex-grow`}>
+                <AppBar position='static' color='transparent' className='z-10'>
+                    <Toolbar variant='dense'>
+                        <Box>
+                            <IconButton
+                                size='large'
+                                edge='start'
+                                color='inherit'
+                                aria-label={t('navigation.back')}
+                                onClick={() => navigate(-1)}>
+                                {GLOBAL_ICONS.back}
+                            </IconButton>
+                        </Box>
+                        <Box className='flex flex-grow justify-between'>
+                            <Typography
+                                variant='h6'
+                                className='w-[70vw] text-ellipsis'
+                                onClick={() => navigate(`/works/${tabs.work.id}`)}>
+                                {tabs.work.title}
+                            </Typography>
+                            <Typography variant='h6' onClick={() => navigate('/')}>
+                                {t('storyline')}
+                            </Typography>
+                        </Box>
+                    </Toolbar>
+                </AppBar>
+                <Box className='flex flex-grow'>
+                    <Navigation
+                        forwardRef={navigationRef}
+                        work={tabs.work}
+                        currentPanel={currentPanel}
+                        setCurrentPanel={setCurrentPanel}
+                    />
+                    <Box ref={panelRef} className='relative flex flex-col shrink-0'>
+                        {currentPanel === 'character' ? <Panel.CharacterPanel /> : null}
+                        {currentPanel === 'item' ? <Panel.ItemPanel /> : null}
+                        {currentPanel === 'location' ? <Panel.LocationPanel /> : null}
+                        {currentPanel === 'note' ? <Panel.NotePanel /> : null}
+                        {currentPanel === 'search' ? <Panel.SearchPanel /> : null}
+                        {currentPanel === 'section' ? <Panel.SectionPanel /> : null}
                     </Box>
-                    <Box className='flex flex-grow justify-between'>
-                        <Typography
-                            variant='h6'
-                            className='w-[70vw] text-ellipsis'
-                            onClick={() => navigate(`/works/${tabs.work.id}`)}>
-                            {tabs.work.title}
-                        </Typography>
-                        <Typography variant='h6' onClick={() => navigate('/')}>
-                            {t('storyline')}
-                        </Typography>
+                    <Box ref={mainRef} id='main' className='flex flex-col flex-grow'>
+                        <Tabs />
+                        <Outlet />
                     </Box>
-                </Toolbar>
-            </AppBar>
-            <Box className='flex flex-grow'>
-                <Navigation
-                    work={tabs.work}
-                    currentPanel={currentPanel}
-                    setCurrentPanel={setCurrentPanel}
-                />
-                {currentPanel === 'character' ? <Panel.CharacterPanel /> : null}
-                {currentPanel === 'item' ? <Panel.ItemPanel /> : null}
-                {currentPanel === 'location' ? <Panel.LocationPanel /> : null}
-                {currentPanel === 'note' ? <Panel.NotePanel /> : null}
-                {currentPanel === 'search' ? <Panel.SearchPanel /> : null}
-                {currentPanel === 'section' ? <Panel.SectionPanel /> : null}
-                <Box className='flex flex-col flex-grow'>
-                    <Tabs />
-                    <Outlet />
                 </Box>
             </Box>
-        </Box>
+        </LayoutProvider>
     )
 }
 

@@ -18,7 +18,7 @@ const App = () => {
         <LocalizationProvider dateAdapter={AdapterLuxon}>
             <ThemeProvider theme={settings.theme}>
                 <CssBaseline />
-                <Box className={`${settings.displayMode} flex h-full`}>
+                <Box id='app' className={`${settings.displayMode} flex h-full`}>
                     <Outlet />
                     <Snackbar
                         open={messenger.open}

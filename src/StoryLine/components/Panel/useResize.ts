@@ -1,5 +1,6 @@
 import { useDatabase } from '@nozbe/watermelondb/hooks'
 import { useCallback, useEffect, useState } from 'react'
+import useLayout from '@sl/layouts/Work/useLayout'
 
 type UseResizeProps = {
     minWidth: number
@@ -14,12 +15,14 @@ type UseResizeReturn = {
 
 const useResize = ({ minWidth, offSet, name }: UseResizeProps): UseResizeReturn => {
     const database = useDatabase()
+    const { setPanel } = useLayout()
     const [isResizing, setIsResizing] = useState(false)
     const [width, setWidth] = useState(minWidth)
 
     useEffect(() => {
         if (name) {
             database.localStorage.get<number>(name).then((val) => {
+                setPanel(val || minWidth)
                 setWidth(val || minWidth)
             })
         }
@@ -39,6 +42,7 @@ const useResize = ({ minWidth, offSet, name }: UseResizeProps): UseResizeReturn 
             if (isResizing) {
                 const newWidth = e.clientX - (offSet || 0)
                 setWidth(newWidth >= minWidth ? newWidth : minWidth)
+                setPanel(newWidth >= minWidth ? newWidth : minWidth)
             }
         },
         [minWidth, isResizing, setWidth]
@@ -47,6 +51,7 @@ const useResize = ({ minWidth, offSet, name }: UseResizeProps): UseResizeReturn 
     const updateWidth = () => {
         const newWidth = Math.round(window.innerWidth / 5)
         setWidth(newWidth >= minWidth ? newWidth : minWidth)
+        setPanel(newWidth >= minWidth ? newWidth : minWidth)
     }
 
     useEffect(() => {

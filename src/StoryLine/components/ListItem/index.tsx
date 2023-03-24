@@ -14,7 +14,7 @@ const ListItem = ({ link, icon, text, divider }: ListItemProps) => {
     return (
         <MuiListItem disablePadding disableGutters divider={divider}>
             <ListItemButton onClick={() => navigate(link)}>
-                <ListItemIcon>{icon}</ListItemIcon>
+                {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
                 <ListItemText primary={t(text)} />
             </ListItemButton>
         </MuiListItem>

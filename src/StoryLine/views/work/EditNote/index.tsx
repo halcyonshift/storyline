@@ -26,7 +26,8 @@ const EditNoteView = () => {
                         url: note.url,
                         date: note.date,
                         color: note.color,
-                        image: note.image
+                        image: note.image,
+                        order: note.order
                     }}
                 />
             </Box>

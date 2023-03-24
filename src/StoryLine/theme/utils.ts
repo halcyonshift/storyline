@@ -49,5 +49,9 @@ export const getHex = (palette: ColorType, shade?: ShadeType): string => {
         return colors[palette === 'white' ? 'white' : 'black']
     }
 
-    return colors[palette][shade]
+    try {
+        return colors[palette][shade]
+    } catch {
+        return colors['black']
+    }
 }

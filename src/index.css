@@ -45,3 +45,6 @@ body {
   user-select: none
 }
 
+.scrollbar-hidden::-webkit-scrollbar {
+  height: 0 !important
+}

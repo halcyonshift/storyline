@@ -10,8 +10,8 @@ import * as yup from 'yup'
 
 import { LocationDataType } from '@sl/db/models/types'
 import useOnlineStatus from '@sl/utils/useOnlineStatus'
-import ImageField from '@sl/components/ImageField'
-import MapField from '@sl/components/MapField'
+import ImageField from '@sl/components/form/ImageField'
+import MapField from '@sl/components/form/MapField'
 
 import { LocationFormProps } from './types'
 

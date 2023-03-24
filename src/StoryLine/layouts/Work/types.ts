@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { MutableRefObject, ReactNode } from 'react'
 
 import {
     CharacterModel,
@@ -42,3 +42,21 @@ export type TabsContextType = {
     setTabs: (tabs: TabType[] | null) => void
 } & TabsDataType &
     TabbedWorkLayoutProps
+
+export type LayoutContextType = {
+    navigationRef: MutableRefObject<HTMLElement>
+    panelRef: MutableRefObject<HTMLElement>
+    mainRef: MutableRefObject<HTMLElement>
+    width: number
+    navigation: number
+    panel: number
+    setPanel: (width: number) => void
+    main: number
+}
+
+export type LayoutProviderProps = {
+    navigationRef: MutableRefObject<HTMLElement>
+    panelRef: MutableRefObject<HTMLElement>
+    mainRef: MutableRefObject<HTMLElement>
+    children: ReactNode
+}

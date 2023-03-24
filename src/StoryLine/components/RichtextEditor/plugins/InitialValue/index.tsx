@@ -5,7 +5,7 @@ import { $generateNodesFromDOM } from '@lexical/html'
 import { $getRoot, $insertNodes } from 'lexical'
 import { InitialValueProps } from './types'
 
-const InitialValuePlugin = ({ parent, value }: InitialValueProps): null => {
+const InitialValuePlugin = ({ forwardRef, value }: InitialValueProps): null => {
     const [editor] = useLexicalComposerContext()
 
     useEffect(() => {
@@ -20,8 +20,8 @@ const InitialValuePlugin = ({ parent, value }: InitialValueProps): null => {
 
                 try {
                     $insertNodes(nodes)
-                    if (parent) {
-                        setTimeout(() => document.getElementById(parent).scrollTo(0, 0), 10)
+                    if (forwardRef) {
+                        setTimeout(() => forwardRef.current.scrollTo(0, 0), 1)
                     }
                 } catch {
                     //

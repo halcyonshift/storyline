@@ -3,6 +3,6 @@ import { ListItemProps as MuiListItemProps } from '@mui/material'
 
 export interface ListItemProps extends MuiListItemProps {
     link: string
-    icon: ReactElement
+    icon?: ReactElement
     text: string
 }

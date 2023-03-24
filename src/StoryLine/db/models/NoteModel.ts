@@ -30,11 +30,11 @@ export default class NoteModel extends Model {
     @field('status') status!: StatusType
     @text('title') title!: string
     @text('body') body!: string
-    @date('date') date!: string
+    @text('date') date!: string
     @text('url') url!: string
     @field('image') image!: string
     @text('color') color!: string
-    @text('order') order!: number
+    @field('order') order!: number
     @readonly @date('created_at') createdAt!: Date
     @readonly @date('updated_at') updatedAt!: Date
 
@@ -93,6 +93,17 @@ export default class NoteModel extends Model {
             note.date = data.date
             note.url = data.url
             note.image = data.image
+            note.order = Number(data.order)
+        })
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    @writer async updateAssociation(owner: any) {
+        await this.update((note) => {
+            if (owner.table === 'character') note.character.set(owner)
+            else if (owner.table === 'item') note.item.set(owner)
+            else if (owner.table === 'location') note.location.set(owner)
+            else if (owner.table === 'section') note.section.set(owner)
         })
     }
 

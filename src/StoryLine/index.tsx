@@ -1,12 +1,17 @@
 import { Q } from '@nozbe/watermelondb'
 import DatabaseProvider from '@nozbe/watermelondb/DatabaseProvider'
 import { createRoot } from 'react-dom/client'
-
 import { createHashRouter, RouterProvider } from 'react-router-dom'
-
 import App from '@sl/App'
 import database from '@sl/db'
-import { CharacterModel, ItemModel, LocationModel, NoteModel, WorkModel } from '@sl/db/models'
+import {
+    CharacterModel,
+    ItemModel,
+    LocationModel,
+    NoteModel,
+    SectionModel,
+    WorkModel
+} from '@sl/db/models'
 import '@sl/i18n'
 import * as Layouts from '@sl/layouts'
 import { MessengerProvider } from '@sl/layouts/useMessenger'
@@ -86,8 +91,17 @@ const router = createHashRouter([
                         element: <WorkViews.AddLocationView />
                     },
                     {
-                        path: 'addNote',
-                        element: <WorkViews.AddNoteView />
+                        path: 'addNote/:mode?/:id?',
+                        element: <WorkViews.AddNoteView />,
+                        loader: async ({ params }) => {
+                            return params.mode && params.id
+                                ? await database
+                                      .get<
+                                          CharacterModel | ItemModel | LocationModel | SectionModel
+                                      >(params.mode)
+                                      .find(params.id)
+                                : null
+                        }
                     },
                     {
                         path: 'backupRestore',

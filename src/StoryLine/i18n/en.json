@@ -15,6 +15,10 @@
         "back": "Back"
     },
     "component": {
+        "colorField": {
+            "label": "Color",
+            "clear": "Clear"
+        },
         "dateField": {
             "label": "Date",
             "toggle": {
@@ -111,7 +115,9 @@
                     "general": "General",
                     "demographics": "Demographics",
                     "appearance": "Appearance",
-                    "about": "About"
+                    "about": "About",
+                    "images": "Images",
+                    "notes": "Notes"
                 },
                 "pronouns": "Pronouns",
                 "displayName": {
@@ -193,6 +199,11 @@
                 "url": "Link",
                 "color": "Color",
                 "image": "Image",
+                "order": "Order",
+                "date": "Date",
+                "alert": {
+                    "success": "The note has been saved"
+                },
                 "button": {
                     "create": "Add",
                     "update": "Edit"

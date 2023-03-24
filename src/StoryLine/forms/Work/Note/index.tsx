@@ -1,39 +1,32 @@
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Stack from '@mui/material/Stack'
-import TextField from '@mui/material/TextField'
+import { Box, Button, Stack } from '@mui/material'
 import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
-
-import DateField from '@sl/components/DateField'
-import ImageField from '@sl/components/ImageField'
+import ColorField from '@sl/components/form/ColorField'
+import DateField from '@sl/components/form/DateField'
+import ImageField from '@sl/components/form/ImageField'
+import TextareaField from '@sl/components/form/TextareaField'
+import TextField from '@sl/components/form/TextField'
 import { NoteDataType } from '@sl/db/models/types'
-
+import useMessenger from '@sl/layouts/useMessenger'
 import { NoteFormProps } from './types'
 
 const NoteForm = ({
     work,
     note,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    character,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    item,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    location,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    section,
+    belongsTo,
     initialValues = {
         title: '',
         body: '',
         url: '',
         image: '',
         date: '',
-        color: '#000000',
+        color: '',
         order: null
     }
 }: NoteFormProps) => {
+    const messenger = useMessenger()
     const navigate = useNavigate()
     const { t } = useTranslation()
 
@@ -53,10 +46,10 @@ const NoteForm = ({
         onSubmit: async (values: NoteDataType) => {
             if (initialValues.title) {
                 note.updateNote(values)
-                navigate(`/works/${note.work.id}/note/${note.id}`)
+                messenger.success(t('form.work.note.alert.success'))
             } else {
                 const newNote = note ? await note.addNote(values) : await work.addNote(values)
-
+                if (belongsTo) await newNote.updateAssociation(belongsTo)
                 form.resetForm()
                 navigate(`/works/${work.id}/note/${newNote.id}`)
             }
@@ -65,60 +58,32 @@ const NoteForm = ({
 
     return (
         <Stack component={'form'} spacing={2} onSubmit={form.handleSubmit} autoComplete='off'>
-            <TextField
-                autoFocus
-                margin='dense'
-                id='title'
-                label={t('form.work.note.title.label')}
-                name='title'
-                fullWidth
-                variant='standard'
-                value={form.values.title}
-                onChange={form.handleChange}
-                error={form.touched.title && Boolean(form.errors.title)}
-                helperText={form.touched.title && form.errors.title}
-            />
-            <TextField
-                margin='dense'
-                id='body'
-                label={t('form.work.note.body')}
-                name='body'
-                fullWidth
-                multiline
-                variant='standard'
-                spellCheck={true}
-                value={form.values.body}
-                onChange={form.handleChange}
-                error={form.touched.body && Boolean(form.errors.body)}
-                helperText={form.touched.body && form.errors.body}
-            />
-            <TextField
-                margin='dense'
-                id='url'
-                label={t('form.work.note.url')}
-                name='url'
-                fullWidth
-                variant='standard'
-                value={form.values.url}
-                onChange={form.handleChange}
-                error={form.touched.url && Boolean(form.errors.url)}
-                helperText={form.touched.url && form.errors.url}
-            />
-            <TextField
-                margin='dense'
-                id='color'
-                label={t('form.work.note.color')}
-                name='color'
-                fullWidth
-                type='color'
-                variant='standard'
-                value={form.values.color}
-                onChange={form.handleChange}
-                error={form.touched.color && Boolean(form.errors.color)}
-                helperText={form.touched.color && form.errors.color}
-            />
-            <ImageField label={t('form.work.note.image')} form={form} dir='notes' />
-            <DateField form={form} />
+            <Box className='grid grid-cols-2 gap-4'>
+                <Box>
+                    <ImageField label='' form={form} dir='notes' />
+                </Box>
+                <Box>
+                    <TextField label={t('form.work.note.title.label')} name='title' form={form} />
+                    <TextField
+                        label={t('form.work.note.url')}
+                        name='url'
+                        form={form}
+                        type='url'
+                        placeholder='https://'
+                    />
+                    <DateField form={form} label={'form.work.note.date'} fieldName='date' />
+                    <TextField
+                        fullWidth={false}
+                        form={form}
+                        label={t('form.work.note.order')}
+                        name='order'
+                        type='number'
+                        InputProps={{ inputProps: { min: 0, step: 1 } }}
+                    />
+                    <ColorField label={t('form.work.note.color')} name='color' form={form} />
+                </Box>
+            </Box>
+            <TextareaField label={t('form.work.note.body')} fieldName='body' form={form} />
             <Box className='text-center border-t pt-3'>
                 <Button type='submit' variant='contained'>
                     {t(

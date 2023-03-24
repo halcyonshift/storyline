@@ -1,5 +1,6 @@
 import {
     AddCircle,
+    AddPhotoAlternate,
     AddLocationAlt,
     ArrowBack,
     Article,
@@ -23,6 +24,7 @@ import {
 } from '@mui/icons-material'
 
 export const GLOBAL_ICONS = {
+    addImage: <AddPhotoAlternate fontSize='inherit' color='inherit' />,
     back: <ArrowBack fontSize='inherit' color='inherit' />,
     change: <ChangeCircle fontSize='inherit' color='inherit' />,
     delete: <Delete fontSize='inherit' color='inherit' />,

@@ -14,16 +14,11 @@ import FormatStrikethroughIcon from '@mui/icons-material/FormatStrikethrough'
 import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered'
-import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft'
-import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter'
-import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight'
-import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify'
 import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import {
     $getSelection,
     $isRangeSelection,
-    FORMAT_ELEMENT_COMMAND,
     FORMAT_TEXT_COMMAND,
     SELECTION_CHANGE_COMMAND
 } from 'lexical'
@@ -132,34 +127,6 @@ const ToolbarPlugin = (): ReactElement => {
                         )
                     }>
                     <FormatListNumberedIcon />
-                </IconButton>
-                <IconButton
-                    aria-label={t('component.richtext.toolbar.alignLeft')}
-                    onClick={() => {
-                        editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')
-                    }}>
-                    <FormatAlignLeftIcon />
-                </IconButton>
-                <IconButton
-                    aria-label={t('component.richtext.toolbar.alignCenter')}
-                    onClick={() => {
-                        editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center')
-                    }}>
-                    <FormatAlignCenterIcon />
-                </IconButton>
-                <IconButton
-                    aria-label={t('component.richtext.toolbar.alignRight')}
-                    onClick={() => {
-                        editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right')
-                    }}>
-                    <FormatAlignRightIcon />
-                </IconButton>
-                <IconButton
-                    aria-label={t('component.richtext.toolbar.alignJustify')}
-                    onClick={() => {
-                        editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify')
-                    }}>
-                    <FormatAlignJustifyIcon />
                 </IconButton>
             </Stack>
         </>

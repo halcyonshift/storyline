@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 
 import { ItemDataType } from '@sl/db/models/types'
-import ImageField from '@sl/components/ImageField'
+import ImageField from '@sl/components/form/ImageField'
 
 import { ItemFormProps } from './types'
 

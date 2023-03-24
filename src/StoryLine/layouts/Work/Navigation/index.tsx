@@ -19,19 +19,23 @@ import { useNavigate } from 'react-router-dom'
 import { NavigationProps, TogglePanelType } from '@sl/layouts/Work/Navigation/types'
 import useSettings from '@sl/theme/useSettings'
 import useTabs from '../Tabs/useTabs'
+import useLayout from '../useLayout'
 
-const Navigation = ({ work, currentPanel, setCurrentPanel }: NavigationProps) => {
+const Navigation = ({ work, currentPanel, setCurrentPanel, forwardRef }: NavigationProps) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const settings = useSettings()
     const { loadTab } = useTabs()
+    const { setPanel } = useLayout()
 
     const togglePanel = (panel?: TogglePanelType) => {
         setCurrentPanel(panel !== currentPanel ? panel : null)
+        setPanel(0)
     }
 
     return (
         <Box
+            ref={forwardRef}
             id='navigation'
             sx={{ backgroundColor: settings.getHex() }}
             className='text-white flex flex-col justify-between'>

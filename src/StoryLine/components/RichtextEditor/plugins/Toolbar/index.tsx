@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, ReactElement } from 'react'
+import { useCallback, useEffect, useRef, useState, ReactElement } from 'react'
 import {
     INSERT_ORDERED_LIST_COMMAND,
     INSERT_UNORDERED_LIST_COMMAND,
@@ -27,6 +27,7 @@ import SaveIcon from '@mui/icons-material/Save'
 import SearchIcon from '@mui/icons-material/Search'
 import LabelImportantIcon from '@mui/icons-material/LabelImportant'
 import UndoIcon from '@mui/icons-material/Undo'
+import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import {
@@ -43,6 +44,7 @@ import {
     UNDO_COMMAND
 } from 'lexical'
 import { useTranslation } from 'react-i18next'
+import useLayout from '@sl/layouts/Work/useLayout'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { getHex } from '@sl/theme/utils'
 import { getSelectedNode } from '../../utils/getSelectedNode'
@@ -59,6 +61,8 @@ const ToolbarPlugin = ({
     setMenuElement,
     config
 }: ToolbarPluginProps): ReactElement => {
+    const { width, navigation, panel } = useLayout()
+    const [toolbarWidth, setToolbarWidth] = useState<number>(width - navigation - panel)
     const [canUndo, setCanUndo] = useState<boolean>(false)
     const [canRedo, setCanRedo] = useState<boolean>(false)
     const [blockType, setBlockType] = useState<string>('paragraph')
@@ -116,6 +120,10 @@ const ToolbarPlugin = ({
             setIsStrikethrough(selection.hasFormat('strikethrough'))
         }
     }, [editor])
+
+    useEffect(() => {
+        setToolbarWidth(width - navigation - panel)
+    }, [width, navigation, panel])
 
     useEffect(() => {
         if (!isTag) return
@@ -178,12 +186,11 @@ const ToolbarPlugin = ({
     )
 
     return (
-        <>
-            <Stack
-                direction='row'
-                spacing={1}
-                className='border-b'
-                sx={{ backgroundColor: getHex('slate', 100) }}>
+        <Box
+            id='toolbarContainer'
+            className='border-b overflow-x-auto scrollbar-hidden'
+            sx={{ backgroundColor: getHex('slate', 100), width: `${toolbarWidth}px` }}>
+            <Stack direction='row' spacing={1}>
                 <IconButton
                     disabled={!canUndo}
                     aria-label={t('component.richtext.toolbar.undo')}
@@ -331,7 +338,7 @@ const ToolbarPlugin = ({
                     </IconButton>
                 ) : null}
             </Stack>
-        </>
+        </Box>
     )
 }
 

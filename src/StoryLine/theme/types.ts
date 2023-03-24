@@ -25,7 +25,7 @@ export type ColorType =
     | 'indigo'
     | 'violet'
     | 'purple'
-    | 'fuschia'
+    | 'fuchsia'
     | 'pink'
     | 'rose'
 

@@ -5,7 +5,7 @@ import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
-import { CHARACTER_ICONS, GLOBAL_ICONS } from '@sl/constants/icons'
+import { CHARACTER_ICONS, GLOBAL_ICONS, NOTE_ICONS } from '@sl/constants/icons'
 import { status } from '@sl/theme/utils'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
@@ -47,6 +47,12 @@ const ListItem = ({ character, showIcon }: ListItemProps) => {
                             </Typography>
                         </ListItemButton>
                         <Stack spacing={0} direction='row'>
+                            <TooltipIconButton
+                                size='small'
+                                text='layout.work.panel.note.addNote'
+                                link={`addNote/character/${character.id}`}
+                                icon={NOTE_ICONS.add}
+                            />
                             <TooltipIconButton
                                 size='small'
                                 text='layout.work.panel.character.edit'

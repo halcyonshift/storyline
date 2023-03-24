@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { $generateHtmlFromNodes } from '@lexical/html'
 import { ListItemNode, ListNode } from '@lexical/list'
 import { QuoteNode } from '@lexical/rich-text'
@@ -32,6 +32,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
     const [menuElement, setMenuElement] = useState<HTMLElement | null>(null)
     const { autoSave, indentParagraph, spellCheck } = useSettings()
     const { t } = useTranslation()
+    const ref = useRef<HTMLElement>()
 
     const doSave = debounce((html) => {
         if (isSaving) return
@@ -80,6 +81,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                 <SearchPlugin />
                 <Box
                     className='rte-container relative flex-grow overflow-auto h-0 p-3'
+                    ref={ref}
                     id={`rte-${id}`}>
                     <RichTextPlugin
                         contentEditable={
@@ -100,7 +102,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                     />
                     <AutoFocusPlugin />
                     <HistoryPlugin />
-                    <InitialValuePlugin parent={`rte-${id}`} value={initialValue} />
+                    <InitialValuePlugin forwardRef={ref} value={initialValue} />
                     <ListPlugin />
                     <OnChangePlugin onChange={handleChange} />
                     <VersionPlugin

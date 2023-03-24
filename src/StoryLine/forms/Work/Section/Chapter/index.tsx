@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 
-import DateField from '@sl/components/DateField'
+import DateField from '@sl/components/form/DateField'
 import { WorkModel } from '@sl/db/models'
 import { SectionDataType } from '@sl/db/models/types'
 

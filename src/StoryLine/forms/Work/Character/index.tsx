@@ -1,6 +1,13 @@
 import { useEffect, useState, SyntheticEvent } from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import ImageList from '@mui/material/ImageList'
+import ImageListItem from '@mui/material/ImageListItem'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemText from '@mui/material/ListItemText'
 import Tab from '@mui/material/Tab'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
@@ -8,13 +15,18 @@ import TabPanel from '@mui/lab/TabPanel'
 import Stack from '@mui/material/Stack'
 import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
-import DateField from '@sl/components/DateField'
-import ImageField from '@sl/components/ImageField'
-import TextField from '@sl/components/TextField'
-import TextareaField from '@sl/components/TextareaField'
+import DateField from '@sl/components/form/DateField'
+import ImageField from '@sl/components/form/ImageField'
+import TextField from '@sl/components/form/TextField'
+import TextareaField from '@sl/components/form/TextareaField'
+import Image from '@sl/components/Image'
+import { GLOBAL_ICONS } from '@sl/constants/icons'
+import { NoteModel } from '@sl/db/models'
 import { CharacterDataType } from '@sl/db/models/types'
 import useMessenger from '@sl/layouts/useMessenger'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { CharacterFormProps } from './types'
 
 const CharacterForm = ({
@@ -60,13 +72,22 @@ const CharacterForm = ({
 }: CharacterFormProps) => {
     const [reRender, setReRender] = useState<boolean>(false)
     const [value, setValue] = useState<string>('1')
+    const [characterNotes, setCharacterNotes] = useState<NoteModel[]>([])
+    const [characterImages, setCharacterImages] = useState<NoteModel[]>([])
     const messenger = useMessenger()
+    const navigate = useNavigate()
     const { t } = useTranslation()
+    const { notes } = useTabs()
 
     useEffect(() => {
         setReRender(true)
         setTimeout(() => setReRender(false), 1)
     }, [character?.id])
+
+    useEffect(() => {
+        setCharacterNotes(notes.filter((note) => note.character.id === character.id))
+        setCharacterImages(notes.filter((note) => note.character.id === character.id && note.image))
+    }, [notes])
 
     const validationSchema = yup.object({
         image: yup.string().nullable(),
@@ -125,13 +146,28 @@ const CharacterForm = ({
     return (
         <form onSubmit={form.handleSubmit} autoComplete='off'>
             <TabContext value={value}>
-                <Box className='border-b'>
-                    <TabList onChange={handleTabChange} aria-label='lab API tabs example'>
+                <Box className='border-b flex justify-between'>
+                    <TabList onChange={handleTabChange} aria-label=''>
                         <Tab label={t('form.work.character.tab.general')} value='1' />
                         <Tab label={t('form.work.character.tab.demographics')} value='2' />
                         <Tab label={t('form.work.character.tab.appearance')} value='3' />
                         <Tab label={t('form.work.character.tab.about')} value='4' />
+                        {characterImages.length ? (
+                            <Tab label={t('form.work.character.tab.images')} value='5' />
+                        ) : null}
+                        {characterNotes.length ? (
+                            <Tab label={t('form.work.character.tab.notes')} value='6' />
+                        ) : null}
                     </TabList>
+                    <Box className='mr-3 flex flex-col justify-center'>
+                        <Button type='submit' variant='contained' size='small'>
+                            {t(
+                                character?.id
+                                    ? 'form.work.character.button.update'
+                                    : 'form.work.character.button.create'
+                            )}
+                        </Button>
+                    </Box>
                 </Box>
                 <TabPanel value='1'>
                     <Box className='grid grid-cols-2 gap-5'>
@@ -347,16 +383,60 @@ const CharacterForm = ({
                         />
                     </Stack>
                 </TabPanel>
+                {characterImages.length ? (
+                    <TabPanel value='5'>
+                        <ImageList cols={3}>
+                            {characterImages.map((note) => (
+                                <ImageListItem key={`image-${note.id}`}>
+                                    <Image path={note.image} alt={note.title} loading='lazy' />
+                                </ImageListItem>
+                            ))}
+                        </ImageList>
+                    </TabPanel>
+                ) : null}
+                {characterNotes.length ? (
+                    <TabPanel value='6'>
+                        <List>
+                            {characterNotes.map((note) => (
+                                <ListItem
+                                    key={`image-${note.id}`}
+                                    divider
+                                    disablePadding
+                                    disableGutters
+                                    secondaryAction={
+                                        <Stack spacing={2} direction='row'>
+                                            <IconButton
+                                                onClick={() => {
+                                                    navigate(
+                                                        // eslint-disable-next-line max-len
+                                                        `/works/${note.work.id}/note/${note.id}/edit`
+                                                    )
+                                                }}
+                                                aria-label={t('layout.work.panel.note.edit')}>
+                                                {GLOBAL_ICONS.edit}
+                                            </IconButton>
+                                            <IconButton
+                                                edge='end'
+                                                aria-label={t('layout.work.panel.note.delete')}>
+                                                {GLOBAL_ICONS.delete}
+                                            </IconButton>
+                                        </Stack>
+                                    }>
+                                    <ListItemButton
+                                        onClick={() =>
+                                            navigate(`/works/${note.work.id}/note/${note.id}`)
+                                        }>
+                                        <ListItemText
+                                            primary={note.displayName}
+                                            secondary={note.date ? note.displayDate : null}
+                                        />
+                                    </ListItemButton>
+                                </ListItem>
+                            ))}
+                        </List>
+                    </TabPanel>
+                ) : null}
             </TabContext>
-            <Box className='text-center'>
-                <Button type='submit' variant='contained'>
-                    {t(
-                        character?.id
-                            ? 'form.work.character.button.update'
-                            : 'form.work.character.button.create'
-                    )}
-                </Button>
-            </Box>
         </form>
     )
 }

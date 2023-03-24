@@ -1,4 +1,5 @@
+import { MutableRefObject } from 'react'
 export type InitialValueProps = {
-    parent?: string
     value: string
+    forwardRef?: MutableRefObject<HTMLElement>
 }

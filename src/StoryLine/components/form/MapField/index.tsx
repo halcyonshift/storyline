@@ -11,7 +11,7 @@ import { useMapEvent } from 'react-leaflet'
 
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 import useOnlineStatus from '@sl/utils/useOnlineStatus'
-import Map from '../Map'
+import Map from '../../Map'
 import { FieldType, MapFieldProps, LocationMarkerProps } from './types'
 
 const LocationMarker = ({ form }: LocationMarkerProps) => {

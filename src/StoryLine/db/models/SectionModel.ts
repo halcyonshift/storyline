@@ -47,6 +47,10 @@ export default class SectionModel extends Model {
         return title
     }
 
+    get displayName() {
+        return this.displayTitle
+    }
+
     get displayBody() {
         return this.body ? htmlParse(this.body) : null
     }
