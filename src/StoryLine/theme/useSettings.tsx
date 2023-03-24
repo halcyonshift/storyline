@@ -152,6 +152,18 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
                         main: _getHex('emerald', 500),
                         dark: _getHex('emerald', 900),
                         contrastText: _getHex('white')
+                    },
+                    grey: {
+                        50: _getHex('slate', 50),
+                        100: _getHex('slate', 100),
+                        200: _getHex('slate', 200),
+                        300: _getHex('slate', 300),
+                        400: _getHex('slate', 400),
+                        500: _getHex('slate', 500),
+                        600: _getHex('slate', 600),
+                        700: _getHex('slate', 700),
+                        800: _getHex('slate', 800),
+                        900: _getHex('slate', 900)
                     }
                 },
                 typography: {

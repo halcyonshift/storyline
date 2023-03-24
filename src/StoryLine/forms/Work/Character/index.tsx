@@ -167,8 +167,8 @@ const CharacterForm = ({
                         </Button>
                     </Box>
                 </Box>
-                <TabPanel value='1'>
-                    <Box className='grid grid-cols-2 gap-5'>
+                <TabPanel value='1' sx={{ padding: 0 }}>
+                    <Box className='grid grid-cols-2 gap-4 px-3 py-1'>
                         <Box>
                             <TextField
                                 name='pronouns'
@@ -203,9 +203,9 @@ const CharacterForm = ({
                         />
                     </Box>
                 </TabPanel>
-                <TabPanel value='2'>
-                    <Stack spacing={5}>
-                        <Box className='grid grid-cols-2 gap-5'>
+                <TabPanel value='2' sx={{ padding: 0 }}>
+                    <Stack spacing={4}>
+                        <Box className='grid grid-cols-2 gap-4 px-3 py-1'>
                             <Box>
                                 <TextField
                                     name='nationality'
@@ -254,7 +254,7 @@ const CharacterForm = ({
                                 />
                             </Box>
                         </Box>
-                        <Box className='grid grid-cols-2 gap-5'>
+                        <Box className='grid grid-cols-2 gap-4 px-3 py-1'>
                             <Box>
                                 <TextField
                                     name='religion'
@@ -292,8 +292,8 @@ const CharacterForm = ({
                         </Box>
                     </Stack>
                 </TabPanel>
-                <TabPanel value='3'>
-                    <Box className='grid grid-cols-2 gap-5'>
+                <TabPanel value='3' sx={{ padding: 0 }}>
+                    <Box className='grid grid-cols-2 gap-4 px-3 py-1'>
                         <Box>
                             <TextField
                                 name='face'
@@ -340,9 +340,9 @@ const CharacterForm = ({
                         </Box>
                     </Box>
                 </TabPanel>
-                <TabPanel value='4'>
-                    <Stack spacing={5}>
-                        <Box className='grid grid-cols-2 gap-5'>
+                <TabPanel value='4' sx={{ padding: 0 }}>
+                    <Stack spacing={4}>
+                        <Box className='grid grid-cols-2 gap-4 px-3 py-1'>
                             <Box>
                                 <TextareaField
                                     fieldName='personalityPositive'
@@ -358,7 +358,7 @@ const CharacterForm = ({
                                 />
                             </Box>
                         </Box>
-                        <Box className='grid grid-cols-2 gap-5'>
+                        <Box className='grid grid-cols-2 gap-4'>
                             <Box>
                                 <TextareaField
                                     fieldName='ambitions'
@@ -382,7 +382,7 @@ const CharacterForm = ({
                     </Stack>
                 </TabPanel>
                 {characterImages.length ? (
-                    <TabPanel value='5'>
+                    <TabPanel value='5' sx={{ padding: 0 }}>
                         <ImageList cols={3}>
                             {characterImages.map((note) => (
                                 <ImageListItem key={`image-${note.id}`}>
@@ -393,7 +393,7 @@ const CharacterForm = ({
                     </TabPanel>
                 ) : null}
                 {characterNotes.length ? (
-                    <TabPanel value='6'>
+                    <TabPanel value='6' sx={{ padding: 0 }}>
                         <List>
                             {characterNotes.map((note) => (
                                 <ListItem

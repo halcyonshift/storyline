@@ -1,14 +1,13 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import ButtonGroup from '@mui/material/ButtonGroup'
 import Divider from '@mui/material/Divider'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import Status from '@sl/components/Status'
-import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
+import TooltipIconButton from '@sl/components/TooltipIconButton'
+import { CharacterMode, CharacterModeType } from '@sl/constants/characterMode'
+import { CHARACTER_ICONS } from '@sl/constants/icons'
 import { CharacterModel } from '@sl/db/models'
 import CharacterForm from '@sl/forms/Work/Character'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
@@ -16,28 +15,38 @@ import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 const EditCharacterView = () => {
     const character = useRouteLoaderData('character') as CharacterModel
     const tabs = useTabs()
-    const { t } = useTranslation()
+    const [mode, setMode] = useState<CharacterModeType>(character.mode)
 
     useEffect(() => tabs.setShowTabs(false), [])
+    useEffect(() => {
+        character.updateMode(mode)
+    }, [mode])
 
     return (
         <Box className='flex flex-col flex-grow'>
-            <Box className='px-4 py-2 flex justify-between'>
+            <Box className='px-4 py-2 flex justify-between h-12'>
                 <Typography variant='h6'>{character.displayName}</Typography>
                 <Stack spacing={1} direction='row'>
-                    <ButtonGroup size='small' variant='outlined'>
-                        {Object.keys(CharacterMode).map((option: CharacterModeType) => (
-                            <Button
-                                disableElevation
-                                color={option === character.mode ? 'primary' : 'inherit'}
-                                variant='contained'
-                                key={option}
-                                value={option}
-                                onClick={() => character.updateMode(option)}>
-                                {t(`constant.characterMode.${option}`)}
-                            </Button>
-                        ))}
-                    </ButtonGroup>
+                    <Box>
+                        <TooltipIconButton
+                            color={mode === CharacterMode.PRIMARY ? 'primary' : 'inherit'}
+                            icon={CHARACTER_ICONS.primary}
+                            text='constant.characterMode.PRIMARY'
+                            onClick={() => setMode(CharacterMode.PRIMARY)}
+                        />
+                        <TooltipIconButton
+                            color={mode === CharacterMode.SECONDARY ? 'primary' : 'inherit'}
+                            icon={CHARACTER_ICONS.secondary}
+                            text='constant.characterMode.SECONDARY'
+                            onClick={() => setMode(CharacterMode.SECONDARY)}
+                        />
+                        <TooltipIconButton
+                            color={mode === CharacterMode.TERTIARY ? 'primary' : 'inherit'}
+                            icon={CHARACTER_ICONS.tertiary}
+                            text='constant.characterMode.TERTIARY'
+                            onClick={() => setMode(CharacterMode.TERTIARY)}
+                        />
+                    </Box>
                     <Status model={character} />
                 </Stack>
             </Box>

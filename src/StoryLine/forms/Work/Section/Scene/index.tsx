@@ -46,7 +46,7 @@ const SceneForm = ({ scene, initialValues }: SceneFormProps) => {
         <Stack component={'form'} spacing={2} onSubmit={form.handleSubmit} autoComplete='off'>
             <TextField autoFocus form={form} name='title' label={t('form.work.section.title')} />
             <TextareaField form={form} label='' fieldName='description' />
-            <Box className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
+            <Box className='grid grid-cols-2 xl:grid-cols-4 gap-4'>
                 <DateField form={form} label={'form.work.section.date'} fieldName='date' />
                 <TextField
                     form={form}

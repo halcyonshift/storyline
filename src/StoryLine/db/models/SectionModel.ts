@@ -213,8 +213,6 @@ export default class SectionModel extends Model {
             const chapterCount = await this.chapters.fetchCount()
             if (!chapterCount) await this.destroyPermanently()
         }
-
-        return true
     }
 
     @writer async addSection(data: SectionDataType) {

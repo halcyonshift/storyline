@@ -65,7 +65,7 @@ const SceneList = ({ scenes }: SceneListProps) => {
                                             })}
                                             onClick={() => {
                                                 tabs.removeTab(scene.id)
-                                                return scene.delete()
+                                                scene.delete()
                                             }}
                                         />
                                     </Stack>

@@ -5,28 +5,40 @@ import useSettings from '@sl/theme/useSettings'
 import { UseResize } from './types'
 
 const MIN_WIDTH = 200
-const DIV_WIDTH = 5
+const DIV_MAX_WIDTH = 2.5
+const DIV_MIN_WIDTH = 5
 
 const useResize = (): UseResize => {
     const database = useDatabase()
     const settings = useSettings()
     const { windowWidth, navigationWidth, setPanelWidth } = useLayout()
-    const [isResizing, setIsResizing] = useState(false)
-    const [width, setWidth] = useState(Math.round((windowWidth - navigationWidth) / DIV_WIDTH))
+    const [isResizing, setIsResizing] = useState<boolean>(false)
+    const [maxWidth, setMaxWidth] = useState<number>(
+        Math.round((windowWidth - navigationWidth) / DIV_MAX_WIDTH)
+    )
+    const [width, setWidth] = useState<number>(
+        Math.round((windowWidth - navigationWidth) / DIV_MIN_WIDTH)
+    )
 
     useEffect(() => {
         database.localStorage.get<number>('panelWidth').then((val) => {
-            setWidth(val || MIN_WIDTH)
-            setPanelWidth(val || MIN_WIDTH)
+            if (val && val >= MIN_WIDTH && val <= maxWidth) {
+                setWidth(val)
+                setPanelWidth(val)
+            }
         })
     }, [])
 
     useEffect(() => {
-        let newWidth = Math.round((windowWidth - navigationWidth) / DIV_WIDTH)
+        const _maxWidth = Math.round((windowWidth - navigationWidth) / DIV_MAX_WIDTH)
+        setMaxWidth(_maxWidth)
+        let newWidth = Math.round((windowWidth - navigationWidth) / DIV_MIN_WIDTH)
         if (newWidth < MIN_WIDTH) {
             newWidth = MIN_WIDTH
+        } else if (newWidth > _maxWidth) {
+            newWidth = _maxWidth
         }
-        if (width < newWidth) {
+        if (width < newWidth || width > _maxWidth) {
             setWidth(newWidth)
         }
     }, [windowWidth, settings.fontSize])
@@ -43,13 +55,11 @@ const useResize = (): UseResize => {
     const resize = useCallback(
         (e: MouseEvent) => {
             if (isResizing) {
-                const newWidth =
-                    e.clientX - navigationWidth >= MIN_WIDTH
-                        ? e.clientX - navigationWidth
-                        : MIN_WIDTH
-
-                setPanelWidth(newWidth)
-                setWidth(newWidth)
+                const newWidth = e.clientX - navigationWidth
+                if (newWidth >= MIN_WIDTH && newWidth <= maxWidth) {
+                    setPanelWidth(newWidth)
+                    setWidth(newWidth)
+                }
             }
         },
         [isResizing]
