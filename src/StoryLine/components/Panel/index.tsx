@@ -9,7 +9,9 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
     const { width, enableResize } = useResize()
 
     return (
-        <Box sx={{ backgroundColor: settings.getHex(50), width }} className='h-full'>
+        <Box
+            sx={{ backgroundColor: settings.getHex(50), width }}
+            className='flex flex-col flex-grow h-1'>
             <Stack direction='row' alignItems='center'>
                 {navigation.map((item) => (
                     <TooltipIconButton
@@ -22,7 +24,7 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
                 ))}
                 {action ? <Box className='ml-auto'>{action}</Box> : null}
             </Stack>
-            <Box className='flex-grow overflow-auto border-t-2'>{children}</Box>
+            <Box className='flex-grow overflow-y-auto scrollbar-hidden border-t-2'>{children}</Box>
             <Box
                 className=' border-r-slate-400 border-r-2 absolute w-0 top-0 right-[-1px]
         bottom-0 cursor-col-resize'
