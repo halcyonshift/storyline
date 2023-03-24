@@ -47,11 +47,11 @@ export type LayoutContextType = {
     navigationRef: MutableRefObject<HTMLElement>
     panelRef: MutableRefObject<HTMLElement>
     mainRef: MutableRefObject<HTMLElement>
-    width: number
-    navigation: number
-    panel: number
-    setPanel: (width: number) => void
-    main: number
+    windowWidth: number
+    navigationWidth: number
+    panelWidth: number
+    setPanelWidth: (width: number) => void
+    mainWidth: number
 }
 
 export type LayoutProviderProps = {

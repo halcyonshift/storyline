@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, ReactElement } from 'react'
+import { useCallback, useEffect, useState, ReactElement } from 'react'
 import {
     INSERT_ORDERED_LIST_COMMAND,
     INSERT_UNORDERED_LIST_COMMAND,
@@ -61,8 +61,10 @@ const ToolbarPlugin = ({
     setMenuElement,
     config
 }: ToolbarPluginProps): ReactElement => {
-    const { width, navigation, panel } = useLayout()
-    const [toolbarWidth, setToolbarWidth] = useState<number>(width - navigation - panel)
+    const { windowWidth, navigationWidth, panelWidth } = useLayout()
+    const [toolbarWidth, setToolbarWidth] = useState<number>(
+        windowWidth - navigationWidth - panelWidth
+    )
     const [canUndo, setCanUndo] = useState<boolean>(false)
     const [canRedo, setCanRedo] = useState<boolean>(false)
     const [blockType, setBlockType] = useState<string>('paragraph')
@@ -122,8 +124,8 @@ const ToolbarPlugin = ({
     }, [editor])
 
     useEffect(() => {
-        setToolbarWidth(width - navigation - panel)
-    }, [width, navigation, panel])
+        setToolbarWidth(windowWidth - navigationWidth - panelWidth)
+    }, [windowWidth, navigationWidth, panelWidth])
 
     useEffect(() => {
         if (!isTag) return

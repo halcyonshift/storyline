@@ -26,11 +26,11 @@ const Navigation = ({ work, currentPanel, setCurrentPanel, forwardRef }: Navigat
     const navigate = useNavigate()
     const settings = useSettings()
     const { loadTab } = useTabs()
-    const { setPanel } = useLayout()
+    const { setPanelWidth } = useLayout()
 
     const togglePanel = (panel?: TogglePanelType) => {
         setCurrentPanel(panel !== currentPanel ? panel : null)
-        setPanel(0)
+        setPanelWidth(0)
     }
 
     return (

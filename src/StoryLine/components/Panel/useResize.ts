@@ -2,31 +2,28 @@ import { useDatabase } from '@nozbe/watermelondb/hooks'
 import { useCallback, useEffect, useState } from 'react'
 import useLayout from '@sl/layouts/Work/useLayout'
 
-type UseResizeProps = {
-    minWidth: number
-    offSet?: number
-    name?: string
-}
-
 type UseResizeReturn = {
     width: number
     enableResize: () => void
 }
 
-const useResize = ({ minWidth, offSet, name }: UseResizeProps): UseResizeReturn => {
+const useResize = (): UseResizeReturn => {
     const database = useDatabase()
-    const { setPanel } = useLayout()
+    const { windowWidth, navigationWidth, setPanelWidth } = useLayout()
     const [isResizing, setIsResizing] = useState(false)
-    const [width, setWidth] = useState(minWidth)
+    const [minWidth, setMinWidth] = useState(Math.round((windowWidth - navigationWidth) / 5))
+    const [width, setWidth] = useState(Math.round((windowWidth - navigationWidth) / 5))
 
     useEffect(() => {
-        if (name) {
-            database.localStorage.get<number>(name).then((val) => {
-                setPanel(val || minWidth)
-                setWidth(val || minWidth)
-            })
-        }
+        database.localStorage.get<number>('panelWidth').then((val) => {
+            setWidth(val || minWidth)
+            setPanelWidth(val || minWidth)
+        })
     }, [])
+
+    useEffect(() => {
+        setMinWidth(Math.round((windowWidth - navigationWidth) / 5))
+    }, [width])
 
     const enableResize = useCallback(() => {
         setIsResizing(true)
@@ -34,24 +31,26 @@ const useResize = ({ minWidth, offSet, name }: UseResizeProps): UseResizeReturn 
 
     const disableResize = useCallback(() => {
         setIsResizing(false)
-        if (name) database.localStorage.set(name, width)
+        database.localStorage.set('panelWidth', width)
     }, [setIsResizing, width])
 
     const resize = useCallback(
         (e: MouseEvent) => {
             if (isResizing) {
-                const newWidth = e.clientX - (offSet || 0)
-                setWidth(newWidth >= minWidth ? newWidth : minWidth)
-                setPanel(newWidth >= minWidth ? newWidth : minWidth)
+                const newWidth =
+                    e.clientX - navigationWidth >= minWidth ? e.clientX - navigationWidth : minWidth
+
+                setPanelWidth(newWidth)
+                setWidth(newWidth)
             }
         },
-        [minWidth, isResizing, setWidth]
+        [minWidth, isResizing]
     )
 
     const updateWidth = () => {
         const newWidth = Math.round(window.innerWidth / 5)
+        setPanelWidth(newWidth >= minWidth ? newWidth : minWidth)
         setWidth(newWidth >= minWidth ? newWidth : minWidth)
-        setPanel(newWidth >= minWidth ? newWidth : minWidth)
     }
 
     useEffect(() => {

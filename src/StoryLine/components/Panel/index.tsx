@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import { Box, Stack } from '@mui/material'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import useSettings from '@sl/theme/useSettings'
@@ -7,15 +6,10 @@ import useResize from './useResize'
 
 const Panel = ({ navigation, children, action }: PanelProps) => {
     const settings = useSettings()
-    const ref = useRef()
-    const { width, enableResize } = useResize({
-        minWidth: Math.round(window.innerWidth / 6),
-        offSet: document.getElementById('navigation').offsetWidth,
-        name: 'panelWidth'
-    })
+    const { width, enableResize } = useResize()
 
     return (
-        <Box ref={ref} sx={{ backgroundColor: settings.getHex(50), width }} className='h-full'>
+        <Box sx={{ backgroundColor: settings.getHex(50), width }} className='h-full'>
             <Stack direction='row' alignItems='center'>
                 {navigation.map((item) => (
                     <TooltipIconButton

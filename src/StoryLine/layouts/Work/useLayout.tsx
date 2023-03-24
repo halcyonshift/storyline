@@ -9,16 +9,16 @@ export const LayoutProvider = ({
     mainRef,
     children
 }: LayoutProviderProps) => {
-    const [navigation, setNavigation] = useState<number>(0)
-    const [panel, setPanel] = useState<number>(0)
-    const [main, setMain] = useState<number>(0)
-    const [width, setWidth] = useState<number>(window.innerWidth)
+    const [navigationWidth, setNavigationWidth] = useState<number>(0)
+    const [panelWidth, setPanelWidth] = useState<number>(0)
+    const [mainWidth, setMainWidth] = useState<number>(0)
+    const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth)
 
     const updateWidths = () => {
-        setNavigation(navigationRef.current.offsetWidth)
-        setPanel(panelRef.current.offsetWidth)
-        setMain(mainRef.current.offsetWidth)
-        setWidth(window.innerWidth)
+        setNavigationWidth(navigationRef.current.offsetWidth)
+        setPanelWidth(panelRef.current.offsetWidth)
+        setMainWidth(mainRef.current.offsetWidth)
+        setWindowWidth(window.innerWidth)
     }
 
     useEffect(() => {
@@ -35,11 +35,11 @@ export const LayoutProvider = ({
                 navigationRef,
                 panelRef,
                 mainRef,
-                width,
-                navigation,
-                panel,
-                setPanel,
-                main
+                windowWidth,
+                navigationWidth,
+                panelWidth,
+                setPanelWidth,
+                mainWidth
             }}>
             {children}
         </LayoutContext.Provider>
