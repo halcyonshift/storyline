@@ -252,7 +252,6 @@ export default class SectionModel extends Model {
     }
 
     @writer async updatePoVCharacter(character: CharacterModel | null) {
-        console.log(character)
         await this.update((section) => {
             section.pointOfViewCharacter.set(character)
         })

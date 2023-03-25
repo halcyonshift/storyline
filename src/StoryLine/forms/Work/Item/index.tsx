@@ -1,12 +1,12 @@
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
-import TextField from '@mui/material/TextField'
 import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
-
+import TextareaField from '@sl/components/form/TextareaField'
+import TextField from '@sl/components/form/TextField'
 import { ItemDataType } from '@sl/db/models/types'
 import ImageField from '@sl/components/form/ImageField'
 
@@ -47,45 +47,15 @@ const ItemForm = ({
     })
 
     return (
-        <Stack component={'form'} spacing={2} onSubmit={form.handleSubmit} autoComplete='off'>
+        <Stack component={'form'} spacing={4} onSubmit={form.handleSubmit} autoComplete='off'>
+            <TextField label={t('form.work.item.name.label')} name='name' form={form} />
+            <TextareaField fieldName='body' form={form} />
             <TextField
-                autoFocus
-                margin='dense'
-                id='name'
-                label={t('form.work.item.name.label')}
-                name='name'
-                fullWidth
-                variant='standard'
-                value={form.values.name}
-                onChange={form.handleChange}
-                error={form.touched.name && Boolean(form.errors.name)}
-                helperText={form.touched.name && form.errors.name}
-            />
-            <TextField
-                margin='dense'
-                id='body'
-                label={t('form.work.item.body')}
-                name='body'
-                fullWidth
-                multiline
-                variant='standard'
-                spellCheck={true}
-                value={form.values.body}
-                onChange={form.handleChange}
-                error={form.touched.body && Boolean(form.errors.body)}
-                helperText={form.touched.body && form.errors.body}
-            />
-            <TextField
-                margin='dense'
-                id='url'
                 label={t('form.work.item.url')}
                 name='url'
-                fullWidth
-                variant='standard'
-                value={form.values.url}
-                onChange={form.handleChange}
-                error={form.touched.url && Boolean(form.errors.url)}
-                helperText={form.touched.url && form.errors.url}
+                form={form}
+                type='url'
+                placeholder='https://'
             />
             <ImageField label={t('form.work.item.image')} form={form} dir='items' />
             <Box className='text-center border-t pt-3'>

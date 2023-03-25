@@ -16,6 +16,7 @@ import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { GLOBAL_ICONS, NOTE_ICONS } from '@sl/constants/icons'
 import { WorkModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import { status } from '@sl/theme/utils'
 
 const NotePanel = () => {
     const work = useRouteLoaderData('work') as WorkModel
@@ -26,7 +27,7 @@ const NotePanel = () => {
         () =>
             work.note
                 .extend(Q.sortBy('order', Q.asc))
-                .observeWithColumns(['title', 'status', 'order']),
+                .observeWithColumns(['title', 'status', 'order', 'color']),
         [],
         []
     )
@@ -36,12 +37,19 @@ const NotePanel = () => {
             navigation={[
                 { link: 'addNote', text: 'layout.work.panel.note.add', icon: NOTE_ICONS.add }
             ]}>
-            <List dense disablePadding>
+            <List dense disablePadding className='bg-white'>
                 {notes.map((note) => (
-                    <ListItem key={note.id} disablePadding disableGutters divider>
+                    <ListItem
+                        key={note.id}
+                        disablePadding
+                        disableGutters
+                        divider
+                        sx={{ borderLeft: `10px solid ${note.color || 'transparent'}` }}>
                         <ListItemText
                             primary={
-                                <Box className='flex justify-between align-middle'>
+                                <Box
+                                    className='flex justify-between align-middle'
+                                    sx={{ backgroundColor: status(note.status).color }}>
                                     <ListItemButton
                                         onClick={() =>
                                             loadTab({
@@ -79,7 +87,7 @@ const NotePanel = () => {
                                             })}
                                             onClick={() => {
                                                 removeTab(note.id)
-                                                return note.delete()
+                                                note.delete()
                                             }}
                                         />
                                     </Stack>

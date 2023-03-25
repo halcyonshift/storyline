@@ -1,18 +1,13 @@
-import { useEffect } from 'react'
-import Box from '@mui/material/Box'
 import { useRouteLoaderData } from 'react-router-dom'
+import FormWrapper from '@sl/components/FormWrapper'
 import { WorkModel } from '@sl/db/models'
 import WorkForm from '@sl/forms/Work/Work'
-import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 const EditWorkView = () => {
     const work = useRouteLoaderData('work') as WorkModel
-    const tabs = useTabs()
-
-    useEffect(() => tabs.setShowTabs(false), [])
 
     return (
-        <Box className='flex-grow h-0 overflow-auto p-5'>
+        <FormWrapper model={work}>
             <WorkForm
                 work={work}
                 initialValues={{
@@ -25,7 +20,7 @@ const EditWorkView = () => {
                     deadlineAt: work.deadlineAt
                 }}
             />
-        </Box>
+        </FormWrapper>
     )
 }
 

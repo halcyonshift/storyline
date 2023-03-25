@@ -32,7 +32,9 @@ const ChapterAccordion = ({ chapters, scenes }: ChapterAccordionProps) => {
                                     size='small'
                                     text='layout.work.panel.section.addScene'
                                     icon={SECTION_ICONS.addScene}
-                                    onClick={() => chapter.addScene()}
+                                    onClick={() => {
+                                        chapter.addScene()
+                                    }}
                                 />
                                 <TooltipIconButton
                                     size='small'

@@ -30,7 +30,7 @@ const ItemPanel = () => {
             navigation={[
                 { link: 'addItem', text: 'layout.work.panel.item.add', icon: ITEM_ICONS.add }
             ]}>
-            <List dense disablePadding>
+            <List dense disablePadding className='bg-white'>
                 {items.map((item) => (
                     <ListItem key={item.id} disablePadding disableGutters divider>
                         <ListItemText
@@ -67,7 +67,7 @@ const ItemPanel = () => {
                                             })}
                                             onClick={() => {
                                                 removeTab(item.id)
-                                                return item.delete()
+                                                item.delete()
                                             }}
                                         />
                                     </Stack>

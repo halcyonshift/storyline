@@ -1,24 +1,27 @@
-import { useEffect } from 'react'
 import { useRouteLoaderData } from 'react-router-dom'
+import FormWrapper from '@sl/components/FormWrapper'
 import { SectionModel } from '@sl/db/models'
-import useTabs from '@sl/layouts/Work/Tabs/useTabs'
-import EditChapterView from './EditChapter'
-import EditPartView from './EditPart'
-import EditSceneView from './EditScene'
+import SectionForm from '@sl/forms/Work/Section'
 
 const EditSectionView = () => {
     const section = useRouteLoaderData('section') as SectionModel
-    const { setShowTabs } = useTabs()
-
-    useEffect(() => setShowTabs(false), [])
-
-    if (section.isPart) {
-        return <EditPartView part={section} />
-    } else if (section.isChapter) {
-        return <EditChapterView chapter={section} />
-    } else {
-        return <EditSceneView scene={section} />
-    }
+    return (
+        <FormWrapper model={section} title={section.displayTitle}>
+            <SectionForm
+                section={section}
+                initialValues={{
+                    title: section.title,
+                    description: section.description,
+                    wordGoal: section.wordGoal,
+                    deadlineAt: section.deadlineAt,
+                    order: section.order,
+                    date: section.date,
+                    pointOfView: section.pointOfView,
+                    pointOfViewCharacter: section.pointOfViewCharacter?.id
+                }}
+            />
+        </FormWrapper>
+    )
 }
 
 export default EditSectionView

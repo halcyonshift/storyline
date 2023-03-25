@@ -15,6 +15,7 @@ const Status = ({ model }: StatusProps) => {
             {Object.keys(Options).map((option: StatusType) => (
                 <Button
                     disableElevation
+                    sx={{ textTransform: 'capitalize' }}
                     color={option === status ? StatusMap[option] : 'inherit'}
                     variant='contained'
                     key={option}

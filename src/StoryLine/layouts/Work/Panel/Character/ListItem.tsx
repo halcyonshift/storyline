@@ -68,7 +68,7 @@ const ListItem = ({ character, showIcon }: ListItemProps) => {
                                 })}
                                 onClick={() => {
                                     tabs.removeTab(character.id)
-                                    return character.delete()
+                                    character.delete()
                                 }}
                             />
                         </Stack>

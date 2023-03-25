@@ -38,7 +38,7 @@ const LocationPanel = () => {
                     icon: LOCATION_ICONS.add
                 }
             ]}>
-            <List dense disablePadding>
+            <List dense disablePadding className='bg-white'>
                 {locations.map((location) => (
                     <ListItem key={location.id} disablePadding disableGutters divider>
                         <ListItemText
@@ -81,7 +81,7 @@ const LocationPanel = () => {
                                             })}
                                             onClick={() => {
                                                 removeTab(location.id)
-                                                return location.delete()
+                                                location.delete()
                                             }}
                                         />
                                     </Stack>
