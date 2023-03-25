@@ -213,6 +213,9 @@
                 }
             },
             "section": {
+                "tab": {
+                    "general": "General"
+                },
                 "title": "Title",
                 "description": "Description",
                 "wordGoal": "Word goal",

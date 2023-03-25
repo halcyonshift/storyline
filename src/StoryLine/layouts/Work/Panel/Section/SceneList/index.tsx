@@ -6,7 +6,7 @@ import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import { GLOBAL_ICONS } from '@sl/constants/icons'
+import { GLOBAL_ICONS, NOTE_ICONS } from '@sl/constants/icons'
 import { status } from '@sl/theme/utils'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
@@ -50,6 +50,12 @@ const SceneList = ({ scenes }: SceneListProps) => {
                                 </ListItemButton>
                                 <Box className='flex flex-col justify-center pr-1'>
                                     <Stack spacing={0} direction='row'>
+                                        <TooltipIconButton
+                                            size='small'
+                                            text='layout.work.panel.note.add'
+                                            link={`addNote/section/${scene.id}`}
+                                            icon={NOTE_ICONS.add}
+                                        />
                                         <TooltipIconButton
                                             size='small'
                                             text='layout.work.panel.section.edit'

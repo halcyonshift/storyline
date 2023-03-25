@@ -12,6 +12,7 @@ import {
 import { DateTime } from 'luxon'
 import { StatusType } from '@sl/constants/status'
 import NoteModel from './NoteModel'
+import SectionModel from './SectionModel'
 import WorkModel from './WorkModel'
 import { CharacterDataType } from './types'
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
@@ -20,7 +21,8 @@ export default class CharacterModel extends Model {
     static table = 'character'
     public static associations: Associations = {
         work: { type: 'belongs_to', key: 'work_id' },
-        note: { type: 'has_many', foreignKey: 'character_id' }
+        note: { type: 'has_many', foreignKey: 'character_id' },
+        section: { type: 'has_many', foreignKey: 'pov_character_id' }
     }
     @field('mode') mode!: CharacterModeType
     @field('status') status!: StatusType
@@ -61,6 +63,7 @@ export default class CharacterModel extends Model {
     @readonly @date('updated_at') updatedAt!: Date
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @children('note') note!: Query<NoteModel>
+    @children('section') section!: Query<SectionModel>
 
     get isPrimary() {
         return Boolean(this.mode === CharacterMode.PRIMARY)
@@ -136,6 +139,16 @@ export default class CharacterModel extends Model {
     }
 
     @writer async delete() {
+        const notes = await this.note.fetch()
+        const scenes = await this.section.fetch()
+        if (notes.length) {
+            notes.map((note) => {
+                note.delete()
+            })
+        }
+        if (scenes.length) {
+            scenes.map((scene) => scene.updatePoVCharacter(null))
+        }
         await this.destroyPermanently()
         return true
     }

@@ -27,12 +27,12 @@ const ImageField = ({ form, label, dir }: ImageFieldProps) => {
 
     return (
         <>
-            <InputLabel className='mb-1'>{label}</InputLabel>
-            <Box className='border p-1 bg-white relative'>
+            {label ? <InputLabel className='mb-1'>{label}</InputLabel> : null}
+            <Box className='border p-1 bg-white relative rounded-md'>
                 <Box className='bg-slate-100 min-h-[50px]'>
                     <Image path={path} width='w-auto' />
                 </Box>
-                <Box className='absolute bg-white bottom-0 left-0 rounded-tr-lg'>
+                <Box className='absolute bg-white bottom-0 left-0 rounded-tr-lg rounded-bl-md'>
                     <Button onClick={importImage}>{t('component.imageField.browse')}</Button>
                     {form.values.image ? (
                         <Button onClick={deleteImage}>{t('component.imageField.delete')}</Button>

@@ -13,4 +13,5 @@ export type FormWrapperProps = {
     model?: CharacterModel | ItemModel | LocationModel | NoteModel | SectionModel | WorkModel
     header?: ReactNode
     children: ReactNode
+    padding?: boolean
 }

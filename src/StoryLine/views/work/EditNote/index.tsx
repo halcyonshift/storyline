@@ -7,7 +7,7 @@ const EditNoteView = () => {
     const note = useRouteLoaderData('note') as NoteModel
 
     return (
-        <FormWrapper title={note.title} model={note}>
+        <FormWrapper padding title={note.title} model={note}>
             <NoteForm
                 note={note}
                 initialValues={{

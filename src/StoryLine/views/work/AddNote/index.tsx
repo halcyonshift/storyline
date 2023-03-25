@@ -19,6 +19,7 @@ const AddNoteView = () => {
 
     return (
         <FormWrapper
+            padding
             title={
                 model
                     ? `${model.displayName}: ${t('view.work.addNote.title')}`

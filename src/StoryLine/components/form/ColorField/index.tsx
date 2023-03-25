@@ -6,16 +6,13 @@ import Popover from '@mui/material/Popover'
 import Stack from '@mui/material/Stack'
 import { TwitterPicker } from 'react-color'
 import { useTranslation } from 'react-i18next'
+import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 import { ColorType } from '@sl/theme/types'
 import { getHex } from '@sl/theme/utils'
 import { ColorFieldProps } from './types'
 
-const ColorField = ({
-    form,
-    name = 'color',
-    label = 'component.colorField.label'
-}: ColorFieldProps) => {
+const ColorField = ({ form, name = 'color', label }: ColorFieldProps) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
     const { t } = useTranslation()
     const colors = [
@@ -55,14 +52,13 @@ const ColorField = ({
                         className='border w-10 h-10 shadow rounded'
                         sx={{ backgroundColor: form.values[name] || getHex('white') }}
                         onClick={(e) => setAnchorEl(e.currentTarget)}></Button>
-                    <Button
-                        className='whitespace-nowrap'
-                        variant='text'
-                        size='small'
-                        startIcon={GLOBAL_ICONS.delete}
-                        onClick={() => form.setFieldValue(name, '')}>
-                        {t('component.colorField.clear')}
-                    </Button>
+                    <TooltipIconButton
+                        text='component.colorField.clear'
+                        icon={GLOBAL_ICONS.delete}
+                        onClick={() => {
+                            form.setFieldValue(name, '')
+                        }}
+                    />
                 </Stack>
                 {open ? (
                     <Popover

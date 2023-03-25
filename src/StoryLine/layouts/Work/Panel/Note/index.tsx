@@ -26,7 +26,13 @@ const NotePanel = () => {
     const notes = useObservable(
         () =>
             work.note
-                .extend(Q.sortBy('order', Q.asc))
+                .extend(
+                    Q.where('character_id', null),
+                    Q.where('item_id', null),
+                    Q.where('location_id', null),
+                    Q.where('section_id', null),
+                    Q.sortBy('order', Q.asc)
+                )
                 .observeWithColumns(['title', 'status', 'order', 'color']),
         [],
         []

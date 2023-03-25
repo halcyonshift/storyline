@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import Accordion from '@sl/components/Accordion'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
-import { GLOBAL_ICONS, SECTION_ICONS } from '@sl/constants/icons'
+import { GLOBAL_ICONS, NOTE_ICONS, SECTION_ICONS } from '@sl/constants/icons'
 import useSettings from '@sl/theme/useSettings'
 import ChapterAccordion from '../ChapterAccordion'
 import { PartAccordionProps } from '../types'
@@ -36,6 +36,12 @@ const PartAccordion = ({ parts, chapters, scenes }: PartAccordionProps) => {
                                     onClick={() => {
                                         part.addChapter()
                                     }}
+                                />
+                                <TooltipIconButton
+                                    size='small'
+                                    text='layout.work.panel.note.add'
+                                    link={`addNote/section/${part.id}`}
+                                    icon={NOTE_ICONS.add}
                                 />
                                 <TooltipIconButton
                                     size='small'

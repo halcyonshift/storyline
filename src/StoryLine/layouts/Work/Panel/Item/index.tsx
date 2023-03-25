@@ -9,7 +9,7 @@ import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
-import { GLOBAL_ICONS, ITEM_ICONS } from '@sl/constants/icons'
+import { GLOBAL_ICONS, ITEM_ICONS, NOTE_ICONS } from '@sl/constants/icons'
 import Panel from '@sl/components/Panel'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { WorkModel } from '@sl/db/models'
@@ -52,6 +52,12 @@ const ItemPanel = () => {
                                         </Typography>
                                     </ListItemButton>
                                     <Stack spacing={0} direction='row'>
+                                        <TooltipIconButton
+                                            size='small'
+                                            text='layout.work.panel.note.add'
+                                            link={`addNote/item/${item.id}`}
+                                            icon={NOTE_ICONS.add}
+                                        />
                                         <TooltipIconButton
                                             size='small'
                                             text='layout.work.panel.item.edit'

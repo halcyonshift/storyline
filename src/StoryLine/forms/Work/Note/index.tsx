@@ -3,6 +3,7 @@ import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
+import FormButton from '@sl/components/FormButton'
 import ColorField from '@sl/components/form/ColorField'
 import DateField from '@sl/components/form/DateField'
 import ImageField from '@sl/components/form/ImageField'
@@ -80,19 +81,17 @@ const NoteForm = ({
                         type='number'
                         InputProps={{ inputProps: { min: 0, step: 1 } }}
                     />
-                    <ColorField label={t('form.work.note.color')} name='color' form={form} />
+                    <ColorField name='color' form={form} />
                 </Box>
             </Box>
-            <TextareaField label={t('form.work.note.body')} fieldName='body' form={form} />
-            <Box className='text-center border-t pt-3'>
-                <Button type='submit' variant='contained'>
-                    {t(
-                        initialValues.title
-                            ? 'form.work.note.button.update'
-                            : 'form.work.note.button.create'
-                    )}
-                </Button>
-            </Box>
+            <TextareaField fieldName='body' form={form} />
+            <FormButton
+                label={t(
+                    initialValues.title
+                        ? 'form.work.note.button.update'
+                        : 'form.work.note.button.create'
+                )}
+            />
         </Stack>
     )
 }

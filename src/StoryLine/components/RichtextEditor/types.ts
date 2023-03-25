@@ -1,3 +1,5 @@
+import { CharacterModel, ItemModel, LocationModel, NoteModel } from '@sl/db/models'
+
 export type RichtextEditorProps = {
     id: string
     initialValue: string
@@ -12,4 +14,8 @@ export type MenuProps = {
     menuElement: HTMLElement | null
     setMenu: (menu: string | null) => void
     setMenuElement: (element: HTMLElement | null) => void
+    characters?: CharacterModel[]
+    items?: ItemModel[]
+    locations?: LocationModel[]
+    notes?: NoteModel[]
 }

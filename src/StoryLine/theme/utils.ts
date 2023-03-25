@@ -6,6 +6,8 @@ import { ColorType, ShadeType, StatusMapType } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const colors: any = resolveConfig(tailwindConfig).theme.colors
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const spacing: any = resolveConfig(tailwindConfig).theme.spacing
 
 export const StatusMap: StatusMapType = {
     [Status.TODO]: 'error',

@@ -7,14 +7,14 @@ import Status from '@sl/components/Status'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { FormWrapperProps } from './types'
 
-const FormWrapper = ({ title, model, header, children }: FormWrapperProps) => {
+const FormWrapper = ({ title, model, header, children, padding = false }: FormWrapperProps) => {
     const tabs = useTabs()
 
     useEffect(() => tabs.setShowTabs(false), [])
 
     return (
         <Box className='flex flex-col flex-grow'>
-            <Box className='px-4 py-2 flex justify-between h-12'>
+            <Box className='px-3 py-2 flex justify-between h-12'>
                 <Typography variant='h6'>{title}</Typography>
                 <Stack spacing={1} direction='row'>
                     {header}
@@ -22,7 +22,7 @@ const FormWrapper = ({ title, model, header, children }: FormWrapperProps) => {
                 </Stack>
             </Box>
             <Divider />
-            <Box className='flex-grow h-0 overflow-auto'>{children}</Box>
+            <Box className={`flex-grow h-0 overflow-auto${padding ? ' p-3' : ''}`}>{children}</Box>
         </Box>
     )
 }

@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import { useRouteLoaderData } from 'react-router-dom'
+import { useObservable } from 'rxjs-hooks'
 import FormWrapper from '@sl/components/FormWrapper'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { CharacterMode, CharacterModeType } from '@sl/constants/characterMode'
 import { CHARACTER_ICONS } from '@sl/constants/icons'
-import { CharacterModel } from '@sl/db/models'
+import { CharacterModel, WorkModel } from '@sl/db/models'
 import CharacterForm from '@sl/forms/Work/Character'
 
 const EditCharacterView = () => {
     const character = useRouteLoaderData('character') as CharacterModel
+    const work = useRouteLoaderData('work') as WorkModel
     const [mode, setMode] = useState<CharacterModeType>(character.mode)
+    useObservable(() => work.character.observeWithColumns(['display_name']), [], [])
 
     useEffect(() => {
         character.updateMode(mode)
@@ -20,6 +23,7 @@ const EditCharacterView = () => {
         <FormWrapper
             title={character.displayName}
             model={character}
+            padding={false}
             header={
                 <Box>
                     <TooltipIconButton

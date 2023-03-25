@@ -1,31 +1,19 @@
 import { useEffect, useState, SyntheticEvent } from 'react'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import IconButton from '@mui/material/IconButton'
-import ImageList from '@mui/material/ImageList'
-import ImageListItem from '@mui/material/ImageListItem'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemText from '@mui/material/ListItemText'
 import Tab from '@mui/material/Tab'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
-import Stack from '@mui/material/Stack'
 import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useObservable } from 'rxjs-hooks'
 import * as yup from 'yup'
-import DateField from '@sl/components/form/DateField'
-import ImageField from '@sl/components/form/ImageField'
-import TextField from '@sl/components/form/TextField'
-import TextareaField from '@sl/components/form/TextareaField'
-import Image from '@sl/components/Image'
-import { GLOBAL_ICONS } from '@sl/constants/icons'
+import FormButton from '@sl/components/FormButton'
 import { NoteModel } from '@sl/db/models'
 import { CharacterDataType } from '@sl/db/models/types'
 import useMessenger from '@sl/layouts/useMessenger'
+import * as NotePanel from '../TabPanel'
+import * as Panel from './TabPanel'
 import { CharacterFormProps } from './types'
 
 const CharacterForm = ({
@@ -69,23 +57,10 @@ const CharacterForm = ({
         fears: ''
     }
 }: CharacterFormProps) => {
-    const [reRender, setReRender] = useState<boolean>(false)
     const [value, setValue] = useState<string>('1')
-    const [characterNotes, setCharacterNotes] = useState<NoteModel[]>([])
-    const [characterImages, setCharacterImages] = useState<NoteModel[]>([])
     const messenger = useMessenger()
-    const navigate = useNavigate()
     const { t } = useTranslation()
-
-    useEffect(() => {
-        setReRender(true)
-        setTimeout(() => setReRender(false), 1)
-    }, [character?.id])
-
-    useEffect(() => {
-        // setCharacterNotes(notes.filter((note) => note.character.id === character.id))
-        // setCharacterImages(notes.filter((note) => note.image))
-    }, [])
+    const notes = useObservable(() => character.note.observeWithColumns(['title']), [], [])
 
     const validationSchema = yup.object({
         image: yup.string().nullable(),
@@ -139,303 +114,58 @@ const CharacterForm = ({
 
     const handleTabChange = (event: SyntheticEvent, value: string) => setValue(value)
 
-    if (reRender) return null
-
     return (
-        <form onSubmit={form.handleSubmit} autoComplete='off'>
+        <Box component='form' onSubmit={form.handleSubmit} autoComplete='off'>
             <TabContext value={value}>
-                <Box className='border-b flex justify-between'>
+                <Box className='border-b'>
                     <TabList onChange={handleTabChange} aria-label=''>
                         <Tab label={t('form.work.character.tab.general')} value='1' />
                         <Tab label={t('form.work.character.tab.demographics')} value='2' />
                         <Tab label={t('form.work.character.tab.appearance')} value='3' />
                         <Tab label={t('form.work.character.tab.about')} value='4' />
-                        {characterImages.length ? (
+                        {notes.filter((note) => note.image).length ? (
                             <Tab label={t('form.work.character.tab.images')} value='5' />
                         ) : null}
-                        {characterNotes.length ? (
+                        {notes.length ? (
                             <Tab label={t('form.work.character.tab.notes')} value='6' />
                         ) : null}
                     </TabList>
-                    <Box className='mr-3 flex flex-col justify-center'>
-                        <Button type='submit' variant='contained' size='small'>
-                            {t(
-                                character?.id
-                                    ? 'form.work.character.button.update'
-                                    : 'form.work.character.button.create'
-                            )}
-                        </Button>
-                    </Box>
                 </Box>
                 <TabPanel value='1' sx={{ padding: 0 }}>
-                    <Box className='grid grid-cols-2 gap-4 px-3 py-1'>
-                        <Box>
-                            <TextField
-                                name='pronouns'
-                                label={t('form.work.character.pronouns')}
-                                form={form}
-                            />
-                            <TextField
-                                name='displayName'
-                                label={t('form.work.character.displayName.label')}
-                                form={form}
-                            />
-                            <TextField
-                                name='firstName'
-                                label={t('form.work.character.firstName')}
-                                form={form}
-                            />
-                            <TextField
-                                name='lastName'
-                                label={t('form.work.character.lastName')}
-                                form={form}
-                            />
-                            <TextField
-                                name='nickname'
-                                label={t('form.work.character.nickname')}
-                                form={form}
-                            />
-                        </Box>
-                        <TextareaField
-                            form={form}
-                            fieldName='description'
-                            label={t('form.work.character.description')}
-                        />
-                    </Box>
+                    <Panel.General form={form} />
                 </TabPanel>
                 <TabPanel value='2' sx={{ padding: 0 }}>
-                    <Stack spacing={4}>
-                        <Box className='grid grid-cols-2 gap-4 px-3 py-1'>
-                            <Box>
-                                <TextField
-                                    name='nationality'
-                                    label={t('form.work.character.nationality')}
-                                    form={form}
-                                />
-                                <TextField
-                                    name='ethnicity'
-                                    label={t('form.work.character.ethnicity')}
-                                    form={form}
-                                />
-                                <TextField
-                                    name='placeOfBirth'
-                                    label={t('form.work.character.placeOfBirth')}
-                                    form={form}
-                                />
-                                <TextField
-                                    name='residence'
-                                    label={t('form.work.character.residence')}
-                                    form={form}
-                                />
-                            </Box>
-                            <Box>
-                                <DateField
-                                    form={form}
-                                    label={'form.work.character.dateOfBirth'}
-                                    fieldName='dateOfBirth'
-                                />
-                                <TextField
-                                    name='apparentAge'
-                                    type='number'
-                                    InputProps={{ inputProps: { min: 0, step: 1 } }}
-                                    fullWidth={false}
-                                    label={t('form.work.character.apparentAge')}
-                                    form={form}
-                                />
-                                <TextField
-                                    name='gender'
-                                    label={t('form.work.character.gender')}
-                                    form={form}
-                                />
-                                <TextField
-                                    name='sexualOrientation'
-                                    label={t('form.work.character.sexualOrientation')}
-                                    form={form}
-                                />
-                            </Box>
-                        </Box>
-                        <Box className='grid grid-cols-2 gap-4 px-3 py-1'>
-                            <Box>
-                                <TextField
-                                    name='religion'
-                                    label={t('form.work.character.religion')}
-                                    form={form}
-                                />
-                                <TextField
-                                    name='socialClass'
-                                    label={t('form.work.character.socialClass')}
-                                    form={form}
-                                />
-                                <TextField
-                                    name='education'
-                                    label={t('form.work.character.education')}
-                                    form={form}
-                                />
-                                <TextField
-                                    name='profession'
-                                    label={t('form.work.character.profession')}
-                                    form={form}
-                                />
-                            </Box>
-                            <Box>
-                                <TextField
-                                    name='finances'
-                                    label={t('form.work.character.finances')}
-                                    form={form}
-                                />
-                                <TextField
-                                    name='politicalLeaning'
-                                    label={t('form.work.character.politicalLeaning')}
-                                    form={form}
-                                />
-                            </Box>
-                        </Box>
-                    </Stack>
+                    <Panel.Demographics form={form} />
                 </TabPanel>
                 <TabPanel value='3' sx={{ padding: 0 }}>
-                    <Box className='grid grid-cols-2 gap-4 px-3 py-1'>
-                        <Box>
-                            <TextField
-                                name='face'
-                                label={t('form.work.character.face')}
-                                form={form}
-                            />
-                            <TextField
-                                name='build'
-                                label={t('form.work.character.build')}
-                                form={form}
-                            />
-                            <TextField
-                                name='height'
-                                label={t('form.work.character.height')}
-                                form={form}
-                            />
-                            <TextField
-                                name='weight'
-                                label={t('form.work.character.weight')}
-                                form={form}
-                            />
-                            <TextField
-                                name='hair'
-                                label={t('form.work.character.hair')}
-                                form={form}
-                            />
-                            <TextField
-                                name='hairNatural'
-                                label={t('form.work.character.hairNatural')}
-                                form={form}
-                            />
-                            <TextareaField
-                                fieldName='distinguishingFeatures'
-                                label={t('form.work.character.distinguishingFeatures')}
-                                form={form}
-                            />
-                        </Box>
-                        <Box>
-                            <ImageField
-                                label={t('form.work.character.image')}
-                                form={form}
-                                dir='characters'
-                            />
-                        </Box>
-                    </Box>
+                    <Panel.Appearance form={form} />
                 </TabPanel>
                 <TabPanel value='4' sx={{ padding: 0 }}>
-                    <Stack spacing={4}>
-                        <Box className='grid grid-cols-2 gap-4 px-3 py-1'>
-                            <Box>
-                                <TextareaField
-                                    fieldName='personalityPositive'
-                                    label={t('form.work.character.personalityPositive')}
-                                    form={form}
-                                />
-                            </Box>
-                            <Box>
-                                <TextareaField
-                                    fieldName='personalityNegative'
-                                    label={t('form.work.character.personalityNegative')}
-                                    form={form}
-                                />
-                            </Box>
-                        </Box>
-                        <Box className='grid grid-cols-2 gap-4'>
-                            <Box>
-                                <TextareaField
-                                    fieldName='ambitions'
-                                    label={t('form.work.character.ambitions')}
-                                    form={form}
-                                />
-                            </Box>
-                            <Box>
-                                <TextareaField
-                                    fieldName='fears'
-                                    label={t('form.work.character.fears')}
-                                    form={form}
-                                />
-                            </Box>
-                        </Box>
-                        <TextareaField
-                            form={form}
-                            fieldName='history'
-                            label={t('form.work.character.history')}
-                        />
-                    </Stack>
+                    <Panel.About form={form} />
                 </TabPanel>
-                {characterImages.length ? (
+                {notes.filter((note) => note.image).length ? (
                     <TabPanel value='5' sx={{ padding: 0 }}>
-                        <ImageList cols={3}>
-                            {characterImages.map((note) => (
-                                <ImageListItem key={`image-${note.id}`}>
-                                    <Image path={note.image} alt={note.title} loading='lazy' />
-                                </ImageListItem>
-                            ))}
-                        </ImageList>
+                        <NotePanel.Images notes={notes.filter((note) => note.image)} />
                     </TabPanel>
                 ) : null}
-                {characterNotes.length ? (
+                {notes.length ? (
                     <TabPanel value='6' sx={{ padding: 0 }}>
-                        <List>
-                            {characterNotes.map((note) => (
-                                <ListItem
-                                    key={`image-${note.id}`}
-                                    divider
-                                    disablePadding
-                                    disableGutters
-                                    secondaryAction={
-                                        <Stack spacing={2} direction='row'>
-                                            <IconButton
-                                                onClick={() => {
-                                                    navigate(
-                                                        // eslint-disable-next-line max-len
-                                                        `/works/${note.work.id}/note/${note.id}/edit`
-                                                    )
-                                                }}
-                                                aria-label={t('layout.work.panel.note.edit')}>
-                                                {GLOBAL_ICONS.edit}
-                                            </IconButton>
-                                            <IconButton
-                                                edge='end'
-                                                aria-label={t('layout.work.panel.note.delete')}>
-                                                {GLOBAL_ICONS.delete}
-                                            </IconButton>
-                                        </Stack>
-                                    }>
-                                    <ListItemButton
-                                        onClick={() =>
-                                            navigate(`/works/${note.work.id}/note/${note.id}`)
-                                        }>
-                                        <ListItemText
-                                            primary={note.displayName}
-                                            secondary={note.date ? note.displayDate : null}
-                                        />
-                                    </ListItemButton>
-                                </ListItem>
-                            ))}
-                        </List>
+                        <NotePanel.Notes notes={notes} />
                     </TabPanel>
                 ) : null}
             </TabContext>
-        </form>
+            {!['5', '6'].includes(value) ? (
+                <Box className='m-3'>
+                    <FormButton
+                        label={t(
+                            character?.id
+                                ? 'form.work.character.button.update'
+                                : 'form.work.character.button.create'
+                        )}
+                    />
+                </Box>
+            ) : null}
+        </Box>
     )
 }
 

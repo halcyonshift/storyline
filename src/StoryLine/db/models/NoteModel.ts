@@ -108,6 +108,11 @@ export default class NoteModel extends Model {
     }
 
     @writer async delete() {
+        const children = await this.notes.fetchCount()
+        if (children) return false
+        if (this.image) {
+            api.deleteFile(this.image)
+        }
         await this.destroyPermanently()
         return true
     }

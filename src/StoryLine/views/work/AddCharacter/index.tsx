@@ -12,6 +12,7 @@ const AddCharacterView = () => {
 
     return (
         <FormWrapper
+            padding={false}
             title={t('view.work.addCharacter.title', {
                 mode: t(`constant.characterMode.${params.mode}`).toLowerCase()
             })}>

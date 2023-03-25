@@ -10,7 +10,7 @@ import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
-import { GLOBAL_ICONS, LOCATION_ICONS } from '@sl/constants/icons'
+import { GLOBAL_ICONS, LOCATION_ICONS, NOTE_ICONS } from '@sl/constants/icons'
 import Panel from '@sl/components/Panel'
 import GroupToggle from '@sl/components/Panel/GroupToggle'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
@@ -65,6 +65,12 @@ const LocationPanel = () => {
                                             text='layout.work.panel.location.add'
                                             icon={LOCATION_ICONS.add}
                                             link={`location/${location.id}/add`}
+                                        />
+                                        <TooltipIconButton
+                                            size='small'
+                                            text='layout.work.panel.note.add'
+                                            link={`addNote/location/${location.id}`}
+                                            icon={NOTE_ICONS.add}
                                         />
                                         <TooltipIconButton
                                             size='small'

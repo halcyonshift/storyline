@@ -1,10 +1,14 @@
 import { useRouteLoaderData } from 'react-router-dom'
+import { useObservable } from 'rxjs-hooks'
 import FormWrapper from '@sl/components/FormWrapper'
-import { SectionModel } from '@sl/db/models'
+import { SectionModel, WorkModel } from '@sl/db/models'
 import SectionForm from '@sl/forms/Work/Section'
 
 const EditSectionView = () => {
     const section = useRouteLoaderData('section') as SectionModel
+    const work = useRouteLoaderData('work') as WorkModel
+    useObservable(() => work.section.observeWithColumns(['title']), [], [])
+
     return (
         <FormWrapper model={section} title={section.displayTitle}>
             <SectionForm

@@ -2,7 +2,7 @@ import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { useNavigate } from 'react-router-dom'
-import { GLOBAL_ICONS, SECTION_ICONS } from '@sl/constants/icons'
+import { GLOBAL_ICONS, NOTE_ICONS, SECTION_ICONS } from '@sl/constants/icons'
 import Accordion from '@sl/components/Accordion'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { useTranslation } from 'react-i18next'
@@ -35,6 +35,12 @@ const ChapterAccordion = ({ chapters, scenes }: ChapterAccordionProps) => {
                                     onClick={() => {
                                         chapter.addScene()
                                     }}
+                                />
+                                <TooltipIconButton
+                                    size='small'
+                                    text='layout.work.panel.note.add'
+                                    link={`addNote/section/${chapter.id}`}
+                                    icon={NOTE_ICONS.add}
                                 />
                                 <TooltipIconButton
                                     size='small'
