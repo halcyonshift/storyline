@@ -195,50 +195,50 @@ const ToolbarPlugin = ({
             <Stack direction='row' spacing={1}>
                 <IconButton
                     disabled={!canUndo}
-                    aria-label={t('component.richtext.toolbar.undo')}
+                    aria-label={t('component.richtextEditor.toolbar.undo')}
                     onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}>
                     <UndoIcon />
                 </IconButton>
                 <IconButton
                     disabled={!canRedo}
-                    aria-label={t('component.richtext.toolbar.redo')}
+                    aria-label={t('component.richtextEditor.toolbar.redo')}
                     onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}>
                     <RedoIcon />
                 </IconButton>
                 <IconButton
                     color={isBold ? 'primary' : 'default'}
-                    aria-label={t('component.richtext.toolbar.bold')}
+                    aria-label={t('component.richtextEditor.toolbar.bold')}
                     onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')}>
                     <FormatBoldIcon />
                 </IconButton>
                 <IconButton
                     color={isItalic ? 'primary' : 'default'}
-                    aria-label={t('component.richtext.toolbar.italic')}
+                    aria-label={t('component.richtextEditor.toolbar.italic')}
                     onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')}>
                     <FormatItalicIcon />
                 </IconButton>
                 <IconButton
                     color={isUnderline ? 'primary' : 'default'}
-                    aria-label={t('component.richtext.toolbar.underlined')}
+                    aria-label={t('component.richtextEditor.toolbar.underlined')}
                     onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline')}>
                     <FormatUnderlinedIcon />
                 </IconButton>
                 <IconButton
                     color={isStrikethrough ? 'primary' : 'default'}
-                    aria-label={t('component.richtext.toolbar.strikethrough')}
+                    aria-label={t('component.richtextEditor.toolbar.strikethrough')}
                     onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough')}>
                     <FormatStrikethroughIcon />
                 </IconButton>
                 {config.includes('excerpt') ? (
                     <IconButton
                         color={isQuote ? 'primary' : 'default'}
-                        aria-label={t('component.richtext.toolbar.excerpt')}
+                        aria-label={t('component.richtextEditor.toolbar.excerpt')}
                         onClick={formatQuote}>
                         <LabelImportantIcon />
                     </IconButton>
                 ) : null}
                 <IconButton
-                    aria-label={t('component.richtext.toolbar.listBulleted')}
+                    aria-label={t('component.richtextEditor.toolbar.listBulleted')}
                     onClick={() =>
                         editor.dispatchCommand(
                             blockType !== 'ul'
@@ -250,7 +250,7 @@ const ToolbarPlugin = ({
                     <FormatListBulletedIcon />
                 </IconButton>
                 <IconButton
-                    aria-label={t('component.richtext.toolbar.listOrdered')}
+                    aria-label={t('component.richtextEditor.toolbar.listOrdered')}
                     onClick={() =>
                         editor.dispatchCommand(
                             blockType !== 'ol' ? INSERT_ORDERED_LIST_COMMAND : REMOVE_LIST_COMMAND,
@@ -260,28 +260,28 @@ const ToolbarPlugin = ({
                     <FormatListNumberedIcon />
                 </IconButton>
                 <IconButton
-                    aria-label={t('component.richtext.toolbar.alignLeft')}
+                    aria-label={t('component.richtextEditor.toolbar.alignLeft')}
                     onClick={() => {
                         editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')
                     }}>
                     <FormatAlignLeftIcon />
                 </IconButton>
                 <IconButton
-                    aria-label={t('component.richtext.toolbar.alignCenter')}
+                    aria-label={t('component.richtextEditor.toolbar.alignCenter')}
                     onClick={() => {
                         editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center')
                     }}>
                     <FormatAlignCenterIcon />
                 </IconButton>
                 <IconButton
-                    aria-label={t('component.richtext.toolbar.alignRight')}
+                    aria-label={t('component.richtextEditor.toolbar.alignRight')}
                     onClick={() => {
                         editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right')
                     }}>
                     <FormatAlignRightIcon />
                 </IconButton>
                 <IconButton
-                    aria-label={t('component.richtext.toolbar.alignJustify')}
+                    aria-label={t('component.richtextEditor.toolbar.alignJustify')}
                     onClick={() => {
                         editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify')
                     }}>
@@ -290,7 +290,7 @@ const ToolbarPlugin = ({
                 {config.includes('tag') ? (
                     <IconButton
                         id='menu-tag'
-                        aria-label={t('component.richtext.toolbar.tag')}
+                        aria-label={t('component.richtextEditor.toolbar.tag.label')}
                         aria-controls={menu ? 'menu' : undefined}
                         aria-haspopup={true}
                         aria-expanded={menu ? 'true' : undefined}
@@ -309,7 +309,7 @@ const ToolbarPlugin = ({
                 ) : null}
                 {config.includes('search') ? (
                     <IconButton
-                        aria-label={t('component.richtext.toolbar.search')}
+                        aria-label={t('component.richtextEditor.toolbar.search')}
                         onClick={() => {
                             editor.dispatchCommand(TOGGLE_SEARCH_COMMAND, null)
                         }}>
@@ -319,7 +319,7 @@ const ToolbarPlugin = ({
                 {config.includes('version') ? (
                     <IconButton
                         id='menu-version'
-                        aria-label={t('component.richtext.toolbar.version')}
+                        aria-label={t('component.richtextEditor.toolbar.version.label')}
                         aria-controls={menu ? 'menu' : undefined}
                         aria-haspopup={true}
                         aria-expanded={menu ? 'true' : undefined}
@@ -332,7 +332,7 @@ const ToolbarPlugin = ({
                 ) : null}
                 {config.includes('save') ? (
                     <IconButton
-                        aria-label={t('component.richtext.toolbar.save')}
+                        aria-label={t('component.richtextEditor.toolbar.save')}
                         onClick={() => {
                             editor.dispatchCommand(SAVE_COMMAND, null)
                         }}>

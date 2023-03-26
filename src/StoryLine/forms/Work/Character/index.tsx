@@ -113,7 +113,7 @@ const CharacterForm = ({ work, character, initialValues }: CharacterFormProps) =
                 ) : null
             }
             tabList={[
-                t('form.work.character.tab.general'),
+                t('component.formWrapper.tab.general'),
                 t('form.work.character.tab.demographics'),
                 t('form.work.character.tab.appearance'),
                 t('form.work.character.tab.about')

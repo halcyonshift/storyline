@@ -16,7 +16,6 @@
     },
     "component": {
         "colorField": {
-            "label": "Color",
             "clear": "Clear"
         },
         "dateField": {
@@ -42,7 +41,6 @@
             "delete": "Delete"
         },
         "mapField": {
-            "label": "Map",
             "latitude": "Latitude",
             "longitude": "Longitude",
             "toggle": {
@@ -78,6 +76,7 @@
                     "note": "note"
                 },
                 "version": {
+                    "label": "Version",
                     "addVersion": "Create version"
                 },
                 "excerpt": "Excerpt",

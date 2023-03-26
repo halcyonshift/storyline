@@ -88,7 +88,7 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
     return (
         <FormWrapper
             form={form}
-            title={section?.displayName || t('layout.work.panel.section.add')}
+            title={section?.displayName}
             model={section}
             tabList={[t('component.formWrapper.tab.general')]}>
             <Box className='grid grid-cols-2 gap-3 px-3 py-1'>
