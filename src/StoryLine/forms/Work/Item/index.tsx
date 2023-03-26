@@ -16,7 +16,7 @@ const ItemForm = ({ work, item, initialValues }: ItemFormProps) => {
     const { t } = useTranslation()
 
     const validationSchema = yup.object({
-        name: yup.string().required(t('form.item.name.required')),
+        name: yup.string().required(t('form.work.item.name.required')),
         body: yup.string().nullable(),
         url: yup.string().url().nullable(),
         image: yup.string().nullable()

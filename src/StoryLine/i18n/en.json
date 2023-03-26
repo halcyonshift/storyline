@@ -137,7 +137,6 @@
                 "firstName": "First name",
                 "lastName": "Last name",
                 "nickname": "Nickname",
-                "image": "Image",
                 "nationality": "Nationality",
                 "ethnicity": "Ethnicity",
                 "placeOfBirth": "Place of birth",
@@ -152,7 +151,6 @@
                 "socialClass": "Social class",
                 "education": "Education",
                 "profession": "Profession",
-                "description": "Description",
                 "history": "History",
                 "face": "Facial features",
                 "build": "Body build",
@@ -162,15 +160,10 @@
                 "hairNatural": "Hair's natural appearance",
                 "personalityPositive": "Positive personality traits",
                 "personalityNegative": "Negative personality traits",
-                "distinguishingFeatures": "Distinguishing features",
                 "ambitions": "Ambitions",
                 "fears": "Fears",
                 "alert": {
                     "success": "The character has been saved"
-                },
-                "button": {
-                    "create": "Add",
-                    "update": "Edit"
                 }
             },
             "item": {
@@ -178,62 +171,36 @@
                     "label": "Name",
                     "required": "Please give the location name"
                 },
-                "body": "Description",
                 "url": "Link",
-                "image": "Image",
-                "button": {
-                    "create": "Add",
-                    "update": "Edit"
-                }
+                "image": "Image"
             },
             "location": {
                 "name": {
                     "label": "Name",
                     "required": "Please give the location name"
                 },
-                "body": "Description",
-                "url": "Link",
-                "location": "Location",
-                "image": "Image",
-                "button": {
-                    "create": "Add",
-                    "update": "Edit"
-                }
+                "url": "Link"
             },
             "note": {
                 "title": {
                     "label": "Title",
                     "required": "Please give the note title"
                 },
-                "body": "Text",
                 "url": "Link",
-                "color": "Color",
-                "image": "Image",
                 "order": "Order",
                 "date": "Date",
                 "alert": {
                     "success": "The note has been saved"
-                },
-                "button": {
-                    "create": "Add",
-                    "update": "Edit"
                 }
             },
             "section": {
-                "tab": {
-                    "general": "General"
-                },
                 "title": "Title",
-                "description": "Description",
                 "wordGoal": "Word goal",
                 "deadline": "Deadline",
                 "order": "Order",
                 "date": "Date",
                 "pointOfView": "Point of view",
                 "pointOfViewCharacter": "Point of view character",
-                "button": {
-                    "update": "Edit"
-                },
                 "alert": {
                     "success": "The {{name}} has been saved"
                 }
@@ -306,7 +273,6 @@
                     "addPrimary": "Add primary character",
                     "addSecondary": "Add secondary character",
                     "addTertiary": "Add tertiary character",
-                    "random": "Generate a random character",
                     "edit": "Edit",
                     "delete": "Delete",
                     "deleteConfirm": "Are you sure you want to delete {{name}}?"
@@ -365,23 +331,6 @@
                 "recent": {
                     "title": "Recently opened"
                 }
-            }
-        },
-        "work": {
-            "addCharacter": {
-                "title": "Add {{mode}} character"
-            },
-            "addItem": {
-                "title": "Add item"
-            },
-            "addLocation": {
-                "title": "Add location"
-            },
-            "addNote": {
-                "title": "Add note"
-            },
-            "addPart": {
-                "title": "Add part"
             }
         }
     }

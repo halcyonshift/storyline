@@ -20,7 +20,7 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
     const messenger = useMessenger()
 
     const validationSchema = yup.object({
-        title: yup.string().required(t('form.note.title.required')),
+        title: yup.string().required(t('form.work.note.title.required')),
         body: yup.string().nullable(),
         url: yup.string().url().nullable(),
         image: yup.string().nullable(),
