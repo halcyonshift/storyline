@@ -111,90 +111,100 @@ const SectionForm = ({ section, initialValues }: SectionFormProps) => {
                     </TabList>
                 </Box>
                 <TabPanel value='1' sx={{ padding: 0 }}>
-                    <TextField
-                        autoFocus
-                        form={form}
-                        name='title'
-                        label={t('form.work.section.title')}
-                    />
-                    <TextareaField form={form} label='' fieldName='description' />
-                    {section.isScene ? (
-                        <Box className='grid grid-cols-2 gap-3 py-1'>
-                            <FormControl>
-                                <InputLabel id='pov-label'>
-                                    {t('form.work.section.pointOfView')}
-                                </InputLabel>
-                                <Select
-                                    labelId='pov-label'
-                                    id='pov-select'
-                                    name='pointOfView'
-                                    value={form.values.pointOfView || ''}
-                                    label={t('form.work.section.pointOfView')}
-                                    error={
-                                        form.touched.pointOfView && Boolean(form.errors.pointOfView)
+                    <Box className='grid grid-cols-1 gap-3 px-3 pt-1'>
+                        <TextField
+                            autoFocus
+                            form={form}
+                            name='title'
+                            label={t('form.work.section.title')}
+                        />
+                        <TextareaField form={form} label='' fieldName='description' />
+                        {section.isScene ? (
+                            <Box className='grid grid-cols-2 gap-3'>
+                                <FormControl>
+                                    <InputLabel id='pov-label'>
+                                        {t('form.work.section.pointOfView')}
+                                    </InputLabel>
+                                    <Select
+                                        labelId='pov-label'
+                                        id='pov-select'
+                                        name='pointOfView'
+                                        value={form.values.pointOfView || ''}
+                                        label={t('form.work.section.pointOfView')}
+                                        error={
+                                            form.touched.pointOfView &&
+                                            Boolean(form.errors.pointOfView)
+                                        }
+                                        onChange={form.handleChange}>
+                                        <MenuItem value=''>{t('form.work.global.none')}</MenuItem>
+                                        {Object.keys(PointOfView).map((pov) => (
+                                            <MenuItem key={pov} value={pov}>
+                                                {t(`constant.pointOfView.${pov}`)}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                                <Autocomplete
+                                    getOptionLabel={(option: AutocompleteOption) =>
+                                        option?.label || ''
                                     }
-                                    onChange={form.handleChange}>
-                                    <MenuItem value=''>{t('form.work.global.none')}</MenuItem>
-                                    {Object.keys(PointOfView).map((pov) => (
-                                        <MenuItem key={pov} value={pov}>
-                                            {t(`constant.pointOfView.${pov}`)}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                            <Autocomplete
-                                getOptionLabel={(option: AutocompleteOption) => option?.label || ''}
-                                options={options}
-                                forcePopupIcon={true}
-                                freeSolo
-                                value={povCharacter}
-                                onChange={(_: SyntheticEvent, value: AutocompleteOption) => {
-                                    setPovCharacter({
-                                        id: value?.id || '',
-                                        label: value?.label || ''
-                                    })
+                                    options={options}
+                                    forcePopupIcon={true}
+                                    freeSolo
+                                    value={povCharacter}
+                                    onChange={(_: SyntheticEvent, value: AutocompleteOption) => {
+                                        setPovCharacter({
+                                            id: value?.id || '',
+                                            label: value?.label || ''
+                                        })
+                                    }}
+                                    renderInput={(params) => (
+                                        <MuiTextField
+                                            {...params}
+                                            label={t('form.work.section.pointOfViewCharacter')}
+                                        />
+                                    )}
+                                />
+                            </Box>
+                        ) : null}
+                        <Box className='grid grid-cols-2 xl:grid-cols-4 gap-3'>
+                            <DateField
+                                form={form}
+                                label={'form.work.section.date'}
+                                fieldName='date'
+                            />
+                            <TextField
+                                form={form}
+                                label={t('form.work.section.order')}
+                                name='order'
+                                type='number'
+                                InputProps={{ inputProps: { min: 0, step: 1 } }}
+                            />
+                            <TextField
+                                form={form}
+                                label={t('form.work.section.wordGoal')}
+                                name='wordGoal'
+                                type='number'
+                                InputProps={{ inputProps: { min: 0, step: 1 } }}
+                            />
+                            <DatePicker
+                                label={t('form.work.section.deadline')}
+                                inputFormat='d/M/yyyy'
+                                disableMaskedInput
+                                value={form.values.deadlineAt}
+                                onChange={(newValue: DateTime | null) => {
+                                    form.setFieldValue(
+                                        'deadlineAt',
+                                        newValue ? newValue.toJSDate() : null
+                                    )
                                 }}
                                 renderInput={(params) => (
-                                    <MuiTextField
-                                        {...params}
-                                        label={t('form.work.section.pointOfViewCharacter')}
-                                    />
+                                    <MuiTextField margin='dense' {...params} />
                                 )}
                             />
                         </Box>
-                    ) : null}
-                    <Box className='grid grid-cols-2 xl:grid-cols-4 gap-3'>
-                        <DateField form={form} label={'form.work.section.date'} fieldName='date' />
-                        <TextField
-                            form={form}
-                            label={t('form.work.section.order')}
-                            name='order'
-                            type='number'
-                            InputProps={{ inputProps: { min: 0, step: 1 } }}
-                        />
-                        <TextField
-                            form={form}
-                            label={t('form.work.section.wordGoal')}
-                            name='wordGoal'
-                            type='number'
-                            InputProps={{ inputProps: { min: 0, step: 1 } }}
-                        />
-                        <DatePicker
-                            label={t('form.work.section.deadline')}
-                            inputFormat='d/M/yyyy'
-                            disableMaskedInput
-                            value={form.values.deadlineAt}
-                            onChange={(newValue: DateTime | null) => {
-                                form.setFieldValue(
-                                    'deadlineAt',
-                                    newValue ? newValue.toJSDate() : null
-                                )
-                            }}
-                            renderInput={(params) => <MuiTextField margin='dense' {...params} />}
-                        />
                     </Box>
                 </TabPanel>
-
                 {sectionImages.length ? (
                     <TabPanel value='5' sx={{ padding: 0 }}>
                         <NotePanel.Images notes={sectionImages} />
@@ -206,8 +216,9 @@ const SectionForm = ({ section, initialValues }: SectionFormProps) => {
                     </TabPanel>
                 ) : null}
             </TabContext>
-
-            <FormButton label={t('form.work.section.button.update')} />
+            <Box className='p-3'>
+                <FormButton label={t('form.work.section.button.update')} />
+            </Box>
         </Box>
     )
 }

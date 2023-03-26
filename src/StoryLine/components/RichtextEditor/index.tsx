@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useEffect, useState } from 'react'
 import { $generateHtmlFromNodes } from '@lexical/html'
 import { ListItemNode, ListNode } from '@lexical/list'
 import { QuoteNode } from '@lexical/rich-text'
@@ -28,6 +28,7 @@ import { RichtextEditorProps } from './types'
 
 const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: RichtextEditorProps) => {
     const [isSaving, setIsSaving] = useState<boolean>(false)
+    const [canSave, setCanSave] = useState<boolean>(false)
     const [menu, setMenu] = useState<string | null>(null)
     const [menuElement, setMenuElement] = useState<HTMLElement | null>(null)
     const { autoSave, indentParagraph, spellCheck } = useSettings()
@@ -47,11 +48,17 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
             if (onChange) {
                 onChange(html)
             }
-            if (autoSave) {
+            if (autoSave && (html !== initialValue || canSave)) {
                 doSave(html)
+                setCanSave(true)
+                if (html === initialValue) {
+                    setCanSave(false)
+                }
             }
         })
     }
+
+    useEffect(() => setCanSave(false), [id])
 
     return useMemo(
         () => (

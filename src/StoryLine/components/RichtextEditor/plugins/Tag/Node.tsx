@@ -11,14 +11,11 @@ import {
 } from 'lexical'
 import { LinkNode, SerializedLinkNode } from '@lexical/link'
 import utils from '@lexical/utils'
-import database from '@sl/db'
-import { CharacterModel, ItemModel, LocationModel, NoteModel } from '@sl/db/models'
 import { TagPayloadType } from './types'
 import { stripSlashes } from './utils'
 
 function convertAnchorElement(domNode: Node) {
     let node: null | TagNode = null
-    // ToDo - if item deleted from bar while scene open, must catch event to remove text
     if (domNode instanceof HTMLAnchorElement) {
         const href = domNode.getAttribute('href')
         let parts: string[]
