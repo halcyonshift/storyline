@@ -1,26 +1,19 @@
 import { useRouteLoaderData } from 'react-router-dom'
-import FormWrapper from '@sl/components/FormWrapper'
-import { LocationModel } from '@sl/db/models'
+import LocationModel from '@sl/db/models/LocationModel'
+import { LocationDataType } from '@sl/db/models/types'
 import LocationForm from '@sl/forms/Work/Location'
+import { getInitialValues } from '@sl/forms/Work/utils'
 
 const EditLocationView = () => {
     const location = useRouteLoaderData('location') as LocationModel
+    const initialValues = Object.keys(
+        getInitialValues('location', ['work_id', 'location_id']) as LocationDataType
+    ).reduce(
+        (o, key) => ({ ...o, [key]: location[key as keyof LocationModel] }),
+        {}
+    ) as LocationDataType
 
-    return (
-        <FormWrapper title={location.displayName} model={location}>
-            <LocationForm
-                location={location}
-                initialValues={{
-                    name: location.name,
-                    body: location.body,
-                    latitude: location.latitude,
-                    longitude: location.longitude,
-                    url: location.url,
-                    image: location.image
-                }}
-            />
-        </FormWrapper>
-    )
+    return <LocationForm location={location} initialValues={initialValues} />
 }
 
 export default EditLocationView

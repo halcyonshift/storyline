@@ -26,6 +26,17 @@
                 "picker": "Switch to picker"
             }
         },
+        "formButton": {
+            "create": "Create",
+            "update": "Update"
+        },
+        "formWrapper" : {
+            "tab": {
+                "general": "General",
+                "images": "Images",
+                "notes": "Notes"
+            }
+        },
         "imageField": {
             "browse": "Browse",
             "delete": "Delete"
@@ -115,12 +126,9 @@
             },
             "character": {
                 "tab": {
-                    "general": "General",
                     "demographics": "Demographics",
                     "appearance": "Appearance",
-                    "about": "About",
-                    "images": "Images",
-                    "notes": "Notes"
+                    "about": "About"
                 },
                 "pronouns": "Pronouns",
                 "displayName": {

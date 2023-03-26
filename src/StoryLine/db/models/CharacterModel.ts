@@ -1,9 +1,10 @@
-import { Model, Query, Relation } from '@nozbe/watermelondb'
+import { Model, Q, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import {
     children,
     date,
     field,
+    lazy,
     readonly,
     relation,
     text,
@@ -87,6 +88,8 @@ export default class CharacterModel extends Model {
         return date.isValid ? date.toSeconds() : 0
     }
 
+    @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
+
     @writer async updateCharacter(data: CharacterDataType) {
         await this.update((character) => {
             character.mode = data.mode
@@ -139,7 +142,7 @@ export default class CharacterModel extends Model {
     }
 
     @writer async delete() {
-        const notes = await this.note.fetch()
+        const notes = await this.notes.fetch()
         const scenes = await this.section.fetch()
         if (notes.length) {
             notes.map((note) => {

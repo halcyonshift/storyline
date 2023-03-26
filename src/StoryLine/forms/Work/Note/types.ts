@@ -9,7 +9,7 @@ import {
 import { NoteDataType } from '@sl/db/models/types'
 
 export type NoteFormProps = {
-    belongsTo?: CharacterModel | ItemModel | LocationModel | SectionModel
+    belongsTo?: CharacterModel | ItemModel | LocationModel | NoteModel | SectionModel
     note?: NoteModel
     work?: WorkModel
     initialValues?: NoteDataType

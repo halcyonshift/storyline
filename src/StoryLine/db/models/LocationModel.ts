@@ -1,9 +1,10 @@
-import { Model, Query, Relation } from '@nozbe/watermelondb'
+import { Model, Q, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import {
     children,
     date,
     field,
+    lazy,
     readonly,
     relation,
     text,
@@ -47,6 +48,8 @@ export default class LocationModel extends Model {
         }
         return null
     }
+
+    @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
 
     @writer async addLocation(data: LocationDataType) {
         const work = await this.work.fetch()

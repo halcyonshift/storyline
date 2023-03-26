@@ -1,9 +1,10 @@
-import { Model, Query, Relation } from '@nozbe/watermelondb'
+import { Model, Q, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import {
     children,
     date,
     field,
+    lazy,
     readonly,
     relation,
     text,
@@ -18,7 +19,7 @@ export default class ItemModel extends Model {
     static table = 'item'
     public static associations: Associations = {
         work: { type: 'belongs_to', key: 'work_id' },
-        note: { type: 'has_many', foreignKey: 'character_id' }
+        note: { type: 'has_many', foreignKey: 'item_id' }
     }
     @field('status') status!: StatusType
     @text('name') name!: string
@@ -34,6 +35,8 @@ export default class ItemModel extends Model {
     get displayName() {
         return this.name
     }
+
+    @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
 
     @writer async updateItem(data: ItemDataType) {
         await this.update((item) => {

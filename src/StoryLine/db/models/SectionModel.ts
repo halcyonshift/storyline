@@ -1,19 +1,29 @@
 import { capitalize } from '@mui/material/utils'
-import { Model, Q, Relation } from '@nozbe/watermelondb'
+import { Model, Q, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
-import { date, field, readonly, relation, text, writer, lazy } from '@nozbe/watermelondb/decorators'
+import {
+    children,
+    date,
+    field,
+    readonly,
+    relation,
+    text,
+    writer,
+    lazy
+} from '@nozbe/watermelondb/decorators'
 import { DateTime } from 'luxon'
 import { Status, type StatusType } from '@sl/constants/status'
 import { type PointOfViewType } from '@sl/constants/pov'
 import { htmlExtractExcerpts, htmlParse } from '@sl/utils'
 import { type SectionDataType, type StatisticDataType } from './types'
-import { CharacterModel, ItemModel, LocationModel, StatisticModel, WorkModel } from './'
+import { CharacterModel, ItemModel, LocationModel, NoteModel, StatisticModel, WorkModel } from './'
 import { SectionMode, type SectionModeType } from '@sl/constants/sectionMode'
 
 export default class SectionModel extends Model {
     static table = 'section'
     public static associations: Associations = {
         work: { type: 'belongs_to', key: 'work_id' },
+        note: { type: 'has_many', foreignKey: 'section_id' },
         section: { type: 'belongs_to', key: 'section_id' },
         pov_character: { type: 'belongs_to', key: 'pov_character_id' }
     }
@@ -33,6 +43,7 @@ export default class SectionModel extends Model {
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @relation('section', 'section_id') section!: Relation<SectionModel>
     @relation('character', 'pov_character_id') pointOfViewCharacter!: Relation<CharacterModel>
+    @children('note') note!: Query<NoteModel>
 
     sortDate: number
 
@@ -146,6 +157,8 @@ export default class SectionModel extends Model {
 
         return []
     }
+
+    @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
 
     @lazy scenes = this.collections
         .get<SectionModel>('section')

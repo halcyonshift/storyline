@@ -88,7 +88,7 @@ export default class WorkModel extends Model {
         Q.sortBy('display_name', Q.asc)
     )
 
-    @lazy notes = this.note.extend(Q.sortBy('title', Q.asc))
+    @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
 
     @lazy items = this.item.extend(Q.sortBy('name', Q.asc))
 

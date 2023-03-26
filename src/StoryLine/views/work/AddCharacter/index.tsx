@@ -1,24 +1,19 @@
-import { useTranslation } from 'react-i18next'
 import { useParams, useRouteLoaderData } from 'react-router-dom'
-import FormWrapper from '@sl/components/FormWrapper'
 import { CharacterModeType } from '@sl/constants/characterMode'
 import { WorkModel } from '@sl/db/models'
+import { CharacterDataType } from '@sl/db/models/types'
 import CharacterForm from '@sl/forms/Work/Character'
+import { getInitialValues } from '@sl/forms/Work/utils'
 
 const AddCharacterView = () => {
     const work = useRouteLoaderData('work') as WorkModel
     const params = useParams()
-    const { t } = useTranslation()
+    const initialValues = {
+        ...(getInitialValues('character', ['work_id']) as CharacterDataType),
+        ['mode']: params.mode as CharacterModeType
+    }
 
-    return (
-        <FormWrapper
-            padding={false}
-            title={t('view.work.addCharacter.title', {
-                mode: t(`constant.characterMode.${params.mode}`).toLowerCase()
-            })}>
-            <CharacterForm work={work} mode={params.mode as CharacterModeType} />
-        </FormWrapper>
-    )
+    return <CharacterForm work={work} initialValues={initialValues} />
 }
 
 export default AddCharacterView

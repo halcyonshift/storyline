@@ -1,25 +1,15 @@
-import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
-import FormWrapper from '@sl/components/FormWrapper'
 import { LocationModel, WorkModel } from '@sl/db/models'
-
+import { LocationDataType } from '@sl/db/models/types'
 import LocationForm from '@sl/forms/Work/Location'
+import { getInitialValues } from '@sl/forms/Work/utils'
 
 const AddLocationView = () => {
     const location = useRouteLoaderData('location') as LocationModel
     const work = useRouteLoaderData('work') as WorkModel
-    const { t } = useTranslation()
+    const initialValues = getInitialValues('item', ['work_id', 'location_id']) as LocationDataType
 
-    return (
-        <FormWrapper
-            title={
-                location
-                    ? `${location.displayName}: ${t('view.work.addLocation.title')}`
-                    : t('view.work.addLocation.title')
-            }>
-            <LocationForm work={work} location={location} />
-        </FormWrapper>
-    )
+    return <LocationForm work={work} location={location} initialValues={initialValues} />
 }
 
 export default AddLocationView

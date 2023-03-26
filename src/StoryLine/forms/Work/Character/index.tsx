@@ -1,65 +1,27 @@
-import { useState, SyntheticEvent } from 'react'
+import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
-import Tab from '@mui/material/Tab'
-import TabContext from '@mui/lab/TabContext'
-import TabList from '@mui/lab/TabList'
-import TabPanel from '@mui/lab/TabPanel'
 import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
-import { useObservable } from 'rxjs-hooks'
 import * as yup from 'yup'
-import FormButton from '@sl/components/FormButton'
+import FormWrapper from '@sl/components/FormWrapper'
+import TooltipIconButton from '@sl/components/TooltipIconButton'
+import { CharacterMode, CharacterModeType } from '@sl/constants/characterMode'
+import { CHARACTER_ICONS } from '@sl/constants/icons'
 import { CharacterDataType } from '@sl/db/models/types'
 import useMessenger from '@sl/layouts/useMessenger'
-import * as NotePanel from '../TabPanel'
 import * as Panel from './TabPanel'
 import { CharacterFormProps } from './types'
 
-const CharacterForm = ({
-    work,
-    character,
-    mode,
-    initialValues = {
-        mode,
-        image: '',
-        displayName: '',
-        description: '',
-        history: '',
-        pronouns: '',
-        firstName: '',
-        lastName: '',
-        nickname: '',
-        nationality: '',
-        ethnicity: '',
-        placeOfBirth: '',
-        residence: '',
-        gender: '',
-        sexualOrientation: '',
-        dateOfBirth: '',
-        apparentAge: null,
-        religion: '',
-        socialClass: '',
-        education: '',
-        profession: '',
-        finances: '',
-        politicalLeaning: '',
-        face: '',
-        build: '',
-        height: '',
-        weight: '',
-        hair: '',
-        hairNatural: '',
-        distinguishingFeatures: '',
-        personalityPositive: '',
-        personalityNegative: '',
-        ambitions: '',
-        fears: ''
-    }
-}: CharacterFormProps) => {
-    const [value, setValue] = useState<string>('1')
+const CharacterForm = ({ work, character, initialValues }: CharacterFormProps) => {
     const messenger = useMessenger()
     const { t } = useTranslation()
-    const notes = useObservable(() => character.note.observeWithColumns(['title']), [], [])
+    const [headerMode, setHeaderMode] = useState<CharacterModeType>(initialValues.mode)
+
+    useEffect(() => {
+        if (character) {
+            character.updateMode(headerMode)
+        }
+    }, [headerMode])
 
     const validationSchema = yup.object({
         image: yup.string().nullable(),
@@ -97,6 +59,16 @@ const CharacterForm = ({
         fears: yup.string().nullable()
     })
 
+    const getTitle = (): string => {
+        if (character) return character.displayName
+
+        return {
+            [CharacterMode.PRIMARY]: t('layout.work.panel.character.addPrimary'),
+            [CharacterMode.SECONDARY]: t('layout.work.panel.character.addSecondary'),
+            [CharacterMode.TERTIARY]: t('layout.work.panel.character.addTertiary')
+        }[initialValues.mode]
+    }
+
     const form: FormikProps<CharacterDataType> = useFormik<CharacterDataType>({
         enableReinitialize: true,
         initialValues,
@@ -105,66 +77,52 @@ const CharacterForm = ({
             if (character?.id) {
                 await character.updateCharacter(values)
             } else {
-                await work.addCharacter(mode, values)
+                await work.addCharacter(initialValues.mode, values)
             }
             messenger.success(t('form.work.character.alert.success'))
         }
     })
 
-    const handleTabChange = (event: SyntheticEvent, value: string) => setValue(value)
-
     return (
-        <Box component='form' onSubmit={form.handleSubmit} autoComplete='off'>
-            <TabContext value={value}>
-                <Box className='border-b'>
-                    <TabList onChange={handleTabChange} aria-label=''>
-                        <Tab label={t('form.work.character.tab.general')} value='1' />
-                        <Tab label={t('form.work.character.tab.demographics')} value='2' />
-                        <Tab label={t('form.work.character.tab.appearance')} value='3' />
-                        <Tab label={t('form.work.character.tab.about')} value='4' />
-                        {notes.filter((note) => note.image).length ? (
-                            <Tab label={t('form.work.character.tab.images')} value='5' />
-                        ) : null}
-                        {notes.length ? (
-                            <Tab label={t('form.work.character.tab.notes')} value='6' />
-                        ) : null}
-                    </TabList>
-                </Box>
-                <TabPanel value='1' sx={{ padding: 0 }}>
-                    <Panel.General form={form} />
-                </TabPanel>
-                <TabPanel value='2' sx={{ padding: 0 }}>
-                    <Panel.Demographics form={form} />
-                </TabPanel>
-                <TabPanel value='3' sx={{ padding: 0 }}>
-                    <Panel.Appearance form={form} />
-                </TabPanel>
-                <TabPanel value='4' sx={{ padding: 0 }}>
-                    <Panel.About form={form} />
-                </TabPanel>
-                {notes.filter((note) => note.image).length ? (
-                    <TabPanel value='5' sx={{ padding: 0 }}>
-                        <NotePanel.Images notes={notes.filter((note) => note.image)} />
-                    </TabPanel>
-                ) : null}
-                {notes.length ? (
-                    <TabPanel value='6' sx={{ padding: 0 }}>
-                        <NotePanel.Notes notes={notes} />
-                    </TabPanel>
-                ) : null}
-            </TabContext>
-            {!['5', '6'].includes(value) ? (
-                <Box className='m-3'>
-                    <FormButton
-                        label={t(
-                            character?.id
-                                ? 'form.work.character.button.update'
-                                : 'form.work.character.button.create'
-                        )}
-                    />
-                </Box>
-            ) : null}
-        </Box>
+        <FormWrapper
+            form={form}
+            title={getTitle()}
+            model={character}
+            header={
+                character ? (
+                    <Box>
+                        <TooltipIconButton
+                            color={headerMode === CharacterMode.PRIMARY ? 'primary' : 'inherit'}
+                            icon={CHARACTER_ICONS.primary}
+                            text='constant.characterMode.PRIMARY'
+                            onClick={() => setHeaderMode(CharacterMode.PRIMARY)}
+                        />
+                        <TooltipIconButton
+                            color={headerMode === CharacterMode.SECONDARY ? 'primary' : 'inherit'}
+                            icon={CHARACTER_ICONS.secondary}
+                            text='constant.characterMode.SECONDARY'
+                            onClick={() => setHeaderMode(CharacterMode.SECONDARY)}
+                        />
+                        <TooltipIconButton
+                            color={headerMode === CharacterMode.TERTIARY ? 'primary' : 'inherit'}
+                            icon={CHARACTER_ICONS.tertiary}
+                            text='constant.characterMode.TERTIARY'
+                            onClick={() => setHeaderMode(CharacterMode.TERTIARY)}
+                        />
+                    </Box>
+                ) : null
+            }
+            tabList={[
+                t('form.work.character.tab.general'),
+                t('form.work.character.tab.demographics'),
+                t('form.work.character.tab.appearance'),
+                t('form.work.character.tab.about')
+            ]}>
+            <Panel.General form={form} />
+            <Panel.Demographics form={form} />
+            <Panel.Appearance form={form} />
+            <Panel.About form={form} />
+        </FormWrapper>
     )
 }
 
