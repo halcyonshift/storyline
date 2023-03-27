@@ -36,6 +36,11 @@ export default class ItemModel extends Model {
         return this.name
     }
 
+    async destroyPermanently(): Promise<void> {
+        await this.note.destroyAllPermanently()
+        return super.destroyPermanently()
+    }
+
     @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
 
     @writer async updateItem(data: ItemDataType) {
@@ -47,14 +52,14 @@ export default class ItemModel extends Model {
         })
     }
 
-    @writer async delete() {
-        await this.destroyPermanently()
-        return true
-    }
-
     @writer async updateStatus(status: StatusType) {
         await this.update((item) => {
             item.status = status
         })
+    }
+
+    @writer async delete() {
+        await this.destroyPermanently()
+        return true
     }
 }

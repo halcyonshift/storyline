@@ -10,6 +10,7 @@ import TextareaField from '@sl/components/form/TextareaField'
 import TextField from '@sl/components/form/TextField'
 import { LocationDataType } from '@sl/db/models/types'
 import ImageField from '@sl/components/form/ImageField'
+import useMessenger from '@sl/layouts/useMessenger'
 import useOnlineStatus from '@sl/utils/useOnlineStatus'
 import { LocationFormProps } from './types'
 
@@ -17,6 +18,7 @@ const LocationForm = ({ work, location, initialValues }: LocationFormProps) => {
     const navigate = useNavigate()
     const { t } = useTranslation()
     const isOnline = useOnlineStatus()
+    const messenger = useMessenger()
 
     const validationSchema = yup.object({
         name: yup.string().required(t('form.work.location.name.required')),
@@ -40,6 +42,7 @@ const LocationForm = ({ work, location, initialValues }: LocationFormProps) => {
                     : await work.addLocation(values)
 
                 form.resetForm()
+                messenger.success(t('form.work.location.alert.success'))
                 navigate(`/works/${work.id}/location/${newLocation.id}`)
             }
         }

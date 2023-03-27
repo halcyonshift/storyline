@@ -88,6 +88,19 @@ export default class CharacterModel extends Model {
         return date.isValid ? date.toSeconds() : 0
     }
 
+    async destroyPermanently(): Promise<void> {
+        const scenes = await this.section.fetch()
+
+        if (scenes.length) {
+            for await (const scene of scenes) {
+                scene.updatePoVCharacter(null)
+            }
+        }
+
+        await this.note.destroyAllPermanently()
+        return super.destroyPermanently()
+    }
+
     @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
 
     @writer async updateCharacter(data: CharacterDataType) {
@@ -142,16 +155,6 @@ export default class CharacterModel extends Model {
     }
 
     @writer async delete() {
-        const notes = await this.notes.fetch()
-        const scenes = await this.section.fetch()
-        if (notes.length) {
-            notes.map((note) => {
-                note.delete()
-            })
-        }
-        if (scenes.length) {
-            scenes.map((scene) => scene.updatePoVCharacter(null))
-        }
         await this.destroyPermanently()
         return true
     }

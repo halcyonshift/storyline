@@ -49,6 +49,16 @@ export default class LocationModel extends Model {
         return null
     }
 
+    async destroyPermanently(): Promise<void> {
+        const countChildren = await this.locations.fetchCount()
+        if (countChildren) return
+        if (this.image) {
+            api.deleteFile(this.image)
+        }
+        await this.note.destroyAllPermanently()
+        return super.destroyPermanently()
+    }
+
     @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
 
     @writer async addLocation(data: LocationDataType) {
@@ -77,17 +87,14 @@ export default class LocationModel extends Model {
         })
     }
 
-    @writer async delete() {
-        const countChildren = await this.locations.fetchCount()
-        if (!countChildren) {
-            await this.destroyPermanently()
-        }
-        return true
-    }
-
     @writer async updateStatus(status: StatusType) {
         await this.update((location) => {
             location.status = status
         })
+    }
+
+    @writer async delete() {
+        await this.destroyPermanently()
+        return true
     }
 }

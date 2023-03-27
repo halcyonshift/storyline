@@ -59,6 +59,15 @@ export default class WorkModel extends Model {
         }
     }
 
+    async destroyPermanently(): Promise<void> {
+        this.character.destroyAllPermanently()
+        this.item.destroyAllPermanently()
+        this.location.destroyAllPermanently()
+        this.note.destroyAllPermanently()
+        this.section.destroyAllPermanently()
+        return super.destroyPermanently()
+    }
+
     @lazy parts = this.section.extend(Q.where('mode', SectionMode.PART), Q.sortBy('order', Q.asc))
 
     @lazy chapters = this.section.extend(
@@ -204,5 +213,10 @@ export default class WorkModel extends Model {
         await this.update((work) => {
             work.status = status
         })
+    }
+
+    @writer async delete() {
+        await this.destroyPermanently()
+        return true
     }
 }

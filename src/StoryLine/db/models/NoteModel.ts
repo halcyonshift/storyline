@@ -25,7 +25,8 @@ export default class NoteModel extends Model {
         character: { type: 'belongs_to', key: 'character_id' },
         item: { type: 'belongs_to', key: 'item_id' },
         location: { type: 'belongs_to', key: 'location_id' },
-        note: { type: 'has_many', foreignKey: 'note_id' }
+        note: { type: 'has_many', foreignKey: 'note_id' },
+        section: { type: 'belongs_to', key: 'section_id' }
     }
     @field('status') status!: StatusType
     @text('title') title!: string
@@ -37,7 +38,6 @@ export default class NoteModel extends Model {
     @field('order') order!: number
     @readonly @date('created_at') createdAt!: Date
     @readonly @date('updated_at') updatedAt!: Date
-
     @relation('character', 'character_id') character!: Relation<CharacterModel>
     @relation('item', 'item_id') item!: Relation<ItemModel>
     @relation('location', 'location_id') location!: Relation<LocationModel>
@@ -70,6 +70,15 @@ export default class NoteModel extends Model {
         return date.isValid ? date.toSeconds() : 0
     }
 
+    async destroyPermanently(): Promise<void> {
+        const children = await this.notes.fetchCount()
+        if (children) return
+        if (this.image) {
+            api.deleteFile(this.image)
+        }
+        return super.destroyPermanently()
+    }
+
     @writer async addNote(data: NoteDataType) {
         const work = await this.work.fetch()
         return await this.collections.get<NoteModel>('note').create((note) => {
@@ -97,29 +106,26 @@ export default class NoteModel extends Model {
         })
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    @writer async updateAssociation(owner: any) {
+    @writer async updateAssociation(
+        owner: CharacterModel | ItemModel | LocationModel | NoteModel | SectionModel
+    ) {
         await this.update((note) => {
-            if (owner.table === 'character') note.character.set(owner)
-            else if (owner.table === 'item') note.item.set(owner)
-            else if (owner.table === 'location') note.location.set(owner)
-            else if (owner.table === 'section') note.section.set(owner)
+            if (owner.table === 'character') note.character.set(owner as CharacterModel)
+            else if (owner.table === 'item') note.item.set(owner as ItemModel)
+            else if (owner.table === 'location') note.location.set(owner as LocationModel)
+            else if (owner.table === 'note') note.note.set(owner as NoteModel)
+            else if (owner.table === 'section') note.section.set(owner as SectionModel)
         })
-    }
-
-    @writer async delete() {
-        const children = await this.notes.fetchCount()
-        if (children) return false
-        if (this.image) {
-            api.deleteFile(this.image)
-        }
-        await this.destroyPermanently()
-        return true
     }
 
     @writer async updateStatus(status: StatusType) {
         await this.update((note) => {
             note.status = status
         })
+    }
+
+    @writer async delete() {
+        await this.destroyPermanently()
+        return true
     }
 }

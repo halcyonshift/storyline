@@ -12,7 +12,6 @@ import NoteForm from '@sl/forms/Work/Note'
 import { getInitialValues } from '@sl/forms/Work/utils'
 
 const AddNoteView = () => {
-    const note = useRouteLoaderData('note') as NoteModel
     const work = useRouteLoaderData('work') as WorkModel
     const model = useLoaderData() as
         | CharacterModel
@@ -29,7 +28,7 @@ const AddNoteView = () => {
         'section_id'
     ]) as NoteDataType
 
-    return <NoteForm work={work} note={note} belongsTo={model} initialValues={initialValues} />
+    return <NoteForm work={work} belongsTo={model} initialValues={initialValues} />
 }
 
 export default AddNoteView

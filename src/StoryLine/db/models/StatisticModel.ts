@@ -1,7 +1,6 @@
 import { Model, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
-import { date, field, readonly, relation } from '@nozbe/watermelondb/decorators'
-
+import { date, field, readonly, relation, writer } from '@nozbe/watermelondb/decorators'
 import SectionModel from './SectionModel'
 
 export default class StatisticModel extends Model {
@@ -14,6 +13,10 @@ export default class StatisticModel extends Model {
     @field('words') words!: number
     @readonly @date('created_at') createdAt!: Date
     @readonly @date('updated_at') updatedAt!: Date
-
     @relation('section', 'section_id') section!: Relation<SectionModel>
+
+    @writer async delete() {
+        await this.destroyPermanently()
+        return true
+    }
 }

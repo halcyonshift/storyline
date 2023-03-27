@@ -16,7 +16,7 @@
     "precommit": "yarn validate",
     "prepush": "yarn validate",
     "prepare": "husky install",
-    "translation": "i18n-unused"
+    "translation:unused": "i18n-unused display-unused"
   },
   "keywords": [],
   "author": {

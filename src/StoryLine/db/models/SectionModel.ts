@@ -24,6 +24,7 @@ export default class SectionModel extends Model {
     public static associations: Associations = {
         work: { type: 'belongs_to', key: 'work_id' },
         note: { type: 'has_many', foreignKey: 'section_id' },
+        statistic: { type: 'has_many', foreignKey: 'section_id' },
         section: { type: 'belongs_to', key: 'section_id' },
         pov_character: { type: 'belongs_to', key: 'pov_character_id' }
     }
@@ -44,6 +45,7 @@ export default class SectionModel extends Model {
     @relation('section', 'section_id') section!: Relation<SectionModel>
     @relation('character', 'pov_character_id') pointOfViewCharacter!: Relation<CharacterModel>
     @children('note') note!: Query<NoteModel>
+    @children('statistic') statistic!: Query<StatisticModel>
 
     sortDate: number
 
@@ -184,6 +186,10 @@ export default class SectionModel extends Model {
             Q.sortBy('order', Q.desc)
         )
 
+    @lazy statistics = this.collections
+        .get<StatisticModel>('statistic')
+        .query(Q.where('section_id', this.id), Q.sortBy('created_at', Q.desc))
+
     async addVersion() {
         const count = await this.versions.fetchCount()
         return await this.addSection({
@@ -216,16 +222,18 @@ export default class SectionModel extends Model {
         })
     }
 
-    @writer async delete() {
-        if (this.isScene) {
-            await this.destroyPermanently()
-        } else if (this.isChapter) {
+    async destroyPermanently(): Promise<void> {
+        if (this.isChapter) {
             const sceneCount = await this.scenes.fetchCount()
-            if (!sceneCount) await this.destroyPermanently()
+            if (sceneCount) return
         } else if (this.isPart) {
             const chapterCount = await this.chapters.fetchCount()
-            if (!chapterCount) await this.destroyPermanently()
+            if (chapterCount) return
         }
+
+        this.note.destroyAllPermanently()
+        this.statistic.destroyAllPermanently()
+        return super.destroyPermanently()
     }
 
     @writer async addSection(data: SectionDataType) {
@@ -280,5 +288,10 @@ export default class SectionModel extends Model {
         await this.update((section) => {
             section.status = status
         })
+    }
+
+    @writer async delete() {
+        await this.destroyPermanently()
+        return true
     }
 }

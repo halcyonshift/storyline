@@ -8,12 +8,13 @@ import TextareaField from '@sl/components/form/TextareaField'
 import TextField from '@sl/components/form/TextField'
 import { ItemDataType } from '@sl/db/models/types'
 import ImageField from '@sl/components/form/ImageField'
-
+import useMessenger from '@sl/layouts/useMessenger'
 import { ItemFormProps } from './types'
 
 const ItemForm = ({ work, item, initialValues }: ItemFormProps) => {
     const navigate = useNavigate()
     const { t } = useTranslation()
+    const messenger = useMessenger()
 
     const validationSchema = yup.object({
         name: yup.string().required(t('form.work.item.name.required')),
@@ -32,6 +33,7 @@ const ItemForm = ({ work, item, initialValues }: ItemFormProps) => {
                 item = await work.addItem(values)
                 form.resetForm()
             }
+            messenger.success(t('form.work.item.alert.success'))
             navigate(`/works/${item.work.id}/item/${item.id}`)
         }
     })

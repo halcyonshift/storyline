@@ -76,7 +76,7 @@ const NotePanel = () => {
                                             size='small'
                                             text='layout.work.panel.note.add'
                                             icon={NOTE_ICONS.add}
-                                            link={`note/${note.id}/add`}
+                                            link={`addNote/note/${note.id}`}
                                         />
                                         <TooltipIconButton
                                             size='small'
