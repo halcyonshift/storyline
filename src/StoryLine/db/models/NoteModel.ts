@@ -108,13 +108,25 @@ export default class NoteModel extends Model {
 
     @writer async updateAssociation(
         owner: CharacterModel | ItemModel | LocationModel | NoteModel | SectionModel
-    ) {
+    ): Promise<void> {
         await this.update((note) => {
-            if (owner.table === 'character') note.character.set(owner as CharacterModel)
-            else if (owner.table === 'item') note.item.set(owner as ItemModel)
-            else if (owner.table === 'location') note.location.set(owner as LocationModel)
-            else if (owner.table === 'note') note.note.set(owner as NoteModel)
-            else if (owner.table === 'section') note.section.set(owner as SectionModel)
+            switch (owner.table) {
+                case 'character':
+                    note.character.set(owner as CharacterModel)
+                    break
+                case 'item':
+                    note.item.set(owner as ItemModel)
+                    break
+                case 'location':
+                    note.location.set(owner as LocationModel)
+                    break
+                case 'note':
+                    note.note.set(owner as NoteModel)
+                    break
+                case 'section':
+                    note.section.set(owner as SectionModel)
+                    break
+            }
         })
     }
 

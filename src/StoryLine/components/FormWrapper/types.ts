@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactElement } from 'react'
 import {
     CharacterModel,
     ItemModel,
@@ -14,7 +14,8 @@ export type FormWrapperProps = {
     form: FormikProps<any>
     title?: string
     model?: CharacterModel | ItemModel | LocationModel | NoteModel | SectionModel | WorkModel
-    header?: ReactNode
-    children: ReactNode[]
+    header?: ReactElement
+    children: ReactElement | ReactElement[]
     tabList: string[]
+    notes: NoteModel[]
 }

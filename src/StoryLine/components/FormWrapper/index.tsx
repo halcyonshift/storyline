@@ -1,4 +1,4 @@
-import { useEffect, useState, SyntheticEvent } from 'react'
+import { useEffect, useState, Children, SyntheticEvent, ReactElement } from 'react'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
@@ -7,27 +7,37 @@ import Divider from '@mui/material/Divider'
 import Stack from '@mui/material/Stack'
 import Tab from '@mui/material/Tab'
 import Typography from '@mui/material/Typography'
-import { useObservable } from 'rxjs-hooks'
+import withObservables from '@nozbe/with-observables'
+import { Database, Q } from '@nozbe/watermelondb'
+import { withDatabase } from '@nozbe/watermelondb/DatabaseProvider'
 import Status from '@sl/components/Status'
-import NoteModel from '@sl/db/models/NoteModel'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { FormWrapperProps } from './types'
 import { useTranslation } from 'react-i18next'
 import * as NotePanel from './TabPanel'
 import FormButton from '../FormButton'
+import { CharacterModel, ItemModel, LocationModel, NoteModel, SectionModel } from '@sl/db/models'
 
-const FormWrapper = ({ form, tabList, title, model, header, children }: FormWrapperProps) => {
+const TAB_STYLE = { padding: 0 }
+
+const _FormWrapper = ({
+    form,
+    tabList,
+    title,
+    model,
+    header,
+    children,
+    notes
+}: FormWrapperProps) => {
     const [value, setValue] = useState<string>('1')
     const tabs = useTabs()
     const { t } = useTranslation()
-    useEffect(() => tabs.setShowTabs(false), [])
-    let notes: NoteModel[] = []
+    const noButton = ['images', 'notes']
 
-    if (model) {
-        notes = useObservable(() => model.notes.observeWithColumns(['title']), [], [])
-    }
-
-    const handleTabChange = (_: SyntheticEvent, value: string) => setValue(value)
+    useEffect(() => {
+        tabs.setShowTabs(false)
+        setValue('1')
+    }, [model?.id])
 
     return (
         <Box className='flex flex-col flex-grow'>
@@ -43,7 +53,9 @@ const FormWrapper = ({ form, tabList, title, model, header, children }: FormWrap
                 <Box component='form' onSubmit={form.handleSubmit} autoComplete='off'>
                     <TabContext value={value}>
                         <Box className='border-b'>
-                            <TabList onChange={handleTabChange} aria-label=''>
+                            <TabList
+                                onChange={(_: SyntheticEvent, value: string) => setValue(value)}
+                                aria-label=''>
                                 {tabList.map((tab, index) => (
                                     <Tab
                                         key={`tab-${index + 1}`}
@@ -65,26 +77,37 @@ const FormWrapper = ({ form, tabList, title, model, header, children }: FormWrap
                                 ) : null}
                             </TabList>
                         </Box>
-                        {children.map((child, index) => (
-                            <TabPanel
-                                key={`tabPanel-${index + 1}`}
-                                value={(index + 1).toString()}
-                                sx={{ padding: 0 }}>
-                                {child}
-                            </TabPanel>
-                        ))}
+                        {Children.toArray(children).map((child: ReactElement, index) => {
+                            if (child.props.showButton === false)
+                                noButton.push((index + 1).toString())
+
+                            return (
+                                <TabPanel
+                                    key={`tabPanel-${index + 1}`}
+                                    value={(index + 1).toString()}
+                                    sx={TAB_STYLE}>
+                                    <Stack
+                                        spacing={1}
+                                        className={
+                                            child.props.padding === false ? '' : 'px-3 pt-1'
+                                        }>
+                                        {child}
+                                    </Stack>
+                                </TabPanel>
+                            )
+                        })}
                         {notes.filter((note) => note.image).length ? (
-                            <TabPanel value='images' sx={{ padding: 0 }}>
+                            <TabPanel value='images' sx={TAB_STYLE}>
                                 <NotePanel.Images notes={notes.filter((note) => note.image)} />
                             </TabPanel>
                         ) : null}
                         {notes.length ? (
-                            <TabPanel value='notes' sx={{ padding: 0 }}>
+                            <TabPanel value='notes' sx={TAB_STYLE}>
                                 <NotePanel.Notes notes={notes} />
                             </TabPanel>
                         ) : null}
                     </TabContext>
-                    {!['images', 'notes'].includes(value) ? (
+                    {!noButton.includes(value) ? (
                         <Box className='m-3'>
                             <FormButton
                                 label={t(
@@ -100,5 +123,23 @@ const FormWrapper = ({ form, tabList, title, model, header, children }: FormWrap
         </Box>
     )
 }
+
+const FormWrapper = withDatabase(
+    withObservables(
+        ['model'],
+        ({
+            model,
+            database
+        }: {
+            model: CharacterModel | ItemModel | LocationModel | NoteModel | SectionModel
+            database: Database
+        }) => ({
+            notes: database
+                .get('note')
+                .query(Q.where(model ? `${model.table}_id` : 'id', model?.id || ''))
+                .observe()
+        })
+    )(_FormWrapper)
+)
 
 export default FormWrapper

@@ -178,6 +178,9 @@
                 }
             },
             "location": {
+                "tab": {
+                    "locations": "Locations"
+                },
                 "name": {
                     "label": "Name",
                     "required": "Please give the location name"

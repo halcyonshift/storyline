@@ -10,7 +10,7 @@ const DemographicsPanel = ({ form }: TabPanelProps) => {
 
     return (
         <Stack spacing={3}>
-            <Box className='grid grid-cols-2 gap-3 px-3 py-1'>
+            <Box className='grid grid-cols-2 gap-3'>
                 <Box>
                     <TextField
                         name='nationality'
@@ -55,7 +55,7 @@ const DemographicsPanel = ({ form }: TabPanelProps) => {
                     />
                 </Box>
             </Box>
-            <Box className='grid grid-cols-2 gap-4 px-3 py-1'>
+            <Box className='grid grid-cols-2 gap-3'>
                 <Box>
                     <TextField
                         name='religion'

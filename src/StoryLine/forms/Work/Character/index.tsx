@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 import FormWrapper from '@sl/components/FormWrapper'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
@@ -14,6 +15,7 @@ import { CharacterFormProps } from './types'
 
 const CharacterForm = ({ work, character, initialValues }: CharacterFormProps) => {
     const messenger = useMessenger()
+    const navigate = useNavigate()
     const { t } = useTranslation()
     const [headerMode, setHeaderMode] = useState<CharacterModeType>(initialValues.mode)
 
@@ -77,9 +79,10 @@ const CharacterForm = ({ work, character, initialValues }: CharacterFormProps) =
             if (character?.id) {
                 await character.updateCharacter(values)
             } else {
-                await work.addCharacter(initialValues.mode, values)
+                character = await work.addCharacter(initialValues.mode, values)
             }
             messenger.success(t('form.work.character.alert.success'))
+            navigate(`/works/${work.id}/character/${character.id}/edit`)
         }
     })
 

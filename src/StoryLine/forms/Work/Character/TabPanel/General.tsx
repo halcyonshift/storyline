@@ -9,7 +9,7 @@ const GeneralPanel = ({ form }: TabPanelProps) => {
 
     return (
         <>
-            <Box className='grid grid-cols-2 gap-3 px-3 py-1'>
+            <Box className='grid grid-cols-2 gap-3'>
                 <TextField name='pronouns' label={t('form.work.character.pronouns')} form={form} />
                 <TextField
                     name='displayName'
@@ -24,7 +24,7 @@ const GeneralPanel = ({ form }: TabPanelProps) => {
                 <TextField name='lastName' label={t('form.work.character.lastName')} form={form} />
                 <TextField name='nickname' label={t('form.work.character.nickname')} form={form} />
             </Box>
-            <Box className='px-3 pt-2'>
+            <Box>
                 <TextareaField form={form} fieldName='description' />
             </Box>
         </>

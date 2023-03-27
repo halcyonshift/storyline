@@ -41,6 +41,7 @@ const WorkForm = ({
     })
 
     const form: FormikProps<WorkDataType> = useFormik<WorkDataType>({
+        enableReinitialize: true,
         initialValues,
         validationSchema,
         onSubmit: async (values: WorkDataType) => {

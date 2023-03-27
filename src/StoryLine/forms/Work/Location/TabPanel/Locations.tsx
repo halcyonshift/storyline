@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
@@ -6,43 +7,48 @@ import Stack from '@mui/material/Stack'
 import { useTranslation } from 'react-i18next'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
+import { LocationModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { status } from '@sl/theme/utils'
-import { TabPanelProps } from './types'
+import { LocationTabPanelProps } from './types'
 
-const NotesPanel = ({ notes }: TabPanelProps) => {
+const LocationsPanel = ({ location }: LocationTabPanelProps) => {
+    const [locations, setLocations] = useState<LocationModel[]>([])
     const { loadTab } = useTabs()
     const { t } = useTranslation()
 
+    useEffect(() => {
+        location.locations.fetch().then((locations) => setLocations(locations))
+    }, [location.id])
+
     return (
         <List disablePadding sx={{ marginLeft: '1px' }}>
-            {notes.map((note) => (
+            {locations.map((location) => (
                 <ListItem
-                    key={`note-${note.id}`}
+                    key={`location-${location.id}`}
                     divider
                     disablePadding
                     disableGutters
                     sx={{
-                        borderLeft: `8px solid ${note.color || status(note.status, 50).color}`,
-                        backgroundColor: status(note.status, 50).color
+                        backgroundColor: status(location.status, 50).color
                     }}
                     secondaryAction={
                         <Stack spacing={0} direction='row' className='mr-3'>
                             <TooltipIconButton
                                 size='small'
-                                text='layout.work.panel.note.edit'
-                                link={`/works/${note.work.id}/note/${note.id}/edit`}
+                                text='layout.work.panel.location.edit'
+                                link={`/works/${location.work.id}/location/${location.id}/edit`}
                                 icon={GLOBAL_ICONS.edit}
                             />
                             <TooltipIconButton
                                 size='small'
-                                text='layout.work.panel.note.delete'
+                                text='layout.work.panel.location.delete'
                                 icon={GLOBAL_ICONS.delete}
-                                confirm={t('layout.work.panel.note.deleteConfirm', {
-                                    name: note.title
+                                confirm={t('layout.work.panel.location.deleteConfirm', {
+                                    name: location.displayName
                                 })}
                                 onClick={() => {
-                                    note.delete()
+                                    location.delete()
                                 }}
                             />
                         </Stack>
@@ -50,15 +56,12 @@ const NotesPanel = ({ notes }: TabPanelProps) => {
                     <ListItemButton
                         onClick={() => {
                             loadTab({
-                                id: note.id,
-                                label: note.displayName,
-                                link: `note/${note.id}`
+                                id: location.id,
+                                label: location.displayName,
+                                link: `location/${location.id}`
                             })
                         }}>
-                        <ListItemText
-                            primary={note.displayName}
-                            secondary={note.date ? note.displayDate : null}
-                        />
+                        <ListItemText primary={location.displayName} />
                     </ListItemButton>
                 </ListItem>
             ))}
@@ -66,4 +69,4 @@ const NotesPanel = ({ notes }: TabPanelProps) => {
     )
 }
 
-export default NotesPanel
+export default LocationsPanel

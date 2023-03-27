@@ -1,23 +1,18 @@
-import Alert from '@mui/material/Alert'
-import Box from '@mui/material/Box'
+import { useEffect, useState } from 'react'
 import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 import FormWrapper from '@sl/components/FormWrapper'
-import MapField from '@sl/components/form/MapField'
-import TextareaField from '@sl/components/form/TextareaField'
-import TextField from '@sl/components/form/TextField'
 import { LocationDataType } from '@sl/db/models/types'
-import ImageField from '@sl/components/form/ImageField'
 import useMessenger from '@sl/layouts/useMessenger'
-import useOnlineStatus from '@sl/utils/useOnlineStatus'
+import * as Panels from './TabPanel'
 import { LocationFormProps } from './types'
 
 const LocationForm = ({ work, location, initialValues }: LocationFormProps) => {
+    const [locationCount, setLocationCount] = useState<number>(0)
     const navigate = useNavigate()
     const { t } = useTranslation()
-    const isOnline = useOnlineStatus()
     const messenger = useMessenger()
 
     const validationSchema = yup.object({
@@ -30,6 +25,7 @@ const LocationForm = ({ work, location, initialValues }: LocationFormProps) => {
     })
 
     const form: FormikProps<LocationDataType> = useFormik<LocationDataType>({
+        enableReinitialize: true,
         initialValues,
         validationSchema,
         onSubmit: async (values: LocationDataType) => {
@@ -43,7 +39,11 @@ const LocationForm = ({ work, location, initialValues }: LocationFormProps) => {
 
                 form.resetForm()
                 messenger.success(t('form.work.location.alert.success'))
-                navigate(`/works/${work.id}/location/${newLocation.id}`)
+                if (location) {
+                    navigate(`/works/${work.id}/location/${location.id}/edit`)
+                } else {
+                    navigate(`/works/${work.id}/location/${newLocation.id}/edit`)
+                }
             }
         }
     })
@@ -56,32 +56,28 @@ const LocationForm = ({ work, location, initialValues }: LocationFormProps) => {
         return location?.displayName || t('layout.work.panel.location.add')
     }
 
+    useEffect(() => {
+        if (!location?.id) return
+        location.locations.fetchCount().then((count) => setLocationCount(count))
+    }, [location?.id])
+
     return (
         <FormWrapper
             form={form}
             title={getTitle()}
             model={location}
-            tabList={[t('component.formWrapper.tab.general')]}>
-            <Box className='grid grid-cols-2 gap-3 px-3 py-1'>
-                {!isOnline ? <Alert severity='warning'>{t('error.connection')}</Alert> : null}
-                <TextField
-                    autoFocus
-                    label={t('form.work.location.name.label')}
-                    name='name'
-                    form={form}
-                />
-                <TextareaField fieldName='body' form={form}></TextareaField>
-                <TextField label={t('form.work.location.url')} name='url' form={form} />
-                <Box className='grid grid-cols-2 gap-4'>
-                    <Box>
-                        <MapField form={form} />
-                    </Box>
-                    <Box>
-                        <ImageField form={form} dir='locations' />
-                    </Box>
-                </Box>
-            </Box>
-            <></>
+            tabList={
+                locationCount
+                    ? [
+                          t('component.formWrapper.tab.general'),
+                          t('form.work.location.tab.locations')
+                      ]
+                    : [t('component.formWrapper.tab.general')]
+            }>
+            <Panels.General form={form} />
+            {locationCount ? (
+                <Panels.Locations padding={false} showButton={false} location={location} />
+            ) : null}
         </FormWrapper>
     )
 }

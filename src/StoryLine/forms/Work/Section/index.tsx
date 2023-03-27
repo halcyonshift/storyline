@@ -27,10 +27,11 @@ import { useObservable } from 'rxjs-hooks'
 import { SectionFormProps } from './types'
 
 const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
-    const { t } = useTranslation()
-    const messenger = useMessenger()
     const [povCharacter, setPovCharacter] = useState<AutocompleteOption>({ id: '', label: '' })
     const [options, setOptions] = useState<AutocompleteOption[]>([])
+
+    const { t } = useTranslation()
+    const messenger = useMessenger()
     const characters = useObservable(
         () =>
             work.character
@@ -88,19 +89,19 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
     return (
         <FormWrapper
             form={form}
-            title={section?.displayName}
+            title={section.displayName}
             model={section}
             tabList={[t('component.formWrapper.tab.general')]}>
-            <Box className='grid grid-cols-2 gap-3 px-3 py-1'>
+            <>
                 <TextField
                     autoFocus
                     form={form}
                     name='title'
                     label={t('form.work.section.title')}
                 />
-                <TextareaField form={form} label='' fieldName='description' />
+                <TextareaField form={form} fieldName='description' />
                 {section.isScene ? (
-                    <Box className='grid grid-cols-2 gap-3'>
+                    <Box className='grid grid-cols-2 gap-3 py-1'>
                         <FormControl>
                             <InputLabel id='pov-label'>
                                 {t('form.work.section.pointOfView')}
@@ -169,8 +170,7 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
                         renderInput={(params) => <MuiTextField margin='dense' {...params} />}
                     />
                 </Box>
-            </Box>
-            <></>
+            </>
         </FormWrapper>
     )
 }

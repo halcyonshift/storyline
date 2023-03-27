@@ -16,6 +16,7 @@ import GroupToggle from '@sl/components/Panel/GroupToggle'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { WorkModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import { status } from '@sl/theme/utils'
 
 const LocationPanel = () => {
     const work = useRouteLoaderData('work') as WorkModel
@@ -43,7 +44,9 @@ const LocationPanel = () => {
                     <ListItem key={location.id} disablePadding disableGutters divider>
                         <ListItemText
                             primary={
-                                <Box className='flex justify-between align-middle'>
+                                <Box
+                                    className='flex justify-between align-middle'
+                                    sx={{ backgroundColor: status(location.status).color }}>
                                     <ListItemButton
                                         onClick={() =>
                                             loadTab({

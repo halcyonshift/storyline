@@ -14,6 +14,7 @@ import Panel from '@sl/components/Panel'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { WorkModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import { status } from '@sl/theme/utils'
 
 const ItemPanel = () => {
     const work = useRouteLoaderData('work') as WorkModel
@@ -35,7 +36,9 @@ const ItemPanel = () => {
                     <ListItem key={item.id} disablePadding disableGutters divider>
                         <ListItemText
                             primary={
-                                <Box className='flex justify-between align-middle'>
+                                <Box
+                                    className='flex justify-between align-middle'
+                                    sx={{ backgroundColor: status(item.status).color }}>
                                     <ListItemButton
                                         onClick={() =>
                                             loadTab({

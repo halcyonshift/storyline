@@ -10,7 +10,7 @@ const AppearancePanel = ({ form }: TabPanelProps) => {
 
     return (
         <>
-            <Box className='grid grid-cols-2 gap-3 px-3 py-1'>
+            <Box className='grid grid-cols-2 gap-3'>
                 <Box>
                     <TextField name='face' label={t('form.work.character.face')} form={form} />
                     <TextField name='build' label={t('form.work.character.build')} form={form} />
@@ -27,7 +27,7 @@ const AppearancePanel = ({ form }: TabPanelProps) => {
                     <ImageField form={form} dir='characters' />
                 </Box>
             </Box>
-            <Box className='pt-1 px-3'>
+            <Box>
                 <TextareaField fieldName='distinguishingFeatures' form={form} />
             </Box>
         </>

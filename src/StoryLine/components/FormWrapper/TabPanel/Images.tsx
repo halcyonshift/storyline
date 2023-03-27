@@ -5,7 +5,7 @@ import { TabPanelProps } from './types'
 
 const ImagesPanel = ({ notes }: TabPanelProps) => {
     return (
-        <ImageList cols={3}>
+        <ImageList cols={3} className='m-1'>
             {notes.map((note) => (
                 <ImageListItem key={`image-${note.id}`}>
                     <Image path={note.image} alt={note.title} loading='lazy' />

@@ -50,7 +50,9 @@ const NotePanel = () => {
                         disablePadding
                         disableGutters
                         divider
-                        sx={{ borderLeft: `10px solid ${note.color || 'transparent'}` }}>
+                        sx={{
+                            borderLeft: `8px solid ${note.color || status(note.status).color}`
+                        }}>
                         <ListItemText
                             primary={
                                 <Box

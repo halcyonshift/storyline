@@ -24,6 +24,7 @@ const ItemForm = ({ work, item, initialValues }: ItemFormProps) => {
     })
 
     const form: FormikProps<ItemDataType> = useFormik<ItemDataType>({
+        enableReinitialize: true,
         initialValues,
         validationSchema,
         onSubmit: async (values: ItemDataType) => {
@@ -44,19 +45,24 @@ const ItemForm = ({ work, item, initialValues }: ItemFormProps) => {
             title={item?.displayName || t('layout.work.panel.item.add')}
             model={item}
             tabList={[t('component.formWrapper.tab.general')]}>
-            <Box className='grid grid-cols-2 gap-3 px-3 py-1'>
-                <TextField label={t('form.work.item.name.label')} name='name' form={form} />
+            <>
+                <Box className='grid grid-cols-2 gap-3'>
+                    <Box>
+                        <TextField label={t('form.work.item.name.label')} name='name' form={form} />
+                        <TextField
+                            label={t('form.work.item.url')}
+                            name='url'
+                            form={form}
+                            type='url'
+                            placeholder='https://'
+                        />
+                    </Box>
+                    <Box className='mt-2'>
+                        <ImageField form={form} dir='items' />
+                    </Box>
+                </Box>
                 <TextareaField fieldName='body' form={form} />
-                <TextField
-                    label={t('form.work.item.url')}
-                    name='url'
-                    form={form}
-                    type='url'
-                    placeholder='https://'
-                />
-                <ImageField label={t('form.work.item.image')} form={form} dir='items' />
-            </Box>
-            <></>
+            </>
         </FormWrapper>
     )
 }

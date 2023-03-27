@@ -26,7 +26,7 @@ const ImageField = ({ form, label, dir }: ImageFieldProps) => {
     }
 
     return (
-        <>
+        <Box>
             {label ? <InputLabel className='mb-1'>{label}</InputLabel> : null}
             <Box className='border p-1 bg-white relative rounded-md'>
                 <Box className='bg-slate-100 min-h-[50px]'>
@@ -39,7 +39,7 @@ const ImageField = ({ form, label, dir }: ImageFieldProps) => {
                     ) : null}
                 </Box>
             </Box>
-        </>
+        </Box>
     )
 }
 

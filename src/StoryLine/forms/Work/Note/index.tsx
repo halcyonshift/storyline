@@ -30,6 +30,7 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
     })
 
     const form: FormikProps<NoteDataType> = useFormik<NoteDataType>({
+        enableReinitialize: true,
         initialValues,
         validationSchema,
         onSubmit: async (values: NoteDataType) => {
@@ -38,9 +39,15 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
                 messenger.success(t('form.work.note.alert.success'))
             } else {
                 const newNote = note ? await note.addNote(values) : await work.addNote(values)
-                if (belongsTo) await newNote.updateAssociation(belongsTo)
+                if (belongsTo) {
+                    await newNote.updateAssociation(belongsTo)
+                }
                 form.resetForm()
-                navigate(`/works/${work.id}/note/${newNote.id}`)
+                if (belongsTo) {
+                    navigate(`/works/${work.id}/${belongsTo.table}/${belongsTo.id}/edit`)
+                } else {
+                    navigate(`/works/${work.id}/note/${newNote.id}/edit`)
+                }
             }
         }
     })
@@ -59,10 +66,10 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
             title={getTitle()}
             model={note}
             tabList={[t('component.formWrapper.tab.general')]}>
-            <Box className='grid grid-cols-2 gap-3 px-3 py-1'>
-                <Box className='grid grid-cols-2 gap-4'>
-                    <Box>
-                        <ImageField label='' form={form} dir='notes' />
+            <>
+                <Box className='grid grid-cols-2 gap-3 '>
+                    <Box className='pt-2'>
+                        <ImageField form={form} dir='notes' />
                     </Box>
                     <Box>
                         <TextField
@@ -90,8 +97,7 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
                     </Box>
                 </Box>
                 <TextareaField fieldName='body' form={form} />
-            </Box>
-            <></>
+            </>
         </FormWrapper>
     )
 }
