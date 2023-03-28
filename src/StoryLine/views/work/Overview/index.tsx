@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import { DateTime, Interval } from 'luxon'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
-import { SectionModel } from '@sl/db/models'
+import { SectionModel, WorkModel } from '@sl/db/models'
 import { DateObject, ViewOptionType } from './types'
+import { useRouteLoaderData } from 'react-router-dom'
 
 const OverviewView = () => {
-    const [view, setView] = useState<ViewOptionType>('summary')
+    const work = useRouteLoaderData('work') as WorkModel
+    const [view, setView] = useState<ViewOptionType>('SUMMARY')
     const { setShowTabs } = useTabs()
 
     useEffect(() => {

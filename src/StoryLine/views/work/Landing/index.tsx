@@ -1,34 +1,33 @@
-import { useEffect } from 'react'
 import Box from '@mui/material/Box'
-import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import Paper from '@mui/material/Paper'
+import * as Boxes from './Boxes'
 
-const LandingView = () => {
-    const tabs = useTabs()
-
-    useEffect(() => tabs.setShowTabs(false), [])
-
-    return (
-        <Box className='p-4 grid grid-cols-3 gap-4 flex-grow'>
-            <Box className='bg-slate-200 rounded relative'>
-                <Box className='absolute'>Statistics</Box>
+const LandingView = () => (
+    <Box className='p-4 grid grid-cols-3 grid-rows-3 gap-4 flex-grow'>
+        <Paper elevation={2} className='relative'>
+            <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
+                <Boxes.WordCharts />
             </Box>
-            <Box className='bg-slate-200 rounded relative'>
-                <Box className='absolute'>Characters</Box>
+        </Paper>
+        <Paper elevation={2} className='relative row-span-3'>
+            <Boxes.Deadlines />
+        </Paper>
+        <Paper elevation={2} className='relative  row-span-2'>
+            <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
+                <Boxes.LastUpdated />
             </Box>
-            <Box className='bg-slate-200 rounded relative'>
-                <Box className='absolute'>Locations</Box>
+        </Paper>
+        <Paper elevation={2} className='relative row-span-2'>
+            <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
+                <Boxes.WordGoal />
             </Box>
-            <Box className='bg-slate-200 rounded relative'>
-                <Box className='absolute'>Items</Box>
+        </Paper>
+        <Paper elevation={2} className='relative'>
+            <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
+                <Boxes.Random />
             </Box>
-            <Box className='bg-slate-200 rounded relative'>
-                <Box className='absolute'>Notes</Box>
-            </Box>
-            <Box className='bg-slate-200 rounded relative'>
-                <Box className='absolute'>Sections</Box>
-            </Box>
-        </Box>
-    )
-}
+        </Paper>
+    </Box>
+)
 
 export default LandingView

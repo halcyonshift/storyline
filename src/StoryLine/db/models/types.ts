@@ -85,9 +85,7 @@ export type SectionDataType = {
     deadlineAt?: Date
 }
 
-export type StatisticDataType = {
-    words?: number
-}
+export type StatisticDataType = number
 
 export type WorkDataType = {
     status?: StatusType

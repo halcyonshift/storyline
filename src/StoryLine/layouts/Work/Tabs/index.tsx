@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
@@ -15,6 +15,7 @@ const Tabs = () => {
     const { t } = useTranslation()
     const tabs = useTabs()
     const { windowWidth, panelWidth, navigationWidth } = useLayout()
+    const [maxWidth, setMaxWidth] = useState<number>(windowWidth - (panelWidth + navigationWidth))
 
     const onDragEnd = (result: DropResult) => {
         if (!result.destination) return
@@ -27,14 +28,18 @@ const Tabs = () => {
         tabs.setActive(result.destination.index)
     }
 
+    useEffect(
+        () => setMaxWidth(windowWidth - (panelWidth + navigationWidth)),
+        [windowWidth, panelWidth, navigationWidth]
+    )
+
     return useMemo(
         () =>
             tabs.showTabs ? (
                 <Box
                     sx={{
                         marginLeft: '1px',
-                        maxWidth: windowWidth - (navigationWidth + panelWidth),
-                        bgcolor: 'background.paper'
+                        maxWidth
                     }}>
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Droppable droppableId='tabs'>
@@ -109,7 +114,7 @@ const Tabs = () => {
                     </DragDropContext>
                 </Box>
             ) : null,
-        [tabs.tabs, tabs.active, tabs.showTabs]
+        [tabs.tabs, tabs.active, tabs.showTabs, maxWidth]
     )
 }
 

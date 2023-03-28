@@ -14,11 +14,10 @@ import {
 import { DateTime } from 'luxon'
 import { Status, type StatusType } from '@sl/constants/status'
 import { type PointOfViewType } from '@sl/constants/pov'
-import { htmlExtractExcerpts, htmlParse } from '@sl/utils'
+import { htmlExtractExcerpts, htmlParse, wordCount } from '@sl/utils'
 import { type SectionDataType, type StatisticDataType } from './types'
 import { CharacterModel, ItemModel, LocationModel, NoteModel, StatisticModel, WorkModel } from './'
 import { SectionMode, type SectionModeType } from '@sl/constants/sectionMode'
-
 export default class SectionModel extends Model {
     static table = 'section'
     public static associations: Associations = {
@@ -222,6 +221,23 @@ export default class SectionModel extends Model {
         })
     }
 
+    async wordCount() {
+        if (this.isScene || this.isVersion) {
+            return wordCount(this.body)
+        } else if (this.isChapter) {
+            const scenes = await this.scenes.fetch()
+            return scenes.reduce((count, scene) => count + wordCount(scene.body), 0)
+        } else {
+            const chapters = await this.chapters.fetch()
+            let count = 0
+            for await (const chapter of chapters) {
+                const scenes = await chapter.scenes.fetch()
+                count += scenes.reduce((count, scene) => count + wordCount(scene.body), 0)
+            }
+            return count
+        }
+    }
+
     async destroyPermanently(): Promise<void> {
         if (this.isChapter) {
             const sceneCount = await this.scenes.fetchCount()
@@ -256,7 +272,7 @@ export default class SectionModel extends Model {
     @writer async addStatistic(data: StatisticDataType) {
         return await this.collections.get<StatisticModel>('statistic').create((statistic) => {
             statistic.section.set(this)
-            statistic.words = data.words
+            statistic.words = Number(data)
         })
     }
 

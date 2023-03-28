@@ -1,6 +1,7 @@
 import { Model, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { date, field, readonly, relation, writer } from '@nozbe/watermelondb/decorators'
+import { DateTime } from 'luxon'
 import SectionModel from './SectionModel'
 
 export default class StatisticModel extends Model {
@@ -14,6 +15,19 @@ export default class StatisticModel extends Model {
     @readonly @date('created_at') createdAt!: Date
     @readonly @date('updated_at') updatedAt!: Date
     @relation('section', 'section_id') section!: Relation<SectionModel>
+
+    get isToday(): boolean {
+        return Boolean(
+            DateTime.fromJSDate(this.createdAt).toFormat('yyyy-MM-dd') ===
+                DateTime.now().toFormat('yyyy-MM-dd')
+        )
+    }
+
+    @writer async updateWords(words: number) {
+        await this.update((statistic) => {
+            statistic.words = Number(words)
+        })
+    }
 
     @writer async delete() {
         await this.destroyPermanently()

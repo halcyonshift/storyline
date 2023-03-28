@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import RichtextEditor from '@sl/components/RichtextEditor'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import { wordCount } from '@sl/utils'
 import { SectionViewType } from '../types'
 
 const SceneView = ({ section }: SectionViewType) => {
@@ -16,7 +17,15 @@ const SceneView = ({ section }: SectionViewType) => {
     }, [section.id])
 
     const onSave = async (html: string) => {
-        return await section.updateBody(html)
+        await section.updateBody(html)
+
+        const statistics = await section.statistics.fetch()
+
+        if (!statistics.length || !statistics[0].isToday) {
+            await section.addStatistic(wordCount(html))
+        } else {
+            await statistics[0].updateWords(wordCount(html))
+        }
     }
 
     const plugins = ['excerpt', 'tag', 'search', 'save']

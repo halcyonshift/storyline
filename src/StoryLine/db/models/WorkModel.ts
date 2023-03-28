@@ -4,6 +4,7 @@ import { children, date, field, lazy, readonly, text, writer } from '@nozbe/wate
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
 import { SectionMode } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
+import { wordCount } from '@sl/utils'
 import {
     CharacterDataType,
     ItemDataType,
@@ -11,14 +12,12 @@ import {
     NoteDataType,
     WorkDataType
 } from './types'
-
 import CharacterModel from './CharacterModel'
 import ItemModel from './ItemModel'
 import LocationModel from './LocationModel'
 import NoteModel from './NoteModel'
 import SectionModel from './SectionModel'
 import StatisticModel from './StatisticModel'
-
 export default class WorkModel extends Model {
     static table = 'work'
     public static associations: Associations = {
@@ -59,6 +58,11 @@ export default class WorkModel extends Model {
         }
     }
 
+    async wordCount() {
+        const scenes = await this.scenes.fetch()
+        return scenes.reduce((count, scene) => count + wordCount(scene.body), 0)
+    }
+
     async destroyPermanently(): Promise<void> {
         this.character.destroyAllPermanently()
         this.item.destroyAllPermanently()
@@ -97,11 +101,18 @@ export default class WorkModel extends Model {
         Q.sortBy('display_name', Q.asc)
     )
 
-    @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
-
     @lazy items = this.item.extend(Q.sortBy('name', Q.asc))
 
     @lazy locations = this.location.extend(Q.sortBy('name', Q.asc))
+
+    @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
+
+    @lazy statistics = this.collections
+        .get<StatisticModel>('statistic')
+        .query(
+            Q.experimentalNestedJoin('section', 'work'),
+            Q.on('section', Q.on('work', 'id', this.id))
+        )
 
     @writer async updateLastOpened() {
         await this.update((work) => {
