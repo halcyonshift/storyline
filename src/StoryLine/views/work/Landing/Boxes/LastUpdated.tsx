@@ -26,7 +26,7 @@ const LastUpdatedBox = () => {
             work.item.extend(Q.sortBy('updated_at', Q.desc)).fetch(),
             work.location.extend(Q.sortBy('updated_at', Q.desc)).fetch(),
             work.note.extend(Q.sortBy('updated_at', Q.desc)).fetch(),
-            work.section.extend(Q.sortBy('updated_at', Q.desc)).fetch()
+            work.scenes.extend(Q.sortBy('updated_at', Q.desc)).fetch()
         ]).then(([character, item, location, note, section]) => {
             const _lastUpdated: LastUpdatedType[] = []
             for (const [table, items] of Object.entries({

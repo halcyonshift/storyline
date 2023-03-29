@@ -11,13 +11,13 @@ import {
     writer,
     lazy
 } from '@nozbe/watermelondb/decorators'
-import { DateTime } from 'luxon'
-import { Status, type StatusType } from '@sl/constants/status'
+import { DateTime, Interval } from 'luxon'
 import { type PointOfViewType } from '@sl/constants/pov'
+import { SectionMode, type SectionModeType } from '@sl/constants/sectionMode'
+import { Status, type StatusType } from '@sl/constants/status'
 import { htmlExtractExcerpts, htmlParse, wordCount } from '@sl/utils'
 import { type SectionDataType, type StatisticDataType } from './types'
 import { CharacterModel, ItemModel, LocationModel, NoteModel, StatisticModel, WorkModel } from './'
-import { SectionMode, type SectionModeType } from '@sl/constants/sectionMode'
 export default class SectionModel extends Model {
     static table = 'section'
     public static associations: Associations = {
@@ -47,6 +47,7 @@ export default class SectionModel extends Model {
     @children('statistic') statistic!: Query<StatisticModel>
 
     sortDate: number
+    wordCount = 0
 
     get displayTitle() {
         const title =
@@ -221,12 +222,12 @@ export default class SectionModel extends Model {
         })
     }
 
-    async wordCount() {
+    async getWordCount(): Promise<number> {
         if (this.isScene || this.isVersion) {
-            return wordCount(this.body)
+            this.wordCount = wordCount(this.body)
         } else if (this.isChapter) {
             const scenes = await this.scenes.fetch()
-            return scenes.reduce((count, scene) => count + wordCount(scene.body), 0)
+            this.wordCount = scenes.reduce((count, scene) => count + wordCount(scene.body), 0)
         } else {
             const chapters = await this.chapters.fetch()
             let count = 0
@@ -234,8 +235,30 @@ export default class SectionModel extends Model {
                 const scenes = await chapter.scenes.fetch()
                 count += scenes.reduce((count, scene) => count + wordCount(scene.body), 0)
             }
-            return count
+            this.wordCount = count
         }
+        return this.wordCount
+    }
+
+    get daysRemaining(): number | undefined {
+        if (!this.deadlineAt) return undefined
+
+        const now = DateTime.now()
+        const deadline = DateTime.fromJSDate(this.deadlineAt)
+
+        if (now.toMillis() > deadline.toMillis()) return 0
+
+        const diff = Interval.fromDateTimes(now, deadline)
+        return Math.ceil(diff.length('days'))
+    }
+
+    get wordsPerDay(): number | undefined {
+        if (!this.wordGoal || this.daysRemaining === undefined) return undefined
+        else if (!this.daysRemaining) return this.wordGoal - this.wordCount
+
+        return this.wordCount < this.wordGoal
+            ? Math.ceil((this.wordGoal - this.wordCount) / this.daysRemaining)
+            : 0
     }
 
     async destroyPermanently(): Promise<void> {

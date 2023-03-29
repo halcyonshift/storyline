@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { Box, Divider, Stack, Typography } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import Image from '@sl/components/Image'
 import CharacterModel from '@sl/db/models/CharacterModel'
@@ -10,7 +9,6 @@ import { htmlParse } from '@sl/utils'
 const CharacterView = () => {
     const tabs = useTabs()
     const character = useRouteLoaderData('character') as CharacterModel
-    const { t } = useTranslation()
 
     useEffect(() => {
         tabs.setShowTabs(true)

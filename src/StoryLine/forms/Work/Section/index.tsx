@@ -59,7 +59,7 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
     }, [options, section.id])
 
     const validationSchema = yup.object({
-        title: yup.string(),
+        title: yup.string().nullable(),
         description: yup.string().nullable(),
         date: yup.string().nullable(),
         wordGoal: yup.number().positive().integer().nullable(),

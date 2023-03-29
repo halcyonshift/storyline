@@ -174,7 +174,7 @@
                 "critical": "Critical",
                 "cruel": "Cruel",
                 "curious": "Curious",
-                "dangerous": "Cangerous",
+                "dangerous": "Dangerous",
                 "daring": "Daring",
                 "decisive": "Decisive",
                 "demanding": "Demanding",
@@ -535,6 +535,9 @@
                 "random": {
                     "character": "Character",
                     "prompt": "Prompt"
+                },
+                "tracker": {
+                    "remaining": "{{days}} days left ({{words}} words a day)"
                 },
                 "wordCharts": {
                     "count": "Total count",

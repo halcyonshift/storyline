@@ -72,6 +72,8 @@ export default class WorkModel extends Model {
         return super.destroyPermanently()
     }
 
+    @lazy sections = this.section.extend(Q.where('work_id', this.id), Q.sortBy('order', Q.asc))
+
     @lazy parts = this.section.extend(Q.where('mode', SectionMode.PART), Q.sortBy('order', Q.asc))
 
     @lazy chapters = this.section.extend(
