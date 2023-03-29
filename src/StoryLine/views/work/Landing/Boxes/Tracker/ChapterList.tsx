@@ -5,26 +5,37 @@ import Progress from '@sl/components/Progress'
 import { status } from '@sl/theme/utils'
 import SceneList from './SceneList'
 import { ChapterListProps } from './types'
+import useSettings from '@sl/theme/useSettings'
+
+// ToDo - make proper components
 
 const ChapterList = ({ chapters, scenes }: ChapterListProps) => {
     const { t } = useTranslation()
+    const settings = useSettings()
 
     return (
         <>
             {chapters.map((chapter) => (
                 <Fragment key={chapter.id}>
                     <Box
-                        className='grid grid-cols-1 xl:grid-cols-3 gap-1 px-2 py-1'
+                        className='grid grid-cols-1 xl:grid-cols-3 gap-1 xl:pr-2'
                         sx={{
                             backgroundColor: status(chapter.status, 100).color,
                             marginBottom: '1px'
                         }}>
-                        <Box className='col-span-2'>
+                        <Box className='col-span-2 px-2 py-1'>
                             <Typography
                                 variant='body1'
                                 className='whitespace-nowrap overflow-hidden text-ellipsis
-                                    pr-3'>
+                                    pr-3 flex justify-between'>
                                 {chapter.displayTitle}
+                                {chapter.wordCount && !chapter.wordGoal ? (
+                                    <span>
+                                        {chapter.wordCount.toLocaleString(settings.language)}
+                                    </span>
+                                ) : (
+                                    ''
+                                )}
                             </Typography>
                             {chapter.daysRemaining ? (
                                 <Typography variant='body2'>

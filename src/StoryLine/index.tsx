@@ -105,7 +105,7 @@ const router = createHashRouter([
                     },
                     {
                         path: 'backupRestore',
-                        element: <p>backupRestore</p>
+                        element: <WorkViews.BackupRestoreView />
                     },
                     {
                         path: 'character/:character_id',

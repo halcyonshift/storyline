@@ -13,12 +13,12 @@ const SceneList = ({ scenes }: SceneListProps) => {
             {scenes.map((scene) => (
                 <Fragment key={scene.id}>
                     <Box
-                        className='grid grid-cols-1 xl:grid-cols-3 gap-1 px-2 py-1'
+                        className='grid grid-cols-1 xl:grid-cols-3 gap-1 xl:pr-2'
                         sx={{
                             backgroundColor: status(scene.status).color,
                             marginBottom: '1px'
                         }}>
-                        <Box className='col-span-2'>
+                        <Box className='col-span-2 px-2 py-1'>
                             <Typography
                                 variant='body1'
                                 className='whitespace-nowrap overflow-hidden text-ellipsis

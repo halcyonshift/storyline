@@ -30,10 +30,6 @@ const Progress = ({ words, goal }: ProgressProps) => {
                 </Box>
             </Tooltip>
         </Box>
-    ) : (
-        <Typography variant='body1'>
-            {words ? words.toLocaleString(settings.language) : ''}
-        </Typography>
-    )
+    ) : null
 }
 export default Progress

@@ -15,12 +15,12 @@ const PartList = ({ parts, chapters, scenes }: PartListProps) => {
             {parts.map((part) => (
                 <Fragment key={part.id}>
                     <Box
-                        className='grid grid-cols-1 xl:grid-cols-3 gap-1 px-2 py-1'
+                        className='grid grid-cols-1 xl:grid-cols-3 gap-1 xl:pr-2'
                         sx={{
                             backgroundColor: status(part.status, 200).color,
                             marginBottom: '1px'
                         }}>
-                        <Box className='col-span-2'>
+                        <Box className='col-span-2 px-2 py-1'>
                             <Typography
                                 variant='body1'
                                 className='whitespace-nowrap overflow-hidden text-ellipsis

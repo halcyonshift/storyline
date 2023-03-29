@@ -525,6 +525,9 @@
                 "recent": {
                     "title": "Recently opened"
                 }
+            },
+            "work": {
+                "add": "New work"
             }
         },
         "work": {

@@ -5,14 +5,16 @@ import Snackbar from '@mui/material/Snackbar'
 import { ThemeProvider } from '@mui/material/styles'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { Settings } from 'luxon'
 import { Outlet } from 'react-router-dom'
-
 import useMessenger from '@sl/layouts/useMessenger'
 import useSettings from '@sl/theme/useSettings'
 
 const App = () => {
     const settings = useSettings()
     const messenger = useMessenger()
+
+    Settings.defaultZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
     return (
         <LocalizationProvider dateAdapter={AdapterLuxon}>

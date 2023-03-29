@@ -106,8 +106,8 @@ const WordChartsBox = () => {
                 Q.where(
                     'created_at',
                     Q.between(
-                        DateTime.now().minus({ days: 7 }).startOf('day').toMillis(),
-                        DateTime.now().endOf('day').toMillis()
+                        DateTime.now().setZone('UTC').minus({ days: 7 }).startOf('day').toMillis(),
+                        DateTime.now().setZone('UTC').endOf('day').toMillis()
                     )
                 ),
                 Q.sortBy('created_at', Q.asc)

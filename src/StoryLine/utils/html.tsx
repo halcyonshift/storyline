@@ -12,6 +12,8 @@ export const htmlExtractExcerptsOptions: HTMLReactParserOptions = {
 
 export const htmlParseOptions: HTMLReactParserOptions = {
     replace: (domNode) => {
+        // ToDo make export options
+        /*
         if (domNode instanceof Element && domNode.attribs && domNode.name === 'p') {
             return (
                 <Typography variant='body1'>
@@ -19,6 +21,7 @@ export const htmlParseOptions: HTMLReactParserOptions = {
                 </Typography>
             )
         }
+        */
         if (domNode instanceof Element && domNode.attribs && domNode.name === 'a') {
             return <span>{domToReact(domNode.children, htmlParseOptions)}</span>
         }
