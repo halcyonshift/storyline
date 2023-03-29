@@ -71,7 +71,7 @@ const RandomBox = () => {
                                     <Typography variant='h6'>{character.name}</Typography>
                                     <Typography variant='body1'>{character.dateOfBirth}</Typography>
                                     <Typography variant='body1'>{character.job}</Typography>
-                                    <Typography>{character.traits}</Typography>
+                                    <Typography variant='body2'>{character.traits}</Typography>
                                 </>
                             ) : null}
                         </Box>

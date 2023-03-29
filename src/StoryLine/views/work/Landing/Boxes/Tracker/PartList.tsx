@@ -1,5 +1,6 @@
+import { Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ListItem, ListItemText, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import Progress from '@sl/components/Progress'
 import { status } from '@sl/theme/utils'
 
@@ -12,40 +13,36 @@ const PartList = ({ parts, chapters, scenes }: PartListProps) => {
     return (
         <>
             {parts.map((part) => (
-                <>
-                    <ListItem
-                        key={part.id}
+                <Fragment key={part.id}>
+                    <Box
+                        className='grid grid-cols-1 xl:grid-cols-3 gap-1 px-2 py-1'
                         sx={{
                             backgroundColor: status(part.status, 200).color,
                             marginBottom: '1px'
-                        }}
-                        secondaryAction={<Progress words={part.wordCount} goal={part.wordGoal} />}>
-                        <ListItemText
-                            primary={
-                                <Typography
-                                    variant='body1'
-                                    className='whitespace-nowrap overflow-hidden text-ellipsis
+                        }}>
+                        <Box className='col-span-2'>
+                            <Typography
+                                variant='body1'
+                                className='whitespace-nowrap overflow-hidden text-ellipsis
                                     pr-3'>
-                                    {part.displayTitle}
+                                {part.displayTitle}
+                            </Typography>
+                            {part.daysRemaining ? (
+                                <Typography variant='body2'>
+                                    {t('view.work.landing.tracker.remaining', {
+                                        days: part.daysRemaining,
+                                        words: part.wordsPerDay
+                                    })}
                                 </Typography>
-                            }
-                            secondary={
-                                part.daysRemaining ? (
-                                    <Typography variant='body2'>
-                                        {t('view.work.landing.tracker.remaining', {
-                                            days: part.daysRemaining,
-                                            words: part.wordsPerDay
-                                        })}
-                                    </Typography>
-                                ) : null
-                            }
-                        />
-                    </ListItem>
+                            ) : null}
+                        </Box>
+                        <Progress words={part.wordCount} goal={part.wordGoal} />
+                    </Box>
                     <ChapterList
                         chapters={chapters.filter((chapter) => chapter.section.id === part.id)}
                         scenes={scenes}
                     />
-                </>
+                </Fragment>
             ))}
         </>
     )

@@ -25,7 +25,7 @@ const Progress = ({ words, goal }: ProgressProps) => {
                 title={`${words.toLocaleString(settings.language)}/${goal.toLocaleString(
                     settings.language
                 )} (${percentage.toFixed(1)}%)`}>
-                <Box sx={{ width: 100 }}>
+                <Box className='w-full'>
                     <LinearProgress color={color} variant='determinate' value={percentage} />
                 </Box>
             </Tooltip>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Box, List, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 
 import { useRouteLoaderData } from 'react-router-dom'
 import { SectionModel, WorkModel } from '@sl/db/models'
@@ -38,21 +38,19 @@ const TrackerBox = () => {
 
     return (
         <Box className='p-3'>
-            <Typography variant='h6' textAlign='right'>
+            <Typography variant='h6' textAlign='right' className='pb-2'>
                 {totalWords.toLocaleString(settings.language)}
                 {work.wordGoal
                     ? ` /${work.wordGoal.toLocaleString(settings.language)} (${totalPercentage}%)`
                     : ''}
             </Typography>
-            <List dense>
-                {parts.length > 1 ? (
-                    <PartList parts={parts} chapters={chapters} scenes={scenes} />
-                ) : chapters.length > 1 ? (
-                    <ChapterList chapters={chapters} scenes={scenes} />
-                ) : (
-                    <SceneList scenes={scenes} />
-                )}
-            </List>
+            {parts.length > 1 ? (
+                <PartList parts={parts} chapters={chapters} scenes={scenes} />
+            ) : chapters.length > 1 ? (
+                <ChapterList chapters={chapters} scenes={scenes} />
+            ) : (
+                <SceneList scenes={scenes} />
+            )}
         </Box>
     )
 }

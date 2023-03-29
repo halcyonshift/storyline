@@ -76,6 +76,7 @@ const DeadlinesBox = () => {
                         <TimelineContent>
                             {deadline.items.map((item) => (
                                 <Typography
+                                    key={item.label}
                                     variant='body1'
                                     sx={{ color: status(item.status, 700).color }}>
                                     {item.label}

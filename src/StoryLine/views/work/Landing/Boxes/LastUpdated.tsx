@@ -57,7 +57,10 @@ const LastUpdatedBox = () => {
     return (
         <List disablePadding>
             {lastUpdated.map((item, index) => (
-                <ListItem divider={Boolean(index !== lastUpdated.length - 1)} disablePadding>
+                <ListItem
+                    key={item.id}
+                    divider={Boolean(index !== lastUpdated.length - 1)}
+                    disablePadding>
                     <ListItemButton onClick={() => loadTab(item)}>
                         <ListItemText
                             primary={item.label}
