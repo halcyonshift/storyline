@@ -1,4 +1,4 @@
-import { useEffect, useState, SyntheticEvent } from 'react'
+import { useEffect, useState, SyntheticEvent, useCallback } from 'react'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
@@ -20,11 +20,11 @@ import { Line } from 'react-chartjs-2'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { YYYYMMDD } from '@sl/constants'
-import { WorkModel } from '@sl/db/models'
+import { StatisticModel, WorkModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import useSettings from '@sl/theme/useSettings'
 import { getHex } from '@sl/theme/utils'
-import { ObjectNumber } from '@sl/types'
+import { ObjectNumber, ObjectObjectNumber } from '@sl/types'
 
 ChartJS.register(
     annotationPlugin,
@@ -67,6 +67,39 @@ const WordChartsBox = () => {
     const work = useRouteLoaderData('work') as WorkModel
     const [statistics, setStatistics] = useState<ObjectNumber>({})
 
+    const fillStats = useCallback(
+        (stats: StatisticModel[]) => {
+            const sectionIds = [...new Set(stats.map((stat) => stat.section.id))]
+            const fill: ObjectObjectNumber = {}
+
+            statisticsDates.map((date) => {
+                const ymd = date.toFormat(YYYYMMDD)
+                fill[ymd] = {}
+
+                sectionIds.map((sectionId) => {
+                    fill[ymd][sectionId] =
+                        stats.find(
+                            (stat) =>
+                                stat.section.id === sectionId &&
+                                DateTime.fromJSDate(stat.createdAt).toFormat(YYYYMMDD) === ymd
+                        )?.words || 0
+
+                    if (!fill[ymd][sectionId]) {
+                        try {
+                            fill[ymd][sectionId] =
+                                fill[date.minus({ days: 1 }).toFormat(YYYYMMDD)][sectionId]
+                        } catch {
+                            fill[ymd][sectionId] = 0
+                        }
+                    }
+                })
+            })
+
+            return fill
+        },
+        [statisticsDates]
+    )
+
     useEffect(() => {
         work.statistics
             .extend(
@@ -80,18 +113,18 @@ const WordChartsBox = () => {
                 Q.sortBy('created_at', Q.asc)
             )
             .fetch()
-            .then((stats) => {
+            .then((stats) =>
                 setStatistics(
-                    stats.reduce((o, stat) => {
-                        const ymd = DateTime.fromJSDate(stat.createdAt).toFormat(YYYYMMDD)
+                    Object.entries(fillStats(stats)).reduce((o, [date, stats]) => {
+                        const ymd = date
                         if (!o[ymd]) {
                             o[ymd] = 0
                         }
-                        o[ymd] += stat.words
+                        o[ymd] += Object.values(stats).reduce((count, stat) => count + stat, 0)
                         return o
                     }, {} as ObjectNumber)
                 )
-            })
+            )
         tabs.setShowTabs(false)
     }, [])
 
@@ -158,12 +191,13 @@ const WordChartsBox = () => {
                             datasets: [
                                 {
                                     label: '',
-                                    data: statisticsDates.map(
-                                        (d) =>
+                                    data: statisticsDates.map((d) => {
+                                        return (
                                             (statistics[d.toFormat(YYYYMMDD)] || 0) -
                                             (statistics[d.minus({ days: 1 }).toFormat(YYYYMMDD)] ||
                                                 0)
-                                    ),
+                                        )
+                                    }),
                                     borderColor: getHex('emerald', 600),
                                     backgroundColor: getHex('emerald', 100)
                                 }
