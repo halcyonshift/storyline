@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Button from '@mui/material/Button'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import { Status as Options, type StatusType } from '@sl/constants/status'
@@ -9,6 +9,8 @@ import { StatusProps } from './types'
 const Status = ({ model }: StatusProps) => {
     const { t } = useTranslation()
     const [status, setStatus] = useState<StatusType>(model.status)
+
+    useEffect(() => setStatus(model.status), [model.id])
 
     return (
         <ButtonGroup size='small' variant='outlined'>
