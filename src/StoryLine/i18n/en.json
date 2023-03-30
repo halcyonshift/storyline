@@ -531,6 +531,13 @@
             }
         },
         "work": {
+            "insight": {
+                "word": {
+                    "day": "Daily",
+                    "week": "Weekly",
+                    "month": "Monthly"
+                }
+            },
             "landing": {
                 "deadline": {
                     "none": "No upcoming deadlines!"

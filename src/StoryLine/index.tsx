@@ -131,7 +131,7 @@ const router = createHashRouter([
                     },
                     {
                         path: 'insight',
-                        element: <p>Insights</p>
+                        element: <WorkViews.InsightView />
                     },
                     {
                         path: 'item/:item_id',
