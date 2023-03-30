@@ -546,6 +546,10 @@
                     "count": "Total count",
                     "written": "Daily count"
                 }
+            },
+            "overview": {
+                "summary": "Summary",
+                "timeline": "Timeline"
             }
         }
     }

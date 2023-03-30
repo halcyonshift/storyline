@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemText from '@mui/material/ListItemText'
+import { IconButton, List, ListItem, ListItemButton, ListItemText } from '@mui/material'
+
 import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { take } from 'lodash'
 import { DateTime } from 'luxon'
-import { useRouteLoaderData } from 'react-router-dom'
+import { useNavigate, useRouteLoaderData } from 'react-router-dom'
+import { GLOBAL_ICONS } from '@sl/constants/icons'
 import { WorkModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import useSettings from '@sl/theme/useSettings'
@@ -17,6 +16,7 @@ const LastUpdatedBox = () => {
     const settings = useSettings()
     const work = useRouteLoaderData('work') as WorkModel
     const { loadTab } = useTabs()
+    const navigate = useNavigate()
 
     useEffect(() => {
         work.section.fetch()
@@ -60,7 +60,15 @@ const LastUpdatedBox = () => {
                 <ListItem
                     key={item.id}
                     divider={Boolean(index !== lastUpdated.length - 1)}
-                    disablePadding>
+                    disablePadding
+                    secondaryAction={
+                        <>
+                            <IconButton
+                                onClick={() => navigate(`/works/${work.id}/${item.link}/edit`)}>
+                                {GLOBAL_ICONS.edit}
+                            </IconButton>
+                        </>
+                    }>
                     <ListItemButton onClick={() => loadTab(item)}>
                         <ListItemText
                             primary={item.label}

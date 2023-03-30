@@ -46,7 +46,6 @@ export default class SectionModel extends Model {
     @children('note') note!: Query<NoteModel>
     @children('statistic') statistic!: Query<StatisticModel>
 
-    sortDate: number
     wordCount = 0
 
     get displayTitle() {
@@ -87,27 +86,9 @@ export default class SectionModel extends Model {
         return date.isValid ? date.toFormat('EEEE dd LLL yyyy H:mm') : this.date
     }
 
-    async getSortDate() {
-        let date: string | DateTime = this.date
-
-        if (!date) {
-            if (this.isScene) {
-                const chapter = await this.section.fetch()
-
-                if (!chapter.date) {
-                    const part = await chapter.section.fetch()
-                    date = part.date
-                } else {
-                    date = chapter.date
-                }
-            } else if (this.isChapter) {
-                const part = await this.section.fetch()
-                date = part.date
-            }
-        }
-
-        date = DateTime.fromSQL(date)
-        this.sortDate = date.isValid ? date.toSeconds() : 0
+    get sortDate() {
+        const date = DateTime.fromSQL(this.date)
+        return date.isValid ? date.toSeconds() : 0
     }
 
     get isChapter() {

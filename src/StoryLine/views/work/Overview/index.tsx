@@ -1,61 +1,50 @@
 import { useEffect, useState } from 'react'
-import Box from '@mui/material/Box'
-import { DateTime, Interval } from 'luxon'
+import { Box, Button, ButtonGroup } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { useRouteLoaderData } from 'react-router-dom'
+import { OverviewViewOption, OverviewViewOptionType } from '@sl/constants/overviewView'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { SectionModel, WorkModel } from '@sl/db/models'
-import { DateObject, ViewOptionType } from './types'
-import { useRouteLoaderData } from 'react-router-dom'
+import Summary from './Summary'
+import Timeline from './Timeline'
 
 const OverviewView = () => {
     const work = useRouteLoaderData('work') as WorkModel
-    const [view, setView] = useState<ViewOptionType>('SUMMARY')
+    const [chapters, setChapters] = useState<SectionModel[]>([])
+    const [parts, setParts] = useState<SectionModel[]>([])
+    const [scenes, setScenes] = useState<SectionModel[]>([])
+    const [view, setView] = useState<OverviewViewOptionType>(OverviewViewOption.SUMMARY)
     const { setShowTabs } = useTabs()
+    const { t } = useTranslation()
 
     useEffect(() => {
         setShowTabs(true)
+        work.chapters.fetch().then((chapters) => setChapters(chapters))
+        work.parts.fetch().then((parts) => setParts(parts))
+        work.scenes.fetch().then((scenes) => setScenes(scenes))
     }, [])
-    /*
-    useEffect(() => {
-        Promise.all(
-            [].concat(
-                ...[
-                    sections
-                        .filter((section) => !section.isVersion)
-                        .map(async (section) => {
-                            await section.getSortDate()
-                            return section
-                        })
-                ]
-            )
-        ).then((sections) => {
 
-            const dates = sections
-                .filter((section) => section.sortDate > 0)
-                .map((section) => section.sortDate)
-
-            if (!dates.length) return
-
-            Math.min(...dates)
-            Math.max(...dates)
-
-            const partsByDate = sections
-                .filter((section) => section.isPart)
-                .sort((a, b) => a.sortDate - b.sortDate)
-
-            const chaptersByDate = sections
-                .filter((section) => section.isChapter)
-                .sort((a, b) => a.sortDate - b.sortDate)
-
-            const scenesByDate = sections
-                .filter((section) => section.isScene)
-                .sort((a, b) => a.sortDate - b.sortDate)
-
-            console.log(intervals)
-
-        })
-    }, [sections, characters, notes])
-    */
-    return <Box className='p-5 border-t-8 border-slate-100'>OverView here</Box>
+    return (
+        <Box className='p-5 border-t-8 border-slate-100'>
+            <ButtonGroup disableElevation>
+                <Button
+                    variant={view === OverviewViewOption.SUMMARY ? 'contained' : 'outlined'}
+                    onClick={() => setView(OverviewViewOption.SUMMARY)}>
+                    {t('view.work.overview.summary')}
+                </Button>
+                <Button
+                    variant={view === OverviewViewOption.TIMELINE ? 'contained' : 'outlined'}
+                    onClick={() => setView(OverviewViewOption.TIMELINE)}>
+                    {t('view.work.overview.timeline')}
+                </Button>
+            </ButtonGroup>
+            {view === OverviewViewOption.SUMMARY ? (
+                <Summary parts={parts} chapters={chapters} scenes={scenes} />
+            ) : (
+                <Timeline work={work} />
+            )}
+        </Box>
+    )
 }
 
 export default OverviewView
