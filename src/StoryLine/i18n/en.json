@@ -548,8 +548,15 @@
                 }
             },
             "overview": {
-                "summary": "Summary",
-                "timeline": "Timeline"
+                "summary": {
+                    "title": "Summary"
+                },
+                "timeline": {
+                    "title": "Timeline",
+                    "character": {
+                        "dob": "{{name}} born"
+                    }
+                }
             }
         }
     }

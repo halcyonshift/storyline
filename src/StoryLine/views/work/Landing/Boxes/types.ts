@@ -13,12 +13,10 @@ export type RandomCharacterType = {
     traits: string
 }
 
-type TimelineItemType = {
+export type TimelineItemType = {
     date: DateTime
     items: { label: string; status: StatusType }[]
 }
-
-export type TimelineType = TimelineItemType[]
 
 export type DeadlineType = {
     [key: string]: TimelineItemType

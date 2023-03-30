@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Box from '@mui/material/Box'
 import { TextField as MuiTextField } from '@mui/material'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 import { DateTime } from 'luxon'
@@ -22,16 +22,12 @@ const DateField = ({
         <Box className='flex'>
             <Box className='flex-grow'>
                 {mode === 'picker' ? (
-                    <DatePicker
+                    <DateTimePicker
                         label={t(label)}
-                        inputFormat='d/M/yyyy'
                         disableMaskedInput
                         value={form.values[fieldName] || null}
                         onChange={(value: DateTime | null) => {
-                            form.setFieldValue(
-                                fieldName,
-                                value ? value.toFormat('yyyy-MM-dd') : null
-                            )
+                            form.setFieldValue(fieldName, value ? value.toSQL() : null)
                         }}
                         renderInput={(params) => (
                             <MuiTextField fullWidth margin='dense' {...params} />

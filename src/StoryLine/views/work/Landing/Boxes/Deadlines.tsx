@@ -15,11 +15,11 @@ import { useRouteLoaderData } from 'react-router-dom'
 import { YYYYMMDD } from '@sl/constants'
 import { WorkModel } from '@sl/db/models'
 import useSettings from '@sl/theme/useSettings'
-import { TimelineType, DeadlineType } from './types'
+import { TimelineItemType, DeadlineType } from './types'
 import { status } from '@sl/theme/utils'
 
 const DeadlinesBox = () => {
-    const [timeline, setTimeline] = useState<TimelineType>([])
+    const [timeline, setTimeline] = useState<TimelineItemType[]>([])
     const work = useRouteLoaderData('work') as WorkModel
     const settings = useSettings()
     const { t } = useTranslation()

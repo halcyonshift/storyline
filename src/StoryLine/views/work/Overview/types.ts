@@ -15,7 +15,8 @@ export type OverviewTimelineProps = {
     work: WorkModel
 }
 
-export type TimelineItemTypes = {
+export type TimelineItemType = {
+    id: string
     title: string
     text: string
     sortDate: number
@@ -23,4 +24,13 @@ export type TimelineItemTypes = {
     character: CharacterModel | null
     item: ItemModel | null
     location: LocationModel | null
+}
+
+export type TimelineType = {
+    date: DateTime
+    items: TimelineItemType[]
+}
+
+export type TimelineGroupType = {
+    [key: string]: TimelineType
 }

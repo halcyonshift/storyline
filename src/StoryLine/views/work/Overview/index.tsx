@@ -30,12 +30,12 @@ const OverviewView = () => {
                 <Button
                     variant={view === OverviewViewOption.SUMMARY ? 'contained' : 'outlined'}
                     onClick={() => setView(OverviewViewOption.SUMMARY)}>
-                    {t('view.work.overview.summary')}
+                    {t('view.work.overview.summary.title')}
                 </Button>
                 <Button
                     variant={view === OverviewViewOption.TIMELINE ? 'contained' : 'outlined'}
                     onClick={() => setView(OverviewViewOption.TIMELINE)}>
-                    {t('view.work.overview.timeline')}
+                    {t('view.work.overview.timeline.title')}
                 </Button>
             </ButtonGroup>
             {view === OverviewViewOption.SUMMARY ? (
