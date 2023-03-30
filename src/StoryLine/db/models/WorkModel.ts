@@ -4,7 +4,9 @@ import { children, date, field, lazy, readonly, text, writer } from '@nozbe/wate
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
 import { SectionMode } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
+import { SearchResultType } from '@sl/layouts/Work/Panel/Search/types'
 import { wordCount } from '@sl/utils'
+
 import {
     CharacterDataType,
     ItemDataType,
@@ -48,14 +50,47 @@ export default class WorkModel extends Model {
     @children('statistic') statistic!: Query<StatisticModel>
 
     // ToDo finish search
-    async search(query: string, sceneOnly: boolean, caseSensitive: boolean, fullWord: boolean) {
-        const regex = new RegExp(fullWord ? `\\b${query}\\b` : query, caseSensitive ? 'g' : 'gi')
+    async search(
+        query: string,
+        sceneOnly: boolean,
+        caseSensitive: boolean,
+        fullWord: boolean
+    ): Promise<SearchResultType[]> {
+        const regex = new RegExp(
+            fullWord
+                ? `(?:(.{0,25})\\b(${query})\\b(.{0,25}))`
+                : `(?:(.{0,25})(${query})(.{0,25}))`,
+            caseSensitive ? 'g' : 'gi'
+        )
 
         if (sceneOnly) {
             const scenes = await this.scenes.fetch()
-            const results = scenes.filter((scene) => scene.body.match(regex))
+            const results: SearchResultType[] = []
+            scenes.map((scene) => {
+                const text = scene.body.replace('</p>', ' ').replace(/(<([^>]+)>)/gi, '')
+                const matches = [...text.matchAll(regex)]
+                if (matches.length) {
+                    const result: SearchResultType = {
+                        id: scene.id,
+                        label: scene.displayTitle,
+                        link: `section/${scene.id}/${query}`,
+                        excerpts: []
+                    }
+                    for (const match of matches) {
+                        result.excerpts.push(
+                            `${match[1] ? '...' : ''}${match[0]
+                                .replace('&nbsp;', ' ')
+                                .replace('\n', ' ')}${match[3] ? '...' : ''}`
+                        )
+                    }
+                    results.push(result)
+                }
+            })
+
             return results
         }
+
+        return []
     }
 
     async wordCount() {

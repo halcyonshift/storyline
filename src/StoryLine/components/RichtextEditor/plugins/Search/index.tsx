@@ -10,19 +10,22 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { $getRoot, COMMAND_PRIORITY_EDITOR, createCommand, LexicalCommand, TextNode } from 'lexical'
 import debounce from 'lodash.debounce'
-import { useOnKeyPressed } from '@sl/utils/useKeyPress'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
+import { useOnKeyPressed } from '@sl/utils/useKeyPress'
 import { ResultType } from './types'
 
 export const TOGGLE_SEARCH_COMMAND: LexicalCommand<boolean> = createCommand()
 
 const SearchPlugin = () => {
+    const params = useParams()
     const [fullWord, setFullWord] = useState<boolean>(false)
     const [caseSensitive, setCaseSensitive] = useState<boolean>(false)
+    const [defaultKeywords, setDefaultKeywords] = useState<string>(params.query)
     const [keyWords, setKeyWords] = useState<string>('')
     const [results, setResults] = useState<ResultType[]>([])
     const [resultIndex, setResultIndex] = useState<number | null>(null)
-    const [open, setOpen] = useState<boolean>(false)
+    const [open, setOpen] = useState<boolean>(Boolean(params.query))
 
     const [editor] = useLexicalComposerContext()
     const { t } = useTranslation()
@@ -67,7 +70,10 @@ const SearchPlugin = () => {
         })
     }, [editor, keyWords, fullWord, caseSensitive])
 
-    useEffect(() => doSearch(keyWords), [fullWord, caseSensitive])
+    useEffect(
+        () => doSearch(keyWords || defaultKeywords),
+        [defaultKeywords, fullWord, caseSensitive]
+    )
 
     useEffect(() => {
         setResultIndex(null)
@@ -111,6 +117,7 @@ const SearchPlugin = () => {
                         name='search'
                         fullWidth
                         variant='standard'
+                        defaultValue={params.query}
                         onChange={(e) => doSearch(e.target.value)}
                     />
                 </Box>

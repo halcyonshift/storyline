@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import LinearProgress from '@mui/material/LinearProgress'
 import { Tooltip } from '@mui/material'
-import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import { ProgressProps } from './types'
 import useSettings from '@sl/theme/useSettings'

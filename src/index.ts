@@ -16,31 +16,41 @@ contextMenu({
 })
 
 const createWindow = (): void => {
+    const splashWindow = new BrowserWindow({
+        width: 1024,
+        height: 768,
+        frame: false
+    })
+
+    splashWindow.loadFile('./src/splash.html')
+    splashWindow.center()
+
     const mainWindow = new BrowserWindow({
         width: 1024,
         height: 768,
         minWidth: 1024,
         minHeight: 768,
+        show: false,
         webPreferences: {
             preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
             spellcheck: true
         }
     })
 
+    mainWindow.webContents.openDevTools()
+
     mainWindow.on('will-resize', (_, newBounds) => {
         mainWindow.webContents.send('window-will-resize', newBounds)
     })
 
-    mainWindow
-        .loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
-        .then(() => {
-            if (!app.isPackaged) {
-                mainWindow.webContents.openDevTools()
-            }
-        })
-        .catch(() => null)
+    mainWindow.once('ready-to-show', () => {
+        splashWindow.close()
+        mainWindow.show()
+    })
+
+    mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY).catch(() => null)
     /*
-            // ToDo - make work
+            // ToDo - make work for inside/outside links
     mainWindow.webContents.on('will-navigate', function (e, url) {
         e.preventDefault()
         shell.openExternal(url)

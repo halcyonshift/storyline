@@ -194,7 +194,7 @@ const router = createHashRouter([
                         element: <p>Relation</p>
                     },
                     {
-                        path: 'section/:section_id',
+                        path: 'section/:section_id/:query?',
                         id: 'section',
                         loader: async ({ params }) =>
                             await database.get<SectionModel>('section').find(params.section_id),
