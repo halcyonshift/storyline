@@ -2,7 +2,7 @@ import { ReactElement } from 'react'
 import { TooltipIconButtonProps } from '@sl/components/TooltipIconButton/types'
 
 export type PanelProps = {
-    navigation: TooltipIconButtonProps[]
+    navigation?: TooltipIconButtonProps[]
     children?: ReactElement | ReactElement[]
     action?: ReactElement
 }

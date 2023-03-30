@@ -21,12 +21,10 @@ const SearchPlugin = () => {
     const params = useParams()
     const [fullWord, setFullWord] = useState<boolean>(false)
     const [caseSensitive, setCaseSensitive] = useState<boolean>(false)
-    const [defaultKeywords, setDefaultKeywords] = useState<string>(params.query)
     const [keyWords, setKeyWords] = useState<string>('')
     const [results, setResults] = useState<ResultType[]>([])
     const [resultIndex, setResultIndex] = useState<number | null>(null)
     const [open, setOpen] = useState<boolean>(Boolean(params.query))
-
     const [editor] = useLexicalComposerContext()
     const { t } = useTranslation()
 
@@ -70,10 +68,7 @@ const SearchPlugin = () => {
         })
     }, [editor, keyWords, fullWord, caseSensitive])
 
-    useEffect(
-        () => doSearch(keyWords || defaultKeywords),
-        [defaultKeywords, fullWord, caseSensitive]
-    )
+    useEffect(() => doSearch(keyWords || params.query), [params.query, fullWord, caseSensitive])
 
     useEffect(() => {
         setResultIndex(null)

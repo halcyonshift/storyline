@@ -1,33 +1,19 @@
 import { useEffect, useState } from 'react'
-import {
-    Box,
-    Checkbox,
-    Chip,
-    CircularProgress,
-    FormControlLabel,
-    InputBase,
-    Typography
-} from '@mui/material'
+import { Box, Checkbox, CircularProgress, FormControlLabel, InputBase } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import debounce from 'lodash.debounce'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import Panel from '@sl/components/Panel'
-import { SEARCH_ICONS } from '@sl/constants/icons'
 import WorkModel from '@sl/db/models/WorkModel'
-import useTabs from '../../Tabs/useTabs'
-
-import { SearchResultType } from './types'
+import Result from './Result'
 
 const SearchInput = styled(InputBase)(() => ({
     '& .MuiInputBase-input': {
-        borderRadius: 0,
-        width: '100vw',
-        padding: '10px 12px' // ToDo get proper spacing
+        borderRadius: 0
     }
 }))
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const SearchPanel = () => {
     const [fullWord, setFullWord] = useState<boolean>(false)
     const [caseSensitive, setCaseSensitive] = useState<boolean>(false)
@@ -37,7 +23,6 @@ const SearchPanel = () => {
     const [results, setResults] = useState([])
     const { t } = useTranslation()
     const work = useRouteLoaderData('work') as WorkModel
-    const { loadTab } = useTabs()
 
     const doSearch = debounce(async (query) => {
         query = query.replace(/(<([^>]+)>)/gi, '')
@@ -54,48 +39,18 @@ const SearchPanel = () => {
         doSearch(keyWords)
     }, [fullWord, caseSensitive, sceneOnly])
 
-    const Result = ({ result }: { result: SearchResultType }) => {
-        const [show, setShow] = useState<boolean>(false)
-        return (
-            <>
-                <Box className='flex justify-between px-2 py-1' onClick={() => setShow(!show)}>
-                    <Typography
-                        variant='body1'
-                        className='whitespace-nowrap overflow-hidden text-ellipsis
-                        pr-2'>
-                        {result.label}
-                    </Typography>
-                    <Chip color='primary' size='small' label={result.excerpts.length} />
-                </Box>
-                {show ? (
-                    <Box className='pl-5 pr-2'>
-                        {result.excerpts.map((excerpt: string) => (
-                            <Typography variant='body2' onClick={() => loadTab(result)}>
-                                {excerpt}
-                            </Typography>
-                        ))}
-                    </Box>
-                ) : null}
-            </>
-        )
-    }
-
     return (
-        <Panel
-            navigation={[
-                {
-                    link: 'addNote',
-                    text: 'layout.work.panel.search.clear',
-                    icon: SEARCH_ICONS.clear
-                }
-            ]}>
+        <Panel>
             <Box className='flex h-full flex-col'>
                 <Box className='border-b-2 bg-white'>
                     <SearchInput
                         id='search'
                         autoFocus
+                        type='search'
                         placeholder={t('layout.work.panel.search.form.placeholder')}
                         onChange={(e) => doSearch(e.target.value)}
+                        fullWidth
+                        className='border-b-2 h-12 px-3'
                     />
                     <Box className='grid grid-cols-1 xl:grid-cols-2 gap-0 px-2'>
                         <FormControlLabel
@@ -150,4 +105,5 @@ const SearchPanel = () => {
         </Panel>
     )
 }
+
 export default SearchPanel

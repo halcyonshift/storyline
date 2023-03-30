@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box'
-import Stack from '@mui/material/Stack'
 import { useTranslation } from 'react-i18next'
 import TextareaField from '@sl/components/form/TextareaField'
 import { TabPanelProps } from './types'

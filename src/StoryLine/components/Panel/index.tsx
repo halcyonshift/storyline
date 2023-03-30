@@ -12,18 +12,22 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
         <Box
             sx={{ backgroundColor: settings.getHex(50), width }}
             className='flex flex-col flex-grow h-0'>
-            <Stack direction='row' alignItems='center' className='px-1 h-12'>
-                {navigation.map((item) => (
-                    <TooltipIconButton
-                        key={item.text}
-                        link={item.link}
-                        text={item.text}
-                        icon={item.icon}
-                        onClick={item.onClick}
-                    />
-                ))}
-                {action ? <Box className='ml-auto'>{action}</Box> : null}
-            </Stack>
+            {navigation || action ? (
+                <Stack direction='row' alignItems='center' className='px-1 h-12'>
+                    {navigation
+                        ? navigation.map((item) => (
+                              <TooltipIconButton
+                                  key={item.text}
+                                  link={item.link}
+                                  text={item.text}
+                                  icon={item.icon}
+                                  onClick={item.onClick}
+                              />
+                          ))
+                        : null}
+                    {action ? <Box className='ml-auto'>{action}</Box> : null}
+                </Stack>
+            ) : null}
             <Box className='flex-grow overflow-y-auto scrollbar-hidden border-t-2'>{children}</Box>
             <Box
                 className=' border-r-slate-400 border-r-2 absolute w-0 top-0 right-[-1px]
