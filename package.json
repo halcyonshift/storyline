@@ -9,7 +9,7 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts,.tsx .",
+    "lint": "eslint --max-warnings=0 --ext .ts,.tsx .",
     "test:unit": "yarn jest ./__tests__/unit --silent",
     "test:integration": "PWDEBUG=1 yarn playwright test",
     "validate": "yarn lint",
