@@ -106,15 +106,15 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                         <FormatListBulletedIcon />
                     </IconButton>
                 </Tooltip>
-                <Tooltip title={t('layout.work.navigation.relation')} placement='right'>
+                <Tooltip title={t('layout.work.navigation.connection')} placement='right'>
                     <IconButton
                         color='inherit'
-                        aria-label={t('layout.work.navigation.relation')}
+                        aria-label={t('layout.work.navigation.connection')}
                         onClick={() => {
                             loadTab({
-                                id: 'relation',
-                                label: t('layout.work.navigation.relation'),
-                                link: 'relation'
+                                id: 'connection',
+                                label: t('layout.work.navigation.connection'),
+                                link: 'connection'
                             })
                         }}>
                         <HubIcon />

@@ -2,10 +2,11 @@ import { Database } from '@nozbe/watermelondb'
 import LokiJSAdapter from '@nozbe/watermelondb/adapters/lokijs'
 
 import schema from './schema'
-// import migrations from './migrations'
+import migrations from './migrations'
 
 import {
     CharacterModel,
+    ConnectionModel,
     ItemModel,
     LocationModel,
     NoteModel,
@@ -16,7 +17,7 @@ import {
 
 const adapter = new LokiJSAdapter({
     schema,
-    // migrations,
+    migrations,
     useWebWorker: false,
     useIncrementalIndexedDB: true,
     dbName: 'storyline-dev',
@@ -50,6 +51,7 @@ const database = new Database({
     adapter,
     modelClasses: [
         CharacterModel,
+        ConnectionModel,
         ItemModel,
         LocationModel,
         NoteModel,

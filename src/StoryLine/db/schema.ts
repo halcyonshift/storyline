@@ -1,54 +1,8 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 const schema = appSchema({
-    version: 1,
+    version: 2,
     tables: [
-        tableSchema({
-            name: 'work',
-            columns: [
-                { name: 'title', type: 'string' },
-                { name: 'summary', type: 'string', isOptional: true },
-                { name: 'author', type: 'string', isOptional: true },
-                { name: 'language', type: 'string' },
-                { name: 'word_goal', type: 'number', isOptional: true },
-                { name: 'deadline_at', type: 'number', isOptional: true },
-                { name: 'image', type: 'string', isOptional: true },
-                { name: 'last_opened_at', type: 'number', isOptional: true },
-                { name: 'status', type: 'string', isIndexed: true },
-                { name: 'created_at', type: 'number' },
-                { name: 'updated_at', type: 'number' }
-            ]
-        }),
-        tableSchema({
-            name: 'section',
-            columns: [
-                { name: 'work_id', type: 'string', isIndexed: true },
-                { name: 'section_id', type: 'string', isIndexed: true, isOptional: true },
-                { name: 'title', type: 'string', isOptional: true },
-                { name: 'mode', type: 'string' },
-                { name: 'body', type: 'string', isOptional: true },
-                { name: 'description', type: 'string', isOptional: true },
-                { name: 'order', type: 'number' },
-                { name: 'date', type: 'string', isOptional: true },
-                { name: 'word_goal', type: 'number', isOptional: true },
-                { name: 'deadline_at', type: 'number', isOptional: true },
-                { name: 'status', type: 'string', isIndexed: true },
-                { name: 'pov', type: 'string', isOptional: true },
-                { name: 'pov_character_id', type: 'string', isOptional: true },
-                { name: 'created_at', type: 'number' },
-                { name: 'updated_at', type: 'number' }
-            ]
-        }),
-        tableSchema({
-            name: 'statistic',
-            columns: [
-                { name: 'work_id', type: 'string', isIndexed: true },
-                { name: 'section_id', type: 'string', isIndexed: true, isOptional: true },
-                { name: 'words', type: 'number', isOptional: true },
-                { name: 'created_at', type: 'number' },
-                { name: 'updated_at', type: 'number' }
-            ]
-        }),
         tableSchema({
             name: 'character',
             columns: [
@@ -93,17 +47,19 @@ const schema = appSchema({
             ]
         }),
         tableSchema({
-            name: 'location',
+            name: 'connection',
             columns: [
                 { name: 'work_id', type: 'string', isIndexed: true },
-                { name: 'location_id', type: 'string', isIndexed: true },
-                { name: 'name', type: 'string' },
-                { name: 'body', type: 'string', isOptional: true },
-                { name: 'longitude', type: 'string', isOptional: true },
-                { name: 'latitude', type: 'string', isOptional: true },
-                { name: 'url', type: 'string', isOptional: true },
-                { name: 'image', type: 'string', isOptional: true },
-                { name: 'status', type: 'string', isIndexed: true },
+                { name: 'table_a', type: 'string' },
+                { name: 'table_b', type: 'string' },
+                { name: 'id_a', type: 'string' },
+                { name: 'id_b', type: 'string' },
+                { name: 'mode', type: 'string' },
+                { name: 'to', type: 'boolean' },
+                { name: 'from', type: 'boolean' },
+                { name: 'body', type: 'string' },
+                { name: 'date', type: 'string', isOptional: true },
+                { name: 'color', type: 'string', isOptional: true },
                 { name: 'created_at', type: 'number' },
                 { name: 'updated_at', type: 'number' }
             ]
@@ -115,6 +71,22 @@ const schema = appSchema({
                 { name: 'name', type: 'string' },
                 { name: 'body', type: 'string' },
                 { name: 'date', type: 'string', isOptional: true },
+                { name: 'url', type: 'string', isOptional: true },
+                { name: 'image', type: 'string', isOptional: true },
+                { name: 'status', type: 'string', isIndexed: true },
+                { name: 'created_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
+            ]
+        }),
+        tableSchema({
+            name: 'location',
+            columns: [
+                { name: 'work_id', type: 'string', isIndexed: true },
+                { name: 'location_id', type: 'string', isIndexed: true },
+                { name: 'name', type: 'string' },
+                { name: 'body', type: 'string', isOptional: true },
+                { name: 'longitude', type: 'string', isOptional: true },
+                { name: 'latitude', type: 'string', isOptional: true },
                 { name: 'url', type: 'string', isOptional: true },
                 { name: 'image', type: 'string', isOptional: true },
                 { name: 'status', type: 'string', isIndexed: true },
@@ -139,6 +111,52 @@ const schema = appSchema({
                 { name: 'color', type: 'string', isOptional: true },
                 { name: 'url', type: 'string', isOptional: true },
                 { name: 'order', type: 'number', isOptional: true },
+                { name: 'status', type: 'string', isIndexed: true },
+                { name: 'created_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
+            ]
+        }),
+        tableSchema({
+            name: 'section',
+            columns: [
+                { name: 'work_id', type: 'string', isIndexed: true },
+                { name: 'section_id', type: 'string', isIndexed: true, isOptional: true },
+                { name: 'title', type: 'string', isOptional: true },
+                { name: 'mode', type: 'string' },
+                { name: 'body', type: 'string', isOptional: true },
+                { name: 'description', type: 'string', isOptional: true },
+                { name: 'order', type: 'number' },
+                { name: 'date', type: 'string', isOptional: true },
+                { name: 'word_goal', type: 'number', isOptional: true },
+                { name: 'deadline_at', type: 'number', isOptional: true },
+                { name: 'status', type: 'string', isIndexed: true },
+                { name: 'pov', type: 'string', isOptional: true },
+                { name: 'pov_character_id', type: 'string', isOptional: true },
+                { name: 'created_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
+            ]
+        }),
+        tableSchema({
+            name: 'statistic',
+            columns: [
+                { name: 'work_id', type: 'string', isIndexed: true },
+                { name: 'section_id', type: 'string', isIndexed: true, isOptional: true },
+                { name: 'words', type: 'number', isOptional: true },
+                { name: 'created_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
+            ]
+        }),
+        tableSchema({
+            name: 'work',
+            columns: [
+                { name: 'title', type: 'string' },
+                { name: 'summary', type: 'string', isOptional: true },
+                { name: 'author', type: 'string', isOptional: true },
+                { name: 'language', type: 'string' },
+                { name: 'word_goal', type: 'number', isOptional: true },
+                { name: 'deadline_at', type: 'number', isOptional: true },
+                { name: 'image', type: 'string', isOptional: true },
+                { name: 'last_opened_at', type: 'number', isOptional: true },
                 { name: 'status', type: 'string', isIndexed: true },
                 { name: 'created_at', type: 'number' },
                 { name: 'updated_at', type: 'number' }

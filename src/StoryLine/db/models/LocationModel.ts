@@ -13,6 +13,7 @@ import {
 import { LatLngExpression } from 'leaflet'
 import { Status, type StatusType } from '@sl/constants/status'
 import { LocationDataType } from './types'
+import ConnectionModel from './ConnectionModel'
 import NoteModel from './NoteModel'
 import WorkModel from './WorkModel'
 
@@ -52,6 +53,12 @@ export default class LocationModel extends Model {
     async destroyPermanently(): Promise<void> {
         const countChildren = await this.locations.fetchCount()
         if (countChildren) return
+
+        const connections = await this.collections
+            .get<ConnectionModel>('connection')
+            .query(Q.or(Q.where('id_a', this.id), Q.where('id_b', this.id)))
+        connections.map((connection) => connection.delete())
+
         if (this.image) {
             api.deleteFile(this.image)
         }

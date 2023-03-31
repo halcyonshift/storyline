@@ -190,8 +190,8 @@ const router = createHashRouter([
                         ]
                     },
                     {
-                        path: 'relation',
-                        element: <p>Relation</p>
+                        path: 'connection',
+                        element: <WorkViews.ConnectionView />
                     },
                     {
                         path: 'section/:section_id/:query?',

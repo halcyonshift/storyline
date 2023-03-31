@@ -11,6 +11,7 @@ import {
     writer
 } from '@nozbe/watermelondb/decorators'
 import { type StatusType } from '@sl/constants/status'
+import ConnectionModel from './ConnectionModel'
 import NoteModel from './NoteModel'
 import WorkModel from './WorkModel'
 import { ItemDataType } from './types'
@@ -59,6 +60,11 @@ export default class ItemModel extends Model {
     }
 
     @writer async delete() {
+        const connections = await this.collections
+            .get<ConnectionModel>('connection')
+            .query(Q.or(Q.where('id_a', this.id), Q.where('id_b', this.id)))
+        connections.map((connection) => connection.delete())
+
         await this.destroyPermanently()
         return true
     }

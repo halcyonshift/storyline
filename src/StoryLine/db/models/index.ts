@@ -1,4 +1,5 @@
 export { default as CharacterModel } from './CharacterModel'
+export { default as ConnectionModel } from './ConnectionModel'
 export { default as ItemModel } from './ItemModel'
 export { default as LocationModel } from './LocationModel'
 export { default as NoteModel } from './NoteModel'

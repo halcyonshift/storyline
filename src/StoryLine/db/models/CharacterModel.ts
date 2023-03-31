@@ -17,6 +17,7 @@ import SectionModel from './SectionModel'
 import WorkModel from './WorkModel'
 import { CharacterDataType } from './types'
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
+import ConnectionModel from './ConnectionModel'
 
 export default class CharacterModel extends Model {
     static table = 'character'
@@ -89,6 +90,11 @@ export default class CharacterModel extends Model {
     }
 
     async destroyPermanently(): Promise<void> {
+        const connections = await this.collections
+            .get<ConnectionModel>('connection')
+            .query(Q.or(Q.where('id_a', this.id), Q.where('id_b', this.id)))
+        connections.map((connection) => connection.delete())
+
         const scenes = await this.section.fetch()
 
         if (scenes.length) {

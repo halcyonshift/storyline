@@ -6,24 +6,28 @@ import { SectionMode } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
 import { SearchResultType } from '@sl/layouts/Work/Panel/Search/types'
 import { wordCount } from '@sl/utils'
-
 import {
     CharacterDataType,
+    ConnectionDataType,
     ItemDataType,
     LocationDataType,
     NoteDataType,
     WorkDataType
 } from './types'
-import CharacterModel from './CharacterModel'
-import ItemModel from './ItemModel'
-import LocationModel from './LocationModel'
-import NoteModel from './NoteModel'
-import SectionModel from './SectionModel'
-import StatisticModel from './StatisticModel'
+import {
+    CharacterModel,
+    ConnectionModel,
+    ItemModel,
+    LocationModel,
+    NoteModel,
+    SectionModel,
+    StatisticModel
+} from '.'
 export default class WorkModel extends Model {
     static table = 'work'
     public static associations: Associations = {
         character: { type: 'has_many', foreignKey: 'work_id' },
+        connection: { type: 'has_many', foreignKey: 'work_id' },
         item: { type: 'has_many', foreignKey: 'work_id' },
         location: { type: 'has_many', foreignKey: 'work_id' },
         note: { type: 'has_many', foreignKey: 'work_id' },
@@ -41,8 +45,8 @@ export default class WorkModel extends Model {
     @date('last_opened_at') lastOpenedAt!: Date
     @readonly @date('created_at') createdAt!: Date
     @readonly @date('updated_at') updatedAt!: Date
-
     @children('character') character!: Query<CharacterModel>
+    @children('connection') connection!: Query<ConnectionModel>
     @children('item') item!: Query<ItemModel>
     @children('location') location!: Query<LocationModel>
     @children('note') note!: Query<NoteModel>
@@ -100,6 +104,7 @@ export default class WorkModel extends Model {
 
     async destroyPermanently(): Promise<void> {
         this.character.destroyAllPermanently()
+        this.connection.destroyAllPermanently()
         this.item.destroyAllPermanently()
         this.location.destroyAllPermanently()
         this.note.destroyAllPermanently()
@@ -137,6 +142,8 @@ export default class WorkModel extends Model {
         Q.where('mode', CharacterMode.TERTIARY),
         Q.sortBy('display_name', Q.asc)
     )
+
+    @lazy characters = this.character.extend(Q.sortBy('display_name', Q.asc))
 
     @lazy items = this.item.extend(Q.sortBy('name', Q.asc))
 
@@ -207,6 +214,22 @@ export default class WorkModel extends Model {
             character.ambitions = data.ambitions
             character.fears = data.fears
             character.status = Status.TODO
+        })
+    }
+
+    @writer async addConnection(data: ConnectionDataType) {
+        return await this.collections.get<ConnectionModel>('connection').create((connection) => {
+            connection.work.set(this)
+            connection.tableA = data.tableA
+            connection.tableB = data.tableB
+            connection.idA = data.idA
+            connection.idB = data.idB
+            connection.to = data.to
+            connection.from = data.from
+            connection.mode = data.mode
+            connection.body = data.body
+            connection.date = data.date
+            connection.color = data.color
         })
     }
 

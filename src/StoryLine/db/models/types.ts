@@ -42,6 +42,19 @@ export type CharacterDataType = {
     fears?: string
 }
 
+export type ConnectionDataType = {
+    body: string
+    mode: string
+    tableA: string
+    tableB: string
+    idA: string
+    idB: string
+    to: boolean
+    from: boolean
+    date?: string
+    color?: string
+}
+
 export type ItemDataType = {
     status?: StatusType
     name: string

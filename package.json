@@ -114,11 +114,13 @@
     "react-chartjs-2": "^5.2.0",
     "react-color": "^2.19.3",
     "react-dom": "18.2.0",
+    "react-draggable": "^4.4.5",
     "react-i18next": "12.2.0",
     "react-joyride": "^2.5.3",
     "react-leaflet": "^4.2.1",
     "react-router-dom": "6.8.1",
     "rxjs-hooks": "^0.8.0-alpha.0",
+    "vis-network": "^9.1.6",
     "yup": "^1.0.2"
   }
 }
