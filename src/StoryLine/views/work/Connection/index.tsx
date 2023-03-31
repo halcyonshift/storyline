@@ -95,7 +95,6 @@ const ConnectionView = () => {
                 try {
                     const objects: ObjType[] = data[connection.tableB as keyof typeof data]
                     const objB = objects.find((obj: ObjType) => obj.id === connection.idB)
-                    const image = objB?.image ? api.imageSrc(objB.image) : ''
                     o[connection.idB] = {
                         id: connection.idB,
                         label: objB.displayName,
