@@ -13,6 +13,7 @@ import {
     Select
 } from '@mui/material'
 import Draggable from 'react-draggable'
+import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
 import { DataSet, DataView, Network } from 'vis-network/standalone/esm/vis-network'
@@ -20,8 +21,9 @@ import ConnectionForm from '@sl/forms/Work/Connection'
 import { getInitialValues } from '@sl/forms/Work/utils'
 import { CharacterModel, ItemModel, LocationModel, NoteModel, WorkModel } from '@sl/db/models'
 import { ConnectionDataType } from '@sl/db/models/types'
+import { ObjType, NodeType, NodeTypeByID } from './types'
 
-import { useTranslation } from 'react-i18next'
+// ToDo -- setData?
 
 const PaperComponent = (props: PaperProps) => {
     return (
@@ -54,19 +56,6 @@ const ConnectionView = () => {
         [],
         []
     )
-
-    type ObjType = CharacterModel | ItemModel | LocationModel | NoteModel
-
-    type NodeType = {
-        id: string
-        label: string
-        table: string
-        obj: ObjType
-    }
-
-    type NodeTypeByID = {
-        [key: string]: NodeType
-    }
 
     const getNodes = (): DataSet => {
         const data = {
