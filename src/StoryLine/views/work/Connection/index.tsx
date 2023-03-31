@@ -21,7 +21,6 @@ import { getInitialValues } from '@sl/forms/Work/utils'
 import { CharacterModel, ItemModel, LocationModel, NoteModel, WorkModel } from '@sl/db/models'
 import { ConnectionDataType } from '@sl/db/models/types'
 
-import 'vis-network/styles/vis-network.css'
 import { useTranslation } from 'react-i18next'
 
 const PaperComponent = (props: PaperProps) => {
@@ -56,6 +55,19 @@ const ConnectionView = () => {
         []
     )
 
+    type ObjType = CharacterModel | ItemModel | LocationModel | NoteModel
+
+    type NodeType = {
+        id: string
+        label: string
+        table: string
+        obj: ObjType
+    }
+
+    type NodeTypeByID = {
+        [key: string]: NodeType
+    }
+
     const getNodes = (): DataSet => {
         const data = {
             character: characters,
@@ -64,44 +76,41 @@ const ConnectionView = () => {
             note: notes
         }
 
-        return new DataSet(
-            Object.values(
-                connections.reduce((o, connection) => {
-                    if (!o[connection.idA]) {
-                        try {
-                            const objA = data[connection.tableA].find(
-                                (obj) => obj.id === connection.idA
-                            )
-                            o[connection.idA] = {
-                                id: connection.idA,
-                                label: objA.displayName,
-                                table: connection.tableA,
-                                obj: objA
-                            }
-                        } catch {
-                            //
-                        }
+        const nodes = connections.reduce((o, connection) => {
+            if (!o[connection.idA]) {
+                try {
+                    const objects: ObjType[] = data[connection.tableA as keyof typeof data]
+                    const objA = objects.find((obj: ObjType) => obj.id === connection.idA)
+                    o[connection.idA] = {
+                        id: connection.idA,
+                        label: objA.displayName,
+                        table: connection.tableA,
+                        obj: objA
                     }
-                    if (!o[connection.idB]) {
-                        try {
-                            const objB = data[connection.tableB].find(
-                                (obj) => obj.id === connection.idB
-                            )
-                            o[connection.idB] = {
-                                id: connection.idB,
-                                label: objB.displayName,
-                                table: connection.tableB,
-                                obj: objB
-                            }
-                        } catch {
-                            //
-                        }
+                } catch {
+                    //
+                }
+            }
+            if (!o[connection.idB]) {
+                try {
+                    const objects: ObjType[] = data[connection.tableB as keyof typeof data]
+                    const objB = objects.find((obj: ObjType) => obj.id === connection.idB)
+                    const image = objB?.image ? api.imageSrc(objB.image) : ''
+                    o[connection.idB] = {
+                        id: connection.idB,
+                        label: objB.displayName,
+                        table: connection.tableB,
+                        obj: objB
                     }
+                } catch {
+                    //
+                }
+            }
 
-                    return o
-                }, {})
-            )
-        )
+            return o
+        }, {} as NodeTypeByID)
+
+        return new DataSet(Object.values(nodes) as NodeType[])
     }
 
     const getEdges = (): DataSet =>
@@ -110,9 +119,10 @@ const ConnectionView = () => {
                 from: connection.idA,
                 to: connection.idB,
                 relation: connection.mode,
+                label: connection.mode,
                 arrows:
                     connection.to && connection.from ? 'to, from' : connection.to ? 'to' : 'from',
-                color: { color: connection.color || 'black' }
+                color: connection.color || 'black'
             }))
         )
 
@@ -147,14 +157,33 @@ const ConnectionView = () => {
     }, [edges])
 
     useEffect(() => {
-        if (!ref.current) return
-        new Network(ref.current, { nodes: nodesView, edges: edgesView }, {})
+        if (!ref.current || !nodesView) return
+        new Network(
+            ref.current,
+            { nodes: nodesView, edges: edgesView },
+            {
+                nodes: {
+                    borderWidth: 4,
+                    size: 30,
+                    shape: 'circle',
+                    color: {
+                        border: '#222222',
+                        background: '#666666'
+                    },
+                    font: { color: '#eeeeee' }
+                },
+                edges: {
+                    color: 'lightgray'
+                }
+            }
+        )
     }, [ref.current, nodesView, edgesView])
 
     useEffect(() => {
         if (!nodesView || !edgesView) return
-        nodesView._options.filter = (node) => !filterTable || filterTable === node.table
-        edgesView._options.filter = (edge) => !filterMode || filterMode === edge.relation
+        nodesView._options.filter = (node: NodeType) => !filterTable || filterTable === node.table
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        edgesView._options.filter = (edge: any) => !filterMode || filterMode === edge.relation
         nodesView.refresh()
         edgesView.refresh()
     }, [filterTable, filterMode])
@@ -206,7 +235,7 @@ const ConnectionView = () => {
                     Add
                 </Button>
             </Box>
-            <Box className='absolute w-full h-full ' ref={ref}></Box>
+            <Box className='absolute w-full h-full' ref={ref}></Box>
             <Dialog
                 fullWidth={true}
                 open={open}
