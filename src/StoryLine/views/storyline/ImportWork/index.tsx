@@ -178,18 +178,20 @@ const ImportWorkView = () => {
         // and the rest
 
         const architectureNote = await database.write(async () => {
-            return database.get<NoteModel>('note').prepareCreate((note) => {
+            return database.get<NoteModel>('note').create((note) => {
                 note.work.set(work)
                 note.title = 'Architecture'
                 note.order = 1
+                note.status = Status.TODO
             })
         })
 
         const strandsNote = await database.write(async () => {
-            return database.get<NoteModel>('note').prepareCreate((note) => {
+            return database.get<NoteModel>('note').create((note) => {
                 note.work.set(work)
                 note.title = 'Narrative Strands'
-                note.order = 1
+                note.order = 2
+                note.status = Status.TODO
             })
         })
 
