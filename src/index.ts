@@ -3,6 +3,7 @@ import { app, BrowserWindow, ipcMain, dialog, session, shell, Dialog } from 'ele
 import contextMenu from 'electron-context-menu'
 import fs from 'fs'
 import path from 'path'
+import JSZip from 'jszip'
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
@@ -123,13 +124,54 @@ app.whenReady()
             const filePath = result.filePaths[0]
             const fileDir = path.join(app.getPath('userData'), 'images', subDir)
             await fs.promises.mkdir(fileDir, { recursive: true })
-            const timestamp = new Date().getTime()
-            const extension = path.extname(filePath)
-            const fileName = `image-${timestamp}${extension}`
-            const saveFilePath = path.join(fileDir, fileName)
+            const saveFilePath = path.join(
+                fileDir,
+                `image-${new Date().getTime()}${path.extname(filePath)}`
+            )
             await fs.promises.copyFile(filePath, saveFilePath)
 
             return saveFilePath
+        })
+
+        ipcMain.handle('select-file', async (_, subDir) => {
+            const result = await dialog.showOpenDialog({
+                title: 'Select a file',
+                filters: [{ name: 'Files', extensions: ['bibisco2'] }]
+            })
+
+            if (result.canceled || !result.filePaths.length) return false
+
+            const filePath = result.filePaths[0]
+            const fileDir = path.join(app.getPath('userData'), 'import', subDir)
+            await fs.promises.mkdir(fileDir, { recursive: true })
+            const timestamp = new Date().getTime()
+            const extension = path.extname(filePath)
+            const fileName = `file-${timestamp}${extension}`
+            const saveFilePath = path.join(fileDir, fileName)
+            await fs.promises.copyFile(filePath, saveFilePath)
+            return saveFilePath
+        })
+
+        ipcMain.handle('import-bibisco2', async () => {
+            const result = await dialog.showOpenDialog({
+                title: 'Select .bibisco2 archive',
+                filters: [{ name: 'Files', extensions: ['bibisco2'] }]
+            })
+            if (result.canceled || !result.filePaths.length) return false
+            const filePath = result.filePaths[0]
+            const fileDir = path.join(app.getPath('userData'), 'import', 'bibisco2')
+            await fs.promises.mkdir(fileDir, { recursive: true })
+            const saveFilePath = path.join(
+                fileDir,
+                `file-${new Date().getTime()}${path.extname(filePath)}`
+            )
+            await fs.promises.copyFile(filePath, saveFilePath)
+            const data = await fs.promises.readFile(saveFilePath)
+            const zip = await JSZip.loadAsync(data)
+            const fileNames = Object.keys(zip.files)
+            const file = zip.file(fileNames[0])
+            const json = await file.async('string')
+            return JSON.parse(json)
         })
 
         ipcMain.handle('show-image', async (e, filePath) => {

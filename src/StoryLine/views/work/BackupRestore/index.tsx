@@ -31,7 +31,7 @@ const BackupRestoreView = () => {
             </Paper>
             <Paper elevation={2} className='relative'>
                 <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
-                    Bibisco Import/Export
+                    <Boxes.Bibisco />
                 </Box>
             </Paper>
             <Paper elevation={2} className='relative'>
