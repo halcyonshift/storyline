@@ -1,17 +1,29 @@
 /* eslint-disable complexity */
 import { Box, Button, Typography } from '@mui/material'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
+import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { capitalize } from 'lodash'
 import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
 import { CharacterMode } from '@sl/constants/characterMode'
 import { SectionMode } from '@sl/constants/sectionMode'
 import { Status } from '@sl/constants/status'
-import { CharacterModel, ItemModel, LocationModel, SectionModel, WorkModel } from '@sl/db/models'
+import {
+    CharacterModel,
+    ItemModel,
+    LocationModel,
+    NoteModel,
+    SectionModel,
+    WorkModel
+} from '@sl/db/models'
 
 const ImportWorkView = () => {
     const database = useDatabase()
     const { t } = useTranslation()
+
+    const cleanText = (text: string) => {
+        return text.replace(/<[^>]*>/g, '').replace('&nbsp;', ' ')
+    }
 
     const importBibisco = async () => {
         const statusMap = {
@@ -46,302 +58,250 @@ const ImportWorkView = () => {
 
         // parts
         let part: SectionModel
-        const partRange = []
-        if (data.collections[10].data.length) {
-            let min = 1
-            for await (const part of data.collections[10].data) {
-                const newPart = await database.write(async () => {
-                    return await database.get<SectionModel>('section').create((section) => {
-                        section._raw.id = `PART-${part['$loki']}`
-                        section.work.set(work)
-                        section.mode = SectionMode.PART
-                        section.title = part.title
-                        section.order = part.position
-                        section.status = statusMap[part.status as keyof typeof statusMap]
-                        section.createdAt = DateTime.fromMillis(part.meta.created).toJSDate()
-                        section.updatedAt = DateTime.fromMillis(
-                            part.meta.updated || part.meta.created
-                        ).toJSDate()
-                    })
-                })
-                partRange.push({
-                    part: newPart,
-                    min,
-                    max: part.chaptersincluded - 1 + min
-                })
+        const partRange: { id: string; min: number; max: number }[] = []
 
-                min += part.chaptersincluded - 1 + min
-            }
+        let min = 1
+        for (const part of data.collections[10].data) {
+            partRange.push({
+                id: `PART-${part['$loki']}`,
+                min,
+                max: part.chaptersincluded - 1 + min
+            })
+
+            min += part.chaptersincluded - 1 + min
+        }
+
+        if (data.collections[10].data.length) {
+            await database.write(async () => {
+                return await database.batch(
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    ...data.collections[10].data.map((data: any) =>
+                        database.get<SectionModel>('section').prepareCreate((section) => {
+                            section._raw.id = `PART-${data['$loki']}`
+                            section.work.set(work)
+                            section.mode = SectionMode.PART
+                            section.title = data.title
+                            section.order = data.position
+                            section.status = statusMap[data.status as keyof typeof statusMap]
+                            section.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
+                            section.updatedAt = DateTime.fromMillis(
+                                data.meta.updated || data.meta.created
+                            ).toJSDate()
+                        })
+                    )
+                )
+            })
         } else {
             part = await work.addPart()
-            partRange.push({ part, chaptersIncluded: 1000000 })
+            partRange.push({ id: part.id, min: 0, max: 10000000 })
         }
+
+        const parts = await database
+            .get<SectionModel>('section')
+            .query(Q.where('work_id', work.id), Q.where('mode', SectionMode.PART))
+            .fetch()
 
         // chapters
-        const chapters: SectionModel[] = []
-        if (data.collections[3].data.length) {
-            for await (const chapter of data.collections[3].data) {
-                const chapterPart =
-                    chapter.position === -2
-                        ? partRange[partRange.length - 1]
-                        : chapter.position === -1
-                        ? partRange[0]
-                        : partRange.find(
-                              (pr) => chapter.position >= pr.min && chapter.position <= pr.max
-                          ) || partRange[partRange.length - 1]
-                const newChapter = await database.write(async () => {
-                    return await database.get<SectionModel>('section').create((section) => {
-                        section._raw.id = `CHAPTER-${chapter['$loki']}`
+
+        await database.write(async () => {
+            return await database.batch(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ...data.collections[3].data.map((data: any) =>
+                    database.get<SectionModel>('section').prepareCreate((section) => {
+                        section._raw.id = `CHAPTER-${data['$loki']}`
                         section.work.set(work)
-                        section.section.set(chapterPart.part)
+                        section.section.set(
+                            parts.find(
+                                (part) =>
+                                    part.id ===
+                                    (data.position === -2
+                                        ? partRange[partRange.length - 1]
+                                        : data.position === -1
+                                        ? partRange[0]
+                                        : partRange.find(
+                                              // eslint-disable-next-line max-nested-callbacks
+                                              (pr) =>
+                                                  data.position >= pr.min && data.position <= pr.max
+                                          ) || partRange[partRange.length - 1]
+                                    ).id
+                            )
+                        )
                         section.mode = SectionMode.CHAPTER
-                        section.title = chapter.title
-                        section.order = chapter.position
-                        section.body = chapter.reason.text
-                        section.status = statusMap[chapter.status as keyof typeof statusMap]
-                        section.createdAt = DateTime.fromMillis(chapter.meta.created).toJSDate()
+                        section.title = data.title
+                        section.order = data.position
+                        section.body = data.reason.text
+                        section.status = statusMap[data.status as keyof typeof statusMap]
+                        section.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
                         section.updatedAt = DateTime.fromMillis(
-                            chapter.meta.updated || chapter.meta.created
+                            data.meta.updated || data.meta.created
                         ).toJSDate()
                     })
-                })
-                chapters.push(newChapter)
-            }
-        }
+                )
+            )
+        })
+
+        const chapters = await database
+            .get<SectionModel>('section')
+            .query(Q.where('work_id', work.id), Q.where('mode', SectionMode.CHAPTER))
+            .fetch()
 
         // scenes
+
         if (data.collections[4].data.length) {
-            for await (const scene of data.collections[4].data) {
-                const sceneChapter = chapters.find(
-                    (chapter) => chapter.id === `CHAPTER-${scene.chapterid}`
+            await database.write(async () => {
+                return await database.batch(
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    ...data.collections[4].data.map((data: any) =>
+                        database.get<SectionModel>('section').prepareCreate((section) => {
+                            section._raw.id = `SCENE-${data['$loki']}`
+                            section.work.set(work)
+                            section.section.set(
+                                chapters.find(
+                                    (chapter) => chapter.id === `CHAPTER-${data.chapterid}`
+                                )
+                            )
+                            section.mode = SectionMode.SCENE
+                            section.title = data.title
+                            section.order = data.position
+                            section.body = data.revisions[data.revisions.length - 1].text
+                            section.status = statusMap[data.status as keyof typeof statusMap]
+                            section.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
+                            section.updatedAt = DateTime.fromMillis(
+                                data.meta.updated || data.meta.created
+                            ).toJSDate()
+                        })
+                    )
                 )
-                await database.write(async () => {
-                    return await database.get<SectionModel>('section').create((section) => {
-                        section._raw.id = `SCENE-${scene['$loki']}`
-                        section.work.set(work)
-                        section.section.set(sceneChapter)
-                        section.mode = SectionMode.SCENE
-                        section.title = scene.title
-                        section.order = scene.position
-                        section.body = scene.revisions[scene.revisions.length - 1].text
-                        section.status = statusMap[scene.status as keyof typeof statusMap]
-                        section.createdAt = DateTime.fromMillis(scene.meta.created).toJSDate()
-                        section.updatedAt = DateTime.fromMillis(
-                            scene.meta.updated || scene.meta.created
-                        ).toJSDate()
+            })
+        }
+
+        // and the rest
+
+        const architectureNote = await database.write(async () => {
+            return database.get<NoteModel>('note').prepareCreate((note) => {
+                note.work.set(work)
+                note.title = 'Architecture'
+                note.order = 1
+            })
+        })
+
+        const strandsNote = await database.write(async () => {
+            return database.get<NoteModel>('note').prepareCreate((note) => {
+                note.work.set(work)
+                note.title = 'Narrative Strands'
+                note.order = 1
+            })
+        })
+
+        await database.write(async () => {
+            return await database.batch(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ...data.collections[1].data.map((data: any) =>
+                    database.get<NoteModel>('note').prepareCreate((note) => {
+                        note._raw.id = `NOTE-A-${data['$loki']}`
+                        note.work.set(work)
+                        note.note.set(architectureNote)
+                        note.title = capitalize(data.type)
+                        note.body = data.text
+                        note.order = data.position
+                        note.status = statusMap[data.status as keyof typeof statusMap]
                     })
-                })
-            }
-        }
-
-        // notes - architecture
-
-        if (data.collections[1].data.length) {
-            const architectureNote = await work.addNote({
-                title: 'Architecture',
-                order: 1
-            })
-
-            for await (const note of data.collections[1].data) {
-                await architectureNote.addNote({
-                    title: capitalize(note.type),
-                    body: note.text,
-                    order: note.position,
-                    status: statusMap[note.status as keyof typeof statusMap]
-                })
-            }
-        }
-
-        // notes - narrative strands
-
-        if (data.collections[2].data.length) {
-            const strandsNote = await work.addNote({
-                title: 'Narrative Strands',
-                order: 1
-            })
-
-            for await (const note of data.collections[2].data) {
-                await strandsNote.addNote({
-                    title: note.name,
-                    body: note.description,
-                    order: note.position,
-                    status: statusMap[note.status as keyof typeof statusMap]
-                })
-            }
-        }
-
-        // notes - narrative strands
-
-        if (data.collections[8].data.length) {
-            for await (const note of data.collections[8].data) {
-                await work.addNote({
-                    title: note.name,
-                    body: note.description,
-                    order: note.position,
-                    status: statusMap[note.status as keyof typeof statusMap]
-                })
-            }
-        }
-
-        // items
-        if (data.collections[9].data.length) {
-            for await (const _item of data.collections[9].data) {
-                await database.write(async () => {
-                    return await database.get<ItemModel>('item').create((item) => {
-                        item._raw.id = `ITEM-${_item['$loki']}`
+                ),
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ...data.collections[2].data.map((data: any) =>
+                    database.get<NoteModel>('note').prepareCreate((note) => {
+                        note._raw.id = `NOTE-S-${data['$loki']}`
+                        note.work.set(work)
+                        note.note.set(strandsNote)
+                        note.title = data.name
+                        note.body = data.description
+                        note.order = data.position
+                        note.status = statusMap[data.status as keyof typeof statusMap]
+                    })
+                ),
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ...data.collections[9].data.map((data: any) =>
+                    database.get<ItemModel>('item').prepareCreate((item) => {
+                        item._raw.id = `ITEM-${data['$loki']}`
                         item.work.set(work)
-                        item.name = _item.name
-                        item.body = _item.description
-                        item.status = statusMap[_item.status as keyof typeof statusMap]
-                        item.createdAt = DateTime.fromMillis(_item.meta.created).toJSDate()
+                        item.name = data.name
+                        item.body = data.description
+                        item.status = statusMap[data.status as keyof typeof statusMap]
+                        item.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
                         item.updatedAt = DateTime.fromMillis(
-                            _item.meta.updated || _item.meta.created
+                            data.meta.updated || data.meta.created
                         ).toJSDate()
                     })
-                })
-            }
-        }
-
-        // locations
-        if (data.collections[7].data.length) {
-            for await (const _location of data.collections[7].data) {
-                await database.write(async () => {
-                    return await database.get<LocationModel>('location').create((location) => {
-                        location._raw.id = `LOCATION-${_location['$loki']}`
+                ),
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ...data.collections[7].data.map((data: any) =>
+                    database.get<LocationModel>('location').prepareCreate((location) => {
+                        location._raw.id = `LOCATION-${data['$loki']}`
                         location.work.set(work)
-                        location.name = _location.location
-                        location.body = _location.description
-                        location.status = statusMap[_location.status as keyof typeof statusMap]
-                        location.createdAt = DateTime.fromMillis(_location.meta.created).toJSDate()
+                        location.name = data.location
+                        location.body = data.description
+                        location.status = statusMap[data.status as keyof typeof statusMap]
+                        location.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
                         location.updatedAt = DateTime.fromMillis(
-                            _location.meta.updated || _location.meta.created
+                            data.meta.updated || data.meta.created
                         ).toJSDate()
                     })
-                })
-            }
-        }
-
-        // characters
-
-        if (data.collections[5].data.length) {
-            for await (const _character of data.collections[5].data) {
-                await database.write(async () => {
-                    return await database.get<CharacterModel>('character').create((character) => {
-                        character._raw.id = `CHARACTER-PRIM-${_character['$loki']}`
+                ),
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ...data.collections[5].data.map((data: any) =>
+                    database.get<CharacterModel>('character').prepareCreate((character) => {
+                        character._raw.id = `CHARACTER-PRIM-${data['$loki']}`
                         character.work.set(work)
                         character.mode = CharacterMode.PRIMARY
-                        character.displayName = _character.name
-                        character.firstName = _character.personaldata.questions[0].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )
-                        character.lastName = _character.personaldata.questions[1].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )
-                        character.nickname = _character.personaldata.questions[2].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )
-                        character.gender = _character.personaldata.questions[3].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )
-                        character.apparentAge = !isNaN(
-                            _character.personaldata.questions[4].text.replace(/<[^>]*>/g, '')
-                        )
-                            ? _character.personaldata.questions[4].text.replace(/<[^>]*>/g, '')
-                            : ''
-                        character.placeOfBirth = _character.personaldata.questions[5].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )
-                        character.residence = _character.personaldata.questions[6].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )
-                        character.education = _character.personaldata.questions[7].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )
-                        character.profession = _character.personaldata.questions[8].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )
-                        character.finances = _character.personaldata.questions[9].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )
-                        character.ethnicity = _character.physionomy.questions[0].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )
-                        character.height = _character.physionomy.questions[1].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )
-                        character.build = _character.physionomy.questions[2].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )
-                        character.hair = _character.physionomy.questions[3].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )
-                        character.face = `${_character.physionomy.questions[4].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )}
-                        ${_character.physionomy.questions[5].text.replace(/<[^>]*>/g, '')}
-                        ${_character.physionomy.questions[6].text.replace(/<[^>]*>/g, '')}`
-                        // eslint-disable-next-line max-len
-                        character.distinguishingFeatures = `${_character.physionomy.questions[22].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )}
-                        ${_character.physionomy.questions[23].text.replace(/<[^>]*>/g, '')}`
-                        character.religion = _character.ideas.questions[0].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )
-                        character.politicalLeaning = _character.ideas.questions[2].text.replace(
-                            /<[^>]*>/g,
-                            ''
-                        )
-                        character.description = _character.description
-                        character.history = _character.lifebeforestorybeginning
-                        character.status = statusMap[_character.status as keyof typeof statusMap]
-                        character.createdAt = DateTime.fromMillis(
-                            _character.meta.created
-                        ).toJSDate()
+                        character.displayName = data.name
+                        character.firstName = cleanText(data.personaldata.questions[0].text)
+                        character.lastName = cleanText(data.personaldata.questions[1].text)
+                        character.nickname = cleanText(data.personaldata.questions[2].text)
+                        character.gender = cleanText(data.personaldata.questions[3].text)
+                        character.apparentAge = cleanText(data.personaldata.questions[4].text)
+                        character.placeOfBirth = cleanText(data.personaldata.questions[5].text)
+                        character.residence = cleanText(data.personaldata.questions[6].text)
+                        character.education = cleanText(data.personaldata.questions[7].text)
+                        character.profession = cleanText(data.personaldata.questions[8].text)
+                        character.finances = cleanText(data.personaldata.questions[9].text)
+                        character.ethnicity = cleanText(data.physionomy.questions[0].text)
+                        character.height = cleanText(data.physionomy.questions[1].text)
+                        character.build = cleanText(data.physionomy.questions[2].text)
+                        character.hair = cleanText(data.physionomy.questions[3].text)
+                        character.face = cleanText(`${data.physionomy.questions[4].text}
+                        ${data.physionomy.questions[5].text}
+                        ${data.physionomy.questions[6].text}`)
+                        character.distinguishingFeatures =
+                            cleanText(`${data.physionomy.questions[22].text}
+                        ${data.physionomy.questions[23].text}`)
+                        character.religion = cleanText(data.ideas.questions[0].text)
+                        character.politicalLeaning = cleanText(data.ideas.questions[2].text)
+                        character.description = data.description
+                        character.history = data.lifebeforestorybeginning
+                        character.status = statusMap[data.status as keyof typeof statusMap]
+                        character.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
                         character.updatedAt = DateTime.fromMillis(
-                            _character.meta.updated || _character.meta.created
+                            data.meta.updated || data.meta.created
                         ).toJSDate()
                     })
-                })
-            }
-        }
-
-        if (data.collections[6].data.length) {
-            for await (const _character of data.collections[6].data) {
-                await database.write(async () => {
-                    return await database.get<CharacterModel>('character').create((character) => {
-                        character._raw.id = `CHARACTER-SEC-${_character['$loki']}`
+                ),
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ...data.collections[6].data.map((data: any) =>
+                    database.get<CharacterModel>('character').prepareCreate((character) => {
+                        character._raw.id = `CHARACTER-SEC-${data['$loki']}`
                         character.work.set(work)
                         character.mode = CharacterMode.SECONDARY
-                        character.displayName = _character.name
-                        character.description = _character.description
-                        character.status = statusMap[_character.status as keyof typeof statusMap]
-                        character.createdAt = DateTime.fromMillis(
-                            _character.meta.created
-                        ).toJSDate()
+                        character.displayName = data.name
+                        character.description = data.description
+                        character.status = statusMap[data.status as keyof typeof statusMap]
+                        character.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
                         character.updatedAt = DateTime.fromMillis(
-                            _character.meta.updated || _character.meta.created
+                            data.meta.updated || data.meta.created
                         ).toJSDate()
                     })
-                })
-            }
-        }
+                )
+            )
+        })
     }
 
     return (

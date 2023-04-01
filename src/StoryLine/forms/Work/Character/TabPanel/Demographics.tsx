@@ -41,9 +41,6 @@ const DemographicsPanel = ({ form }: TabPanelProps) => {
                     />
                     <TextField
                         name='apparentAge'
-                        type='number'
-                        InputProps={{ inputProps: { min: 0, step: 1 } }}
-                        fullWidth={false}
                         label={t('form.work.character.apparentAge')}
                         form={form}
                     />
