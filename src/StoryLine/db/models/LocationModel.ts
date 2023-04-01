@@ -1,15 +1,6 @@
 import { Model, Q, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
-import {
-    children,
-    date,
-    field,
-    lazy,
-    readonly,
-    relation,
-    text,
-    writer
-} from '@nozbe/watermelondb/decorators'
+import { children, date, field, lazy, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { LatLngExpression } from 'leaflet'
 import { Status, type StatusType } from '@sl/constants/status'
 import { LocationDataType } from './types'
@@ -31,8 +22,8 @@ export default class LocationModel extends Model {
     @text('longitude') longitude!: string
     @text('url') url!: string
     @field('image') image!: string
-    @readonly @date('created_at') createdAt!: Date
-    @readonly @date('updated_at') updatedAt!: Date
+    @date('created_at') createdAt!: Date
+    @date('updated_at') updatedAt!: Date
 
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @relation('location', 'location_id') location!: Relation<LocationModel>

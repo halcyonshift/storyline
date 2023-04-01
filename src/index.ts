@@ -159,18 +159,16 @@ app.whenReady()
             })
             if (result.canceled || !result.filePaths.length) return false
             const filePath = result.filePaths[0]
-            const fileDir = path.join(app.getPath('userData'), 'import', 'bibisco2')
+            const fileDir = path.join(app.getPath('userData'), 'import')
             await fs.promises.mkdir(fileDir, { recursive: true })
-            const saveFilePath = path.join(
-                fileDir,
-                `file-${new Date().getTime()}${path.extname(filePath)}`
-            )
+            const saveFilePath = path.join(fileDir, 'archive.bibisco2')
             await fs.promises.copyFile(filePath, saveFilePath)
             const data = await fs.promises.readFile(saveFilePath)
             const zip = await JSZip.loadAsync(data)
             const fileNames = Object.keys(zip.files)
             const file = zip.file(fileNames[0])
             const json = await file.async('string')
+            fs.rmSync(saveFilePath)
             return JSON.parse(json)
         })
 

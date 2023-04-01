@@ -1,14 +1,6 @@
 import { Model, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
-import {
-    children,
-    date,
-    field,
-    readonly,
-    relation,
-    text,
-    writer
-} from '@nozbe/watermelondb/decorators'
+import { children, date, field, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { DateTime } from 'luxon'
 import { Status, type StatusType } from '@sl/constants/status'
 import CharacterModel from './CharacterModel'
@@ -36,8 +28,8 @@ export default class NoteModel extends Model {
     @field('image') image!: string
     @text('color') color!: string
     @field('order') order!: number
-    @readonly @date('created_at') createdAt!: Date
-    @readonly @date('updated_at') updatedAt!: Date
+    @date('created_at') createdAt!: Date
+    @date('updated_at') updatedAt!: Date
     @relation('character', 'character_id') character!: Relation<CharacterModel>
     @relation('item', 'item_id') item!: Relation<ItemModel>
     @relation('location', 'location_id') location!: Relation<LocationModel>

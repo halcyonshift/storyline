@@ -52,7 +52,7 @@ const router = createHashRouter([
                     },
                     {
                         path: 'importWork',
-                        element: <StoryLineViews.SettingsView />
+                        element: <StoryLineViews.ImportWorkView />
                     },
                     {
                         path: 'settings',

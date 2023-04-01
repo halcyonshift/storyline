@@ -1,6 +1,6 @@
 import { Model, Q, Query } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
-import { children, date, field, lazy, readonly, text, writer } from '@nozbe/watermelondb/decorators'
+import { children, date, field, lazy, text, writer } from '@nozbe/watermelondb/decorators'
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
 import { SectionMode } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
@@ -40,11 +40,12 @@ export default class WorkModel extends Model {
     @text('summary') summary!: string
     @text('language') language!: string
     @field('word_goal') wordGoal!: number
+    @field('word_goal_per_day') wordGoalPerDay!: number
     @field('image') image!: string
     @date('deadline_at') deadlineAt!: Date
     @date('last_opened_at') lastOpenedAt!: Date
-    @readonly @date('created_at') createdAt!: Date
-    @readonly @date('updated_at') updatedAt!: Date
+    @date('created_at') createdAt!: Date
+    @date('updated_at') updatedAt!: Date
     @children('character') character!: Query<CharacterModel>
     @children('connection') connection!: Query<ConnectionModel>
     @children('item') item!: Query<ItemModel>
@@ -254,6 +255,7 @@ export default class WorkModel extends Model {
             note.color = data.color
             note.date = data.date
             note.status = Status.TODO
+            note.order = data.order
         })
     }
 

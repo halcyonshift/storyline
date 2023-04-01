@@ -526,6 +526,10 @@
                     "title": "Recently opened"
                 }
             },
+            "importWork": {
+                "title": "Import",
+                "bibisco": "Bibisco"
+            },
             "work": {
                 "add": "New work"
             }

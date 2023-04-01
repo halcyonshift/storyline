@@ -1,15 +1,6 @@
 import { Model, Q, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
-import {
-    children,
-    date,
-    field,
-    lazy,
-    readonly,
-    relation,
-    text,
-    writer
-} from '@nozbe/watermelondb/decorators'
+import { children, date, field, lazy, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { DateTime } from 'luxon'
 import { StatusType } from '@sl/constants/status'
 import NoteModel from './NoteModel'
@@ -61,8 +52,8 @@ export default class CharacterModel extends Model {
     @text('personality_negative') personalityNegative!: string
     @text('ambitions') ambitions!: string
     @text('fears') fears!: string
-    @readonly @date('created_at') createdAt!: Date
-    @readonly @date('updated_at') updatedAt!: Date
+    @date('created_at') createdAt!: Date
+    @date('updated_at') updatedAt!: Date
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @children('note') note!: Query<NoteModel>
     @children('section') section!: Query<SectionModel>

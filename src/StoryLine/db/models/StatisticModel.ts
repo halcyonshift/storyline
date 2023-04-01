@@ -1,6 +1,6 @@
 import { Model, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
-import { date, field, readonly, relation, writer } from '@nozbe/watermelondb/decorators'
+import { date, field, relation, writer } from '@nozbe/watermelondb/decorators'
 import { DateTime } from 'luxon'
 import SectionModel from './SectionModel'
 
@@ -12,8 +12,8 @@ export default class StatisticModel extends Model {
     }
 
     @field('words') words!: number
-    @readonly @date('created_at') createdAt!: Date
-    @readonly @date('updated_at') updatedAt!: Date
+    @date('created_at') createdAt!: Date
+    @date('updated_at') updatedAt!: Date
     @relation('section', 'section_id') section!: Relation<SectionModel>
 
     get isToday(): boolean {

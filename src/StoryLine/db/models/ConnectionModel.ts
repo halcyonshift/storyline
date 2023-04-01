@@ -1,6 +1,6 @@
 import { Model, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
-import { date, field, readonly, relation, text, writer } from '@nozbe/watermelondb/decorators'
+import { date, field, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { ConnectionDataType } from './types'
 import WorkModel from './WorkModel'
 
@@ -20,8 +20,8 @@ export default class ConnectionModel extends Model {
     @text('date') date!: string
     @text('color') color!: string
     @relation('work', 'work_id') work!: Relation<WorkModel>
-    @readonly @date('created_at') createdAt!: Date
-    @readonly @date('updated_at') updatedAt!: Date
+    @date('created_at') createdAt!: Date
+    @date('updated_at') updatedAt!: Date
 
     @writer async updateConnection(data: ConnectionDataType) {
         await this.update((connection) => {

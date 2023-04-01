@@ -1,16 +1,7 @@
 import { capitalize } from '@mui/material/utils'
 import { Model, Q, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
-import {
-    children,
-    date,
-    field,
-    readonly,
-    relation,
-    text,
-    writer,
-    lazy
-} from '@nozbe/watermelondb/decorators'
+import { children, date, field, relation, text, writer, lazy } from '@nozbe/watermelondb/decorators'
 import { DateTime, Interval } from 'luxon'
 import { type PointOfViewType } from '@sl/constants/pov'
 import { SectionMode, type SectionModeType } from '@sl/constants/sectionMode'
@@ -36,10 +27,10 @@ export default class SectionModel extends Model {
     @text('date') date!: string
     @field('order') order!: number
     @field('word_goal') wordGoal!: number
+    @field('word_goal_per_day') wordGoalPerDay!: number
     @date('deadline_at') deadlineAt!: Date
-    @readonly @date('created_at') createdAt!: Date
-    @readonly @date('updated_at') updatedAt!: Date
-
+    @date('created_at') createdAt!: Date
+    @date('updated_at') updatedAt!: Date
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @relation('section', 'section_id') section!: Relation<SectionModel>
     @relation('character', 'pov_character_id') pointOfViewCharacter!: Relation<CharacterModel>

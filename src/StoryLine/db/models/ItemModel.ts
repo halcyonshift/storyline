@@ -1,15 +1,6 @@
 import { Model, Q, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
-import {
-    children,
-    date,
-    field,
-    lazy,
-    readonly,
-    relation,
-    text,
-    writer
-} from '@nozbe/watermelondb/decorators'
+import { children, date, field, lazy, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { type StatusType } from '@sl/constants/status'
 import ConnectionModel from './ConnectionModel'
 import NoteModel from './NoteModel'
@@ -27,8 +18,8 @@ export default class ItemModel extends Model {
     @text('body') body!: string
     @text('url') url!: string
     @field('image') image!: string
-    @readonly @date('created_at') createdAt!: Date
-    @readonly @date('updated_at') updatedAt!: Date
+    @date('created_at') createdAt!: Date
+    @date('updated_at') updatedAt!: Date
 
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @children('note') note!: Query<NoteModel>
