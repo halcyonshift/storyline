@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
+import { useDatabase } from '@nozbe/watermelondb/hooks'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
-import { DragDropContext } from 'react-beautiful-dnd'
+import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
 import Panel from '@sl/components/Panel'
@@ -19,16 +20,47 @@ const SectionPanel = () => {
     const [chapters, setChapters] = useState<SectionModel[]>([])
     const [scenes, setScenes] = useState<SectionModel[]>([])
     const [navigation, setNavigation] = useState<TooltipIconButtonProps[]>([])
+    const database = useDatabase()
     const work = useRouteLoaderData('work') as WorkModel
     const sections = useObservable(
-        () =>
-            work.section
-                .extend(Q.sortBy('order', Q.asc))
-                .observeWithColumns(['title', 'status', 'order', 'updated_at']),
+        () => work.section.extend(Q.sortBy('order', Q.asc)).observeWithColumns(['title', 'status']),
         [],
         []
     )
     const navigate = useNavigate()
+    const handleDragEnd = async (result: DropResult) => {
+        if (!result.destination) {
+            return
+        }
+        const batchUpdate: SectionModel[] = []
+        let newSections: SectionModel[] = []
+
+        if (result.type === 'PARTS') {
+            newSections = parts
+        } else if (result.type.endsWith('-CHAPTERS') || result.type.endsWith('-SCENES')) {
+            const sectionId = result.type.substring(0, result.type.lastIndexOf('-'))
+            newSections = sections.filter((section) => section.section.id === sectionId)
+        }
+
+        const [reorderedPart] = newSections.splice(result.source.index, 1)
+        newSections.splice(result.destination.index, 0, reorderedPart)
+        newSections.map((item, index) => {
+            const section = sections.find((section) => section.id === item.id)
+            if (section.order !== index + 1) {
+                batchUpdate.push(
+                    section.prepareUpdate((section) => {
+                        section.order = index + 1
+                    })
+                )
+            }
+        })
+
+        if (batchUpdate.length) {
+            await database.write(async () => {
+                await database.batch(batchUpdate)
+            })
+        }
+    }
 
     useEffect(() => {
         setParts(sections.filter((section) => section.isPart))
@@ -85,34 +117,7 @@ const SectionPanel = () => {
                 />
             }
             navigation={navigation}>
-            <DragDropContext
-                onDragEnd={(result) => {
-                    if (!result.destination) {
-                        return
-                    }
-                    /*
-                    const batchUpdate: SectionModel[] = []
-                    const newItems = Array.from(items)
-                    const [reorderedItem] = newItems.splice(result.source.index, 1)
-                    newItems.splice(result.destination.index, 0, reorderedItem)
-                    setItems(newItems)
-                    newItems.map((item, index) => {
-                        const scene = scenes.find((scene) => scene.id === item.id)
-                        if (scene.order !== index + 1) {
-                            batchUpdate.push(
-                                scene.prepareUpdate((section) => {
-                                    section.order = index + 1
-                                })
-                            )
-                        }
-                    })
-                    if (batchUpdate.length) {
-                        database.write(async () => {
-                            database.batch(batchUpdate)
-                        })
-                    }
-                    */
-                }}>
+            <DragDropContext onDragEnd={handleDragEnd}>
                 {parts.length > 1 ? (
                     <PartAccordion parts={parts} chapters={chapters} scenes={scenes} />
                 ) : chapters.length > 1 ? (

@@ -63,7 +63,6 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
         date: yup.string().nullable(),
         wordGoal: yup.number().positive().integer().nullable(),
         deadlineAt: yup.date().nullable(),
-        order: yup.number().positive().min(0),
         pointOfView: yup.string().nullable(),
         pointOfViewCharacter: yup.string().nullable()
     })
@@ -144,13 +143,6 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
                 ) : null}
                 <Box className='grid grid-cols-2 xl:grid-cols-4 gap-3'>
                     <DateField form={form} label={'form.work.section.date'} fieldName='date' />
-                    <TextField
-                        form={form}
-                        label={t('form.work.section.order')}
-                        name='order'
-                        type='number'
-                        InputProps={{ inputProps: { min: 0, step: 1 } }}
-                    />
                     <TextField
                         form={form}
                         label={t('form.work.section.wordGoal')}

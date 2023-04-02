@@ -1,29 +1,21 @@
 /* eslint-disable max-len */
-import {
-    Box,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemText,
-    Stack,
-    Tooltip,
-    Typography
-} from '@mui/material'
+import { Box, List, ListItem, ListItemButton, ListItemText, Stack, Typography } from '@mui/material'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import { useTranslation } from 'react-i18next'
 import { GLOBAL_ICONS, NOTE_ICONS } from '@sl/constants/icons'
 import { status } from '@sl/theme/utils'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
-import { dateFormat } from '@sl/utils'
 import { SceneListProps } from '../types'
 
 const SceneList = ({ scenes }: SceneListProps) => {
     const tabs = useTabs()
     const { t } = useTranslation()
 
-    return (
-        <Droppable droppableId={`sceneList-${scenes[0]?.section?.id}`}>
+    return scenes.length ? (
+        <Droppable
+            droppableId={`sceneList-${scenes[0].section.id}`}
+            type={`${scenes[0].section.id}-SCENES`}>
             {(provided) => (
                 <List
                     dense
@@ -58,22 +50,11 @@ const SceneList = ({ scenes }: SceneListProps) => {
                                                         })
                                                     }>
                                                     <Typography
+                                                        title={scene.displayTitle}
                                                         variant='body1'
                                                         className='whitespace-nowrap text-ellipsis
                                                     overflow-hidden'>
                                                         {scene.displayTitle}
-                                                        <br />
-                                                        <Tooltip
-                                                            title={t(
-                                                                // eslint-disable-next-line max-len
-                                                                'layout.work.panel.section.updatedAt'
-                                                            )}>
-                                                            <Typography
-                                                                component='span'
-                                                                variant='body2'>
-                                                                {dateFormat(scene.updatedAt)}
-                                                            </Typography>
-                                                        </Tooltip>
                                                     </Typography>
                                                 </ListItemButton>
                                                 <Box className='flex flex-col justify-center pr-1'>
@@ -119,7 +100,7 @@ const SceneList = ({ scenes }: SceneListProps) => {
                 </List>
             )}
         </Droppable>
-    )
+    ) : null
 }
 
 export default SceneList

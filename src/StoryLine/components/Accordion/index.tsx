@@ -7,7 +7,7 @@ import { AccordionProps } from './types'
 
 const Accordion = ({ title, children, className, ...props }: AccordionProps) => {
     const [open, setOpen] = useState<boolean>(false)
-
+    const [id] = useState(Math.random().toString())
     return (
         <>
             <Box className={`flex ${className}`} {...props}>
@@ -16,14 +16,14 @@ const Accordion = ({ title, children, className, ...props }: AccordionProps) => 
                     size='small'
                     onClick={() => setOpen(!open)}
                     aria-expanded={open}
-                    aria-controls={`${title}-content`}>
+                    aria-controls={`$content-${id}`}>
                     <ArrowForwardIosSharpIcon
                         sx={{ fontSize: '0.8rem', transform: open ? 'rotate(90deg)' : '' }}
                     />
                 </IconButton>
                 {title}
             </Box>
-            {open ? <Box id={`${title}-content`}>{children}</Box> : null}
+            {open ? <Box id={`content-${id}`}>{children}</Box> : null}
         </>
     )
 }
