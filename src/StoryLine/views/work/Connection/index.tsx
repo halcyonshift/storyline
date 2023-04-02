@@ -146,25 +146,7 @@ const ConnectionView = () => {
 
     useEffect(() => {
         if (!ref.current || !nodesView) return
-        new Network(
-            ref.current,
-            { nodes: nodesView, edges: edgesView },
-            {
-                nodes: {
-                    borderWidth: 4,
-                    size: 30,
-                    shape: 'circle',
-                    color: {
-                        border: '#222222',
-                        background: '#666666'
-                    },
-                    font: { color: '#eeeeee' }
-                },
-                edges: {
-                    color: 'lightgray'
-                }
-            }
-        )
+        new Network(ref.current, { nodes: nodesView, edges: edgesView }, {})
     }, [ref.current, nodesView, edgesView])
 
     useEffect(() => {

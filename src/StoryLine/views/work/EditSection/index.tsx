@@ -9,7 +9,11 @@ const EditSectionView = () => {
     const section = useRouteLoaderData('section') as SectionModel
     const work = useRouteLoaderData('work') as WorkModel
     const initialValues = Object.keys(
-        getInitialValues('section', ['work_id', 'section_id']) as SectionDataType
+        getInitialValues('section', [
+            'work_id',
+            'section_id',
+            'point_of_view_character_id'
+        ]) as SectionDataType
     ).reduce(
         (o, key) => ({ ...o, [key]: section[key as keyof SectionModel] }),
         {}

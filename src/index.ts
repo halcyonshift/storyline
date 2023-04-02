@@ -166,10 +166,32 @@ app.whenReady()
             const data = await fs.promises.readFile(saveFilePath)
             const zip = await JSZip.loadAsync(data)
             const fileNames = Object.keys(zip.files)
-            const file = zip.file(fileNames[0])
-            const json = await file.async('string')
+
+            const jsonFile = zip.file(fileNames.find((file) => file.endsWith('.json')))
+            const jsonFileContent = await jsonFile.async('string')
+
+            const imageFiles = fileNames.filter((fileName) => !fileName.endsWith('.json'))
+            const images = []
+            const json = JSON.parse(jsonFileContent)
+
+            const workId = json.collections[0].data[0].id
+            const imageFileDir = path.join(app.getPath('userData'), 'images', 'import', workId)
+
+            for (const fileName of imageFiles) {
+                const imageName = path.basename(fileName)
+                const content = await zip.file(fileName).async('nodebuffer')
+                images.push(imageName)
+                await fs.promises.mkdir(imageFileDir, { recursive: true })
+                await fs.promises.writeFile(path.join(imageFileDir, imageName), content)
+            }
+
             fs.rmSync(saveFilePath)
-            return JSON.parse(json)
+            return {
+                images,
+                imagePath: imageFileDir,
+                sep: path.sep,
+                data: json
+            }
         })
 
         ipcMain.handle('show-image', async (e, filePath) => {

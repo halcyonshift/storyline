@@ -528,7 +528,12 @@
             },
             "importWork": {
                 "title": "Import",
-                "bibisco": "Bibisco"
+                "button": "Import",
+                "bibisco": {
+                    "title": "Bibisco",
+                    "text": "Tags and relation import isn't currently supported",
+                    "error": "Sorry, the import hasn't worked"
+                }
             },
             "work": {
                 "add": "New work"

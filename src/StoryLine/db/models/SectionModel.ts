@@ -16,10 +16,10 @@ export default class SectionModel extends Model {
         note: { type: 'has_many', foreignKey: 'section_id' },
         statistic: { type: 'has_many', foreignKey: 'section_id' },
         section: { type: 'belongs_to', key: 'section_id' },
-        pov_character: { type: 'belongs_to', key: 'pov_character_id' }
+        point_of_view_character: { type: 'belongs_to', key: 'point_of_view_character_id' }
     }
     @field('status') status!: StatusType
-    @field('pov') pointOfView!: PointOfViewType
+    @field('point_of_view') pointOfView!: PointOfViewType
     @text('title') title!: string
     @field('mode') mode!: SectionModeType
     @text('body') body!: string
@@ -33,7 +33,8 @@ export default class SectionModel extends Model {
     @date('updated_at') updatedAt!: Date
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @relation('section', 'section_id') section!: Relation<SectionModel>
-    @relation('character', 'pov_character_id') pointOfViewCharacter!: Relation<CharacterModel>
+    @relation('character', 'point_of_view_character_id')
+    pointOfViewCharacter!: Relation<CharacterModel>
     @children('note') note!: Query<NoteModel>
     @children('statistic') statistic!: Query<StatisticModel>
 

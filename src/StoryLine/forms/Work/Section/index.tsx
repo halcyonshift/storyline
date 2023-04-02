@@ -29,7 +29,6 @@ import { SectionFormProps } from './types'
 const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
     const [povCharacter, setPovCharacter] = useState<AutocompleteOption>({ id: '', label: '' })
     const [options, setOptions] = useState<AutocompleteOption[]>([])
-
     const { t } = useTranslation()
     const messenger = useMessenger()
     const characters = useObservable(
