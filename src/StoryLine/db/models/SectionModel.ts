@@ -296,6 +296,12 @@ export default class SectionModel extends Model {
         })
     }
 
+    @writer async updateOrder(data: number) {
+        await this.update((section) => {
+            section.order = data
+        })
+    }
+
     @writer async updateStatus(status: StatusType) {
         await this.update((section) => {
             section.status = status

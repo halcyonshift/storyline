@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
+import { DragDropContext } from 'react-beautiful-dnd'
 import { useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
 import Panel from '@sl/components/Panel'
@@ -84,13 +85,42 @@ const SectionPanel = () => {
                 />
             }
             navigation={navigation}>
-            {parts.length > 1 ? (
-                <PartAccordion parts={parts} chapters={chapters} scenes={scenes} />
-            ) : chapters.length > 1 ? (
-                <ChapterAccordion chapters={chapters} scenes={scenes} />
-            ) : (
-                <SceneList scenes={scenes} />
-            )}
+            <DragDropContext
+                onDragEnd={(result) => {
+                    if (!result.destination) {
+                        return
+                    }
+                    /*
+                    const batchUpdate: SectionModel[] = []
+                    const newItems = Array.from(items)
+                    const [reorderedItem] = newItems.splice(result.source.index, 1)
+                    newItems.splice(result.destination.index, 0, reorderedItem)
+                    setItems(newItems)
+                    newItems.map((item, index) => {
+                        const scene = scenes.find((scene) => scene.id === item.id)
+                        if (scene.order !== index + 1) {
+                            batchUpdate.push(
+                                scene.prepareUpdate((section) => {
+                                    section.order = index + 1
+                                })
+                            )
+                        }
+                    })
+                    if (batchUpdate.length) {
+                        database.write(async () => {
+                            database.batch(batchUpdate)
+                        })
+                    }
+                    */
+                }}>
+                {parts.length > 1 ? (
+                    <PartAccordion parts={parts} chapters={chapters} scenes={scenes} />
+                ) : chapters.length > 1 ? (
+                    <ChapterAccordion chapters={chapters} scenes={scenes} />
+                ) : (
+                    <SceneList scenes={scenes} />
+                )}
+            </DragDropContext>
         </Panel>
     )
 }

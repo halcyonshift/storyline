@@ -19,6 +19,7 @@ import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { status } from '@sl/theme/utils'
 
 const LocationPanel = () => {
+    const [group, setGroup] = useState<boolean>(true)
     const work = useRouteLoaderData('work') as WorkModel
     const { t } = useTranslation()
     const { loadTab, removeTab } = useTabs()
@@ -27,7 +28,6 @@ const LocationPanel = () => {
         [],
         []
     )
-    const [group, setGroup] = useState<boolean>(false)
 
     return (
         <Panel
@@ -40,65 +40,70 @@ const LocationPanel = () => {
                 }
             ]}>
             <List dense disablePadding className='bg-white'>
-                {locations.map((location) => (
-                    <ListItem key={location.id} disablePadding disableGutters divider>
-                        <ListItemText
-                            primary={
-                                <Box
-                                    className='flex justify-between align-middle'
-                                    sx={{ backgroundColor: status(location.status).color }}>
-                                    <ListItemButton
-                                        onClick={() =>
-                                            loadTab({
-                                                id: location.id,
-                                                label: location.displayName,
-                                                link: `location/${location.id}`
-                                            })
-                                        }>
-                                        <Typography
-                                            variant='body1'
-                                            className='whitespace-nowrap text-ellipsis
+                {locations
+                    .filter((location) => !group || !location.location.id)
+                    .map((location) => (
+                        <ListItem key={location.id} disablePadding disableGutters divider>
+                            <ListItemText
+                                primary={
+                                    <Box
+                                        className='flex justify-between align-middle'
+                                        sx={{ backgroundColor: status(location.status).color }}>
+                                        <ListItemButton
+                                            onClick={() =>
+                                                loadTab({
+                                                    id: location.id,
+                                                    label: location.displayName,
+                                                    link: `location/${location.id}`
+                                                })
+                                            }>
+                                            <Typography
+                                                variant='body1'
+                                                className='whitespace-nowrap text-ellipsis
                                             overflow-hidden'>
-                                            {location.displayName}
-                                        </Typography>
-                                    </ListItemButton>
-                                    <Stack spacing={0} direction='row'>
-                                        <TooltipIconButton
-                                            size='small'
-                                            text='layout.work.panel.location.add'
-                                            icon={LOCATION_ICONS.add}
-                                            link={`location/${location.id}/add`}
-                                        />
-                                        <TooltipIconButton
-                                            size='small'
-                                            text='layout.work.panel.note.add'
-                                            link={`addNote/location/${location.id}`}
-                                            icon={NOTE_ICONS.add}
-                                        />
-                                        <TooltipIconButton
-                                            size='small'
-                                            text='layout.work.panel.location.edit'
-                                            link={`location/${location.id}/edit`}
-                                            icon={GLOBAL_ICONS.edit}
-                                        />
-                                        <TooltipIconButton
-                                            size='small'
-                                            text='layout.work.panel.location.delete'
-                                            icon={GLOBAL_ICONS.delete}
-                                            confirm={t('layout.work.panel.location.deleteConfirm', {
-                                                name: location.displayName
-                                            })}
-                                            onClick={() => {
-                                                removeTab(location.id)
-                                                location.delete()
-                                            }}
-                                        />
-                                    </Stack>
-                                </Box>
-                            }
-                        />
-                    </ListItem>
-                ))}
+                                                {location.displayName}
+                                            </Typography>
+                                        </ListItemButton>
+                                        <Stack spacing={0} direction='row'>
+                                            <TooltipIconButton
+                                                size='small'
+                                                text='layout.work.panel.location.add'
+                                                icon={LOCATION_ICONS.add}
+                                                link={`location/${location.id}/add`}
+                                            />
+                                            <TooltipIconButton
+                                                size='small'
+                                                text='layout.work.panel.note.add'
+                                                link={`addNote/location/${location.id}`}
+                                                icon={NOTE_ICONS.add}
+                                            />
+                                            <TooltipIconButton
+                                                size='small'
+                                                text='layout.work.panel.location.edit'
+                                                link={`location/${location.id}/edit`}
+                                                icon={GLOBAL_ICONS.edit}
+                                            />
+                                            <TooltipIconButton
+                                                size='small'
+                                                text='layout.work.panel.location.delete'
+                                                icon={GLOBAL_ICONS.delete}
+                                                confirm={t(
+                                                    'layout.work.panel.location.deleteConfirm',
+                                                    {
+                                                        name: location.displayName
+                                                    }
+                                                )}
+                                                onClick={() => {
+                                                    removeTab(location.id)
+                                                    location.delete()
+                                                }}
+                                            />
+                                        </Stack>
+                                    </Box>
+                                }
+                            />
+                        </ListItem>
+                    ))}
             </List>
         </Panel>
     )
