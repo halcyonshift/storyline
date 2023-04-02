@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
@@ -14,12 +14,14 @@ import { GLOBAL_ICONS, LOCATION_ICONS, NOTE_ICONS } from '@sl/constants/icons'
 import Panel from '@sl/components/Panel'
 import GroupToggle from '@sl/components/Panel/GroupToggle'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
-import { WorkModel } from '@sl/db/models'
+import { LocationModel, WorkModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { status } from '@sl/theme/utils'
+import { NodeType, NodeGroupType } from './types'
 
 const LocationPanel = () => {
-    const [group, setGroup] = useState<boolean>(true)
+    const [group, setGroup] = useState<boolean>(false)
+    const [list, setList] = useState<LocationModel[]>([])
     const work = useRouteLoaderData('work') as WorkModel
     const { t } = useTranslation()
     const { loadTab, removeTab } = useTabs()
@@ -28,6 +30,40 @@ const LocationPanel = () => {
         [],
         []
     )
+
+    useEffect(() => {
+        const tree = ((data, root: string) => {
+            const r: NodeType[] = [],
+                o: NodeGroupType = {}
+            data.forEach((a) => {
+                const parentId = a.location.id || null
+                o[a.id] = { data: a, children: o[a.id] && o[a.id].children }
+                if (parentId === root) {
+                    r.push(o[a.id])
+                } else {
+                    o[parentId] = o[parentId] || {}
+                    o[parentId].children = o[parentId].children || []
+                    o[parentId].children.push(o[a.id])
+                }
+            })
+            return r
+        })(
+            locations.sort((a, b) => a.name.localeCompare(b.name)),
+            null
+        )
+        setList(
+            tree.reduce(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (function traverse(level): any {
+                    return (r: LocationModel[], a: NodeType) => {
+                        a.data.level = level
+                        return r.concat(a.data, (a.children || []).reduce(traverse(level + 1), []))
+                    }
+                })(0),
+                []
+            )
+        )
+    }, [group, locations])
 
     return (
         <Panel
@@ -40,15 +76,18 @@ const LocationPanel = () => {
                 }
             ]}>
             <List dense disablePadding className='bg-white'>
-                {locations
-                    .filter((location) => !group || !location.location.id)
+                {list
+                    .filter((location) => group || !location.location.id)
                     .map((location) => (
                         <ListItem key={location.id} disablePadding disableGutters divider>
                             <ListItemText
                                 primary={
                                     <Box
                                         className='flex justify-between align-middle'
-                                        sx={{ backgroundColor: status(location.status).color }}>
+                                        sx={{
+                                            backgroundColor: status(location.status).color,
+                                            paddingLeft: location.level
+                                        }}>
                                         <ListItemButton
                                             onClick={() =>
                                                 loadTab({

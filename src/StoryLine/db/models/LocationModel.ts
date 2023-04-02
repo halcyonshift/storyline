@@ -24,11 +24,12 @@ export default class LocationModel extends Model {
     @field('image') image!: string
     @date('created_at') createdAt!: Date
     @date('updated_at') updatedAt!: Date
-
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @relation('location', 'location_id') location!: Relation<LocationModel>
     @children('note') note!: Query<NoteModel>
     @children('location') locations!: Query<LocationModel>
+
+    level: number
 
     get displayName() {
         return this.name

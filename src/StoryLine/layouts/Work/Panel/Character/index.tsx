@@ -27,7 +27,7 @@ const CharacterPanel = () => {
         []
     )
 
-    const [group, setGroup] = useState<boolean>(true)
+    const [group, setGroup] = useState<boolean>(false)
     const [modeCharacters, setModeCharacters] = useState<{
         [CharacterMode.PRIMARY]: CharacterModel[]
         [CharacterMode.SECONDARY]: CharacterModel[]
@@ -66,7 +66,7 @@ const CharacterPanel = () => {
                     icon: CHARACTER_ICONS.addTertiary
                 }
             ]}>
-            {group ? (
+            {!group ? (
                 [CharacterMode.PRIMARY, CharacterMode.SECONDARY, CharacterMode.TERTIARY].map(
                     (mode: CharacterModeType) =>
                         modeCharacters[mode].length ? (

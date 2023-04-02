@@ -20,6 +20,10 @@ const CharacterForm = ({ work, character, initialValues }: CharacterFormProps) =
     const [headerMode, setHeaderMode] = useState<CharacterModeType>(initialValues.mode)
 
     useEffect(() => {
+        setHeaderMode(initialValues.mode)
+    }, [initialValues.mode])
+
+    useEffect(() => {
         if (character) {
             character.updateMode(headerMode)
         }

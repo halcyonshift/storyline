@@ -25,8 +25,7 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
         url: yup.string().url().nullable(),
         image: yup.string().nullable(),
         date: yup.string().nullable(),
-        color: yup.string().nullable(),
-        order: yup.number().min(0).nullable()
+        color: yup.string().nullable()
     })
 
     const form: FormikProps<NoteDataType> = useFormik<NoteDataType>({
@@ -85,14 +84,6 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
                             placeholder='https://'
                         />
                         <DateField form={form} label={'form.work.note.date'} fieldName='date' />
-                        <TextField
-                            fullWidth={false}
-                            form={form}
-                            label={t('form.work.note.order')}
-                            name='order'
-                            type='number'
-                            InputProps={{ inputProps: { min: 0, step: 1 } }}
-                        />
                         <ColorField name='color' form={form} />
                     </Box>
                 </Box>

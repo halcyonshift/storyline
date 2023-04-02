@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Box, List, ListItem, ListItemButton, ListItemText, Stack, Typography } from '@mui/material'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
@@ -14,9 +14,10 @@ import { NoteModel, WorkModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { status } from '@sl/theme/utils'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
+import { NodeType, NodeGroupType } from './types'
 
 const NotePanel = () => {
-    const [group, setGroup] = useState<boolean>(true)
+    const [group, setGroup] = useState<boolean>(false)
     const work = useRouteLoaderData('work') as WorkModel
     const database = useDatabase()
     const { t } = useTranslation()
@@ -35,11 +36,13 @@ const NotePanel = () => {
         [],
         []
     )
+    const [list, setList] = useState<NoteModel[]>(notes)
 
     const handleDragEnd = async (result: DropResult) => {
         if (!result.destination) {
             return
         }
+
         const batchUpdate: NoteModel[] = []
         const newNotes = notes.filter((note) => !group || !note.note.id)
         const [reorderedPart] = newNotes.splice(result.source.index, 1)
@@ -62,6 +65,40 @@ const NotePanel = () => {
         }
     }
 
+    useEffect(() => {
+        const tree = ((data, root: string) => {
+            const r: NodeType[] = [],
+                o: NodeGroupType = {}
+            data.forEach((a) => {
+                const parentId = a.note.id || null
+                o[a.id] = { data: a, children: o[a.id] && o[a.id].children }
+                if (parentId === root) {
+                    r.push(o[a.id])
+                } else {
+                    o[parentId] = o[parentId] || {}
+                    o[parentId].children = o[parentId].children || []
+                    o[parentId].children.push(o[a.id])
+                }
+            })
+            return r
+        })(
+            notes.sort((a, b) => a.order - b.order),
+            null
+        )
+        setList(
+            tree.reduce(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (function traverse(level): any {
+                    return (r: NoteModel[], a: NodeType) => {
+                        a.data.level = level
+                        return r.concat(a.data, (a.children || []).reduce(traverse(level + 1), []))
+                    }
+                })(0),
+                []
+            )
+        )
+    }, [group, notes])
+
     return (
         <Panel
             action={<GroupToggle group={group} setGroup={setGroup} />}
@@ -77,8 +114,8 @@ const NotePanel = () => {
                             className='bg-white'
                             {...provided.droppableProps}
                             ref={provided.innerRef}>
-                            {notes
-                                .filter((note) => !group || !note.note.id)
+                            {list
+                                .filter((note) => group || !note.note.id)
                                 .map((note, index) => (
                                     <Draggable key={note.id} draggableId={note.id} index={index}>
                                         {(provided) => (
@@ -98,6 +135,7 @@ const NotePanel = () => {
                                                         <Box
                                                             className='flex justify-between align-middle'
                                                             sx={{
+                                                                paddingLeft: note.level,
                                                                 backgroundColor: status(note.status)
                                                                     .color
                                                             }}>

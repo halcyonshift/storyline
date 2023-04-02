@@ -1,6 +1,7 @@
-import { Model, Query, Relation } from '@nozbe/watermelondb'
+import { Model, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
-import { children, date, field, relation, text, writer } from '@nozbe/watermelondb/decorators'
+import * as Q from '@nozbe/watermelondb/QueryDescription'
+import { date, lazy, field, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { DateTime } from 'luxon'
 import { Status, type StatusType } from '@sl/constants/status'
 import CharacterModel from './CharacterModel'
@@ -17,7 +18,7 @@ export default class NoteModel extends Model {
         character: { type: 'belongs_to', key: 'character_id' },
         item: { type: 'belongs_to', key: 'item_id' },
         location: { type: 'belongs_to', key: 'location_id' },
-        note: { type: 'has_many', foreignKey: 'note_id' },
+        note: { type: 'belongs_to', key: 'note_id' },
         section: { type: 'belongs_to', key: 'section_id' }
     }
     @field('status') status!: StatusType
@@ -36,7 +37,8 @@ export default class NoteModel extends Model {
     @relation('note', 'note_id') note!: Relation<NoteModel>
     @relation('section', 'section_id') section!: Relation<SectionModel>
     @relation('work', 'work_id') work!: Relation<WorkModel>
-    @children('note') notes!: Query<NoteModel>
+
+    level: number
 
     get displayName() {
         return this.title
@@ -71,6 +73,10 @@ export default class NoteModel extends Model {
         return super.destroyPermanently()
     }
 
+    @lazy notes = this.collections
+        .get('note')
+        .query(Q.where('note_id', this.id), Q.sortBy('order', Q.asc))
+
     @writer async addNote(data: NoteDataType) {
         const work = await this.work.fetch()
         return await this.collections.get<NoteModel>('note').create((note) => {
@@ -94,7 +100,6 @@ export default class NoteModel extends Model {
             note.date = data.date
             note.url = data.url
             note.image = data.image
-            note.order = Number(data.order)
         })
     }
 

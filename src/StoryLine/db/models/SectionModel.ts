@@ -277,7 +277,6 @@ export default class SectionModel extends Model {
             section.title = data.title
             section.description = data.description
             section.date = data.date
-            section.order = Number(data.order)
             section.wordGoal = Number(data.wordGoal)
             section.deadlineAt = data.deadlineAt
             section.pointOfView = data.pointOfView
@@ -293,12 +292,6 @@ export default class SectionModel extends Model {
     @writer async updateBody(data: string) {
         await this.update((section) => {
             section.body = data
-        })
-    }
-
-    @writer async updateOrder(data: number) {
-        await this.update((section) => {
-            section.order = data
         })
     }
 
