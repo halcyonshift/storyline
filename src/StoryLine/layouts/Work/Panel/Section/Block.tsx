@@ -9,11 +9,11 @@ import { useObservable } from 'rxjs-hooks'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { GLOBAL_ICONS, NOTE_ICONS, SECTION_ICONS } from '@sl/constants/icons'
 import { SectionMode } from '@sl/constants/sectionMode'
-import { SectionModel } from '@sl/db/models'
-import { status, getHex } from '@sl/theme/utils'
+import { status } from '@sl/theme/utils'
 import useTabs from '../../Tabs/useTabs'
+import { BlockType } from './types'
 
-const Block = ({ section, index }: { section: SectionModel; index: number }) => {
+const Block = ({ section, index, fontWeight }: BlockType) => {
     const [show, setShow] = useState<boolean>(false)
     const children = useObservable(
         () =>
@@ -39,20 +39,15 @@ const Block = ({ section, index }: { section: SectionModel; index: number }) => 
                     <ListItem
                         {...provided.dragHandleProps}
                         title={section.displayTitle}
+                        sx={{
+                            borderLeft: `8px solid ${status(section.status, 500).color}`
+                        }}
                         disablePadding
                         disableGutters
                         divider>
                         <ListItemText
                             primary={
-                                <Box
-                                    className='flex flex-grow pr-1'
-                                    sx={{
-                                        backgroundColor: status(
-                                            section.status,
-                                            section.isPart ? 600 : section.isChapter ? 200 : 50
-                                        ).color,
-                                        color: section.isPart ? getHex('white') : 'inherit'
-                                    }}>
+                                <Box className='flex flex-grow pr-1'>
                                     <ListItemButton
                                         onClick={() =>
                                             section.isScene
@@ -64,14 +59,16 @@ const Block = ({ section, index }: { section: SectionModel; index: number }) => 
                                                 : setShow(!show)
                                         }>
                                         <Typography
+                                            sx={{ fontWeight: fontWeight < 400 ? 400 : fontWeight }}
                                             title={section.displayTitle}
                                             variant='body1'
                                             className='flex-grow w-0 whitespace-nowrap text-ellipsis
                                                         overflow-hidden self-center'>
-                                            {section.displayTitle}
+                                            {`${section.isChapter ? `${section.order}.` : ''} ${
+                                                section.displayTitle
+                                            }`}
                                         </Typography>
                                     </ListItemButton>
-
                                     <Stack direction='row'>
                                         {section.isPart ? (
                                             <TooltipIconButton
@@ -126,7 +123,12 @@ const Block = ({ section, index }: { section: SectionModel; index: number }) => 
                             {(provided) => (
                                 <Box ref={provided.innerRef} {...provided.droppableProps}>
                                     {children.map((section, index) => (
-                                        <Block key={section.id} section={section} index={index} />
+                                        <Block
+                                            key={section.id}
+                                            section={section}
+                                            index={index}
+                                            fontWeight={fontWeight - 400}
+                                        />
                                     ))}
                                     {provided.placeholder}
                                 </Box>

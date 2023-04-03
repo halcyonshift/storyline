@@ -155,14 +155,29 @@ const SectionPanel = () => {
                         <Box {...provided.droppableProps} ref={provided.innerRef}>
                             {parts.length > 1
                                 ? parts.map((part, index) => (
-                                      <Block key={part.id} section={part} index={index} />
+                                      <Block
+                                          key={part.id}
+                                          section={part}
+                                          index={index}
+                                          fontWeight={900}
+                                      />
                                   ))
                                 : chapters.length > 1
                                 ? chapters.map((chapter, index) => (
-                                      <Block key={chapter.id} section={chapter} index={index} />
+                                      <Block
+                                          key={chapter.id}
+                                          section={chapter}
+                                          index={index}
+                                          fontWeight={500}
+                                      />
                                   ))
                                 : scenes.map((scene, index) => (
-                                      <Block key={scene.id} section={scene} index={index} />
+                                      <Block
+                                          key={scene.id}
+                                          section={scene}
+                                          index={index}
+                                          fontWeight={400}
+                                      />
                                   ))}
                             {provided.placeholder}
                         </Box>

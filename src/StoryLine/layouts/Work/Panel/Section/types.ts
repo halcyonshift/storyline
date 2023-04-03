@@ -1,13 +1,7 @@
 import { SectionModel } from '@sl/db/models'
 
-export type SceneListProps = {
-    scenes: SectionModel[]
+export type BlockType = {
+    section: SectionModel
+    index: number
+    fontWeight: number
 }
-
-export type ChapterAccordionProps = {
-    chapters: SectionModel[]
-} & SceneListProps
-
-export type PartAccordionProps = {
-    parts: SectionModel[]
-} & ChapterAccordionProps
