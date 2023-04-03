@@ -540,6 +540,24 @@
             }
         },
         "work": {
+            "character": {
+                "tab": {
+                    "overview": "Overview",
+                    "history": "History",
+                    "personality": "Personality",
+                    "motivation": "Motivations"
+                },
+                "table": {
+                    "th": {
+                        "pov": "Point of view",
+                        "date": "Date",
+                        "scene": "Scene",
+                        "character": "With",
+                        "location": "At",
+                        "item": "Involving"
+                    }
+                }
+            },
             "insight": {
                 "word": {
                     "day": "Daily",

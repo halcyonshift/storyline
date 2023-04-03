@@ -37,6 +37,7 @@ const Tabs = () => {
         () =>
             tabs.showTabs ? (
                 <Box
+                    className='h-12'
                     sx={{
                         marginLeft: '1px',
                         maxWidth

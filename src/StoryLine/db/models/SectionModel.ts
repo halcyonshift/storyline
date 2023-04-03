@@ -7,6 +7,7 @@ import { type PointOfViewType } from '@sl/constants/pov'
 import { SectionMode, type SectionModeType } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
 import { htmlExtractExcerpts, htmlParse, wordCount } from '@sl/utils'
+import { stripSlashes } from '@sl/components/RichtextEditor/plugins/Tag/utils'
 import { type SectionDataType, type StatisticDataType } from './types'
 import { CharacterModel, ItemModel, LocationModel, NoteModel, StatisticModel, WorkModel } from './'
 export default class SectionModel extends Model {
@@ -99,34 +100,42 @@ export default class SectionModel extends Model {
         return Boolean(this.mode === SectionMode.VERSION)
     }
 
-    async characters() {
-        return await this._tags('character')
+    async characters(findId?: string) {
+        return await this._tags('character', findId)
     }
 
-    async items() {
-        return await this._tags('item')
+    async items(findId?: string) {
+        return await this._tags('item', findId)
     }
 
-    async locations() {
-        return await this._tags('location')
+    async locations(findId?: string) {
+        return await this._tags('location', findId)
     }
 
     get excerpts() {
         return this.body ? htmlExtractExcerpts(this.body) : null
     }
 
-    async _tags(mode: string) {
+    async _tags(
+        mode: string,
+        findId?: string
+    ): Promise<(CharacterModel | ItemModel | LocationModel)[] | boolean> {
         const ids: string[] = []
 
         new DOMParser()
             .parseFromString(this.body, 'text/html')
             .querySelectorAll(`.tag-${mode}`)
-            .forEach((tag) => ids.push(tag.id))
+            .forEach((tag: HTMLAnchorElement) => {
+                const url = new URL(tag.href)
+                ids.push(stripSlashes(url.pathname).split('/')[1])
+            })
 
-        if (ids.length) {
+        if (findId) {
+            return Boolean(ids.includes(findId))
+        } else if (ids.length) {
             return await this.database
                 .get<CharacterModel | ItemModel | LocationModel>(mode)
-                .query(Q.where('id', Q.oneOf(ids)))
+                .query(Q.where('id', findId ? findId : Q.oneOf(ids)))
                 .fetch()
         }
 

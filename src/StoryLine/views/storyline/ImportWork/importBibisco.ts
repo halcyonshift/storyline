@@ -16,7 +16,7 @@ import {
     WorkModel
 } from '@sl/db/models'
 
-// ToDo: relations, fix pov character, stats, tags
+// ToDo: relations, fix pov character, stats, tags, fix date
 
 const cleanText = (text: string) => {
     return text.replace(/<[^>]*>/g, '').replace('&nbsp;', ' ')

@@ -80,7 +80,7 @@ const CharacterForm = ({ work, character, initialValues }: CharacterFormProps) =
         initialValues,
         validationSchema,
         onSubmit: async (values: CharacterDataType) => {
-            if (character?.id) {
+            if (character) {
                 await character.updateCharacter(values)
             } else {
                 character = await work.addCharacter(initialValues.mode, values)
