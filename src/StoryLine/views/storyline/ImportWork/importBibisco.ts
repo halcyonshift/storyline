@@ -16,7 +16,7 @@ import {
     WorkModel
 } from '@sl/db/models'
 
-// ToDo: relations, fix pov character, stats, tags, fix date
+// ToDo: relations, fix pov character, stats, tags
 
 const cleanText = (text: string) => {
     return text.replace(/<[^>]*>/g, '').replace('&nbsp;', ' ')
@@ -153,6 +153,9 @@ const importBibisco = async (database: Database): Promise<false | string> => {
                     section.mode = SectionMode.SCENE
                     section.title = data.title
                     section.order = data.position
+                    section.date = data.revisions[data.revision].time
+                        ? DateTime.fromISO(data.revisions[data.revision].time).toSQL()
+                        : ''
                     section.body = data.revisions[data.revision].text
                     section.status = statusMap[data.status as keyof typeof statusMap]
                     section.pointOfView = data.povid
@@ -347,6 +350,9 @@ const importBibisco = async (database: Database): Promise<false | string> => {
                             section.title = data.title
                             section.order = data.position
                             section.body = revision.text
+                            section.date = revision.time
+                                ? DateTime.fromISO(revision.time).toSQL()
+                                : ''
                             section.status = statusMap[data.status as keyof typeof statusMap]
                             section.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
                             section.updatedAt = DateTime.fromMillis(

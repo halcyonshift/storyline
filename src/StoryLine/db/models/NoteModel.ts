@@ -74,7 +74,7 @@ export default class NoteModel extends Model {
     }
 
     @lazy notes = this.collections
-        .get('note')
+        .get<NoteModel>('note')
         .query(Q.where('note_id', this.id), Q.sortBy('order', Q.asc))
 
     @writer async addNote(data: NoteDataType) {

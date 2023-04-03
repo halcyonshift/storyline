@@ -4,7 +4,6 @@ import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { Box, List, ListItem, ListItemButton, ListItemText, Stack, Typography } from '@mui/material'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { GLOBAL_ICONS, NOTE_ICONS, SECTION_ICONS } from '@sl/constants/icons'
@@ -23,8 +22,8 @@ const Block = ({ section, index, fontWeight }: BlockType) => {
         [],
         []
     )
-    const navigate = useNavigate()
-    const { loadTab } = useTabs()
+
+    const { loadTab, removeTab } = useTabs()
     const { t } = useTranslation()
 
     return (
@@ -109,8 +108,8 @@ const Block = ({ section, index, fontWeight }: BlockType) => {
                                                 name: section.displayTitle
                                             })}
                                             onClick={async () => {
+                                                removeTab(section.id)
                                                 await section.delete()
-                                                navigate(`/work/${section.work.id}`)
                                             }}
                                         />
                                     </Stack>
