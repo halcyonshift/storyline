@@ -45,13 +45,11 @@ import {
 } from 'lexical'
 import { useTranslation } from 'react-i18next'
 import useLayout from '@sl/layouts/Work/useLayout'
-import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { getHex } from '@sl/theme/utils'
 import { getSelectedNode } from '../../utils/getSelectedNode'
 import { SAVE_COMMAND } from '../Save'
 import { TOGGLE_SEARCH_COMMAND } from '../Search'
 import { $isTagNode, TOGGLE_TAG_COMMAND } from '../Tag/Node'
-import { stripSlashes } from '../Tag/utils'
 import { ToolbarPluginProps } from './types'
 
 // eslint-disable-next-line complexity
@@ -76,7 +74,6 @@ const ToolbarPlugin = ({
     const [isTag, setIsTag] = useState<boolean>(false)
     const [editor] = useLexicalComposerContext()
     const { t } = useTranslation()
-    const { loadTab } = useTabs()
 
     const formatQuote = () => {
         editor.update(() => {
@@ -126,30 +123,6 @@ const ToolbarPlugin = ({
     useEffect(() => {
         setToolbarWidth(windowWidth - navigationWidth - panelWidth)
     }, [windowWidth, navigationWidth, panelWidth])
-
-    useEffect(() => {
-        if (!isTag) return
-
-        editor.update(() => {
-            const selection = $getSelection()
-            if ($isRangeSelection(selection)) {
-                const node = getSelectedNode(selection)
-                const parent = node.getParent()
-                const tagNode = $isTagNode(node) ? node : parent
-                const linkUrl = tagNode.getURL()
-                const parts = stripSlashes(linkUrl).split('/')
-
-                loadTab(
-                    {
-                        id: parts[1],
-                        label: parts[2],
-                        link: `${parts[0]}/${parts[1]}`
-                    },
-                    false
-                )
-            }
-        })
-    }, [isTag, editor])
 
     useEffect(
         () =>
