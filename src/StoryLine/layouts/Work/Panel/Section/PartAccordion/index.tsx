@@ -18,7 +18,7 @@ const PartAccordion = ({ parts, chapters, scenes }: PartAccordionProps) => {
     const { t } = useTranslation()
 
     return (
-        <Droppable droppableId='rbd-parts' type='PARTS'>
+        <Droppable droppableId='parts' type='PARTS' direction='vertical'>
             {(provided) => (
                 <Box {...provided.droppableProps} ref={provided.innerRef}>
                     {parts.map((part, index) => (
@@ -78,7 +78,6 @@ const PartAccordion = ({ parts, chapters, scenes }: PartAccordionProps) => {
                                         sx={{ backgroundColor: settings.getHex(400) }}
                                         className='text-white p-1 border-b'>
                                         <ChapterAccordion
-                                            startIndex={parts.length - 1}
                                             chapters={chapters.filter(
                                                 (chapter) => chapter.section.id === part.id
                                             )}
