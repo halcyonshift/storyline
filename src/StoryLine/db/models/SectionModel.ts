@@ -135,6 +135,10 @@ export default class SectionModel extends Model {
 
     @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
 
+    @lazy sections = this.collections
+        .get<SectionModel>('section')
+        .query(Q.where('section_id', this.id), Q.sortBy('order', Q.asc))
+
     @lazy scenes = this.collections
         .get<SectionModel>('section')
         .query(

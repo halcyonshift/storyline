@@ -31,7 +31,7 @@ const NotesPanel = ({ notes }: TabPanelProps) => {
                             <TooltipIconButton
                                 size='small'
                                 text='layout.work.panel.note.edit'
-                                link={`/works/${note.work.id}/note/${note.id}/edit`}
+                                link={`/work/${note.work.id}/note/${note.id}/edit`}
                                 icon={GLOBAL_ICONS.edit}
                             />
                             <TooltipIconButton

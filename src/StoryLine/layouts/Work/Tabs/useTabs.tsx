@@ -38,7 +38,7 @@ export const TabsProvider = ({ children }: TabsProviderProps) => {
         }
 
         if (switchTab) {
-            navigate(`/works/${params.work_id}/${focusTab.link}`)
+            navigate(`/work/${params.work_id}/${focusTab.link}`)
         }
     }
 
@@ -55,7 +55,7 @@ export const TabsProvider = ({ children }: TabsProviderProps) => {
                 setActive(newTabs.findIndex((tab) => tab.id === activeTab.id))
             }
         } else {
-            navigate(`/works/${params.work_id}`)
+            navigate(`/work/${params.work_id}`)
         }
     }
 

@@ -22,7 +22,7 @@ const ImportWorkView = () => {
                     const workId = await importBibisco(database)
 
                     if (workId) {
-                        navigate(`/works/${workId}`)
+                        navigate(`/work/${workId}`)
                     } else {
                         messenger.error(t('view.storyline.importWork.bibisco.error'))
                     }

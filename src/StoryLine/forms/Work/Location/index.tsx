@@ -31,7 +31,7 @@ const LocationForm = ({ work, location, initialValues }: LocationFormProps) => {
         onSubmit: async (values: LocationDataType) => {
             if (initialValues.name) {
                 location.updateLocation(values)
-                navigate(`/works/${location.work.id}/location/${location.id}`)
+                navigate(`/work/${location.work.id}/location/${location.id}`)
             } else {
                 const newLocation = location
                     ? await location.addLocation(values)
@@ -40,9 +40,9 @@ const LocationForm = ({ work, location, initialValues }: LocationFormProps) => {
                 form.resetForm()
                 messenger.success(t('form.work.location.alert.success'))
                 if (location) {
-                    navigate(`/works/${work.id}/location/${location.id}/edit`)
+                    navigate(`/work/${work.id}/location/${location.id}/edit`)
                 } else {
-                    navigate(`/works/${work.id}/location/${newLocation.id}/edit`)
+                    navigate(`/work/${work.id}/location/${newLocation.id}/edit`)
                 }
             }
         }

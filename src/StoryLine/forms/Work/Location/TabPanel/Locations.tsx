@@ -37,7 +37,7 @@ const LocationsPanel = ({ location }: LocationTabPanelProps) => {
                             <TooltipIconButton
                                 size='small'
                                 text='layout.work.panel.location.edit'
-                                link={`/works/${location.work.id}/location/${location.id}/edit`}
+                                link={`/work/${location.work.id}/location/${location.id}/edit`}
                                 icon={GLOBAL_ICONS.edit}
                             />
                             <TooltipIconButton

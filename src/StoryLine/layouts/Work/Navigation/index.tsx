@@ -126,7 +126,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                         aria-label={t('layout.work.navigation.insight')}
                         onClick={() => {
                             togglePanel()
-                            navigate(`/works/${params.work_id}/insight`)
+                            navigate(`/work/${params.work_id}/insight`)
                         }}>
                         <InsightsIcon />
                     </IconButton>
@@ -137,7 +137,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                         aria-label={t('layout.work.navigation.backupRestore')}
                         onClick={() => {
                             togglePanel()
-                            navigate(`/works/${params.work_id}/backupRestore`)
+                            navigate(`/work/${params.work_id}/backupRestore`)
                         }}>
                         <ImportExportIcon />
                     </IconButton>
@@ -148,7 +148,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                         aria-label={t('layout.work.navigation.setting')}
                         onClick={() => {
                             togglePanel()
-                            navigate(`/works/${params.work_id}/edit`)
+                            navigate(`/work/${params.work_id}/edit`)
                         }}>
                         <SettingsIcon />
                     </IconButton>

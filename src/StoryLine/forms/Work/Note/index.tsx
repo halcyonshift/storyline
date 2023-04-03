@@ -43,9 +43,9 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
                 }
                 form.resetForm()
                 if (belongsTo) {
-                    navigate(`/works/${work.id}/${belongsTo.table}/${belongsTo.id}/edit`)
+                    navigate(`/work/${work.id}/${belongsTo.table}/${belongsTo.id}/edit`)
                 } else {
-                    navigate(`/works/${work.id}/note/${newNote.id}/edit`)
+                    navigate(`/work/${work.id}/note/${newNote.id}/edit`)
                 }
             }
         }

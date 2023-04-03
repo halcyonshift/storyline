@@ -54,7 +54,7 @@ const WorkForm = ({ work, initialValues }: WorkFormProps) => {
                 const chapter = await part.addChapter()
                 await chapter.addScene()
                 form.resetForm()
-                navigate(`/works/${work.id}`)
+                navigate(`/work/${work.id}`)
             }
         }
     })

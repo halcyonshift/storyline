@@ -65,7 +65,7 @@ const router = createHashRouter([
                 ]
             },
             {
-                path: 'works/:work_id',
+                path: 'work/:work_id',
                 id: 'work',
                 element: <Layouts.WorkLayout />,
                 loader: async ({ params }) => {

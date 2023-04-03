@@ -64,7 +64,7 @@ const LastUpdatedBox = () => {
                     secondaryAction={
                         <>
                             <IconButton
-                                onClick={() => navigate(`/works/${work.id}/${item.link}/edit`)}>
+                                onClick={() => navigate(`/work/${work.id}/${item.link}/edit`)}>
                                 {GLOBAL_ICONS.edit}
                             </IconButton>
                         </>

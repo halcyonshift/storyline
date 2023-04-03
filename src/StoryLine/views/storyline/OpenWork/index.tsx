@@ -13,7 +13,7 @@ const OpenWorkView = () => {
             {works.map((work) => (
                 <ListItem
                     key={work.id}
-                    link={`/works/${work.id}`}
+                    link={`/work/${work.id}`}
                     icon={<ArrowRightIcon />}
                     text={work.title}
                 />

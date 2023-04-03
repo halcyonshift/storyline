@@ -35,7 +35,7 @@ const ItemForm = ({ work, item, initialValues }: ItemFormProps) => {
                 form.resetForm()
             }
             messenger.success(t('form.work.item.alert.success'))
-            navigate(`/works/${item.work.id}/item/${item.id}`)
+            navigate(`/work/${item.work.id}/item/${item.id}`)
         }
     })
 

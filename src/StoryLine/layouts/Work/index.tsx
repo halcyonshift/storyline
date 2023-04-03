@@ -48,7 +48,7 @@ const WorkLayout = () => {
                                 <Typography
                                     variant='h6'
                                     className='w-[70vw] text-ellipsis'
-                                    onClick={() => navigate(`/works/${work.id}`)}>
+                                    onClick={() => navigate(`/work/${work.id}`)}>
                                     {work.title}
                                 </Typography>
                                 <Typography variant='h6' onClick={() => navigate('/')}>

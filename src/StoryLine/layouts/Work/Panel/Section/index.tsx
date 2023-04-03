@@ -2,18 +2,17 @@
 import { useEffect, useState } from 'react'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
-import { Box, Stack, Typography } from '@mui/material'
-import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd'
+import { Box } from '@mui/material'
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
 import Panel from '@sl/components/Panel'
 import GroupToggle from '@sl/components/Panel/GroupToggle'
-import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { TooltipIconButtonProps } from '@sl/components/TooltipIconButton/types'
-import { GLOBAL_ICONS, NOTE_ICONS, SECTION_ICONS } from '@sl/constants/icons'
+import { SECTION_ICONS } from '@sl/constants/icons'
 import { Status } from '@sl/constants/status'
 import { SectionModel, WorkModel } from '@sl/db/models'
-import { useTranslation } from 'react-i18next'
+import Block from './Block'
 
 const SectionPanel = () => {
     const [group, setGroup] = useState<boolean>(false)
@@ -29,19 +28,17 @@ const SectionPanel = () => {
         []
     )
     const navigate = useNavigate()
-    const { t } = useTranslation()
 
     const handleDragEnd = async (result: DropResult) => {
         if (!result.destination) return
 
-        if (result.type === 'SCENE' && !result.destination.droppableId.startsWith('CHAPTER-'))
-            return
+        // ToDo make sure scenes can't be dropped on parts
 
         const batchUpdate: SectionModel[] = []
         let sourceSections: SectionModel[] = []
 
-        if (result.type === 'PARTS') {
-            sourceSections = parts
+        if (result.type === 'ROOT') {
+            sourceSections = parts.length > 1 ? parts : chapters.length > 1 ? chapters : scenes
         } else {
             sourceSections = sections.filter(
                 (section) => section.section.id === result.source.droppableId
@@ -142,199 +139,6 @@ const SectionPanel = () => {
         setNavigation(newNavigation)
     }, [parts.length, chapters.length])
 
-    const Part = ({ part, chapters, scenes, index }) => {
-        const [show, setShow] = useState<boolean>(false)
-        return (
-            <Draggable draggableId={part.id} index={index}>
-                {(provided) => (
-                    <Box {...provided.draggableProps} ref={provided.innerRef}>
-                        <Box className='flex flex-grow'>
-                            <Typography
-                                {...provided.dragHandleProps}
-                                onClick={() => setShow(!show)}
-                                variant='body1'
-                                className='flex-grow w-0 whitespace-nowrap text-ellipsis
-                                            overflow-hidden self-center'>
-                                {part.displayTitle}
-                            </Typography>
-                            <Stack direction='row'>
-                                <TooltipIconButton
-                                    size='small'
-                                    text='layout.work.panel.section.addChapter'
-                                    icon={SECTION_ICONS.addChapter}
-                                    onClick={() => {
-                                        part.addChapter()
-                                    }}
-                                />
-                                <TooltipIconButton
-                                    size='small'
-                                    text='layout.work.panel.note.add'
-                                    link={`addNote/section/${part.id}`}
-                                    icon={NOTE_ICONS.add}
-                                />
-                                <TooltipIconButton
-                                    size='small'
-                                    text='layout.work.panel.section.edit'
-                                    link={`section/${part.id}/edit`}
-                                    icon={GLOBAL_ICONS.edit}
-                                />
-                                <TooltipIconButton
-                                    size='small'
-                                    text='layout.work.panel.section.delete'
-                                    icon={GLOBAL_ICONS.delete}
-                                    confirm={t('layout.work.panel.section.deleteConfirm', {
-                                        name: part.displayTitle
-                                    })}
-                                    onClick={async () => {
-                                        await part.delete()
-                                        navigate(`/works/${part.work.id}`)
-                                    }}
-                                />
-                            </Stack>
-                        </Box>
-                        {show ? (
-                            <Droppable droppableId={part.id} type='CHAPTERS'>
-                                {(provided) => (
-                                    <Box ref={provided.innerRef} {...provided.droppableProps}>
-                                        {chapters
-                                            .filter((chapter) => chapter.section.id === part.id)
-                                            .map((chapter, index) => (
-                                                <Chapter
-                                                    key={chapter.id}
-                                                    chapter={chapter}
-                                                    scenes={scenes}
-                                                    index={index}
-                                                />
-                                            ))}
-                                        {provided.placeholder}
-                                    </Box>
-                                )}
-                            </Droppable>
-                        ) : null}
-                    </Box>
-                )}
-            </Draggable>
-        )
-    }
-
-    const Chapter = ({ chapter, scenes, index }) => {
-        const [show, setShow] = useState<boolean>(false)
-        return (
-            <Draggable draggableId={chapter.id} index={index}>
-                {(provided) => (
-                    <Box {...provided.draggableProps} ref={provided.innerRef}>
-                        <Box className='flex flex-grow' {...provided.dragHandleProps}>
-                            <Typography
-                                onClick={() => setShow(!show)}
-                                variant='body1'
-                                className='flex-grow w-0 whitespace-nowrap text-ellipsis overflow-hidden self-center'>
-                                {chapter.displayTitle}
-                            </Typography>
-                            <Stack spacing={0} direction='row'>
-                                <TooltipIconButton
-                                    size='small'
-                                    text='layout.work.panel.section.addScene'
-                                    icon={SECTION_ICONS.addScene}
-                                    onClick={() => {
-                                        chapter.addScene()
-                                    }}
-                                />
-                                <TooltipIconButton
-                                    size='small'
-                                    text='layout.work.panel.note.add'
-                                    link={`addNote/section/${chapter.id}`}
-                                    icon={NOTE_ICONS.add}
-                                />
-                                <TooltipIconButton
-                                    size='small'
-                                    text='layout.work.panel.section.edit'
-                                    link={`section/${chapter.id}/edit`}
-                                    icon={GLOBAL_ICONS.edit}
-                                />
-                                <TooltipIconButton
-                                    size='small'
-                                    text='layout.work.panel.section.delete'
-                                    icon={GLOBAL_ICONS.delete}
-                                    confirm={t('layout.work.panel.section.deleteConfirm', {
-                                        name: chapter.displayTitle
-                                    })}
-                                    onClick={async () => {
-                                        await chapter.delete()
-                                        navigate(`/works/${chapter.work.id}`)
-                                    }}
-                                />
-                            </Stack>
-                        </Box>
-
-                        {show ? (
-                            <Droppable droppableId={chapter.id} type='SCENES'>
-                                {(provided, snapshot) => (
-                                    <Box
-                                        {...provided.droppableProps}
-                                        ref={provided.innerRef}
-                                        className={`chapter-scenes ${
-                                            snapshot.isDraggingOver ? 'is-dragging-over' : ''
-                                        }`}>
-                                        {scenes
-                                            .filter((scene) => scene.section.id === chapter.id)
-                                            .map((scene, index) => (
-                                                <Scene key={scene.id} scene={scene} index={index} />
-                                            ))}
-                                        {provided.placeholder}
-                                    </Box>
-                                )}
-                            </Droppable>
-                        ) : null}
-                    </Box>
-                )}
-            </Draggable>
-        )
-    }
-
-    const Scene = ({ scene, index }) => {
-        return (
-            <Draggable draggableId={scene.id} index={index}>
-                {(provided) => (
-                    <Box {...provided.draggableProps} ref={provided.innerRef}>
-                        <Box className='flex flex-grow' {...provided.dragHandleProps}>
-                            <Typography
-                                variant='body1'
-                                className='flex-grow w-0 whitespace-nowrap text-ellipsis overflow-hidden self-center'>
-                                {scene.displayTitle}
-                            </Typography>
-                            <Stack spacing={0} direction='row'>
-                                <TooltipIconButton
-                                    size='small'
-                                    text='layout.work.panel.note.add'
-                                    link={`addNote/section/${scene.id}`}
-                                    icon={NOTE_ICONS.add}
-                                />
-                                <TooltipIconButton
-                                    size='small'
-                                    text='layout.work.panel.section.edit'
-                                    link={`section/${scene.id}/edit`}
-                                    icon={GLOBAL_ICONS.edit}
-                                />
-                                <TooltipIconButton
-                                    size='small'
-                                    text='layout.work.panel.section.delete'
-                                    icon={GLOBAL_ICONS.delete}
-                                    confirm={t('layout.work.panel.section.deleteConfirm', {
-                                        name: scene.displayTitle
-                                    })}
-                                    onClick={async () => {
-                                        await scene.delete()
-                                        navigate(`/works/${scene.work.id}`)
-                                    }}
-                                />
-                            </Stack>
-                        </Box>
-                    </Box>
-                )}
-            </Draggable>
-        )
-    }
-
     return (
         <Panel
             action={
@@ -346,18 +150,20 @@ const SectionPanel = () => {
             }
             navigation={navigation}>
             <DragDropContext onDragEnd={handleDragEnd}>
-                <Droppable droppableId='root' direction='vertical' type='PARTS'>
+                <Droppable droppableId='root' direction='vertical' type='ROOT'>
                     {(provided) => (
                         <Box {...provided.droppableProps} ref={provided.innerRef}>
-                            {parts.map((part, index) => (
-                                <Part
-                                    key={part.id}
-                                    part={part}
-                                    chapters={chapters}
-                                    scenes={scenes}
-                                    index={index}
-                                />
-                            ))}
+                            {parts.length > 1
+                                ? parts.map((part, index) => (
+                                      <Block key={part.id} section={part} index={index} />
+                                  ))
+                                : chapters.length > 1
+                                ? chapters.map((chapter, index) => (
+                                      <Block key={chapter.id} section={chapter} index={index} />
+                                  ))
+                                : scenes.map((scene, index) => (
+                                      <Block key={scene.id} section={scene} index={index} />
+                                  ))}
                             {provided.placeholder}
                         </Box>
                     )}

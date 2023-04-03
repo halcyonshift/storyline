@@ -86,7 +86,7 @@ const CharacterForm = ({ work, character, initialValues }: CharacterFormProps) =
                 character = await work.addCharacter(initialValues.mode, values)
             }
             messenger.success(t('form.work.character.alert.success'))
-            navigate(`/works/${work.id}/character/${character.id}/edit`)
+            navigate(`/work/${work.id}/character/${character.id}/edit`)
         }
     })
 
