@@ -32,8 +32,6 @@ const SectionPanel = () => {
     const handleDragEnd = async (result: DropResult) => {
         if (!result.destination) return
 
-        // ToDo make sure scenes can't be dropped on parts
-
         const batchUpdate: SectionModel[] = []
         let sourceSections: SectionModel[] = []
 

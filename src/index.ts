@@ -50,13 +50,6 @@ const createWindow = (): void => {
     })
 
     mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY).catch(() => null)
-    /*
-            // ToDo - make work for inside/outside links
-    mainWindow.webContents.on('will-navigate', function (e, url) {
-        e.preventDefault()
-        shell.openExternal(url)
-    })
-    */
 }
 
 app.on('ready', () => {

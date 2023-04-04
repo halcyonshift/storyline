@@ -7,8 +7,6 @@ import SceneList from './SceneList'
 import { ChapterListProps } from './types'
 import useSettings from '@sl/theme/useSettings'
 
-// ToDo - make proper components
-
 const ChapterList = ({ chapters, scenes }: ChapterListProps) => {
     const { t } = useTranslation()
     const settings = useSettings()

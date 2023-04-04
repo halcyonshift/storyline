@@ -16,8 +16,6 @@ import {
     WorkModel
 } from '@sl/db/models'
 
-// ToDo: relations, fix pov character, stats, tags
-
 const cleanText = (text: string) => {
     return text.replace(/<[^>]*>/g, '').replace('&nbsp;', ' ')
 }
@@ -158,8 +156,8 @@ const importBibisco = async (database: Database): Promise<false | string> => {
                         : ''
                     section.body = data.revisions[data.revision].text
                     section.status = statusMap[data.status as keyof typeof statusMap]
-                    section.pointOfView = data.povid
-                        ? povMap[data.povid as keyof typeof povMap]
+                    section.pointOfView = data.revisions[data.revision].povid
+                        ? povMap[data.revisions[data.revision].povid as keyof typeof povMap]
                         : null
                     section.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
                     section.updatedAt = DateTime.fromMillis(
@@ -315,16 +313,20 @@ const importBibisco = async (database: Database): Promise<false | string> => {
     const notes = await work.note.fetch()
 
     const povScenes: SectionModel[] = data.collections[4].data
-        .filter((data: any) => data.characterid)
+        .filter((data: any) => data.revisions[data.revision].povcharacterid)
         .reduce((arr: SectionModel[], data: any) => {
             const povScene = scenes.find((scene) => scene.id === `SCENE-${data['$loki']}`)
-            const [mode, id] = data.characterid.split('_')
+            const [mode, id] = data.revisions[data.revision].povcharacterid.split('_')
             const character = characters.find(
                 (character) => character.id === `CHARACTER-${mode === 'm' ? 'PRIM' : 'SEC'}-${id}`
             )
-            povScene.prepareUpdate((section) => {
-                section.pointOfViewCharacter.set(character)
-            })
+            if (character) {
+                arr.push(
+                    povScene.prepareUpdate((section) => {
+                        section.pointOfViewCharacter.set(character)
+                    })
+                )
+            }
             return arr
         }, [])
 
@@ -353,6 +355,9 @@ const importBibisco = async (database: Database): Promise<false | string> => {
                             section.date = revision.time
                                 ? DateTime.fromISO(revision.time).toSQL()
                                 : ''
+                            section.pointOfView = revision.povid
+                                ? povMap[revision.povid as keyof typeof povMap]
+                                : null
                             section.status = statusMap[data.status as keyof typeof statusMap]
                             section.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
                             section.updatedAt = DateTime.fromMillis(

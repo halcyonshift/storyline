@@ -23,8 +23,6 @@ import { CharacterModel, ItemModel, LocationModel, NoteModel, WorkModel } from '
 import { ConnectionDataType } from '@sl/db/models/types'
 import { ObjType, NodeType, NodeTypeByID } from './types'
 
-// ToDo -- setData?
-
 const PaperComponent = (props: PaperProps) => {
     return (
         <Draggable handle='#draggable' cancel={'[class*="MuiDialogContent-root"]'}>

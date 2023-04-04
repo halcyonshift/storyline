@@ -18,7 +18,6 @@ import { TextareaFieldProps } from './types'
 
 const TextareaField = ({ form, label, fieldName }: TextareaFieldProps) => {
     const { t } = useTranslation()
-    // ToDo update initialValue on save to update initialvalueplugin
     return (
         <Box>
             {label ? <InputLabel className='mb-1'>{label}</InputLabel> : null}

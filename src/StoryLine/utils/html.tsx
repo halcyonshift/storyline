@@ -12,7 +12,6 @@ export const htmlExtractExcerptsOptions: HTMLReactParserOptions = {
 
 export const htmlParseOptions: HTMLReactParserOptions = {
     replace: (domNode) => {
-        // ToDo make export options
         /*
         if (domNode instanceof Element && domNode.attribs && domNode.name === 'p') {
             return (

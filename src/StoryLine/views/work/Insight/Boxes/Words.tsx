@@ -50,7 +50,6 @@ const DEFAULT_OPTIONS = {
 }
 
 const PADDING = { paddingX: 3, paddingY: 1 }
-// ToDo get most recent stat as base for each section
 const WordsBox = () => {
     const [value, setValue] = useState('1')
     const [statisticsDates] = useState<DateTime[]>(

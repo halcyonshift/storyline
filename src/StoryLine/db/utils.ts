@@ -20,7 +20,3 @@ export const exportDB = async () => {
         data.push(records)
     }
 }
-
-export const importDB = () => {
-    // ToDo import data
-}

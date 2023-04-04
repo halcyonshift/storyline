@@ -54,7 +54,6 @@ export default class WorkModel extends Model {
     @children('section') section!: Query<SectionModel>
     @children('statistic') statistic!: Query<StatisticModel>
 
-    // ToDo finish search
     async search(
         query: string,
         sceneOnly: boolean,
