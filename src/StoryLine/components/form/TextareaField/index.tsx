@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { $generateHtmlFromNodes } from '@lexical/html'
 import { ListItemNode, ListNode } from '@lexical/list'
 import { ListPlugin } from '@lexical/react/LexicalListPlugin'
@@ -18,6 +19,12 @@ import { TextareaFieldProps } from './types'
 
 const TextareaField = ({ form, label, fieldName }: TextareaFieldProps) => {
     const { t } = useTranslation()
+    const [initialValue, setInitialValue] = useState<string>()
+
+    useEffect(() => {
+        setInitialValue(form.values[fieldName] || form.initialValues[fieldName])
+    }, [])
+
     return (
         <Box>
             {label ? <InputLabel className='mb-1'>{label}</InputLabel> : null}
@@ -48,7 +55,7 @@ const TextareaField = ({ form, label, fieldName }: TextareaFieldProps) => {
                             ErrorBoundary={LexicalErrorBoundary}
                         />
                         <HistoryPlugin />
-                        <InitialValuePlugin value={form.initialValues[fieldName]} />
+                        <InitialValuePlugin value={initialValue} />
                         <ListPlugin />
                         <OnChangePlugin
                             onChange={(_, editor) => {
