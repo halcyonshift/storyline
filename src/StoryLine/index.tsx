@@ -76,7 +76,7 @@ const router = createHashRouter([
                 children: [
                     {
                         index: true,
-                        element: <WorkViews.LandingView />
+                        element: <WorkViews.DashboardView />
                     },
                     {
                         path: 'addCharacter/:mode',
