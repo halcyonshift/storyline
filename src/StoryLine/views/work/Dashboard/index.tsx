@@ -4,7 +4,7 @@ import Paper from '@mui/material/Paper'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import * as Boxes from './Boxes'
 
-const LandingView = () => {
+const DashboardView = () => {
     const { setShowTabs } = useTabs()
 
     useEffect(() => {
@@ -40,4 +40,4 @@ const LandingView = () => {
     )
 }
 
-export default LandingView
+export default DashboardView
