@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useObservable } from 'rxjs-hooks'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { GLOBAL_ICONS, NOTE_ICONS } from '@sl/constants/icons'
-import { status } from '@sl/theme/utils'
+import { getHex, status, textColor } from '@sl/theme/utils'
 import useTabs from '../../Tabs/useTabs'
 import { BlockType } from './types'
 
@@ -35,6 +35,18 @@ const Block = ({ note, index, fontWeight }: BlockType) => {
                         disableGutters
                         divider>
                         <ListItemText
+                            sx={
+                                note.color
+                                    ? {
+                                          backgroundColor: note.color,
+                                          color: textColor(
+                                              note.color,
+                                              getHex('white'),
+                                              getHex('black')
+                                          )
+                                      }
+                                    : {}
+                            }
                             primary={
                                 <Box className='flex flex-grow pr-1'>
                                     <ListItemButton
