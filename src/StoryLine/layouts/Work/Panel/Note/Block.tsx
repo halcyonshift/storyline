@@ -51,13 +51,12 @@ const Block = ({ note, index, fontWeight }: BlockType) => {
                                 <Box className='flex flex-grow pr-1'>
                                     <ListItemButton
                                         onClick={() => {
-                                            !children.length
-                                                ? loadTab({
-                                                      id: note.id,
-                                                      label: note.title,
-                                                      link: `note/${note.id}`
-                                                  })
-                                                : setShow(!show)
+                                            loadTab({
+                                                id: note.id,
+                                                label: note.title,
+                                                link: `note/${note.id}`
+                                            })
+                                            setShow(!show)
                                         }}>
                                         <Typography
                                             sx={{ fontWeight: fontWeight < 400 ? 400 : fontWeight }}
@@ -100,7 +99,7 @@ const Block = ({ note, index, fontWeight }: BlockType) => {
                     </ListItem>
                     {children.length ? (
                         show ? (
-                            <Droppable droppableId={note.id} type='NOTE'>
+                            <Droppable droppableId={note.id} type='NOTE' isCombineEnabled>
                                 {(provided) => (
                                     <Box ref={provided.innerRef} {...provided.droppableProps}>
                                         {children.map((note, index) => (
