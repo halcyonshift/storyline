@@ -37,7 +37,7 @@ const ChapterList = ({ chapters, scenes }: ChapterListProps) => {
                             </Typography>
                             {chapter.daysRemaining ? (
                                 <Typography variant='body2'>
-                                    {t('view.work.landing.tracker.remaining', {
+                                    {t('view.work.dashboard.tracker.remaining', {
                                         days: chapter.daysRemaining,
                                         words: chapter.wordsPerDay
                                     })}
