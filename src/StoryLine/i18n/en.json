@@ -383,6 +383,7 @@
                 "url": "Link",
                 "order": "Order",
                 "date": "Date",
+                "isTaggable": "Taggable",
                 "alert": {
                     "success": "The note has been saved"
                 }
@@ -395,6 +396,12 @@
                 "date": "Date",
                 "pointOfView": "Point of view",
                 "pointOfViewCharacter": "Point of view character",
+                "tag": {
+                    "characters": "Characters",
+                    "items": "Items",
+                    "locations": "Locations",
+                    "notes": "Notes"
+                },
                 "alert": {
                     "success": "The {{name}} has been saved"
                 }

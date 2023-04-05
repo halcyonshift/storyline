@@ -43,11 +43,7 @@ const TagPlugin = (props: MenuProps) => {
         [],
         []
     )
-    const notes = useObservable(
-        () => work.note.extend(Q.sortBy('title', Q.asc)).observeWithColumns(['title']),
-        [],
-        []
-    )
+    const notes = useObservable(() => work.taggableNotes.observeWithColumns(['title']), [], [])
 
     const openTag = () => {
         editor.update(() => {

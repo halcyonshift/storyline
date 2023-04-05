@@ -9,13 +9,22 @@ import { Status, type StatusType } from '@sl/constants/status'
 import { htmlExtractExcerpts, htmlParse, wordCount } from '@sl/utils'
 import { stripSlashes } from '@sl/components/RichtextEditor/plugins/Tag/utils'
 import { type SectionDataType, type StatisticDataType } from './types'
-import { CharacterModel, ItemModel, LocationModel, NoteModel, StatisticModel, WorkModel } from './'
+import {
+    CharacterModel,
+    ItemModel,
+    LocationModel,
+    NoteModel,
+    StatisticModel,
+    TagModel,
+    WorkModel
+} from './'
 export default class SectionModel extends Model {
     static table = 'section'
     public static associations: Associations = {
         work: { type: 'belongs_to', key: 'work_id' },
         note: { type: 'has_many', foreignKey: 'section_id' },
         statistic: { type: 'has_many', foreignKey: 'section_id' },
+        tag: { type: 'has_many', foreignKey: 'section_id' },
         section: { type: 'belongs_to', key: 'section_id' },
         point_of_view_character: { type: 'belongs_to', key: 'point_of_view_character_id' }
     }
@@ -38,6 +47,7 @@ export default class SectionModel extends Model {
     pointOfViewCharacter!: Relation<CharacterModel>
     @children('note') note!: Query<NoteModel>
     @children('statistic') statistic!: Query<StatisticModel>
+    @children('tag') tag!: Query<TagModel>
 
     wordCount = 0
 
@@ -176,6 +186,11 @@ export default class SectionModel extends Model {
         .get<StatisticModel>('statistic')
         .query(Q.where('section_id', this.id), Q.sortBy('created_at', Q.desc))
 
+    @lazy characterTags = this.tag.extend(Q.where('character_id', Q.notEq(null)))
+    @lazy itemTags = this.tag.extend(Q.where('item_id', Q.notEq(null)))
+    @lazy locationTags = this.tag.extend(Q.where('location_id', Q.notEq(null)))
+    @lazy noteTags = this.tag.extend(Q.where('note_id', Q.notEq(null)))
+
     async addVersion() {
         const count = await this.versions.fetchCount()
         return await this.addSection({
@@ -285,15 +300,50 @@ export default class SectionModel extends Model {
         })
     }
 
-    @writer async updateSection(data: SectionDataType) {
-        await this.update((section) => {
-            section.title = data.title
-            section.description = data.description
-            section.date = data.date
-            section.wordGoal = Number(data.wordGoal)
-            section.deadlineAt = data.deadlineAt
-            section.pointOfView = data.pointOfView
-        })
+    @writer async updateSection(
+        data: SectionDataType,
+        tags: {
+            characters: CharacterModel[]
+            items: ItemModel[]
+            locations: LocationModel[]
+            notes: NoteModel[]
+        }
+    ) {
+        await this.tag.destroyAllPermanently()
+        await this.batch(
+            this.prepareUpdate((section) => {
+                section.title = data.title
+                section.description = data.description
+                section.date = data.date
+                section.wordGoal = Number(data.wordGoal)
+                section.deadlineAt = data.deadlineAt
+                section.pointOfView = data.pointOfView
+            }),
+            ...tags.characters.map((character) =>
+                this.collections.get<TagModel>('tag').prepareCreate((tag) => {
+                    tag.section.set(this)
+                    tag.character.set(character)
+                })
+            ),
+            ...tags.items.map((item) =>
+                this.collections.get<TagModel>('tag').prepareCreate((tag) => {
+                    tag.section.set(this)
+                    tag.item.set(item)
+                })
+            ),
+            ...tags.locations.map((location) =>
+                this.collections.get<TagModel>('tag').prepareCreate((tag) => {
+                    tag.section.set(this)
+                    tag.location.set(location)
+                })
+            ),
+            ...tags.notes.map((note) =>
+                this.collections.get<TagModel>('tag').prepareCreate((tag) => {
+                    tag.section.set(this)
+                    tag.note.set(note)
+                })
+            )
+        )
     }
 
     @writer async updatePoVCharacter(character: CharacterModel | null) {

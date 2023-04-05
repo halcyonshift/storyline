@@ -1,15 +1,11 @@
-import { Model, Relation } from '@nozbe/watermelondb'
+import { Model, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
-import { date, lazy, field, relation, text, writer } from '@nozbe/watermelondb/decorators'
+import { children, date, lazy, field, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { DateTime } from 'luxon'
 import { Status, type StatusType } from '@sl/constants/status'
-import CharacterModel from './CharacterModel'
-import ItemModel from './ItemModel'
-import LocationModel from './LocationModel'
-import SectionModel from './SectionModel'
-import WorkModel from './WorkModel'
 import { NoteDataType } from './types'
+import { CharacterModel, ItemModel, LocationModel, SectionModel, TagModel, WorkModel } from '.'
 
 export default class NoteModel extends Model {
     static table = 'note'
@@ -19,7 +15,8 @@ export default class NoteModel extends Model {
         item: { type: 'belongs_to', key: 'item_id' },
         location: { type: 'belongs_to', key: 'location_id' },
         note: { type: 'belongs_to', key: 'note_id' },
-        section: { type: 'belongs_to', key: 'section_id' }
+        section: { type: 'belongs_to', key: 'section_id' },
+        tag: { type: 'has_many', foreignKey: 'tag_id' }
     }
     @field('status') status!: StatusType
     @text('title') title!: string
@@ -29,6 +26,7 @@ export default class NoteModel extends Model {
     @field('image') image!: string
     @text('color') color!: string
     @field('order') order!: number
+    @field('is_taggable') isTaggable!: boolean
     @date('created_at') createdAt!: Date
     @date('updated_at') updatedAt!: Date
     @relation('character', 'character_id') character!: Relation<CharacterModel>
@@ -37,6 +35,7 @@ export default class NoteModel extends Model {
     @relation('note', 'note_id') note!: Relation<NoteModel>
     @relation('section', 'section_id') section!: Relation<SectionModel>
     @relation('work', 'work_id') work!: Relation<WorkModel>
+    @children('tag') tag!: Query<TagModel>
 
     level: number
 
@@ -70,6 +69,7 @@ export default class NoteModel extends Model {
         if (this.image) {
             api.deleteFile(this.image)
         }
+        this.tag.destroyAllPermanently()
         return super.destroyPermanently()
     }
 
@@ -100,6 +100,7 @@ export default class NoteModel extends Model {
             note.date = data.date
             note.url = data.url
             note.image = data.image
+            note.isTaggable = data.isTaggable
         })
     }
 

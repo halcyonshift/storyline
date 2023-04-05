@@ -3,9 +3,7 @@ import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { DateTime } from 'luxon'
 import { StatusType } from '@sl/constants/status'
-import NoteModel from './NoteModel'
-import SectionModel from './SectionModel'
-import WorkModel from './WorkModel'
+import { NoteModel, SectionModel, TagModel, WorkModel } from './'
 import { CharacterDataType } from './types'
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
 import ConnectionModel from './ConnectionModel'
@@ -15,7 +13,8 @@ export default class CharacterModel extends Model {
     public static associations: Associations = {
         work: { type: 'belongs_to', key: 'work_id' },
         note: { type: 'has_many', foreignKey: 'character_id' },
-        section: { type: 'has_many', foreignKey: 'pov_character_id' }
+        section: { type: 'has_many', foreignKey: 'pov_character_id' },
+        tag: { type: 'has_many', foreignKey: 'character_id' }
     }
     @field('mode') mode!: CharacterModeType
     @field('status') status!: StatusType
@@ -57,6 +56,7 @@ export default class CharacterModel extends Model {
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @children('note') note!: Query<NoteModel>
     @children('section') section!: Query<SectionModel>
+    @children('tag') tag!: Query<TagModel>
 
     get isPrimary() {
         return Boolean(this.mode === CharacterMode.PRIMARY)
@@ -94,6 +94,7 @@ export default class CharacterModel extends Model {
             }
         }
 
+        await this.tag.destroyAllPermanently()
         await this.note.destroyAllPermanently()
         return super.destroyPermanently()
     }

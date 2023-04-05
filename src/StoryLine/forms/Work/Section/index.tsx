@@ -9,7 +9,6 @@ import {
     TextField as MuiTextField
 } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { FormikProps, useFormik } from 'formik'
 import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
@@ -23,39 +22,80 @@ import FormWrapper from '@sl/components/FormWrapper'
 import { SectionDataType } from '@sl/db/models/types'
 import useMessenger from '@sl/layouts/useMessenger'
 import { AutocompleteOption } from '@sl/types'
-import { useObservable } from 'rxjs-hooks'
+import { autoCompleteOptions } from '@sl/utils'
 import { SectionFormProps } from './types'
 
 const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
     const [povCharacter, setPovCharacter] = useState<AutocompleteOption>({ id: '', label: '' })
-    const [options, setOptions] = useState<AutocompleteOption[]>([])
+    const [tagCharacters, setTagCharacters] = useState<AutocompleteOption[]>([])
+    const [tagItems, setTagItems] = useState<AutocompleteOption[]>([])
+    const [tagLocations, setTagLocations] = useState<AutocompleteOption[]>([])
+    const [tagNotes, setTagNotes] = useState<AutocompleteOption[]>([])
+    const [characterOptions, setCharacterOptions] = useState<AutocompleteOption[]>([])
+    const [itemOptions, setItemOptions] = useState<AutocompleteOption[]>([])
+    const [locationOptions, setLocationOptions] = useState<AutocompleteOption[]>([])
+    const [noteOptions, setNoteOptions] = useState<AutocompleteOption[]>([])
     const { t } = useTranslation()
     const messenger = useMessenger()
-    const characters = useObservable(
-        () =>
-            work.character
-                .extend(Q.sortBy('display_name', Q.asc))
-                .observeWithColumns(['display_name', 'status', 'mode']),
-        [],
-        []
-    )
 
     useEffect(() => {
-        setOptions(
-            characters.map((character) => ({
-                id: character.id,
-                label: character.displayName
-            }))
-        )
-    }, [characters.length])
+        Promise.all([
+            work.characters.fetch(),
+            work.items.fetch(),
+            work.locations.fetch(),
+            work.taggableNotes.fetch(),
+            section.tag.fetch()
+        ]).then(([characters, items, locations, notes, tags]) => {
+            setCharacterOptions(autoCompleteOptions(characters))
+            setItemOptions(autoCompleteOptions(items))
+            setLocationOptions(autoCompleteOptions(locations))
+            setNoteOptions(autoCompleteOptions(notes))
+            setTagCharacters(
+                tags
+                    .filter((tag) => tag.character.id)
+                    .map((tag) => ({
+                        id: tag.character.id,
+                        label: characters.find((character) => character.id === tag.character.id)
+                            .displayName
+                    }))
+            )
+            setTagItems(
+                tags
+                    .filter((tag) => tag.item.id)
+                    .map((tag) => ({
+                        id: tag.item.id,
+                        label: items.find((item) => item.id === tag.item.id).displayName
+                    }))
+            )
+            setTagLocations(
+                tags
+                    .filter((tag) => tag.location.id)
+                    .map((tag) => ({
+                        id: tag.location.id,
+                        label: locations.find((location) => location.id === tag.location.id)
+                            .displayName
+                    }))
+            )
+            setTagNotes(
+                tags
+                    .filter((tag) => tag.note.id)
+                    .map((tag) => ({
+                        id: tag.note.id,
+                        label: notes.find((note) => note.id === tag.note.id).displayName
+                    }))
+            )
+        })
+    }, [section.id])
 
     useEffect(() => {
-        if (section.pointOfViewCharacter?.id && options.length) {
-            setPovCharacter(options.find((option) => option.id === section.pointOfViewCharacter.id))
+        if (section.pointOfViewCharacter?.id && characterOptions.length) {
+            setPovCharacter(
+                characterOptions.find((option) => option.id === section.pointOfViewCharacter.id)
+            )
         } else {
             setPovCharacter({ id: '', label: '' })
         }
-    }, [options, section.id])
+    }, [characterOptions, section.id])
 
     const validationSchema = yup.object({
         title: yup.string().nullable(),
@@ -72,7 +112,20 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
         initialValues,
         validationSchema,
         onSubmit: async (values: SectionDataType) => {
-            await section.updateSection(values)
+            const characters = await work.characters.fetch()
+            const items = await work.items.fetch()
+            const locations = await work.locations.fetch()
+            const notes = await work.notes.fetch()
+            await section.updateSection(values, {
+                characters: tagCharacters.map((tag) =>
+                    characters.find((character) => character.id === tag.id)
+                ),
+                items: tagItems.map((tag) => items.find((item) => item.id === tag.id)),
+                locations: tagLocations.map((tag) =>
+                    locations.find((location) => location.id === tag.id)
+                ),
+                notes: tagNotes.map((tag) => notes.find((note) => note.id === tag.id))
+            })
             await section.updatePoVCharacter(
                 characters.find((character) => character.id === povCharacter?.id)
             )
@@ -99,7 +152,7 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
                 />
                 <TextareaField form={form} fieldName='description' />
                 {section.isScene ? (
-                    <Box className='grid grid-cols-2 gap-3 py-1'>
+                    <Box className='grid grid-cols-2 gap-3 pt-2'>
                         <FormControl>
                             <InputLabel id='pov-label'>
                                 {t('form.work.section.pointOfView')}
@@ -120,25 +173,111 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
                                 ))}
                             </Select>
                         </FormControl>
-                        <Autocomplete
-                            getOptionLabel={(option: AutocompleteOption) => option?.label || ''}
-                            options={options}
-                            forcePopupIcon={true}
-                            freeSolo
-                            value={povCharacter}
-                            onChange={(_: SyntheticEvent, value: AutocompleteOption) => {
-                                setPovCharacter({
-                                    id: value?.id || '',
-                                    label: value?.label || ''
-                                })
-                            }}
-                            renderInput={(params) => (
-                                <MuiTextField
-                                    {...params}
-                                    label={t('form.work.section.pointOfViewCharacter')}
-                                />
-                            )}
-                        />
+                        {characterOptions.length ? (
+                            <Autocomplete
+                                getOptionLabel={(option: AutocompleteOption) => option?.label || ''}
+                                options={characterOptions}
+                                forcePopupIcon={true}
+                                freeSolo
+                                value={povCharacter}
+                                onChange={(_: SyntheticEvent, value: AutocompleteOption) => {
+                                    setPovCharacter({
+                                        id: value?.id || '',
+                                        label: value?.label || ''
+                                    })
+                                }}
+                                renderInput={(params) => (
+                                    <MuiTextField
+                                        {...params}
+                                        label={t('form.work.section.pointOfViewCharacter')}
+                                    />
+                                )}
+                            />
+                        ) : null}
+                        {characterOptions.length ? (
+                            <Autocomplete
+                                multiple
+                                isOptionEqualToValue={(option, value) =>
+                                    Boolean(option.id === value.id)
+                                }
+                                options={characterOptions}
+                                getOptionLabel={(option) => option.label}
+                                value={tagCharacters}
+                                filterSelectedOptions
+                                renderInput={(params) => (
+                                    <MuiTextField
+                                        {...params}
+                                        label={t('form.work.section.tag.characters')}
+                                    />
+                                )}
+                                onChange={(_: SyntheticEvent, value: AutocompleteOption[]) => {
+                                    setTagCharacters(value)
+                                }}
+                            />
+                        ) : null}
+                        {locationOptions.length ? (
+                            <Autocomplete
+                                multiple
+                                options={locationOptions}
+                                getOptionLabel={(option) => option.label}
+                                isOptionEqualToValue={(option, value) =>
+                                    Boolean(option.id === value.id)
+                                }
+                                value={tagLocations}
+                                filterSelectedOptions
+                                renderInput={(params) => (
+                                    <MuiTextField
+                                        {...params}
+                                        label={t('form.work.section.tag.locations')}
+                                    />
+                                )}
+                                onChange={(_: SyntheticEvent, value: AutocompleteOption[]) => {
+                                    setTagLocations(value)
+                                }}
+                            />
+                        ) : null}
+                        {itemOptions.length ? (
+                            <Autocomplete
+                                multiple
+                                options={itemOptions}
+                                getOptionLabel={(option) => option.label}
+                                isOptionEqualToValue={(option, value) =>
+                                    Boolean(option.id === value.id)
+                                }
+                                value={tagItems}
+                                filterSelectedOptions
+                                renderInput={(params) => (
+                                    <MuiTextField
+                                        {...params}
+                                        label={t('form.work.section.tag.items')}
+                                    />
+                                )}
+                                onChange={(_: SyntheticEvent, value: AutocompleteOption[]) => {
+                                    setTagItems(value)
+                                }}
+                            />
+                        ) : null}
+                        {noteOptions.length ? (
+                            <Autocomplete
+                                multiple
+                                options={noteOptions}
+                                getOptionLabel={(option) => option.label}
+                                isOptionEqualToValue={(option, value) =>
+                                    Boolean(option.id === value.id)
+                                }
+                                value={tagNotes}
+                                filterSelectedOptions
+                                renderInput={(params) => (
+                                    <MuiTextField
+                                        {...params}
+                                        label={t('form.work.section.tag.notes')}
+                                    />
+                                )}
+                                onChange={(_: SyntheticEvent, value: AutocompleteOption[]) => {
+                                    setTagNotes(value)
+                                }}
+                            />
+                        ) : null}
                     </Box>
                 ) : null}
                 <Box className='grid grid-cols-2 xl:grid-cols-4 gap-3'>

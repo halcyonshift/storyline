@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 const schema = appSchema({
-    version: 1,
+    version: 2,
     tables: [
         tableSchema({
             name: 'character',
@@ -112,6 +112,7 @@ const schema = appSchema({
                 { name: 'url', type: 'string', isOptional: true },
                 { name: 'order', type: 'number', isOptional: true },
                 { name: 'status', type: 'string', isIndexed: true },
+                { name: 'is_taggable', type: 'boolean', isIndexed: true },
                 { name: 'created_at', type: 'number' },
                 { name: 'updated_at', type: 'number' }
             ]
@@ -143,6 +144,19 @@ const schema = appSchema({
                 { name: 'work_id', type: 'string', isIndexed: true },
                 { name: 'section_id', type: 'string', isIndexed: true, isOptional: true },
                 { name: 'words', type: 'number', isOptional: true },
+                { name: 'created_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
+            ]
+        }),
+        tableSchema({
+            name: 'tag',
+            columns: [
+                { name: 'work_id', type: 'string', isIndexed: true },
+                { name: 'character_id', type: 'string', isIndexed: true, isOptional: true },
+                { name: 'item_id', type: 'string', isIndexed: true, isOptional: true },
+                { name: 'location_id', type: 'string', isIndexed: true, isOptional: true },
+                { name: 'note_id', type: 'string', isIndexed: true },
+                { name: 'section_id', type: 'string', isIndexed: true, isOptional: true },
                 { name: 'created_at', type: 'number' },
                 { name: 'updated_at', type: 'number' }
             ]

@@ -151,6 +151,8 @@ export default class WorkModel extends Model {
 
     @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
 
+    @lazy taggableNotes = this.note.extend(Q.sortBy('title', Q.asc), Q.where('is_taggable', true))
+
     @lazy statistics = this.collections
         .get<StatisticModel>('statistic')
         .query(
@@ -255,6 +257,7 @@ export default class WorkModel extends Model {
             note.date = data.date
             note.status = Status.TODO
             note.order = data.order
+            note.isTaggable = data.isTaggable
         })
     }
 
