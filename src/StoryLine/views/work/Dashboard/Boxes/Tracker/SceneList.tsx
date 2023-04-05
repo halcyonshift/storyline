@@ -27,7 +27,7 @@ const SceneList = ({ scenes }: SceneListProps) => {
                             </Typography>
                             {scene.daysRemaining ? (
                                 <Typography variant='body2'>
-                                    {t('view.work.landing.tracker.remaining', {
+                                    {t('view.work.dashboard.tracker.remaining', {
                                         days: scene.daysRemaining,
                                         words: scene.wordsPerDay
                                     })}

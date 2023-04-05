@@ -150,7 +150,7 @@ const WordChartsBox = () => {
             )
     }, [fullStatistics])
 
-    return statistics ? (
+    return Object.values(statistics).reduce((a, b) => a + b, 0) ? (
         <Box className='relative'>
             <TabContext value={value}>
                 <Box className='border-b'>
@@ -160,8 +160,8 @@ const WordChartsBox = () => {
                             setValue(newValue)
                         }}
                         aria-label=''>
-                        <Tab label={t('view.work.landing.wordCharts.count')} value='1' />
-                        <Tab label={t('view.work.landing.wordCharts.written')} value='2' />
+                        <Tab label={t('view.work.dashboard.wordCharts.count')} value='1' />
+                        <Tab label={t('view.work.dashboard.wordCharts.written')} value='2' />
                     </TabList>
                 </Box>
                 <TabPanel value='1' sx={PADDING}>
@@ -231,7 +231,7 @@ const WordChartsBox = () => {
         </Box>
     ) : (
         <Box className='grid h-full place-items-center p-3'>
-            {t('view.work.landing.wordCharts.noData')}
+            {t('view.work.dashboard.wordCharts.noData')}
         </Box>
     )
 }

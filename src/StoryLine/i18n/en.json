@@ -572,7 +572,7 @@
                     "month": "Monthly"
                 }
             },
-            "landing": {
+            "dashboard": {
                 "deadline": {
                     "none": "No upcoming deadlines!"
                 },
@@ -585,7 +585,8 @@
                 },
                 "wordCharts": {
                     "count": "Total count",
-                    "written": "Daily count"
+                    "written": "Daily count",
+                    "noData": "No stats to view"
                 }
             },
             "overview": {

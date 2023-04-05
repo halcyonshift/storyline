@@ -59,8 +59,8 @@ const RandomBox = () => {
                             setValue(newValue)
                         }}
                         aria-label=''>
-                        <Tab label={t('view.work.landing.random.character')} value='1' />
-                        <Tab label={t('view.work.landing.random.prompt')} value='2' />
+                        <Tab label={t('view.work.dashboard.random.character')} value='1' />
+                        <Tab label={t('view.work.dashboard.random.prompt')} value='2' />
                     </TabList>
                 </Box>
                 <TabPanel value='1'>

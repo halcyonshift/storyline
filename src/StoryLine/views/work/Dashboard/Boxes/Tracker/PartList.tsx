@@ -29,7 +29,7 @@ const PartList = ({ parts, chapters, scenes }: PartListProps) => {
                             </Typography>
                             {part.daysRemaining ? (
                                 <Typography variant='body2'>
-                                    {t('view.work.landing.tracker.remaining', {
+                                    {t('view.work.dashboard.tracker.remaining', {
                                         days: part.daysRemaining,
                                         words: part.wordsPerDay
                                     })}

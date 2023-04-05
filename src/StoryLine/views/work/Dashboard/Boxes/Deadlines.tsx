@@ -88,7 +88,7 @@ const DeadlinesBox = () => {
             </Timeline>
         </Box>
     ) : (
-        <Typography textAlign='center'>{t('view.work.landing.deadline.none')}</Typography>
+        <Typography textAlign='center'>{t('view.work.dashboard.deadline.none')}</Typography>
     )
 }
 

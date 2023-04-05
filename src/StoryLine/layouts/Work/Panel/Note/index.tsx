@@ -10,7 +10,6 @@ import GroupToggle from '@sl/components/Panel/GroupToggle'
 import { NOTE_ICONS } from '@sl/constants/icons'
 import { NoteModel, WorkModel } from '@sl/db/models'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
-
 import Block from './Block'
 
 const NotePanel = () => {
@@ -27,27 +26,12 @@ const NotePanel = () => {
                     Q.where('section_id', null),
                     Q.sortBy('order', Q.asc)
                 )
-                .observeWithColumns(['title', 'status', 'order', 'color']),
+                .observeWithColumns(['updated_at']),
         [],
         []
     )
 
     const handleDragEnd = async (result: DropResult) => {
-        /*
-        if (result.combine) {
-            const moveNote = notes.find((note) => note.id === result.draggableId)
-
-            await database.write(async () => {
-                await moveNote.update((note) => {
-                    note.note.set(notes.find((note) => note.id === result.combine.draggableId))
-                })
-            })
-
-            return
-        }
-        */
-        if (!result.destination) return
-
         const batchUpdate: NoteModel[] = []
         let sourceNotes: NoteModel[] = []
 
@@ -58,19 +42,17 @@ const NotePanel = () => {
         }
 
         const [reordered] = sourceNotes.splice(result.source.index, 1)
+        const droppableId = result.destination?.droppableId || result.combine?.draggableId
+        const destinationIndex = result.destination?.index || 0
 
-        if (result.source.droppableId === result.destination.droppableId) {
-            sourceNotes.splice(result.destination.index, 0, reordered)
-        } else {
-            const destinationNotes = notes.filter(
-                (note) => note.note.id === result.destination.droppableId
-            )
+        if (result.source.droppableId !== droppableId) {
+            const destinationNotes = notes.filter((note) => note.note.id === droppableId)
 
-            destinationNotes.splice(result.destination.index, 0, reordered)
+            destinationNotes.splice(destinationIndex, 0, reordered)
 
             await database.write(async () => {
                 await reordered.update((note) => {
-                    note.note.set(notes.find((note) => note.id === result.destination.droppableId))
+                    note.note.set(notes.find((note) => note.id === droppableId))
                 })
             })
 
@@ -84,6 +66,8 @@ const NotePanel = () => {
                     )
                 }
             })
+        } else {
+            sourceNotes.splice(destinationIndex, 0, reordered)
         }
 
         sourceNotes.map((item, index) => {
