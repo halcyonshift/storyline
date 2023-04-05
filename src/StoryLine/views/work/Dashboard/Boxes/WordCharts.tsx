@@ -66,23 +66,36 @@ const WordChartsBox = () => {
     const { t } = useTranslation()
     const work = useRouteLoaderData('work') as WorkModel
     const [statistics, setStatistics] = useState<ObjectNumber>({})
+    const [fullStatistics, setFullStatistcs] = useState<StatisticModel[]>([])
 
     const fillStats = useCallback(
-        (stats: StatisticModel[]) => {
+        async (stats: StatisticModel[]) => {
             const sectionIds = [...new Set(stats.map((stat) => stat.section.id))]
             const fill: ObjectObjectNumber = {}
+            const originalStats = await work.statistics.fetch()
 
-            statisticsDates.map((date) => {
+            for await (const date of statisticsDates) {
                 const ymd = date.toFormat(YYYYMMDD)
                 fill[ymd] = {}
 
-                sectionIds.map((sectionId) => {
-                    fill[ymd][sectionId] =
-                        stats.find(
-                            (stat) =>
-                                stat.section.id === sectionId &&
-                                DateTime.fromJSDate(stat.createdAt).toFormat(YYYYMMDD) === ymd
-                        )?.words || 0
+                for await (const sectionId of sectionIds) {
+                    let stat = stats.find(
+                        (stat) =>
+                            stat.section.id === sectionId &&
+                            DateTime.fromJSDate(stat.createdAt).toFormat(YYYYMMDD) === ymd
+                    )
+
+                    if (!stat) {
+                        stat = originalStats
+                            .filter(
+                                (stat) =>
+                                    stat.section.id === sectionId &&
+                                    stat.createdAt < date.toJSDate()
+                            )
+                            .at(-1)
+                    }
+
+                    fill[ymd][sectionId] = stat?.words || 0
 
                     if (!fill[ymd][sectionId]) {
                         try {
@@ -92,15 +105,22 @@ const WordChartsBox = () => {
                             fill[ymd][sectionId] = 0
                         }
                     }
-                })
-            })
+                }
+            }
 
             return fill
         },
-        [statisticsDates]
+        [statisticsDates, fullStatistics]
     )
 
     useEffect(() => {
+        tabs.setShowTabs(false)
+        work.statistics.fetch().then((statistics) => setFullStatistcs(statistics))
+    }, [])
+
+    useEffect(() => {
+        if (!fullStatistics) return
+
         work.statistics
             .extend(
                 Q.where(
@@ -114,21 +134,23 @@ const WordChartsBox = () => {
             )
             .fetch()
             .then((stats) =>
-                setStatistics(
-                    Object.entries(fillStats(stats)).reduce((o, [date, stats]) => {
-                        const ymd = date
-                        if (!o[ymd]) {
-                            o[ymd] = 0
-                        }
-                        o[ymd] += Object.values(stats).reduce((count, stat) => count + stat, 0)
-                        return o
-                    }, {} as ObjectNumber)
+                fillStats(stats).then((stats) =>
+                    setStatistics(
+                        Object.entries(stats).reduce((o, [date, stats]) => {
+                            const ymd = date
+                            if (!o[ymd]) {
+                                o[ymd] = 0
+                            }
+                            // eslint-disable-next-line max-nested-callbacks
+                            o[ymd] += Object.values(stats).reduce((count, stat) => count + stat, 0)
+                            return o
+                        }, {} as ObjectNumber)
+                    )
                 )
             )
-        tabs.setShowTabs(false)
-    }, [])
+    }, [fullStatistics])
 
-    return (
+    return statistics ? (
         <Box className='relative'>
             <TabContext value={value}>
                 <Box className='border-b'>
@@ -206,6 +228,10 @@ const WordChartsBox = () => {
                     />
                 </TabPanel>
             </TabContext>
+        </Box>
+    ) : (
+        <Box className='grid h-full place-items-center p-3'>
+            {t('view.work.landing.wordCharts.noData')}
         </Box>
     )
 }
