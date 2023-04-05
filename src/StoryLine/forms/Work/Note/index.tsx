@@ -1,4 +1,7 @@
 import Box from '@mui/material/Box'
+import FormGroup from '@mui/material/FormGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Checkbox from '@mui/material/Checkbox'
 import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -25,7 +28,8 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
         url: yup.string().url().nullable(),
         image: yup.string().nullable(),
         date: yup.string().nullable(),
-        color: yup.string().nullable()
+        color: yup.string().nullable(),
+        isTaggable: yup.boolean()
     })
 
     const form: FormikProps<NoteDataType> = useFormik<NoteDataType>({
@@ -85,6 +89,19 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
                         />
                         <DateField form={form} label={'form.work.note.date'} fieldName='date' />
                         <ColorField name='color' form={form} />
+                        <FormGroup>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        name='isTaggable'
+                                        checked={form.values.isTaggable}
+                                        onChange={form.handleChange}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                    />
+                                }
+                                label={t('form.work.note.isTaggable')}
+                            />
+                        </FormGroup>
                     </Box>
                 </Box>
                 <TextareaField fieldName='body' form={form} />

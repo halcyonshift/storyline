@@ -82,6 +82,7 @@ export type NoteDataType = {
     image?: string
     color?: string
     order?: number
+    isTaggable?: boolean
 }
 
 export type SectionDataType = {

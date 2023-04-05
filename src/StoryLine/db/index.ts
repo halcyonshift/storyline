@@ -12,6 +12,7 @@ import {
     NoteModel,
     SectionModel,
     StatisticModel,
+    TagModel,
     WorkModel
 } from './models'
 
@@ -57,6 +58,7 @@ const database = new Database({
         NoteModel,
         SectionModel,
         StatisticModel,
+        TagModel,
         WorkModel
     ]
 })

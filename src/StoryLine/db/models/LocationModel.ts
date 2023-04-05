@@ -4,16 +4,15 @@ import { children, date, field, lazy, relation, text, writer } from '@nozbe/wate
 import { LatLngExpression } from 'leaflet'
 import { Status, type StatusType } from '@sl/constants/status'
 import { LocationDataType } from './types'
-import ConnectionModel from './ConnectionModel'
-import NoteModel from './NoteModel'
-import WorkModel from './WorkModel'
+import { ConnectionModel, NoteModel, TagModel, WorkModel } from '.'
 
 export default class LocationModel extends Model {
     static table = 'location'
     public static associations: Associations = {
         work: { type: 'belongs_to', key: 'work_id' },
-        note: { type: 'has_many', foreignKey: 'character_id' },
-        location: { type: 'has_many', foreignKey: 'location_id' }
+        note: { type: 'has_many', foreignKey: 'location_id' },
+        location: { type: 'has_many', foreignKey: 'location_id' },
+        tag: { type: 'has_many', foreignKey: 'location_id' }
     }
     @field('status') status!: StatusType
     @text('name') name!: string
@@ -28,8 +27,7 @@ export default class LocationModel extends Model {
     @relation('location', 'location_id') location!: Relation<LocationModel>
     @children('note') note!: Query<NoteModel>
     @children('location') locations!: Query<LocationModel>
-
-    level: number
+    @children('tag') tag!: Query<TagModel>
 
     get displayName() {
         return this.name
@@ -55,6 +53,7 @@ export default class LocationModel extends Model {
             api.deleteFile(this.image)
         }
         await this.note.destroyAllPermanently()
+        await this.tag.destroyAllPermanently()
         return super.destroyPermanently()
     }
 
