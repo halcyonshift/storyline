@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import * as Grammarly from '@grammarly/editor-sdk'
 import RichtextEditor from '@sl/components/RichtextEditor'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { wordCount } from '@sl/utils'
@@ -13,7 +14,18 @@ const SceneView = ({ section }: SectionViewType) => {
     }, [])
 
     useEffect(() => {
+        const editor = document.querySelector(
+            'grammarly-editor-plugin'
+        ) as Grammarly.GrammarlyEditorPluginElement
+        if (editor) {
+            editor.disconnect()
+        }
         setInitialValue(section.body)
+        setTimeout(() => {
+            Grammarly.init('client_PJGNpq8df12athMYk8jcSr').then((grammarly) => {
+                grammarly.addPlugin(document.getElementById('sceneBody'))
+            })
+        }, 500)
     }, [section.id])
 
     const onSave = async (html: string) => {
