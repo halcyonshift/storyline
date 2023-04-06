@@ -40,8 +40,10 @@ export const TabsProvider = ({ children }: TabsProviderProps) => {
     }
 
     const removeTab = (id: string) => {
-        const newTabs = tabs.filter((tab) => tab.id !== id)
         const activeTab = tabs.find((tab) => tab.id === id)
+        if (!activeTab) return
+
+        const newTabs = tabs.filter((tab) => tab.id !== id)
 
         setTabs(newTabs)
 
