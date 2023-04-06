@@ -1,10 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
-import Box from '@mui/material/Box'
-import Stack from '@mui/material/Stack'
-import { Tabs as MuiTabs } from '@mui/material'
-import Tab from '@mui/material/Tab'
-import Typography from '@mui/material/Typography'
+import { Box, Stack, Tabs as MuiTabs, Tab as MuiTab, Typography, styled } from '@mui/material'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
 import { useTranslation } from 'react-i18next'
 import { getHex } from '@sl/theme/utils'
@@ -16,6 +12,36 @@ const Tabs = () => {
     const tabs = useTabs()
     const { windowWidth, panelWidth, navigationWidth } = useLayout()
     const [maxWidth, setMaxWidth] = useState<number>(windowWidth - (panelWidth + navigationWidth))
+    const [tabIndex, setTabIndex] = useState<number>(0)
+
+    const TabsContainer = styled(MuiTabs)(() => ({
+        '.MuiTabs-flexContainer': {
+            borderBottom: `1px solid  ${getHex('slate', 300)}`,
+            width: '100%',
+            minWidth: 'max-content'
+        }
+    }))
+
+    const Tab = styled(MuiTab)(({ theme }) => ({
+        border: `1px solid  ${theme.palette.common.black}`,
+        borderTopLeftRadius: '5px',
+        borderTopRightRadius: '5px',
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+        borderBottom: 'none',
+        margin: '10px 0 0 5px',
+        padding: '8px 12px',
+        minHeight: 0,
+        '& :first-of-type': {
+            flexGrow: 1
+        },
+        '&.Mui-selected': {
+            borderColor: getHex('slate', 300),
+            backgroundColor: getHex('white'),
+            borderBottom: getHex('white'),
+            boxShadow: `0 2px 0 0px ${getHex('white')}`
+        }
+    }))
 
     const onDragEnd = (result: DropResult) => {
         if (!result.destination) return
@@ -25,8 +51,14 @@ const Tabs = () => {
         const [removed] = newTabs.splice(result.source.index, 1)
         newTabs.splice(result.destination.index, 0, removed)
         tabs.setTabs(newTabs)
-        tabs.setActive(result.destination.index)
+        setTabIndex(result.destination.index)
+        tabs.setActive(-1)
     }
+
+    useEffect(() => {
+        tabs.setActive(tabIndex)
+        tabs.setShowTabs(true)
+    }, [tabIndex, tabs.active])
 
     useEffect(
         () => setMaxWidth(windowWidth - (panelWidth + navigationWidth)),
@@ -37,15 +69,15 @@ const Tabs = () => {
         () =>
             tabs.showTabs ? (
                 <Box
-                    className='h-12'
+                    className='bg-slate-100'
                     sx={{
                         marginLeft: '1px',
                         maxWidth
                     }}>
                     <DragDropContext onDragEnd={onDragEnd}>
-                        <Droppable droppableId='tabs'>
+                        <Droppable droppableId='tabs' direction='horizontal'>
                             {(props) => (
-                                <MuiTabs
+                                <TabsContainer
                                     ref={props.innerRef}
                                     {...props.droppableProps}
                                     value={tabs.active}
@@ -53,6 +85,7 @@ const Tabs = () => {
                                     variant='scrollable'
                                     scrollButtons={false}
                                     aria-label={t('layout.work.tabs')}
+                                    selectionFollowsFocus
                                     TabIndicatorProps={{
                                         style: {
                                             display: 'none',
@@ -67,14 +100,6 @@ const Tabs = () => {
                                             disableInteractiveElementBlocking={true}>
                                             {(props) => (
                                                 <Tab
-                                                    sx={{
-                                                        marginLeft: '1px',
-                                                        opacity: 1,
-                                                        backgroundColor:
-                                                            index === tabs.active
-                                                                ? getHex('slate', 100)
-                                                                : 'white'
-                                                    }}
                                                     ref={props.innerRef}
                                                     {...props.draggableProps}
                                                     onClick={(e) => {
@@ -83,6 +108,9 @@ const Tabs = () => {
                                                     }}
                                                     iconPosition='start'
                                                     wrapped
+                                                    className={
+                                                        index === tabs.active ? 'Mui-selected' : ''
+                                                    }
                                                     label={
                                                         <Stack
                                                             direction='row'
@@ -109,7 +137,7 @@ const Tabs = () => {
                                         </Draggable>
                                     ))}
                                     {props.placeholder}
-                                </MuiTabs>
+                                </TabsContainer>
                             )}
                         </Droppable>
                     </DragDropContext>

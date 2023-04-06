@@ -515,7 +515,8 @@
                     "groupToggle": "Show archived",
                     "updatedAt": "Last saved"
                 }
-            }
+            },
+            "tabs": "Tabs"
         }
     },
     "view": {

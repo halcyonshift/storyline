@@ -63,7 +63,7 @@ const CharacterView = () => {
     }, [])
 
     return (
-        <Box className='p-5 border-t-8 border-slate-100 flex-grow overflow-auto h-0'>
+        <Box className='p-5 flex-grow overflow-auto h-0'>
             <Box className='grid grid-cols-3 gap-3'>
                 <Stack spacing={2} className='col-span-2'>
                     <Box>
