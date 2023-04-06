@@ -45,7 +45,6 @@ import {
 } from 'lexical'
 import { useTranslation } from 'react-i18next'
 import useLayout from '@sl/layouts/Work/useLayout'
-import { getHex } from '@sl/theme/utils'
 import { getSelectedNode } from '../../utils/getSelectedNode'
 import { SAVE_COMMAND } from '../Save'
 import { TOGGLE_SEARCH_COMMAND } from '../Search'
@@ -164,7 +163,7 @@ const ToolbarPlugin = ({
         <Box
             id='toolbarContainer'
             className='border-b overflow-x-auto scrollbar-hidden'
-            sx={{ backgroundColor: getHex('slate', 100), width: `${toolbarWidth}px` }}>
+            sx={{ width: `${toolbarWidth}px` }}>
             <Stack direction='row' spacing={1}>
                 <IconButton
                     disabled={!canUndo}
