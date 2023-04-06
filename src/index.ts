@@ -40,6 +40,11 @@ const createWindow = (): void => {
 
     mainWindow.webContents.openDevTools()
 
+    mainWindow.webContents.on('will-navigate', function (e, url) {
+        e.preventDefault()
+        shell.openExternal(url)
+    })
+
     mainWindow.on('will-resize', (_, newBounds) => {
         mainWindow.webContents.send('window-will-resize', newBounds)
     })
