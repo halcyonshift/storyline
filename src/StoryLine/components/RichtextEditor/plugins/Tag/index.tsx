@@ -52,18 +52,16 @@ const TagPlugin = (props: MenuProps) => {
                 const node = getSelectedNode(selection)
                 const parent = node.getParent()
                 const tagNode = $isTagNode(node) ? node : parent
+                if (!$isTagNode(tagNode)) return
                 const linkUrl = tagNode.getURL()
                 const parts = stripSlashes(linkUrl).split('/')
 
                 if (parts.length === 3) {
-                    loadTab(
-                        {
-                            id: parts[1],
-                            label: decodeURI(parts[2]),
-                            link: `${parts[0]}/${parts[1]}`
-                        },
-                        false
-                    )
+                    loadTab({
+                        id: parts[1],
+                        label: decodeURI(parts[2]),
+                        link: `${parts[0]}/${parts[1]}`
+                    })
                 }
             }
         })
