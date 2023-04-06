@@ -93,6 +93,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                     <RichTextPlugin
                         contentEditable={
                             <ContentEditable
+                                id='sceneBody'
                                 className='resize-none caret-slate-500 outline-none'
                                 spellCheck={spellCheck}
                             />

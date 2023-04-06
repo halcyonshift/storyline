@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-
 import { TabType, TabsContextType, TabsProviderProps } from '../types'
 
 const TabsContext = createContext({} as TabsContextType)
@@ -27,7 +26,6 @@ export const TabsProvider = ({ children }: TabsProviderProps) => {
 
     const loadTab = (focusTab: TabType, switchTab = true) => {
         const focus = tabs.findIndex((tab) => tab.id === focusTab.id)
-
         if (focus === -1) {
             setTabs(tabs.concat([focusTab]))
             if (switchTab) {
@@ -36,7 +34,6 @@ export const TabsProvider = ({ children }: TabsProviderProps) => {
         } else {
             setActive(focus)
         }
-
         if (switchTab) {
             navigate(`/work/${params.work_id}/${focusTab.link}`)
         }

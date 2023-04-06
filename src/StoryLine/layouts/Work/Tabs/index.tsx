@@ -57,7 +57,7 @@ const Tabs = () => {
 
     useEffect(() => {
         tabs.setActive(tabIndex)
-        tabs.setShowTabs(true)
+        tabs.setShowTabs(Boolean(tabs.tabs.length))
     }, [tabIndex, tabs.active])
 
     useEffect(
