@@ -11,7 +11,11 @@ const LocationView = () => {
         tabs.setShowTabs(true)
     }, [])
 
-    return <p>{location.displayName}</p>
+    return (
+        <p>
+            <a href='https://www.google.com'>{location.displayName}</a>
+        </p>
+    )
 }
 
 export default LocationView
