@@ -8,6 +8,7 @@ import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { ListPlugin } from '@lexical/react/LexicalListPlugin'
+import { NodeEventPlugin } from '@lexical/react/LexicalNodeEventPlugin'
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import Box from '@mui/material/Box'
@@ -15,12 +16,14 @@ import Typography from '@mui/material/Typography'
 import { EditorState, LexicalEditor } from 'lexical'
 import debounce from 'lodash.debounce'
 import { useTranslation } from 'react-i18next'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import useSettings from '@sl/theme/useSettings'
 import InitialValuePlugin from './plugins/InitialValue'
 import SavePlugin from './plugins/Save'
 import SearchPlugin from './plugins/Search'
 import TagPlugin from './plugins/Tag'
 import { TagNode } from './plugins/Tag/Node'
+import { stripSlashes } from './plugins/Tag/utils'
 import ToolbarPlugin from './plugins/Toolbar'
 import VersionPlugin from './plugins/Version'
 import theme from './theme'
@@ -32,6 +35,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
     const [menu, setMenu] = useState<string | null>(null)
     const [menuElement, setMenuElement] = useState<HTMLElement | null>(null)
     const { autoSave, indentParagraph, spellCheck } = useSettings()
+    const { loadTab } = useTabs()
     const { t } = useTranslation()
     const ref = useRef<HTMLElement>()
 
@@ -56,6 +60,20 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                 }
             }
         })
+    }
+
+    const handleTagDblClick = (e: Event) => {
+        const span = e.target as HTMLSpanElement
+        const link = span.parentNode as HTMLAnchorElement
+        const url = new URL(link.href)
+        const parts = stripSlashes(url.pathname).split('/')
+        if (parts.length === 3) {
+            loadTab({
+                id: parts[1],
+                label: decodeURI(parts[2]),
+                link: `${parts[0]}/${parts[1]}`
+            })
+        }
     }
 
     useEffect(() => setCanSave(false), [id])
@@ -112,6 +130,11 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                     <HistoryPlugin />
                     <InitialValuePlugin forwardRef={ref} value={initialValue} />
                     <ListPlugin />
+                    <NodeEventPlugin
+                        nodeType={TagNode}
+                        eventType='dblclick'
+                        eventListener={handleTagDblClick}
+                    />
                     <OnChangePlugin onChange={handleChange} />
                     <VersionPlugin
                         menu={menu}
