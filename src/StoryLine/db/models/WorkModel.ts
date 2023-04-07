@@ -1,11 +1,13 @@
-import { Model, Q, Query } from '@nozbe/watermelondb'
+import { Model, Q, Query, ColumnName } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, text, writer } from '@nozbe/watermelondb/decorators'
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
 import { SectionMode } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
+import schema from '@sl/db/schema'
 import { SearchResultType } from '@sl/layouts/Work/Panel/Search/types'
 import { wordCount } from '@sl/utils'
+
 import {
     CharacterDataType,
     ConnectionDataType,
@@ -21,7 +23,8 @@ import {
     LocationModel,
     NoteModel,
     SectionModel,
-    StatisticModel
+    StatisticModel,
+    TagModel
 } from '.'
 export default class WorkModel extends Model {
     static table = 'work'
@@ -112,6 +115,61 @@ export default class WorkModel extends Model {
         return super.destroyPermanently()
     }
 
+    async backup() {
+        const character = await this.character.fetch()
+        const item = await this.item.fetch()
+        const location = await this.location.fetch()
+        const note = await this.note.fetch()
+        const section = await this.section.fetch()
+        const statistic = await this.statistics.fetch()
+        const tag = await this.tags.fetch()
+
+        const backupPath = await this.database.localStorage.get<string>('autoBackupPath')
+
+        const dbData = {
+            work: [this],
+            character,
+            item,
+            location,
+            note,
+            section,
+            statistic,
+            tag
+        }
+
+        const images: string[] = []
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const jsonData: any = {
+            work: [],
+            character: [],
+            item: [],
+            location: [],
+            note: [],
+            section: [],
+            statistic: [],
+            tag: []
+        }
+
+        Object.entries(dbData).map(([table, items]) => {
+            const columns: ColumnName[] = Object.keys(schema.tables[table].columns)
+            items.map((item) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const data: any = {}
+                columns.map((column) => {
+                    data[column] = item._getRaw(column)
+                })
+                jsonData[table].push(data)
+
+                if (columns.includes('image') && item._getRaw('image')) {
+                    images.push(item._getRaw('image') as string)
+                }
+            })
+        })
+
+        return { data: jsonData, images: [...new Set(images)], backupPath: backupPath || '' }
+    }
+
     @lazy sections = this.section.extend(Q.where('work_id', this.id), Q.sortBy('order', Q.asc))
 
     @lazy parts = this.section.extend(Q.where('mode', SectionMode.PART), Q.sortBy('order', Q.asc))
@@ -155,6 +213,13 @@ export default class WorkModel extends Model {
 
     @lazy statistics = this.collections
         .get<StatisticModel>('statistic')
+        .query(
+            Q.experimentalNestedJoin('section', 'work'),
+            Q.on('section', Q.on('work', 'id', this.id))
+        )
+
+    @lazy tags = this.collections
+        .get<TagModel>('tag')
         .query(
             Q.experimentalNestedJoin('section', 'work'),
             Q.on('section', Q.on('work', 'id', this.id))

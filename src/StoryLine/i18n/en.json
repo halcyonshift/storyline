@@ -445,6 +445,10 @@
                     "option120": "Every 2 hours"
                 },
                 "autoBackupMax": "Maximum number of backups",
+                "autoBackupPath": {
+                    "label": "Backup directory",
+                    "select": "Select"
+                },
                 "alert": {
                     "success": "The settings have been saved"
                 },
@@ -548,6 +552,15 @@
             }
         },
         "work": {
+            "backupRestore": {
+                "storyline": {
+                    "success": "Backup saved to {{filePath}}",
+                    "failure": "Backup could not be saved",
+                    "button": {
+                        "backup": "Backup"
+                    }
+                }
+            },
             "character": {
                 "tab": {
                     "overview": "Overview",

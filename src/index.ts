@@ -2,6 +2,7 @@
 import { app, BrowserWindow, ipcMain, dialog, session, shell, Dialog } from 'electron'
 import contextMenu from 'electron-context-menu'
 import fs from 'fs'
+import { kebabCase } from 'lodash'
 import path from 'path'
 import JSZip from 'jszip'
 
@@ -41,8 +42,10 @@ const createWindow = (): void => {
     mainWindow.webContents.openDevTools()
 
     mainWindow.webContents.on('will-navigate', function (e, url) {
-        e.preventDefault()
-        shell.openExternal(url)
+        if (!url.includes('localhost')) {
+            e.preventDefault()
+            shell.openExternal(url)
+        }
     })
 
     mainWindow.on('will-resize', (_, newBounds) => {
@@ -111,6 +114,53 @@ app.on('activate', () => {
 
 app.whenReady()
     .then(() => {
+        ipcMain.handle('backup', async (_, json, images, localPath) => {
+            const zip = new JSZip()
+            zip.file(`${kebabCase(json.work[0].title)}.json`, JSON.stringify(json))
+            images.forEach((image: string) => {
+                const data = fs.readFileSync(image)
+                zip.file(`images/${path.basename(image)}`, data)
+            })
+
+            const buffer = await zip.generateAsync({ type: 'nodebuffer' })
+
+            if (localPath) {
+                const fileSavePath = `${localPath}${path.sep}${kebabCase(
+                    json.work[0].title
+                )}-${Date.now().toString()}.zip`
+                fs.writeFile(fileSavePath, buffer, () => {
+                    // Add sentry error
+                })
+                return fileSavePath
+            } else {
+                const result = await dialog.showSaveDialog({
+                    defaultPath: `${kebabCase(json.work[0].title)}.zip`,
+                    filters: [
+                        { name: 'ZIP files', extensions: ['zip'] },
+                        { name: 'All Files', extensions: ['*'] }
+                    ]
+                })
+
+                if (result.filePath) {
+                    // eslint-disable-next-line max-nested-callbacks
+                    fs.writeFile(result.filePath, buffer, () => {
+                        // Add sentry error
+                    })
+
+                    return result.filePath
+                }
+            }
+
+            return false
+        })
+
+        ipcMain.handle('select-file-path', async () => {
+            const filePath = await dialog.showOpenDialog({
+                properties: ['openDirectory', 'createDirectory']
+            })
+            return filePath.canceled || !filePath.filePaths.length ? '' : filePath.filePaths[0]
+        })
+
         ipcMain.handle('select-image', async (_, subDir) => {
             const result = await dialog.showOpenDialog({
                 title: 'Select an image',

@@ -28,6 +28,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     const database = useDatabase()
     const [autoBackupFreq, setAutoBackupFreq] = useState<number>(DEFAULT_AUTO_BACKUP_FREQ)
     const [autoBackupMax, setAutoBackupMax] = useState<number>(DEFAULT_AUTO_BACKUP_MAX)
+    const [autoBackupPath, setAutoBackupPath] = useState<string>('')
     const [autoSave, setAutoSave] = useState<boolean>(DEFAULT_AUTO_SAVE)
     const [displayMode, setDisplayMode] = useState<DisplayModeType>(DEFAULT_DISPLAY_MODE)
     const [font, setFont] = useState<FontType>(DEFAULT_FONT)
@@ -44,6 +45,9 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
         database.localStorage
             .get<number>('autoBackupFreq')
             .then((autoBackupFreq) => setAutoBackupFreq(autoBackupFreq || DEFAULT_AUTO_BACKUP_FREQ))
+        database.localStorage
+            .get<string>('autoBackupPath')
+            .then((autoBackupPath) => setAutoBackupPath(autoBackupPath || ''))
         database.localStorage
             .get<number>('autoBackupMax')
             .then((autoBackupMax) => setAutoBackupMax(autoBackupMax || DEFAULT_AUTO_BACKUP_MAX))
@@ -83,6 +87,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         changeLanguage(language)
         database.localStorage.set('autoBackupFreq', autoBackupFreq)
+        database.localStorage.set('autoBackupPath', autoBackupPath)
         database.localStorage.set('autoBackupMax', autoBackupMax)
         database.localStorage.set('autoSave', autoSave)
         database.localStorage.set('displayMode', displayMode)
@@ -98,6 +103,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
         database.localStorage.set('spellCheck', spellCheck)
     }, [
         autoBackupFreq,
+        autoBackupPath,
         autoBackupMax,
         autoSave,
         displayMode,
@@ -187,6 +193,8 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
             value={{
                 autoBackupFreq,
                 setAutoBackupFreq,
+                autoBackupPath,
+                setAutoBackupPath,
                 autoBackupMax,
                 setAutoBackupMax,
                 autoSave,
