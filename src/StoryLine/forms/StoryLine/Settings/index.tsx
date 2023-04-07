@@ -4,6 +4,7 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox'
 import Divider from '@mui/material/Divider'
+import InputAdornment from '@mui/material/InputAdornment'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
@@ -44,6 +45,7 @@ const SettingsForm = ({
     initialValues = {
         autoSave: DEFAULT_AUTO_SAVE,
         autoBackupFreq: DEFAULT_AUTO_BACKUP_FREQ,
+        autoBackupPath: '',
         autoBackupMax: DEFAULT_AUTO_BACKUP_MAX,
         displayMode: DEFAULT_DISPLAY_MODE,
         font: DEFAULT_FONT,
@@ -62,6 +64,7 @@ const SettingsForm = ({
     const validationSchema = yup.object({
         autoSave: yup.boolean(),
         autoBackupFreq: yup.number().required(),
+        autoBackupPath: yup.string().nullable(),
         autoBackupMax: yup.number(),
         displayMode: yup.string().required(),
         font: yup.string().required(),
@@ -80,6 +83,7 @@ const SettingsForm = ({
         onSubmit: async (values: SettingsDataType) => {
             settings.setAutoSave(values.autoSave)
             settings.setAutoBackupFreq(values.autoBackupFreq)
+            settings.setAutoBackupPath(values.autoBackupPath)
             settings.setAutoBackupMax(values.autoBackupMax)
             settings.setDisplayMode(values.displayMode)
             settings.setFont(values.font)
@@ -335,6 +339,34 @@ const SettingsForm = ({
                                 label={t('form.storyline.settings.autoBackupFreq.option120')}
                             />
                         </RadioGroup>
+                    </FormControl>
+                    <FormControl>
+                        <TextField
+                            id='autoBackupPath'
+                            label={t('form.storyline.settings.autoBackupPath.label')}
+                            name='autoBackupPath'
+                            variant='standard'
+                            disabled
+                            value={form.values.autoBackupPath}
+                            onChange={form.handleChange}
+                            error={
+                                form.touched.autoBackupPath && Boolean(form.errors.autoBackupPath)
+                            }
+                            helperText={form.touched.autoBackupPath && form.errors.autoBackupPath}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position='end'>
+                                        <Button
+                                            onClick={async () => {
+                                                const filePath = await api.selectFilePath()
+                                                form.setFieldValue('autoBackupPath', filePath)
+                                            }}>
+                                            {t('form.storyline.settings.autoBackupPath.select')}
+                                        </Button>
+                                    </InputAdornment>
+                                )
+                            }}
+                        />
                     </FormControl>
                     <FormControl className='w-1/2'>
                         <TextField

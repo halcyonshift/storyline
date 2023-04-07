@@ -41,6 +41,7 @@ export type SettingsDataType = {
     spellCheck: boolean
     autoSave: boolean
     autoBackupFreq: number
+    autoBackupPath: string
     autoBackupMax: number
     palette: ColorType
 }
@@ -56,6 +57,7 @@ export type SettingsContextType = {
     setSpellCheck: (spellCheck: boolean) => void
     setAutoSave: (autoSave: boolean) => void
     setAutoBackupFreq: (autoBackupFreq: number) => void
+    setAutoBackupPath: (autoBackupPath: string) => void
     setAutoBackupMax: (autoBackupMax: number) => void
     setPalette: (palette: ColorType) => void
     theme: Theme

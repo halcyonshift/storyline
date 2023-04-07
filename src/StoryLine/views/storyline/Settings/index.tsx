@@ -7,6 +7,7 @@ const SettingsView = () => {
     const {
         autoSave,
         autoBackupFreq,
+        autoBackupPath,
         autoBackupMax,
         displayMode,
         font,
@@ -21,6 +22,7 @@ const SettingsView = () => {
     const [initialValues] = useState<SettingsDataType>({
         autoSave,
         autoBackupFreq,
+        autoBackupPath,
         autoBackupMax,
         displayMode,
         font,

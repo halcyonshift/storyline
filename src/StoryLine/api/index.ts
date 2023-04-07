@@ -8,5 +8,7 @@ export default {
     importFile: (subDir: string) => ipcRenderer.invoke('select-file', subDir),
     importBibisco: () => ipcRenderer.invoke('import-bibisco2'),
     deleteFile: (path: string) => ipcRenderer.invoke('delete-file', path),
-    backup: (json: object, images: string[]) => ipcRenderer.invoke('backup', json, images)
+    backup: (json: object, images: string[], path: string) =>
+        ipcRenderer.invoke('backup', json, images, path),
+    selectFilePath: () => ipcRenderer.invoke('select-file-path')
 }

@@ -124,6 +124,8 @@ export default class WorkModel extends Model {
         const statistic = await this.statistics.fetch()
         const tag = await this.tags.fetch()
 
+        const backupPath = await this.database.localStorage.get<string>('autoBackupPath')
+
         const dbData = {
             work: [this],
             character,
@@ -164,8 +166,8 @@ export default class WorkModel extends Model {
                 }
             })
         })
-        await api.backup(jsonData, [...new Set(images)])
-        return true
+
+        return { data: jsonData, images: [...new Set(images)], backupPath: backupPath || '' }
     }
 
     @lazy sections = this.section.extend(Q.where('work_id', this.id), Q.sortBy('order', Q.asc))

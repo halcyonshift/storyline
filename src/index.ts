@@ -114,51 +114,51 @@ app.on('activate', () => {
 
 app.whenReady()
     .then(() => {
-        ipcMain.handle('backup', async (_, json, images) => {
+        ipcMain.handle('backup', async (_, json, images, localPath) => {
             const zip = new JSZip()
             zip.file(`${kebabCase(json.work[0].title)}.json`, JSON.stringify(json))
             images.forEach((image: string) => {
                 const data = fs.readFileSync(image)
                 zip.file(`images/${path.basename(image)}`, data)
             })
-            zip.generateAsync({ type: 'nodebuffer' }).then((buffer) => {
-                dialog
-                    .showSaveDialog({
-                        defaultPath: `${kebabCase(json.work[0].title)}.zip`,
-                        filters: [
-                            { name: 'ZIP files', extensions: ['zip'] },
-                            { name: 'All Files', extensions: ['*'] }
-                        ]
+
+            const buffer = await zip.generateAsync({ type: 'nodebuffer' })
+
+            if (localPath) {
+                const fileSavePath = `${localPath}${path.sep}${kebabCase(
+                    json.work[0].title
+                )}-${Date.now().toString()}.zip`
+                fs.writeFile(fileSavePath, buffer, () => {
+                    // Add sentry error
+                })
+                return fileSavePath
+            } else {
+                const result = await dialog.showSaveDialog({
+                    defaultPath: `${kebabCase(json.work[0].title)}.zip`,
+                    filters: [
+                        { name: 'ZIP files', extensions: ['zip'] },
+                        { name: 'All Files', extensions: ['*'] }
+                    ]
+                })
+
+                if (result.filePath) {
+                    // eslint-disable-next-line max-nested-callbacks
+                    fs.writeFile(result.filePath, buffer, () => {
+                        // Add sentry error
                     })
-                    .then(({ filePath }) => {
-                        if (filePath) {
-                            // eslint-disable-next-line max-nested-callbacks
-                            fs.writeFile(filePath, buffer, () => {
-                                // Add sentry error
-                            })
-                        }
-                    })
-            })
+
+                    return result.filePath
+                }
+            }
+
+            return false
         })
 
-        ipcMain.handle('select-image', async (_, subDir) => {
-            const result = await dialog.showOpenDialog({
-                title: 'Select an image',
-                filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'gif'] }]
+        ipcMain.handle('select-file-path', async () => {
+            const filePath = await dialog.showOpenDialog({
+                properties: ['openDirectory', 'createDirectory']
             })
-
-            if (result.canceled || !result.filePaths.length) return false
-
-            const filePath = result.filePaths[0]
-            const fileDir = path.join(app.getPath('userData'), 'images', subDir)
-            await fs.promises.mkdir(fileDir, { recursive: true })
-            const saveFilePath = path.join(
-                fileDir,
-                `image-${new Date().getTime()}${path.extname(filePath)}`
-            )
-            await fs.promises.copyFile(filePath, saveFilePath)
-
-            return saveFilePath
+            return filePath.canceled || !filePath.filePaths.length ? '' : filePath.filePaths[0]
         })
 
         ipcMain.handle('select-image', async (_, subDir) => {
