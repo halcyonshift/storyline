@@ -1,30 +1,20 @@
 import { useEffect, useState } from 'react'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
-import {
-    COMMAND_PRIORITY_LOW,
-    $createTextNode,
-    $getRoot,
-    $getSelection,
-    $isRangeSelection,
-    ElementNode
-} from 'lexical'
+import { COMMAND_PRIORITY_LOW, $createTextNode, $getRoot, ElementNode } from 'lexical'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
 import { CharacterModel, ItemModel, LocationModel, NoteModel, WorkModel } from '@sl/db/models'
 import { MenuProps } from '../../types'
-import { getSelectedNode } from '../../utils/getSelectedNode'
 import { TOGGLE_TAG_COMMAND, TagNode, toggleTag, $isTagNode } from './Node'
 import TagMenu from './Menu'
 import { TagModeType, TagPayloadType } from './types'
 import { stripSlashes } from './utils'
-import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 const TagPlugin = (props: MenuProps) => {
     const work = useRouteLoaderData('work') as WorkModel
     const [editor] = useLexicalComposerContext()
     const [open, setOpen] = useState<boolean>(false)
-    const { loadTab } = useTabs()
     const characters = useObservable(
         () =>
             work.character
@@ -45,36 +35,10 @@ const TagPlugin = (props: MenuProps) => {
     )
     const notes = useObservable(() => work.taggableNotes.observeWithColumns(['title']), [], [])
 
-    const openTag = () => {
-        editor.update(() => {
-            const selection = $getSelection()
-            if ($isRangeSelection(selection)) {
-                const node = getSelectedNode(selection)
-                const parent = node.getParent()
-                const tagNode = $isTagNode(node) ? node : parent
-                if (!$isTagNode(tagNode)) return
-                const linkUrl = tagNode.getURL()
-                const parts = stripSlashes(linkUrl).split('/')
-
-                if (parts.length === 3) {
-                    loadTab({
-                        id: parts[1],
-                        label: decodeURI(parts[2]),
-                        link: `${parts[0]}/${parts[1]}`
-                    })
-                }
-            }
-        })
-    }
-
     useEffect(() => {
         if (!editor.hasNodes([TagNode])) {
             throw new Error('TagPlugin: TagNode not registered on editor')
         }
-        editor.registerRootListener((rootElement, prevRootElement) => {
-            rootElement?.addEventListener('dblclick', openTag)
-            prevRootElement?.removeEventListener('dblclick', openTag)
-        })
     }, [editor])
 
     useEffect(() => setOpen(Boolean(props.menu === 'tag')), [props.menu])
