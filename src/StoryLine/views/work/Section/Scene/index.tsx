@@ -2,11 +2,15 @@ import { useEffect, useState } from 'react'
 import * as Grammarly from '@grammarly/editor-sdk'
 import RichtextEditor from '@sl/components/RichtextEditor'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import useSettings from '@sl/theme/useSettings'
 import { wordCount } from '@sl/utils'
+import useOnlineStatus from '@sl/utils/useOnlineStatus'
 import { SectionViewType } from '../types'
 
 const SceneView = ({ section }: SectionViewType) => {
     const [initialValue, setInitialValue] = useState<string>(section.body)
+    const isOnline = useOnlineStatus()
+    const settings = useSettings()
     const tabs = useTabs()
 
     useEffect(() => {
@@ -14,19 +18,28 @@ const SceneView = ({ section }: SectionViewType) => {
     }, [])
 
     useEffect(() => {
-        const editor = document.querySelector(
-            'grammarly-editor-plugin'
-        ) as Grammarly.GrammarlyEditorPluginElement
-        if (editor) {
-            editor.disconnect()
+        if (settings.spellCheck) {
+            const editor = document.querySelector(
+                'grammarly-editor-plugin'
+            ) as Grammarly.GrammarlyEditorPluginElement
+            if (editor) {
+                editor.disconnect()
+            }
         }
+
         setInitialValue(section.body)
-        setTimeout(() => {
-            Grammarly.init('client_PJGNpq8df12athMYk8jcSr').then((grammarly) => {
-                grammarly.addPlugin(document.getElementById('sceneBody'))
-            })
-        }, 500)
-    }, [section.id])
+
+        if (settings.spellCheck && isOnline) {
+            setTimeout(() => {
+                Grammarly.init(process.env.GRAMMARLY_CLIENT_ID, {
+                    documentDomain: 'creative',
+                    documentDialect: 'auto-text'
+                }).then((grammarly) => {
+                    grammarly.addPlugin(document.getElementById('sceneBody'))
+                })
+            }, 100)
+        }
+    }, [section.id, settings.spellCheck])
 
     const onSave = async (html: string) => {
         await section.updateBody(html)
