@@ -2,6 +2,7 @@
 import { app, BrowserWindow, ipcMain, dialog, session, shell, Dialog } from 'electron'
 import contextMenu from 'electron-context-menu'
 import fs from 'fs'
+import { kebabCase } from 'lodash'
 import path from 'path'
 import JSZip from 'jszip'
 
@@ -41,8 +42,10 @@ const createWindow = (): void => {
     mainWindow.webContents.openDevTools()
 
     mainWindow.webContents.on('will-navigate', function (e, url) {
-        e.preventDefault()
-        shell.openExternal(url)
+        if (!url.includes('localhost')) {
+            e.preventDefault()
+            shell.openExternal(url)
+        }
     })
 
     mainWindow.on('will-resize', (_, newBounds) => {
@@ -111,6 +114,53 @@ app.on('activate', () => {
 
 app.whenReady()
     .then(() => {
+        ipcMain.handle('backup', async (_, json, images) => {
+            const zip = new JSZip()
+            zip.file(`${kebabCase(json.work[0].title)}.json`, JSON.stringify(json))
+            images.forEach((image: string) => {
+                const data = fs.readFileSync(image)
+                zip.file(`images/${path.basename(image)}`, data)
+            })
+            zip.generateAsync({ type: 'nodebuffer' }).then((buffer) => {
+                dialog
+                    .showSaveDialog({
+                        defaultPath: `${kebabCase(json.work[0].title)}.zip`,
+                        filters: [
+                            { name: 'ZIP files', extensions: ['zip'] },
+                            { name: 'All Files', extensions: ['*'] }
+                        ]
+                    })
+                    .then(({ filePath }) => {
+                        if (filePath) {
+                            // eslint-disable-next-line max-nested-callbacks
+                            fs.writeFile(filePath, buffer, () => {
+                                // Add sentry error
+                            })
+                        }
+                    })
+            })
+        })
+
+        ipcMain.handle('select-image', async (_, subDir) => {
+            const result = await dialog.showOpenDialog({
+                title: 'Select an image',
+                filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'gif'] }]
+            })
+
+            if (result.canceled || !result.filePaths.length) return false
+
+            const filePath = result.filePaths[0]
+            const fileDir = path.join(app.getPath('userData'), 'images', subDir)
+            await fs.promises.mkdir(fileDir, { recursive: true })
+            const saveFilePath = path.join(
+                fileDir,
+                `image-${new Date().getTime()}${path.extname(filePath)}`
+            )
+            await fs.promises.copyFile(filePath, saveFilePath)
+
+            return saveFilePath
+        })
+
         ipcMain.handle('select-image', async (_, subDir) => {
             const result = await dialog.showOpenDialog({
                 title: 'Select an image',
