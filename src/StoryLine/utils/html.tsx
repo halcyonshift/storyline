@@ -5,7 +5,7 @@ export const htmlExtractExcerptsOptions: HTMLReactParserOptions = {
     replace: (domNode) => {
         if (domNode instanceof Element) {
             if (domNode.name !== 'blockquote') return <></>
-            return <Typography variant='body1'>{domToReact(domNode.children)}</Typography>
+            return <Typography variant='body2'>{domToReact(domNode.children)}</Typography>
         }
     }
 }

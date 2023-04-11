@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Box, Button, ButtonGroup } from '@mui/material'
+import { Box, Button, ButtonGroup, Divider } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { OverviewViewOption, OverviewViewOptionType } from '@sl/constants/overviewView'
@@ -25,8 +25,8 @@ const OverviewView = () => {
     }, [])
 
     return (
-        <Box className='p-5 border-t-8 border-slate-100'>
-            <ButtonGroup disableElevation>
+        <Box className='flex flex-col flex-grow'>
+            <ButtonGroup disableElevation className='p-3'>
                 <Button
                     variant={view === OverviewViewOption.SUMMARY ? 'contained' : 'outlined'}
                     onClick={() => setView(OverviewViewOption.SUMMARY)}>
@@ -38,11 +38,14 @@ const OverviewView = () => {
                     {t('view.work.overview.timeline.title')}
                 </Button>
             </ButtonGroup>
-            {view === OverviewViewOption.SUMMARY ? (
-                <Summary parts={parts} chapters={chapters} scenes={scenes} />
-            ) : (
-                <Timeline work={work} />
-            )}
+            <Divider />
+            <Box className='flex-grow h-0 overflow-auto p-3'>
+                {view === OverviewViewOption.SUMMARY ? (
+                    <Summary parts={parts} chapters={chapters} scenes={scenes} />
+                ) : (
+                    <Timeline work={work} />
+                )}
+            </Box>
         </Box>
     )
 }
