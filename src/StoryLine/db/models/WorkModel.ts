@@ -70,19 +70,82 @@ export default class WorkModel extends Model {
             caseSensitive ? 'g' : 'gi'
         )
 
-        if (sceneOnly) {
-            const scenes = await this.scenes.fetch()
-            const results: SearchResultType[] = []
-            scenes.map((scene) => {
-                const text = scene.body.replace('</p>', ' ').replace(/(<([^>]+)>)/gi, '')
+        const results: SearchResultType[] = []
+        const scenes = await this.scenes.fetch()
+
+        scenes.map((scene) => {
+            const text = scene.body.replace('</p>', ' ').replace(/(<([^>]+)>)/gi, '')
+            const matches = [...text.matchAll(regex)]
+            if (matches.length) {
+                const result: SearchResultType = {
+                    id: scene.id,
+                    label: scene.displayTitle,
+                    link: `section/${scene.id}/${query}`,
+                    excerpts: []
+                }
+                for (const match of matches) {
+                    result.excerpts.push(
+                        `${match[1] ? '...' : ''}${match[0]
+                            .replace('&nbsp;', ' ')
+                            .replace('\n', ' ')}${match[3] ? '...' : ''}`
+                    )
+                }
+                results.push(result)
+            }
+        })
+
+        if (sceneOnly) return results
+
+        const characters = await this.characters.fetch()
+        const notes = await this.notes.fetch()
+        const locations = await this.locations.fetch()
+        const items = await this.items.fetch()
+
+        const characterFields = [
+            'displayName',
+            'firstName',
+            'lastName',
+            'description',
+            'history',
+            'pronouns',
+            'nickname',
+            'nationality',
+            'ethnicity',
+            'placeOfBirth',
+            'residence',
+            'gender',
+            'sexualOrientation',
+            'religion',
+            'socialClass',
+            'profession',
+            'finances',
+            'politicalLeaning',
+            'face',
+            'build',
+            'hair',
+            'hairNatural',
+            'distinguishingFeatures',
+            'personalityPositive',
+            'personalityNegative',
+            'ambitions',
+            'fears'
+        ]
+
+        characters.map((character) => {
+            const result: SearchResultType = {
+                id: character.id,
+                label: character.displayName,
+                link: `character/${character.id}`,
+                excerpts: []
+            }
+
+            characterFields.map((field) => {
+                const text = (character[field as keyof CharacterModel] || '')
+                    .toString()
+                    .replace('</p>', ' ')
+                    .replace(/(<([^>]+)>)/gi, '')
                 const matches = [...text.matchAll(regex)]
                 if (matches.length) {
-                    const result: SearchResultType = {
-                        id: scene.id,
-                        label: scene.displayTitle,
-                        link: `section/${scene.id}/${query}`,
-                        excerpts: []
-                    }
                     for (const match of matches) {
                         result.excerpts.push(
                             `${match[1] ? '...' : ''}${match[0]
@@ -90,14 +153,111 @@ export default class WorkModel extends Model {
                                 .replace('\n', ' ')}${match[3] ? '...' : ''}`
                         )
                     }
-                    results.push(result)
                 }
             })
 
-            return results
-        }
+            if (result.excerpts.length) {
+                results.push(result)
+            }
+        })
 
-        return []
+        const noteFields = ['title', 'body']
+
+        notes.map((note) => {
+            const result: SearchResultType = {
+                id: note.id,
+                label: note.displayName,
+                link: `note/${note.id}`,
+                excerpts: []
+            }
+
+            noteFields.map((field) => {
+                const text = (note[field as keyof NoteModel] || '')
+                    .toString()
+                    .replace('</p>', ' ')
+                    .replace(/(<([^>]+)>)/gi, '')
+                const matches = [...text.matchAll(regex)]
+                if (matches.length) {
+                    for (const match of matches) {
+                        result.excerpts.push(
+                            `${match[1] ? '...' : ''}${match[0]
+                                .replace('&nbsp;', ' ')
+                                .replace('\n', ' ')}${match[3] ? '...' : ''}`
+                        )
+                    }
+                }
+            })
+
+            if (result.excerpts.length) {
+                results.push(result)
+            }
+        })
+
+        const locationFields = ['name', 'body']
+
+        locations.map((location) => {
+            const result: SearchResultType = {
+                id: location.id,
+                label: location.displayName,
+                link: `location/${location.id}`,
+                excerpts: []
+            }
+
+            locationFields.map((field) => {
+                const text = (location[field as keyof LocationModel] || '')
+                    .toString()
+                    .replace('</p>', ' ')
+                    .replace(/(<([^>]+)>)/gi, '')
+                const matches = [...text.matchAll(regex)]
+                if (matches.length) {
+                    for (const match of matches) {
+                        result.excerpts.push(
+                            `${match[1] ? '...' : ''}${match[0]
+                                .replace('&nbsp;', ' ')
+                                .replace('\n', ' ')}${match[3] ? '...' : ''}`
+                        )
+                    }
+                }
+            })
+
+            if (result.excerpts.length) {
+                results.push(result)
+            }
+        })
+
+        const itemFields = ['name', 'body']
+
+        items.map((item) => {
+            const result: SearchResultType = {
+                id: item.id,
+                label: item.displayName,
+                link: `item/${item.id}`,
+                excerpts: []
+            }
+
+            itemFields.map((field) => {
+                const text = (item[field as keyof ItemModel] || '')
+                    .toString()
+                    .replace('</p>', ' ')
+                    .replace(/(<([^>]+)>)/gi, '')
+                const matches = [...text.matchAll(regex)]
+                if (matches.length) {
+                    for (const match of matches) {
+                        result.excerpts.push(
+                            `${match[1] ? '...' : ''}${match[0]
+                                .replace('&nbsp;', ' ')
+                                .replace('\n', ' ')}${match[3] ? '...' : ''}`
+                        )
+                    }
+                }
+            })
+
+            if (result.excerpts.length) {
+                results.push(result)
+            }
+        })
+
+        return results
     }
 
     async wordCount() {
