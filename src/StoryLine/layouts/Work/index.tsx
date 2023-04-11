@@ -73,7 +73,9 @@ const WorkLayout = () => {
                         </Box>
                         <Box ref={mainRef} id='main' className='flex flex-col flex-grow'>
                             <Tabs />
-                            <Outlet />
+                            <Box className='flex flex-grow h-0 overflow-auto'>
+                                <Outlet />
+                            </Box>
                         </Box>
                     </Box>
                 </Box>

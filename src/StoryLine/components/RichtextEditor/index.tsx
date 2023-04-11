@@ -80,77 +80,79 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
 
     return useMemo(
         () => (
-            <LexicalComposer
-                initialConfig={{
-                    namespace: 'rte',
-                    theme: {
-                        ...theme,
-                        ...{
-                            paragraph: indentParagraph
-                                ? `indent-4 ${theme.paragraph}`
-                                : theme.paragraph,
-                            quote: indentParagraph ? `indent-4 ${theme.quote}` : theme.quote
+            <Box className='flex-grow flex flex-col'>
+                <LexicalComposer
+                    initialConfig={{
+                        namespace: 'rte',
+                        theme: {
+                            ...theme,
+                            ...{
+                                paragraph: indentParagraph
+                                    ? `indent-4 ${theme.paragraph}`
+                                    : theme.paragraph,
+                                quote: indentParagraph ? `indent-4 ${theme.quote}` : theme.quote
+                            }
+                        },
+                        nodes: [ListItemNode, ListNode, QuoteNode, TagNode],
+                        onError(error: Error) {
+                            throw error
                         }
-                    },
-                    nodes: [ListItemNode, ListNode, QuoteNode, TagNode],
-                    onError(error: Error) {
-                        throw error
-                    }
-                }}>
-                <ToolbarPlugin
-                    menu={menu}
-                    setMenu={setMenu}
-                    setMenuElement={setMenuElement}
-                    config={toolbar}
-                />
-                <SearchPlugin />
-                <Box
-                    className='rte-container relative flex-grow overflow-auto h-0 p-3'
-                    ref={ref}
-                    id={`rte-${id}`}>
-                    <RichTextPlugin
-                        contentEditable={
-                            <ContentEditable
-                                id='sceneBody'
-                                className='resize-none caret-slate-500 outline-none'
-                                spellCheck={spellCheck}
-                            />
-                        }
-                        placeholder={
-                            <Typography
-                                variant='body1'
-                                className='text-slate-500 overflow-hidden absolute
+                    }}>
+                    <ToolbarPlugin
+                        menu={menu}
+                        setMenu={setMenu}
+                        setMenuElement={setMenuElement}
+                        config={toolbar}
+                    />
+                    <SearchPlugin />
+                    <Box
+                        className='rte-container relative flex-grow overflow-auto h-0 p-3'
+                        ref={ref}
+                        id={`rte-${id}`}>
+                        <RichTextPlugin
+                            contentEditable={
+                                <ContentEditable
+                                    id='sceneBody'
+                                    className='resize-none caret-slate-500 outline-none'
+                                    spellCheck={spellCheck}
+                                />
+                            }
+                            placeholder={
+                                <Typography
+                                    variant='body1'
+                                    className='text-slate-500 overflow-hidden absolute
                     top-[15px] left-[10px] inline-block pointer-events-none'>
-                                {t('component.richtextEditor.placeholder')}
-                            </Typography>
-                        }
-                        ErrorBoundary={LexicalErrorBoundary}
-                    />
-                    <AutoFocusPlugin />
-                    <HistoryPlugin />
-                    <InitialValuePlugin forwardRef={ref} value={initialValue} />
-                    <ListPlugin />
-                    <NodeEventPlugin
-                        nodeType={TagNode}
-                        eventType='dblclick'
-                        eventListener={handleTagDblClick}
-                    />
-                    <OnChangePlugin onChange={handleChange} />
-                    <VersionPlugin
-                        menu={menu}
-                        menuElement={menuElement}
-                        setMenu={setMenu}
-                        setMenuElement={setMenuElement}
-                    />
-                    <SavePlugin onSave={onSave} />
-                    <TagPlugin
-                        menu={menu}
-                        menuElement={menuElement}
-                        setMenu={setMenu}
-                        setMenuElement={setMenuElement}
-                    />
-                </Box>
-            </LexicalComposer>
+                                    {t('component.richtextEditor.placeholder')}
+                                </Typography>
+                            }
+                            ErrorBoundary={LexicalErrorBoundary}
+                        />
+                        <AutoFocusPlugin />
+                        <HistoryPlugin />
+                        <InitialValuePlugin forwardRef={ref} value={initialValue} />
+                        <ListPlugin />
+                        <NodeEventPlugin
+                            nodeType={TagNode}
+                            eventType='dblclick'
+                            eventListener={handleTagDblClick}
+                        />
+                        <OnChangePlugin onChange={handleChange} />
+                        <VersionPlugin
+                            menu={menu}
+                            menuElement={menuElement}
+                            setMenu={setMenu}
+                            setMenuElement={setMenuElement}
+                        />
+                        <SavePlugin onSave={onSave} />
+                        <TagPlugin
+                            menu={menu}
+                            menuElement={menuElement}
+                            setMenu={setMenu}
+                            setMenuElement={setMenuElement}
+                        />
+                    </Box>
+                </LexicalComposer>
+            </Box>
         ),
         [id, initialValue, menu, menuElement]
     )

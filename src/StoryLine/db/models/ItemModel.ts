@@ -2,8 +2,9 @@ import { Model, Q, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { type StatusType } from '@sl/constants/status'
-import { ConnectionModel, NoteModel, TagModel, WorkModel } from './'
+import { ConnectionModel, NoteModel, SectionModel, TagModel, WorkModel } from './'
 import { ItemDataType } from './types'
+import { ImageType } from '@sl/components/Gallery/types'
 
 export default class ItemModel extends Model {
     static table = 'item'
@@ -25,6 +26,56 @@ export default class ItemModel extends Model {
 
     get displayName() {
         return this.name
+    }
+
+    async getLinks(): Promise<string[]> {
+        const notes = await this.note.extend(Q.where('url', Q.notEq('')))
+        return [this.url]
+            .concat(notes.map((note) => note.url))
+            .map((url) => url)
+            .filter((link) => link)
+    }
+
+    async getImages(): Promise<ImageType[]> {
+        const notes = await this.note.extend(Q.where('image', Q.notEq('')))
+        const images = notes.map((note) => ({ path: note.image, title: note.title }))
+        if (this.image) {
+            return [{ path: this.image, title: this.name }].concat(images)
+        }
+        return images
+    }
+
+    async getAppearances() {
+        const work = await this.work.fetch()
+        const scenes = await work.scenes.fetch()
+
+        const appearances = []
+
+        for await (const scene of scenes) {
+            const tagged = await scene.taggedItems(this.id)
+
+            if (!tagged.length) continue
+
+            appearances.push({
+                scene,
+                text: tagged[0].text
+            })
+        }
+
+        return appearances
+    }
+
+    getExcerpts(scene: SectionModel): string[] {
+        const excerpts: string[] = []
+
+        new DOMParser()
+            .parseFromString(scene.body, 'text/html')
+            .querySelectorAll(`.tag-item`)
+            .forEach((tag: HTMLAnchorElement) => {
+                excerpts.push(tag.innerHTML)
+            })
+
+        return excerpts
     }
 
     async destroyPermanently(): Promise<void> {

@@ -2,9 +2,10 @@ import { Model, Q, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { LatLngExpression } from 'leaflet'
+import { ImageType } from '@sl/components/Gallery/types'
 import { Status, type StatusType } from '@sl/constants/status'
 import { LocationDataType } from './types'
-import { ConnectionModel, NoteModel, TagModel, WorkModel } from '.'
+import { ConnectionModel, NoteModel, SectionModel, TagModel, WorkModel } from '.'
 
 export default class LocationModel extends Model {
     static table = 'location'
@@ -38,6 +39,39 @@ export default class LocationModel extends Model {
             return [parseFloat(this.latitude), parseFloat(this.longitude)]
         }
         return null
+    }
+
+    async getLinks(): Promise<string[]> {
+        const notes = await this.note.extend(Q.where('url', Q.notEq('')))
+        return [this.url]
+            .concat(notes.map((note) => note.url))
+            .map((url) => url)
+            .filter((link) => link)
+    }
+
+    async getImages(): Promise<ImageType[]> {
+        const notes = await this.note.extend(Q.where('image', Q.notEq('')))
+        const images = notes.map((note) => ({ path: note.image, title: note.title }))
+        if (this.image) {
+            return [{ path: this.image, title: this.name }].concat(images)
+        }
+        return images
+    }
+
+    async getAppearances(): Promise<SectionModel[]> {
+        const work = await this.work.fetch()
+        const scenes = await work.scenes.fetch()
+        const tags = await this.tag.fetch()
+
+        const appearances: SectionModel[] = []
+        for await (const scene of scenes) {
+            const isTagged = await scene.isTagged(this.id)
+            if (isTagged || tags.find((tag) => tag.section.id === scene.id)) {
+                appearances.push(scene)
+            }
+        }
+
+        return appearances
     }
 
     async destroyPermanently(): Promise<void> {

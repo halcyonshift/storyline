@@ -95,6 +95,22 @@
                 "yes": "Yes",
                 "no": "no"
             }
+        },
+        "viewWrapper": {
+            "tab": {
+                "general": "General",
+                "links": "Links",
+                "images": "Images",
+                "notes": "Notes",
+                "appearances": "Appearances"
+            },
+            "appearances": {
+                "th": {
+                    "date": "Date",
+                    "scene": "Scene",
+                    "excerpt": "Excerpt"
+                }
+            }
         }
     },
     "constant" : {
