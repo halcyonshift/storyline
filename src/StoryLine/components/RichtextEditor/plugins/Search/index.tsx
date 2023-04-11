@@ -71,9 +71,20 @@ const SearchPlugin = () => {
     useEffect(() => doSearch(keyWords || params.query), [params.query, fullWord, caseSensitive])
 
     useEffect(() => {
-        setResultIndex(null)
-        if (results.length) navigate('next')
-    }, [results])
+        setResultIndex(results.length && params?.index ? parseInt(params.index) : null)
+    }, [results, params?.index])
+
+    useEffect(() => {
+        if (resultIndex === null || !results.length || !results[resultIndex]) return
+        editor.update(() => {
+            const result = results[resultIndex]
+            result.node.select(result.match.index, result.match.index + keyWords.length)
+            editor.getElementByKey(result.node.getKey()).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            })
+        })
+    }, [resultIndex])
 
     const doSearch = debounce((query) => setKeyWords(query), 500)
 
@@ -89,15 +100,7 @@ const SearchPlugin = () => {
             i = resultIndex + 1 === results.length || resultIndex === null ? 0 : resultIndex + 1
         }
 
-        editor.update(() => {
-            const result = results[i]
-            result.node.select(result.match.index, result.match.index + keyWords.length)
-            editor.getElementByKey(result.node.getKey()).scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            })
-            setResultIndex(i)
-        })
+        setResultIndex(i)
     }
 
     return open ? (
