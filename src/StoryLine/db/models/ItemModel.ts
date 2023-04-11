@@ -40,7 +40,9 @@ export default class ItemModel extends Model {
         const notes = await this.note.extend(Q.where('image', Q.notEq('')))
         const images = notes.map((note) => ({ path: note.image, title: note.title }))
         if (this.image) {
-            return [{ path: this.image, title: this.name }].concat(images)
+            return [{ path: this.image, title: this.name }]
+                .concat(images)
+                .filter((image) => image.path)
         }
         return images
     }

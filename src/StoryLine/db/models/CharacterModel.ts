@@ -90,29 +90,44 @@ export default class CharacterModel extends Model {
         const notes = await this.note.extend(Q.where('image', Q.notEq('')))
         const images = notes.map((note) => ({ path: note.image, title: note.title }))
         if (this.image) {
-            return [{ path: this.image, title: this.displayName }].concat(images)
+            return [{ path: this.image, title: this.displayName }]
+                .concat(images)
+                .filter((image) => image.path)
         }
         return images
     }
 
-    async getAppearances(): Promise<SectionModel[]> {
+    async getAppearances() {
         const work = await this.work.fetch()
         const scenes = await work.scenes.fetch()
-        const tags = await this.tag.fetch()
 
-        const appearances: SectionModel[] = []
+        const appearances = []
+
         for await (const scene of scenes) {
-            const isTagged = await scene.isTagged(this.id)
-            if (
-                isTagged ||
-                scene.pointOfViewCharacter?.id === this.id ||
-                tags.find((tag) => tag.section.id === scene.id)
-            ) {
-                appearances.push(scene)
-            }
+            const tagged = await scene.taggedLocations(this.id)
+
+            if (!tagged.length && scene.pointOfViewCharacter?.id !== this.id) continue
+
+            appearances.push({
+                scene,
+                text: tagged.length ? tagged[0].text : []
+            })
         }
 
         return appearances
+    }
+
+    getExcerpts(scene: SectionModel): string[] {
+        const excerpts: string[] = []
+
+        new DOMParser()
+            .parseFromString(scene.body, 'text/html')
+            .querySelectorAll(`.tag-character`)
+            .forEach((tag: HTMLAnchorElement) => {
+                excerpts.push(tag.innerHTML)
+            })
+
+        return excerpts
     }
 
     async destroyPermanently(): Promise<void> {
