@@ -28,7 +28,7 @@ const SearchPanel = () => {
         query = query.replace(/(<([^>]+)>)/gi, '')
         setKeyWords(query)
         setResults([])
-        if (!query || query.length < 4 || isSearching) return
+        if (!query || query.length < 3 || isSearching) return
         setIsSearching(true)
         const _results = await work.search(query, sceneOnly, caseSensitive, fullWord)
         setResults(_results)

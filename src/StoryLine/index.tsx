@@ -194,7 +194,7 @@ const router = createHashRouter([
                         element: <WorkViews.ConnectionView />
                     },
                     {
-                        path: 'section/:section_id/:query?',
+                        path: 'section/:section_id/:query?/:index?',
                         id: 'section',
                         loader: async ({ params }) =>
                             await database.get<SectionModel>('section').find(params.section_id),
