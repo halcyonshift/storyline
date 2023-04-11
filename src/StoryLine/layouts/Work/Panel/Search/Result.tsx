@@ -20,8 +20,18 @@ const Result = ({ result }: { result: SearchResultType }) => {
             </Box>
             {show ? (
                 <Box className='pl-5 pr-2'>
-                    {result.excerpts.map((excerpt: string) => (
-                        <Typography variant='body2' onClick={() => loadTab(result)}>
+                    {result.excerpts.map((excerpt: string, index: number) => (
+                        <Typography
+                            variant='body2'
+                            onClick={() =>
+                                loadTab({
+                                    id: result.id,
+                                    label: result.label,
+                                    link: result.link.includes('section/')
+                                        ? `${result.link}/${index}`
+                                        : result.link
+                                })
+                            }>
                             {excerpt}
                         </Typography>
                     ))}
