@@ -146,19 +146,16 @@ export default class SectionModel extends Model {
     ): Promise<AllTagsType[]> {
         const tags = await this.tag.extend(Q.where(`${mode}_id`, Q.notEq('')))
         const textTags = await this._textTags(mode)
-        const ids = textTags.map((data) => data.id).concat(tags.map((tag) => tag[mode].id))
+        const ids = textTags
+            .map((data) => data.id)
+            .concat(tags.map((tag) => tag[mode].id))
+            .filter((id) => id)
 
         if (id && !ids.includes(id)) return []
 
         const data = await this.collections
             .get<CharacterModel | ItemModel | LocationModel | NoteModel>(mode)
-            .query(
-                Q.where(
-                    'id',
-                    Q.oneOf(textTags.map((data) => data.id).concat(tags.map((tag) => tag[mode].id)))
-                ),
-                Q.sortBy(sort, Q.asc)
-            )
+            .query(Q.where('id', Q.oneOf(ids)), Q.sortBy(sort, Q.asc))
 
         return data.map((record) => ({
             record,

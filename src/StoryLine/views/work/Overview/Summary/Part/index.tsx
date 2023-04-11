@@ -9,13 +9,16 @@ const PartSummary = ({ parts, chapters, scenes }: PartSummaryProps) => (
         {parts.map((part) => (
             <Fragment key={part.id}>
                 <Box>
-                    <Typography variant='h6'>{part.displayTitle}</Typography>
+                    <Typography variant='body1'>{part.displayDate}</Typography>
+                    <Typography variant='h4'>{part.displayTitle}</Typography>
                     {part.description ? htmlParse(part.description) : null}
                 </Box>
-                <ChapterSummary
-                    chapters={chapters.filter((chapter) => chapter.section.id === part.id)}
-                    scenes={scenes}
-                />
+                <Box className='m-5 p-5 border-l-2'>
+                    <ChapterSummary
+                        chapters={chapters.filter((chapter) => chapter.section.id === part.id)}
+                        scenes={scenes}
+                    />
+                </Box>
             </Fragment>
         ))}
     </>

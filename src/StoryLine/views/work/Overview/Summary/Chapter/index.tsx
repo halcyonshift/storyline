@@ -9,10 +9,15 @@ const ChapterSummary = ({ chapters, scenes }: ChapterSummaryProps) => (
         {chapters.map((chapter) => (
             <Fragment key={chapter.id}>
                 <Box>
-                    <Typography variant='h6'>{chapter.displayTitle}</Typography>
+                    <Typography variant='body1'>{chapter.displayDate}</Typography>
+                    <Typography variant='h5'>{chapter.displayTitle}</Typography>
                     {chapter.description ? htmlParse(chapter.description) : null}
                 </Box>
-                <SceneSummary scenes={scenes.filter((scene) => scene.section.id === chapter.id)} />
+                <Box className='m-5 p-5 border-l-2'>
+                    <SceneSummary
+                        scenes={scenes.filter((scene) => scene.section.id === chapter.id)}
+                    />
+                </Box>
             </Fragment>
         ))}
     </>
