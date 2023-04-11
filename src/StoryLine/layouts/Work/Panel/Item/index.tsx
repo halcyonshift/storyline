@@ -33,12 +33,17 @@ const ItemPanel = () => {
             ]}>
             <List dense disablePadding className='bg-white'>
                 {items.map((item) => (
-                    <ListItem key={item.id} disablePadding disableGutters divider>
+                    <ListItem
+                        key={item.id}
+                        disablePadding
+                        disableGutters
+                        divider
+                        sx={{
+                            borderLeft: `8px solid ${status(item.status, 500).color}`
+                        }}>
                         <ListItemText
                             primary={
-                                <Box
-                                    className='flex justify-between align-middle'
-                                    sx={{ backgroundColor: status(item.status).color }}>
+                                <Box className='flex justify-between align-middle'>
                                     <ListItemButton
                                         onClick={() =>
                                             loadTab({

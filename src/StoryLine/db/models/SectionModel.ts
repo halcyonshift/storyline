@@ -8,7 +8,7 @@ import { SectionMode, type SectionModeType } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
 import { htmlExtractExcerpts, htmlParse, wordCount } from '@sl/utils'
 import { stripSlashes } from '@sl/components/RichtextEditor/plugins/Tag/utils'
-import { type SectionDataType, type StatisticDataType } from './types'
+import { type AllTagsType, type SectionDataType, type StatisticDataType } from './types'
 import {
     CharacterModel,
     ItemModel,
@@ -110,46 +110,76 @@ export default class SectionModel extends Model {
         return Boolean(this.mode === SectionMode.VERSION)
     }
 
-    async characters(findId?: string) {
-        return await this._tags('character', findId)
-    }
-
-    async items(findId?: string) {
-        return await this._tags('item', findId)
-    }
-
-    async locations(findId?: string) {
-        return await this._tags('location', findId)
-    }
-
     get excerpts() {
         return this.body ? htmlExtractExcerpts(this.body) : null
     }
 
-    async _tags(
-        mode: string,
-        findId?: string
-    ): Promise<(CharacterModel | ItemModel | LocationModel)[] | boolean> {
-        const ids: string[] = []
+    async isTagged(id: string) {
+        const tags = await this.tag.fetch()
+        return Boolean(
+            tags.find((tag) =>
+                [tag.character.id, tag.item.id, tag.location.id, tag.note.id].includes(id)
+            ) || this.body.includes(id)
+        )
+    }
 
+    async taggedCharacters(id?: string) {
+        return await this._allTags('character', 'display_name', id)
+    }
+
+    async taggedItems(id?: string) {
+        return await this._allTags('item', 'name', id)
+    }
+
+    async taggedLocations(id?: string) {
+        return await this._allTags('location', 'name', id)
+    }
+
+    async taggedNotes(id?: string) {
+        return await this._allTags('note', 'order', id)
+    }
+
+    async _allTags(
+        mode: 'character' | 'item' | 'location' | 'note',
+        sort: string,
+        id: string
+    ): Promise<AllTagsType[]> {
+        const tags = await this.tag.extend(Q.where(`${mode}_id`, Q.notEq('')))
+        const textTags = await this._textTags(mode)
+        const ids = textTags.map((data) => data.id).concat(tags.map((tag) => tag[mode].id))
+
+        if (id && !ids.includes(id)) return []
+
+        const data = await this.collections
+            .get<CharacterModel | ItemModel | LocationModel | NoteModel>(mode)
+            .query(
+                Q.where(
+                    'id',
+                    Q.oneOf(textTags.map((data) => data.id).concat(tags.map((tag) => tag[mode].id)))
+                ),
+                Q.sortBy(sort, Q.asc)
+            )
+
+        return data.map((record) => ({
+            record,
+            text: textTags.filter((tag) => tag.id === record.id).map((tag) => tag.text)
+        }))
+    }
+
+    async _textTags(mode: 'character' | 'item' | 'location' | 'note') {
+        const data: { id: string; mode: string; text: string }[] = []
         new DOMParser()
             .parseFromString(this.body, 'text/html')
             .querySelectorAll(`.tag-${mode}`)
             .forEach((tag: HTMLAnchorElement) => {
                 const url = new URL(tag.href)
-                ids.push(stripSlashes(url.pathname).split('/')[1])
+                data.push({
+                    id: stripSlashes(url.pathname).split('/')[1],
+                    mode,
+                    text: tag.textContent
+                })
             })
-
-        if (findId) {
-            return Boolean(ids.includes(findId))
-        } else if (ids.length) {
-            return await this.database
-                .get<CharacterModel | ItemModel | LocationModel>(mode)
-                .query(Q.where('id', findId ? findId : Q.oneOf(ids)))
-                .fetch()
-        }
-
-        return []
+        return data
     }
 
     @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))

@@ -3,6 +3,7 @@ import { Associations } from '@nozbe/watermelondb/Model'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { children, date, lazy, field, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { DateTime } from 'luxon'
+import { ImageType } from '@sl/components/Gallery/types'
 import { Status, type StatusType } from '@sl/constants/status'
 import { NoteDataType } from './types'
 import { CharacterModel, ItemModel, LocationModel, SectionModel, TagModel, WorkModel } from '.'
@@ -61,6 +62,39 @@ export default class NoteModel extends Model {
     get sortDate() {
         const date = DateTime.fromSQL(this.date)
         return date.isValid ? date.toSeconds() : 0
+    }
+
+    async getLinks(): Promise<string[]> {
+        const notes = await this.notes.extend(Q.where('url', Q.notEq('')))
+        return [this.url]
+            .concat(notes.map((note) => note.url))
+            .map((url) => url)
+            .filter((link) => link)
+    }
+
+    async getImages(): Promise<ImageType[]> {
+        const notes = await this.notes.extend(Q.where('image', Q.notEq('')))
+        const images = notes.map((note) => ({ path: note.image, title: note.title }))
+        if (this.image) {
+            return [{ path: this.image, title: this.title }].concat(images)
+        }
+        return images
+    }
+
+    async getAppearances(): Promise<SectionModel[]> {
+        const work = await this.work.fetch()
+        const scenes = await work.scenes.fetch()
+        const tags = await this.tag.fetch()
+
+        const appearances: SectionModel[] = []
+        for await (const scene of scenes) {
+            const isTagged = await scene.isTagged(this.id)
+            if (isTagged || tags.find((tag) => tag.section.id === scene.id)) {
+                appearances.push(scene)
+            }
+        }
+
+        return appearances
     }
 
     async destroyPermanently(): Promise<void> {

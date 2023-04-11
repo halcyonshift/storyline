@@ -19,3 +19,16 @@ export const wordCount = (s: string) => {
 
     return s !== '' ? s.split(' ').length : 0
 }
+export const prettyUrl = (link: string) => {
+    let url
+
+    try {
+        url = new URL(link)
+    } catch {
+        return ''
+    }
+
+    if (url.hostname && url.pathname != '/') return `${url.hostname}${url.pathname}`
+    else if (url.hostname) return url.hostname
+    else return link
+}

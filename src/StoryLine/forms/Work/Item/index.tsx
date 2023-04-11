@@ -30,12 +30,13 @@ const ItemForm = ({ work, item, initialValues }: ItemFormProps) => {
         onSubmit: async (values: ItemDataType) => {
             if (initialValues.name) {
                 await item.updateItem(values)
+                messenger.success(t('form.work.item.alert.success'))
             } else {
                 item = await work.addItem(values)
                 form.resetForm()
+                navigate(`/work/${item.work.id}/item/${item.id}`)
+                messenger.success(t('form.work.item.alert.success'))
             }
-            messenger.success(t('form.work.item.alert.success'))
-            navigate(`/work/${item.work.id}/item/${item.id}`)
         }
     })
 

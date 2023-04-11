@@ -1,7 +1,7 @@
 import { PointOfViewType } from '@sl/constants/pov'
 import { SectionModeType } from '@sl/constants/sectionMode'
 import { StatusType } from '@sl/constants/status'
-import CharacterModel from '@sl/db/models/CharacterModel'
+import { CharacterModel } from '@sl/db/models'
 import { CharacterModeType } from '@sl/constants/characterMode'
 
 export type CharacterDataType = {
@@ -111,4 +111,8 @@ export type WorkDataType = {
     wordGoal?: number
     deadlineAt?: Date
     lastOpenedAt?: Date
+}
+
+export type AllTagsType = {
+    text: string[]
 }
