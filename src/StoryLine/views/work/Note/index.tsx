@@ -1,18 +1,19 @@
-import { useEffect } from 'react'
-import Box from '@mui/material/Box'
 import { useRouteLoaderData } from 'react-router-dom'
-import NoteModel from '@sl/db/models/CharacterModel'
-import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import { Box } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import NoteModel from '@sl/db/models/NoteModel'
+import { htmlParse } from '@sl/utils'
+import ViewWrapper from '@sl/components/ViewWrapper'
 
 const NoteView = () => {
-    const tabs = useTabs()
     const note = useRouteLoaderData('note') as NoteModel
+    const { t } = useTranslation()
 
-    useEffect(() => {
-        tabs.setShowTabs(true)
-    }, [])
-
-    return <Box className='p-5 border-t-8 border-slate-100'>{note.displayName}</Box>
+    return (
+        <ViewWrapper tabList={[t('component.viewWrapper.tab.general')]} model={note}>
+            <Box className='py-3'>{htmlParse(note.body)}</Box>
+        </ViewWrapper>
+    )
 }
 
 export default NoteView

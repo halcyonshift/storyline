@@ -80,23 +80,40 @@ export default class NoteModel extends Model {
                 .concat(images)
                 .filter((image) => image.path)
         }
-        return images
+        return images.filter((image) => image.path)
     }
 
-    async getAppearances(): Promise<SectionModel[]> {
+    async getAppearances() {
         const work = await this.work.fetch()
         const scenes = await work.scenes.fetch()
-        const tags = await this.tag.fetch()
 
-        const appearances: SectionModel[] = []
+        const appearances = []
+
         for await (const scene of scenes) {
-            const isTagged = await scene.isTagged(this.id)
-            if (isTagged || tags.find((tag) => tag.section.id === scene.id)) {
-                appearances.push(scene)
-            }
+            const tagged = await scene.taggedNotes(this.id)
+
+            if (!tagged.length) continue
+
+            appearances.push({
+                scene,
+                text: tagged[0].text
+            })
         }
 
         return appearances
+    }
+
+    getExcerpts(scene: SectionModel): string[] {
+        const excerpts: string[] = []
+
+        new DOMParser()
+            .parseFromString(scene.body, 'text/html')
+            .querySelectorAll('.tag-note')
+            .forEach((tag: HTMLAnchorElement) => {
+                excerpts.push(tag.innerHTML)
+            })
+
+        return excerpts
     }
 
     async destroyPermanently(): Promise<void> {
