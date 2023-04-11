@@ -68,7 +68,11 @@ const _ViewWrapper = ({ tabList, model, children, notes }: ViewWrapperProps) => 
                             sx={TAB_STYLE}>
                             <Stack
                                 spacing={1}
-                                className={child.props.padding === false ? '' : 'px-3 pt-1'}>
+                                className={
+                                    child.props.padding === false || child.props.padding === 'false'
+                                        ? ''
+                                        : 'px-3 pt-1'
+                                }>
                                 {child}
                             </Stack>
                         </TabPanel>

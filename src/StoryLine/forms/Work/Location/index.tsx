@@ -30,8 +30,8 @@ const LocationForm = ({ work, location, initialValues }: LocationFormProps) => {
         validationSchema,
         onSubmit: async (values: LocationDataType) => {
             if (initialValues.name) {
-                location.updateLocation(values)
-                navigate(`/work/${location.work.id}/location/${location.id}`)
+                await location.updateLocation(values)
+                messenger.success(t('form.work.location.alert.success'))
             } else {
                 const newLocation = location
                     ? await location.addLocation(values)
