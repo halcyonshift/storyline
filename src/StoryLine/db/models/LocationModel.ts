@@ -117,8 +117,8 @@ export default class LocationModel extends Model {
             location.work.set(work)
             location.name = data.name
             location.body = data.body
-            location.latitude = data.latitude
-            location.longitude = data.longitude
+            location.latitude = data.latitude ? data.latitude.toString() : null
+            location.longitude = data.longitude ? data.longitude.toString() : null
             location.url = data.url
             location.image = data.image
             location.status = Status.TODO
@@ -129,8 +129,8 @@ export default class LocationModel extends Model {
         await this.update((location) => {
             location.name = data.name
             location.body = data.body
-            location.latitude = data.latitude
-            location.longitude = data.longitude
+            location.latitude = data.latitude ? data.latitude.toString() : null
+            location.longitude = data.longitude ? data.longitude.toString() : null
             location.url = data.url
             location.image = data.image
         })

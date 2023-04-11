@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Box, List, ListItem, ListItemButton, ListItemText } from '@mui/material'
+import { Box, Divider, List, ListItem, ListItemButton, ListItemText, Stack } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import ViewWrapper from '@sl/components/ViewWrapper'
 import LocationModel from '@sl/db/models/LocationModel'
 import { htmlParse } from '@sl/utils'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import Map from '@sl/components/Map'
 
 const LocationView = () => {
     const location = useRouteLoaderData('location') as LocationModel
@@ -31,7 +32,11 @@ const LocationView = () => {
 
     return (
         <ViewWrapper tabList={tabList} model={location}>
-            <Box className='py-3'>{htmlParse(location.body)}</Box>
+            <Stack spacing={2} className='py-3'>
+                {location.latLng ? <Map center={location.latLng}></Map> : null}
+                {location.latLng && location.body ? <Divider /> : null}
+                {htmlParse(location.body)}
+            </Stack>
             {children.length ? (
                 <Box padding='false'>
                     <List disablePadding>
