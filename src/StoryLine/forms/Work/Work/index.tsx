@@ -62,7 +62,7 @@ const WorkForm = ({ work, initialValues }: WorkFormProps) => {
     return (
         <FormWrapper
             form={form}
-            title={work.title || t('view.storyline.work.add')}
+            title={work?.title || t('view.storyline.work.add')}
             model={work}
             tabList={[t('component.formWrapper.tab.general')]}>
             <>

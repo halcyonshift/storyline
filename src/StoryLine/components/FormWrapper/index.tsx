@@ -35,7 +35,7 @@ const _FormWrapper = ({
     const noButton = ['images', 'notes']
 
     useEffect(() => {
-        tabs.setShowTabs(false)
+        if (tabs?.setShowTabs) tabs.setShowTabs(false)
         setValue('1')
     }, [model?.id])
 
@@ -49,31 +49,38 @@ const _FormWrapper = ({
                 </Stack>
             </Box>
             <Divider />
-
             <Box component='form' onSubmit={form.handleSubmit} autoComplete='off'>
                 <TabContext value={value}>
-                    <Box className='border-b'>
-                        <TabList
-                            onChange={(_: SyntheticEvent, value: string) => setValue(value)}
-                            aria-label=''>
-                            {tabList.map((tab, index) => (
-                                <Tab
-                                    key={`tab-${index + 1}`}
-                                    label={tab}
-                                    value={(index + 1).toString()}
-                                />
-                            ))}
-                            {notes.filter((note) => note.image).length ? (
-                                <Tab label={t('component.formWrapper.tab.images')} value='images' />
-                            ) : null}
-                            {notes.length ? (
-                                <Tab label={t('component.formWrapper.tab.notes')} value='notes' />
-                            ) : null}
-                        </TabList>
-                    </Box>
+                    {tabList.length > 1 ? (
+                        <Box className='border-b'>
+                            <TabList
+                                onChange={(_: SyntheticEvent, value: string) => setValue(value)}
+                                aria-label=''>
+                                {tabList.map((tab, index) => (
+                                    <Tab
+                                        key={`tab-${index + 1}`}
+                                        label={tab}
+                                        value={(index + 1).toString()}
+                                    />
+                                ))}
+                                {notes.filter((note) => note.image).length ? (
+                                    <Tab
+                                        label={t('component.formWrapper.tab.images')}
+                                        value='images'
+                                    />
+                                ) : null}
+                                {notes.length ? (
+                                    <Tab
+                                        label={t('component.formWrapper.tab.notes')}
+                                        value='notes'
+                                    />
+                                ) : null}
+                            </TabList>
+                        </Box>
+                    ) : null}
+
                     {Children.toArray(children).map((child: ReactElement, index) => {
                         if (child.props.showButton === false) noButton.push((index + 1).toString())
-
                         return (
                             <TabPanel
                                 key={`tabPanel-${index + 1}`}
