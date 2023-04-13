@@ -20,6 +20,7 @@ import { CharacterModel, ItemModel, LocationModel, NoteModel, SectionModel } fro
 
 const TAB_STYLE = { padding: 0 }
 
+// eslint-disable-next-line complexity
 const _FormWrapper = ({
     form,
     tabList,
@@ -51,7 +52,7 @@ const _FormWrapper = ({
             <Divider />
             <Box component='form' onSubmit={form.handleSubmit} autoComplete='off'>
                 <TabContext value={value}>
-                    {tabList.length > 1 ? (
+                    {tabList.length > 1 || notes.length ? (
                         <Box className='border-b'>
                             <TabList
                                 onChange={(_: SyntheticEvent, value: string) => setValue(value)}

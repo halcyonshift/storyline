@@ -25,12 +25,3 @@ export type TimelineItemType = {
     item: ItemModel | null
     location: LocationModel | null
 }
-
-export type TimelineType = {
-    date: DateTime
-    items: TimelineItemType[]
-}
-
-export type TimelineGroupType = {
-    [key: string]: TimelineType
-}

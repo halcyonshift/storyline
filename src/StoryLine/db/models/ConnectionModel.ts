@@ -1,6 +1,7 @@
 import { Model, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { date, field, relation, text, writer } from '@nozbe/watermelondb/decorators'
+import { DateTime } from 'luxon'
 import { ConnectionDataType } from './types'
 import { CharacterModel, ItemModel, LocationModel, NoteModel, WorkModel } from '.'
 
@@ -22,6 +23,32 @@ export default class ConnectionModel extends Model {
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @date('created_at') createdAt!: Date
     @date('updated_at') updatedAt!: Date
+
+    get sortDate() {
+        const date = DateTime.fromSQL(this.date)
+        return date.isValid ? date.toSeconds() : 0
+    }
+
+    async displayName() {
+        const from = await this.fromRecord()
+        const to = await this.toRecord()
+        return `${from.displayName} ${this.mode} ${to.displayName}`
+    }
+
+    get displayDate() {
+        const date = DateTime.fromSQL(this.date)
+        return date.isValid ? date.toFormat('EEEE dd LLL yyyy') : this.date
+    }
+
+    get displayTime() {
+        const date = DateTime.fromSQL(this.date)
+        return date.isValid ? date.toFormat('H:mm') : this.date
+    }
+
+    get displayDateTime() {
+        const date = DateTime.fromSQL(this.date)
+        return date.isValid ? date.toFormat('EEEE dd LLL yyyy H:mm') : this.date
+    }
 
     async fromRecord() {
         return await this.collections
@@ -47,6 +74,12 @@ export default class ConnectionModel extends Model {
             connection.body = data.body
             connection.date = data.date
             connection.color = data.color
+        })
+    }
+
+    @writer async updateDate(date: string) {
+        await this.update((connection) => {
+            connection.date = date
         })
     }
 

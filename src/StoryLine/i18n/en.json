@@ -655,6 +655,12 @@
                     "title": "Timeline",
                     "character": {
                         "dob": "{{name}} born"
+                    },
+                    "group": {
+                        "characters": "Characters",
+                        "connections": "Connections",
+                        "notes": "Notes",
+                        "scenes": "Scenes"
                     }
                 }
             }
