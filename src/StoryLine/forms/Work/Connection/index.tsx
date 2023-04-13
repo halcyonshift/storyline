@@ -19,7 +19,7 @@ import useMessenger from '@sl/layouts/useMessenger'
 import { AutocompleteOption } from '@sl/types'
 import { ConnectionFormProps } from './types'
 
-const ConnectionForm = ({ work, connection, initialValues }: ConnectionFormProps) => {
+const ConnectionForm = ({ work, connection, initialValues, setOpen }: ConnectionFormProps) => {
     const { t } = useTranslation()
     const messenger = useMessenger()
     const [characters, setCharacters] = useState<CharacterModel[]>([])
@@ -49,6 +49,7 @@ const ConnectionForm = ({ work, connection, initialValues }: ConnectionFormProps
                 await work.addConnection(values)
                 form.resetForm()
             }
+            setOpen(false)
         }
     })
 
@@ -60,7 +61,27 @@ const ConnectionForm = ({ work, connection, initialValues }: ConnectionFormProps
     }, [])
 
     useEffect(() => {
-        setIdA({ id: '', label: '' })
+        if (!connection?.id) return
+
+        Promise.all([connection.fromRecord(), connection.toRecord()]).then(
+            ([fromRecord, toRecord]) => {
+                form.setFieldValue('mode', connection.mode)
+                form.setFieldValue('from', connection.from)
+                form.setFieldValue('date', connection.date)
+                form.setFieldValue('color', connection.color)
+                form.setFieldValue('to', connection.to)
+                form.setFieldValue('tableA', connection.tableA)
+                form.setFieldValue('tableB', connection.tableB)
+                form.setFieldValue('idA', connection.idA)
+                form.setFieldValue('idB', connection.idB)
+
+                setIdA({ id: connection.idA, label: fromRecord.displayName })
+                setIdB({ id: connection.idB, label: toRecord.displayName })
+            }
+        )
+    }, [connection?.id])
+
+    useEffect(() => {
         const data = {
             character: characters,
             item: items,
@@ -77,7 +98,6 @@ const ConnectionForm = ({ work, connection, initialValues }: ConnectionFormProps
     }, [form.values.tableA, characters, items, locations])
 
     useEffect(() => {
-        setIdB({ id: '', label: '' })
         const data = {
             character: characters,
             item: items,
@@ -91,7 +111,19 @@ const ConnectionForm = ({ work, connection, initialValues }: ConnectionFormProps
                 label: item.displayName
             }))
         )
-    }, [form.values.tableB, characters, items, locations])
+    }, [form.values.tableB, initialValues.tableB, characters, items, locations])
+
+    useEffect(() => {
+        if (idA.id && optionsA.length && !optionsA.find((option) => option.id === idA.id)) {
+            setIdA({ id: '', label: '' })
+        }
+    }, [optionsA, idA])
+
+    useEffect(() => {
+        if (idB.id && optionsB.length && !optionsB.find((option) => option.id === idB.id)) {
+            setIdB({ id: '', label: '' })
+        }
+    }, [optionsB, idB])
 
     useEffect(() => {
         if (!form.values.from && !form.values.to) {
@@ -179,7 +211,16 @@ const ConnectionForm = ({ work, connection, initialValues }: ConnectionFormProps
                 <ColorField name='color' form={form} />
             </Box>
             <TextareaField fieldName='body' form={form} />
-            <Button type='submit'>Save</Button>
+            <Button type='submit'>{t('form.work.connection.button.save')}</Button>
+            {connection?.id ? (
+                <Button
+                    onClick={async () => {
+                        await connection.delete()
+                        setOpen(false)
+                    }}>
+                    {t('form.work.connection.button.delete')}
+                </Button>
+            ) : null}
         </Box>
     )
 }

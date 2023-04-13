@@ -370,7 +370,14 @@
             },
             "connection": {
                 "table": "Select",
-                "date": "Date"
+                "date": "Date",
+                "button": {
+                    "save": "Save",
+                    "delete": "Delete"
+                },
+                "alert": {
+                    "success": "The connection has been saved"
+                }
             },
             "item": {
                 "name": {
