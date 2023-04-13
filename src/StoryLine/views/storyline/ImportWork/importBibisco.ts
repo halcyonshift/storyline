@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-nested-callbacks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Database } from '@nozbe/watermelondb'
@@ -9,10 +10,12 @@ import { PointOfView } from '@sl/constants/pov'
 import { Status } from '@sl/constants/status'
 import {
     CharacterModel,
+    ConnectionModel,
     ItemModel,
     LocationModel,
     NoteModel,
     SectionModel,
+    TagModel,
     WorkModel
 } from '@sl/db/models'
 
@@ -40,6 +43,13 @@ const importBibisco = async (database: Database): Promise<false | string> => {
 
     if (!data) {
         return false
+    }
+
+    try {
+        await database.get<WorkModel>('work').find(data.collections[0].data[0].id)
+        return false
+    } catch {
+        //
     }
 
     const work = await database.write(async () => {
@@ -207,6 +217,7 @@ const importBibisco = async (database: Database): Promise<false | string> => {
                     note.title = data.name
                     note.body = data.description
                     note.order = data.position
+                    note.isTaggable = true
                     note.status = statusMap[data.status as keyof typeof statusMap]
                 })
             ),
@@ -307,10 +318,10 @@ const importBibisco = async (database: Database): Promise<false | string> => {
     })
 
     const scenes = await work.scenes.fetch()
-    const characters = await work.character.fetch()
-    const items = await work.item.fetch()
-    const locations = await work.location.fetch()
-    const notes = await work.note.fetch()
+    let characters = await work.character.fetch()
+    let items = await work.item.fetch()
+    let locations = await work.location.fetch()
+    let notes = await work.note.fetch()
 
     const povScenes: SectionModel[] = data.collections[4].data
         .filter((data: any) => data.revisions[data.revision].povcharacterid)
@@ -339,33 +350,34 @@ const importBibisco = async (database: Database): Promise<false | string> => {
     const versions: SectionModel[] = data.collections[4].data
         .filter((data: any) => data.revisions.length > 1)
         .reduce((arr: SectionModel[], data: any) => {
-            data.revisions
-                .filter((_: any, index: number) => index !== data.revision)
-                .map((revision: any) =>
-                    arr.push(
-                        database.get<SectionModel>('section').prepareCreate((section) => {
-                            section.work.set(work)
-                            section.section.set(
-                                scenes.find((scene) => scene.id === `SCENE-${data['$loki']}`)
-                            )
-                            section.mode = SectionMode.VERSION
-                            section.title = data.title
-                            section.order = data.position
-                            section.body = revision.text
-                            section.date = revision.time
-                                ? DateTime.fromISO(revision.time).toSQL()
-                                : ''
-                            section.pointOfView = revision.povid
-                                ? povMap[revision.povid as keyof typeof povMap]
-                                : null
-                            section.status = statusMap[data.status as keyof typeof statusMap]
-                            section.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
-                            section.updatedAt = DateTime.fromMillis(
-                                data.meta.updated || data.meta.created
-                            ).toJSDate()
-                        })
-                    )
-                )
+            data.revisions.map((revision: any, index: number) =>
+                index !== data.revision
+                    ? arr.push(
+                          database.get<SectionModel>('section').prepareCreate((section) => {
+                              section.work.set(work)
+                              section.section.set(
+                                  scenes.find((scene) => scene.id === `SCENE-${data['$loki']}`)
+                              )
+                              section.mode = SectionMode.VERSION
+                              section.title = data.title
+                              section.order = data.position
+                              section.body = revision.text
+                              section.date = revision.time
+                                  ? DateTime.fromISO(revision.time).toSQL()
+                                  : ''
+                              section.pointOfView = revision.povid
+                                  ? povMap[revision.povid as keyof typeof povMap]
+                                  : null
+
+                              section.status = statusMap[data.status as keyof typeof statusMap]
+                              section.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
+                              section.updatedAt = DateTime.fromMillis(
+                                  data.meta.updated || data.meta.created
+                              ).toJSDate()
+                          })
+                      )
+                    : null
+            )
             return arr
         }, [])
 
@@ -490,6 +502,158 @@ const importBibisco = async (database: Database): Promise<false | string> => {
     if (eventNotes.length) {
         await database.write(async () => {
             return await database.batch(eventNotes)
+        })
+    }
+
+    characters = await work.character.fetch()
+    items = await work.item.fetch()
+    locations = await work.location.fetch()
+    notes = await work.note.fetch()
+
+    const tags: TagModel[] = data.collections[4].data.reduce((arr: TagModel[], data: any) => {
+        const revision = data.revisions[data.revision]
+        revision.scenecharacters.map((characterTag: string) => {
+            const character = characters.find(
+                (character) =>
+                    character.id ===
+                    `CHARACTER-${characterTag.split('_')[0] === 'm' ? 'PRIM' : 'SEC'}-${
+                        characterTag.split('_')[1]
+                    }`
+            )
+            if (character) {
+                arr.push(
+                    database.get<TagModel>('tag').prepareCreate((tag) => {
+                        tag.work.set(work)
+                        tag.section.set(
+                            scenes.find((scene) => scene.id === `SCENE-${data['$loki']}`)
+                        )
+                        tag.character.set(character)
+                        tag.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
+                        tag.updatedAt = DateTime.fromMillis(
+                            data.meta.updated || data.meta.created
+                        ).toJSDate()
+                    })
+                )
+            }
+        })
+
+        revision.sceneobjects.map((objectTag: string) => {
+            const item = items.find((item) => item.id === `ITEM-${objectTag}`)
+            if (item) {
+                arr.push(
+                    database.get<TagModel>('tag').prepareCreate((tag) => {
+                        tag.work.set(work)
+                        tag.section.set(
+                            scenes.find((scene) => scene.id === `SCENE-${data['$loki']}`)
+                        )
+                        tag.item.set(item)
+                        tag.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
+                        tag.updatedAt = DateTime.fromMillis(
+                            data.meta.updated || data.meta.created
+                        ).toJSDate()
+                    })
+                )
+            }
+        })
+
+        revision.scenestrands.map((strandTag: string) => {
+            const note = notes.find((note) => note.id === `NOTE-S-${strandTag}`)
+            if (note) {
+                arr.push(
+                    database.get<TagModel>('tag').prepareCreate((tag) => {
+                        tag.work.set(work)
+                        tag.section.set(
+                            scenes.find((scene) => scene.id === `SCENE-${data['$loki']}`)
+                        )
+                        tag.note.set(note)
+                        tag.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
+                        tag.updatedAt = DateTime.fromMillis(
+                            data.meta.updated || data.meta.created
+                        ).toJSDate()
+                    })
+                )
+            }
+        })
+
+        if (revision.locationid) {
+            const location = locations.find(
+                (location) => location.id === `LOCATION-${revision.locationid}`
+            )
+            if (location) {
+                arr.push(
+                    database.get<TagModel>('tag').prepareCreate((tag) => {
+                        tag.work.set(work)
+                        tag.section.set(
+                            scenes.find((scene) => scene.id === `SCENE-${data['$loki']}`)
+                        )
+                        tag.location.set(location)
+                        tag.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
+                        tag.updatedAt = DateTime.fromMillis(
+                            data.meta.updated || data.meta.created
+                        ).toJSDate()
+                    })
+                )
+            }
+        }
+        return arr
+    }, [])
+
+    if (tags.length) {
+        await database.write(async () => {
+            return await database.batch(tags)
+        })
+    }
+    const relationEdges: ConnectionModel[] = data.collections[12].data.reduce(
+        (arr: any[], edge: any) => {
+            const fromNode = data.collections[11].data.find((node: any) => node.id === edge.from)
+            const toNode = data.collections[11].data.find((node: any) => node.id === edge.to)
+
+            const tableA = ['main_characters', 'secondary_characters'].includes(fromNode.group)
+                ? 'character'
+                : fromNode.group === 'locations'
+                ? 'location'
+                : 'item'
+
+            const tableB = ['main_characters', 'secondary_characters'].includes(toNode.group)
+                ? 'character'
+                : toNode.group === 'locations'
+                ? 'location'
+                : 'item'
+
+            const idA =
+                tableA === 'character'
+                    ? characters.find((character) => character.displayName === fromNode.label)
+                    : tableA === 'location'
+                    ? locations.find((location) => location.displayName === fromNode.label)
+                    : items.find((item) => item.displayName === fromNode.label)
+
+            const idB =
+                tableB === 'character'
+                    ? characters.find((character) => character.displayName === toNode.label)
+                    : tableB === 'location'
+                    ? locations.find((location) => location.displayName === toNode.label)
+                    : items.find((item) => item.displayName === toNode.label)
+
+            arr.push(
+                database.get<ConnectionModel>('connection').prepareCreate((connection) => {
+                    connection.work.set(work)
+                    connection.tableA = tableA
+                    connection.tableB = tableB
+                    connection.idA = idA.id
+                    connection.idB = idB.id
+                    connection.to = true
+                    connection.mode = edge.label
+                })
+            )
+
+            return arr
+        },
+        []
+    )
+
+    if (relationEdges?.length) {
+        await database.write(async () => {
+            return await database.batch(relationEdges)
         })
     }
 

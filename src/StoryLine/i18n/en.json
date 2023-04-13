@@ -368,6 +368,10 @@
                     "success": "The character has been saved"
                 }
             },
+            "connection": {
+                "table": "Select",
+                "date": "Date"
+            },
             "item": {
                 "name": {
                     "label": "Name",
@@ -560,7 +564,7 @@
                 "button": "Import",
                 "bibisco": {
                     "title": "Bibisco",
-                    "text": "Tags and relation import isn't currently supported",
+                    "text": "Relation import isn't currently supported",
                     "error": "Sorry, the import hasn't worked"
                 }
             },
@@ -593,6 +597,22 @@
                         "character": "With",
                         "location": "At",
                         "item": "Involving"
+                    }
+                }
+            },
+            "connection": {
+                "filter": {
+                    "table": {
+                        "label": "Type",
+                        "all": "All",
+                        "character": "Characters",
+                        "location": "Locations",
+                        "item": "Items",
+                        "note": "Notes"
+                    },
+                    "mode": {
+                        "label": "Relation",
+                        "all": "All"
                     }
                 }
             },
