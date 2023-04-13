@@ -129,7 +129,7 @@ const ConnectionForm = ({ work, connection, initialValues }: ConnectionFormProps
                             form.setFieldValue('idA', value?.id || '')
                         }}
                         renderInput={(params) => (
-                            <MuiTextField {...params} label={t('form.connection.table')} />
+                            <MuiTextField {...params} label={t('form.work.connection.table')} />
                         )}
                     />
                 </Box>
@@ -168,7 +168,7 @@ const ConnectionForm = ({ work, connection, initialValues }: ConnectionFormProps
                             form.setFieldValue('idB', value?.id || '')
                         }}
                         renderInput={(params) => (
-                            <MuiTextField {...params} label={t('form.connection.table')} />
+                            <MuiTextField {...params} label={t('form.work.connection.table')} />
                         )}
                     />
                 </Box>

@@ -10,6 +10,7 @@ import { PointOfView } from '@sl/constants/pov'
 import { Status } from '@sl/constants/status'
 import {
     CharacterModel,
+    ConnectionModel,
     ItemModel,
     LocationModel,
     NoteModel,
@@ -316,7 +317,7 @@ const importBibisco = async (database: Database): Promise<false | string> => {
         )
     })
 
-    let scenes = await work.scenes.fetch()
+    const scenes = await work.scenes.fetch()
     let characters = await work.character.fetch()
     let items = await work.item.fetch()
     let locations = await work.location.fetch()
@@ -504,7 +505,6 @@ const importBibisco = async (database: Database): Promise<false | string> => {
         })
     }
 
-    scenes = await work.scenes.fetch()
     characters = await work.character.fetch()
     items = await work.item.fetch()
     locations = await work.location.fetch()
@@ -601,6 +601,59 @@ const importBibisco = async (database: Database): Promise<false | string> => {
     if (tags.length) {
         await database.write(async () => {
             return await database.batch(tags)
+        })
+    }
+    const relationEdges: ConnectionModel[] = data.collections[12].data.reduce(
+        (arr: any[], edge: any) => {
+            const fromNode = data.collections[11].data.find((node: any) => node.id === edge.from)
+            const toNode = data.collections[11].data.find((node: any) => node.id === edge.to)
+
+            const tableA = ['main_characters', 'secondary_characters'].includes(fromNode.group)
+                ? 'character'
+                : fromNode.group === 'locations'
+                ? 'location'
+                : 'item'
+
+            const tableB = ['main_characters', 'secondary_characters'].includes(toNode.group)
+                ? 'character'
+                : toNode.group === 'locations'
+                ? 'location'
+                : 'item'
+
+            const idA =
+                tableA === 'character'
+                    ? characters.find((character) => character.displayName === fromNode.label)
+                    : tableA === 'location'
+                    ? locations.find((location) => location.displayName === fromNode.label)
+                    : items.find((item) => item.displayName === fromNode.label)
+
+            const idB =
+                tableB === 'character'
+                    ? characters.find((character) => character.displayName === toNode.label)
+                    : tableB === 'location'
+                    ? locations.find((location) => location.displayName === toNode.label)
+                    : items.find((item) => item.displayName === toNode.label)
+
+            arr.push(
+                database.get<ConnectionModel>('connection').prepareCreate((connection) => {
+                    connection.work.set(work)
+                    connection.tableA = tableA
+                    connection.tableB = tableB
+                    connection.idA = idA.id
+                    connection.idB = idB.id
+                    connection.to = true
+                    connection.mode = edge.label
+                })
+            )
+
+            return arr
+        },
+        []
+    )
+
+    if (relationEdges?.length) {
+        await database.write(async () => {
+            return await database.batch(relationEdges)
         })
     }
 

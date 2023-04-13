@@ -161,37 +161,37 @@ const ConnectionView = () => {
             <Box className='float-right mt-3 mr-3 grid grid-cols-2 gap-3'>
                 <FormControl fullWidth className='z-10'>
                     <InputLabel id='filter-table-label'>
-                        {t('view.work.connection.filter.table')}
+                        {t('view.work.connection.filter.table.label')}
                     </InputLabel>
                     <Select
                         labelId='filter-table-label'
                         id='filter-table'
                         value={filterTable}
-                        label={t('view.work.connection.filter.table')}
+                        label={t('view.work.connection.filter.table.label')}
                         onChange={(event) => {
                             setFilterTable(event.target.value as string)
                         }}>
-                        <MenuItem value=''>{t('view.work.connection.filter.table')}</MenuItem>
+                        <MenuItem value=''>{t('view.work.connection.filter.table.all')}</MenuItem>
                         {filterTableOptions.map((table) => (
                             <MenuItem key={table} value={table}>
-                                {table}
+                                {t(`view.work.connection.filter.table.${table}`)}
                             </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
                 <FormControl fullWidth className='z-10'>
                     <InputLabel id='filter-mode-label'>
-                        {t('view.work.connection.filter.mode')}
+                        {t('view.work.connection.filter.mode.label')}
                     </InputLabel>
                     <Select
                         labelId='filter-mode-label'
                         id='filter-mode'
                         value={filterMode}
-                        label={t('view.work.connection.filter.mode')}
+                        label={t('view.work.connection.filter.mode.label')}
                         onChange={(event) => {
                             setFilterMode(event.target.value as string)
                         }}>
-                        <MenuItem value=''>{t('view.work.connection.filter.mode')}</MenuItem>
+                        <MenuItem value=''>{t('view.work.connection.filter.mode.all')}</MenuItem>
                         {filterModeOptions.map((mode) => (
                             <MenuItem key={mode} value={mode}>
                                 {mode}
