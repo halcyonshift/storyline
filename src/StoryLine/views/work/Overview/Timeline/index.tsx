@@ -1,121 +1,152 @@
-import { useEffect, useState } from 'react'
-import { default as MuiTimeline } from '@mui/lab/Timeline'
-import TimelineItem from '@mui/lab/TimelineItem'
-import TimelineSeparator from '@mui/lab/TimelineSeparator'
-import TimelineConnector from '@mui/lab/TimelineConnector'
-import TimelineContent from '@mui/lab/TimelineContent'
-import TimelineDot from '@mui/lab/TimelineDot'
-import TimelineOppositeContent, {
-    timelineOppositeContentClasses
-} from '@mui/lab/TimelineOppositeContent'
-import { Typography } from '@mui/material'
-import * as Q from '@nozbe/watermelondb/QueryDescription'
+import { useEffect, useRef, useState } from 'react'
+import { Box } from '@mui/material'
+import { useDatabase } from '@nozbe/watermelondb/hooks'
 import { DateTime } from 'luxon'
-import { YYYYMMDD } from '@sl/constants'
-import { SectionMode } from '@sl/constants/sectionMode'
-import useSettings from '@sl/theme/useSettings'
-import { OverviewTimelineProps, TimelineType, TimelineGroupType } from '../types'
 import { useTranslation } from 'react-i18next'
+import { DataSet, Timeline as VisTimeline } from 'vis-timeline/standalone/esm/vis-timeline-graph2d'
+import { ConnectionModel, NoteModel, SectionModel } from '@sl/db/models'
+import { OverviewTimelineProps } from '../types'
 
 const Timeline = ({ work }: OverviewTimelineProps) => {
-    const [timeline, setTimeline] = useState<TimelineType[]>([])
-    const settings = useSettings()
+    const [groups, setGroups] = useState([])
+    const [items, setItems] = useState([])
+    const [start, setStart] = useState()
+    const [end, setEnd] = useState()
+    const database = useDatabase()
+    const ref = useRef<HTMLDivElement>()
     const { t } = useTranslation()
 
     useEffect(() => {
         Promise.all([
             work.character.fetch(),
-            work.item.fetch(),
-            work.location.fetch(),
+            work.connection.fetch(),
             work.note.fetch(),
-            work.section.extend(Q.where('mode', Q.notEq(SectionMode.VERSION))).fetch()
-        ]).then(([characters, items, locations, notes, sections]) => {
+            work.scenes.fetch()
+        ]).then(([characters, connections, notes, scenes]) => {
             characters = characters.filter((character) => character.sortDate)
+            connections = connections.filter((connection) => connection.sortDate)
             notes = notes.filter((note) => note.sortDate)
-            sections = sections.filter((section) => section.sortDate)
+            scenes = scenes.filter((scene) => scene.sortDate)
 
-            const _timeline: TimelineGroupType = {}
-
-            notes
-                .map((note) => ({
-                    id: note.id,
-                    title: note.displayName,
-                    text: note.body,
-                    sortDate: note.sortDate,
-                    date: DateTime.fromSQL(note.date),
-                    character: characters.find((character) => character.id === note.character.id),
-                    item: items.find((item) => item.id === note.item.id),
-                    location: locations.find((location) => location.id === note.location.id)
-                }))
-                .concat(
-                    ...sections.map((section) => ({
-                        id: section.id,
-                        title: section.displayName,
-                        text: section.description,
-                        sortDate: section.sortDate,
-                        date: DateTime.fromSQL(section.date),
-                        character: characters.find(
-                            (character) => character.id === section.pointOfViewCharacter.id
-                        ),
-                        item: null,
-                        location: null
-                    })),
-                    ...characters.map((character) => ({
-                        id: character.id,
-                        title: t('view.work.overview.timeline.character.dob', {
-                            name: character.displayName
-                        }),
-                        text: '',
-                        sortDate: character.sortDate,
-                        date: DateTime.fromSQL(character.dateOfBirth),
-                        character: null,
-                        item: null,
-                        location: null
-                    }))
+            Promise.all(
+                []
+                    .concat(
+                        scenes.map((scene) => ({
+                            id: scene.id,
+                            content: scene.displayTitle,
+                            editable: { updateTime: true, updateGroup: false, remove: false },
+                            start: DateTime.fromSQL(scene.date)
+                                .toISO({
+                                    suppressMilliseconds: true
+                                })
+                                .split('+')[0],
+                            group: 'scene'
+                        }))
+                    )
+                    .concat(
+                        characters.map((character) => ({
+                            id: character.id,
+                            content: t('view.work.overview.timeline.character.dob', {
+                                name: character.displayName
+                            }),
+                            editable: false,
+                            start: DateTime.fromSQL(character.dateOfBirth)
+                                .toISO({
+                                    suppressMilliseconds: true
+                                })
+                                .split('+')[0],
+                            group: 'character'
+                        }))
+                    )
+                    .concat(
+                        notes.map((note) => ({
+                            id: note.id,
+                            content: note.displayName,
+                            editable: { updateTime: true, updateGroup: false, remove: false },
+                            start: DateTime.fromSQL(note.date)
+                                .toISO({
+                                    suppressMilliseconds: true
+                                })
+                                .split('+')[0],
+                            group: 'note'
+                        }))
+                    )
+                    .concat(
+                        connections.map(async (connection) => {
+                            const displayName = await connection.displayName()
+                            return {
+                                id: connection.id,
+                                content: displayName,
+                                editable: { updateTime: true, updateGroup: false, remove: false },
+                                start: DateTime.fromSQL(connection.date)
+                                    .toISO({
+                                        suppressMilliseconds: true
+                                    })
+                                    .split('+')[0],
+                                group: 'connection'
+                            }
+                        })
+                    )
+            ).then((_items) => {
+                _items = _items.sort(
+                    (a, b) =>
+                        DateTime.fromISO(a.start).toMillis() - DateTime.fromISO(b.start).toMillis()
                 )
-                .sort((a, b) => a.sortDate - b.sortDate)
-                .map((event) => {
-                    if (!_timeline[event.date.toFormat(YYYYMMDD)]) {
-                        _timeline[event.date.toFormat(YYYYMMDD)] = {
-                            date: event.date,
-                            items: []
-                        }
-                    }
-                    _timeline[event.date.toFormat(YYYYMMDD)].items.push(event)
-                })
-
-            setTimeline(Object.values(_timeline))
+                setStart(_items[0].start)
+                setEnd(_items[_items.length - 1].start)
+                const _groups = []
+                if (characters.length)
+                    _groups.push({
+                        id: 'character',
+                        content: t('view.work.overview.timeline.group.characters')
+                    })
+                if (scenes.length)
+                    _groups.push({
+                        id: 'scene',
+                        content: t('view.work.overview.timeline.group.scenes')
+                    })
+                if (notes.length)
+                    _groups.push({
+                        id: 'note',
+                        content: t('view.work.overview.timeline.group.notes')
+                    })
+                if (connections.length)
+                    _groups.push({
+                        id: 'connection',
+                        content: t('view.work.overview.timeline.group.connections')
+                    })
+                setGroups(new DataSet(_groups))
+                setItems(new DataSet(_items))
+            })
         })
     }, [])
 
-    return (
-        <MuiTimeline
-            position='right'
-            sx={{
-                [`& .${timelineOppositeContentClasses.root}`]: {
-                    flex: 0.2
+    useEffect(() => {
+        if (!ref.current || !groups.length || !items.length) return
+        new VisTimeline(ref.current, items, groups, {
+            start,
+            end,
+            onMove: async (item, callback) => {
+                if (item.group === 'scene') {
+                    const scene = await database
+                        .get<SectionModel>('section')
+                        .find(item.id.toString())
+                    await scene.updateDate(DateTime.fromJSDate(item.start as Date).toSQL())
+                } else if (item.group === 'note') {
+                    const note = await database.get<NoteModel>('note').find(item.id.toString())
+                    await note.updateDate(DateTime.fromJSDate(item.start as Date).toSQL())
+                } else if (item.group === 'connection') {
+                    const connection = await database
+                        .get<ConnectionModel>('connection')
+                        .find(item.id.toString())
+                    await connection.updateDate(DateTime.fromJSDate(item.start as Date).toSQL())
                 }
-            }}>
-            {timeline.map((event) => (
-                <TimelineItem key={event.date.toSQL()}>
-                    <TimelineOppositeContent color='secondary' fontSize='small'>
-                        {event.date.setLocale(settings.language).toLocaleString(DateTime.DATE_MED)}
-                    </TimelineOppositeContent>
-                    <TimelineSeparator>
-                        <TimelineDot color='primary' />
-                        <TimelineConnector />
-                    </TimelineSeparator>
-                    <TimelineContent>
-                        {event.items.map((item) => (
-                            <Typography key={item.id} variant='body1'>
-                                {item.date.toLocaleString(DateTime.TIME_SIMPLE)} {item.title}
-                            </Typography>
-                        ))}
-                    </TimelineContent>
-                </TimelineItem>
-            ))}
-        </MuiTimeline>
-    )
+                return callback(item)
+            }
+        })
+    }, [ref.current, start, end, groups.length, items.length])
+
+    return <Box className='absolute w-full h-full' ref={ref}></Box>
 }
 
 export default Timeline

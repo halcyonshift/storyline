@@ -181,6 +181,12 @@ export default class NoteModel extends Model {
         })
     }
 
+    @writer async updateDate(date: string) {
+        await this.update((note) => {
+            note.date = date
+        })
+    }
+
     @writer async updateStatus(status: StatusType) {
         await this.update((note) => {
             note.status = status

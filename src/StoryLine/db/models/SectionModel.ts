@@ -385,6 +385,12 @@ export default class SectionModel extends Model {
         })
     }
 
+    @writer async updateDate(date: string) {
+        await this.update((section) => {
+            section.date = date
+        })
+    }
+
     @writer async updateStatus(status: StatusType) {
         await this.update((section) => {
             section.status = status
