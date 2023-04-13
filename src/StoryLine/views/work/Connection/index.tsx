@@ -19,7 +19,14 @@ import { useObservable } from 'rxjs-hooks'
 import { DataSet, DataView, Network } from 'vis-network/standalone/esm/vis-network'
 import ConnectionForm from '@sl/forms/Work/Connection'
 import { getInitialValues } from '@sl/forms/Work/utils'
-import { CharacterModel, ItemModel, LocationModel, NoteModel, WorkModel } from '@sl/db/models'
+import {
+    CharacterModel,
+    ConnectionModel,
+    ItemModel,
+    LocationModel,
+    NoteModel,
+    WorkModel
+} from '@sl/db/models'
 import { ConnectionDataType } from '@sl/db/models/types'
 import { ObjType, NodeType, NodeTypeByID } from './types'
 
@@ -48,9 +55,10 @@ const ConnectionView = () => {
     const [edgesView, setEdgesView] = useState<DataView>()
     const [nodes, setNodes] = useState([])
     const [edges, setEdges] = useState([])
+    const [connection, setConnection] = useState<ConnectionModel | null>()
     const { t } = useTranslation()
     const connections = useObservable(
-        () => work.connection.observeWithColumns(['id_a', 'id_b', 'mode']),
+        () => work.connection.observeWithColumns(['id_a', 'id_b', 'mode', 'to', 'from']),
         [],
         []
     )
@@ -102,6 +110,7 @@ const ConnectionView = () => {
     const getEdges = (): DataSet =>
         new DataSet(
             connections.map((connection) => ({
+                id: connection.id,
                 from: connection.idA,
                 to: connection.idB,
                 relation: connection.mode,
@@ -144,7 +153,17 @@ const ConnectionView = () => {
 
     useEffect(() => {
         if (!ref.current || !nodesView) return
-        new Network(ref.current, { nodes: nodesView, edges: edgesView }, {})
+        const network = new Network(ref.current, { nodes: nodesView, edges: edgesView }, {})
+        network.on('doubleClick', (e) => {
+            if (e.nodes.length) return
+            const _connection = connections.find((connection) => connection.id === e.edges[0])
+            if (_connection) {
+                setConnection(_connection)
+                setOpen(true)
+            } else {
+                setConnection(null)
+            }
+        })
     }, [ref.current, nodesView, edgesView])
 
     useEffect(() => {
@@ -199,7 +218,13 @@ const ConnectionView = () => {
                         ))}
                     </Select>
                 </FormControl>
-                <Button variant='contained' className='z-10' onClick={() => setOpen(true)}>
+                <Button
+                    variant='contained'
+                    className='z-10'
+                    onClick={() => {
+                        setConnection(null)
+                        setOpen(true)
+                    }}>
                     Add
                 </Button>
             </Box>
@@ -213,6 +238,8 @@ const ConnectionView = () => {
                 <DialogTitle className='cursor-move' id='draggable'></DialogTitle>
                 <DialogContent>
                     <ConnectionForm
+                        setOpen={setOpen}
+                        connection={connection}
                         work={work}
                         initialValues={{
                             ...initialValues,

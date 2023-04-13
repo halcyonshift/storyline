@@ -2,7 +2,7 @@ import { Model, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { date, field, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { ConnectionDataType } from './types'
-import WorkModel from './WorkModel'
+import { CharacterModel, ItemModel, LocationModel, NoteModel, WorkModel } from '.'
 
 export default class ConnectionModel extends Model {
     static table = 'connection'
@@ -22,6 +22,18 @@ export default class ConnectionModel extends Model {
     @relation('work', 'work_id') work!: Relation<WorkModel>
     @date('created_at') createdAt!: Date
     @date('updated_at') updatedAt!: Date
+
+    async fromRecord() {
+        return await this.collections
+            .get<CharacterModel | ItemModel | LocationModel | NoteModel>(this.tableA)
+            .find(this.idA)
+    }
+
+    async toRecord() {
+        return await this.collections
+            .get<CharacterModel | ItemModel | LocationModel | NoteModel>(this.tableB)
+            .find(this.idB)
+    }
 
     @writer async updateConnection(data: ConnectionDataType) {
         await this.update((connection) => {
