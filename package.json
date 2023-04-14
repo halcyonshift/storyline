@@ -20,10 +20,9 @@
   },
   "keywords": [],
   "author": {
-    "name": "Hannah O'Malley",
-    "email": "halcyonshift@gmail.com"
+    "name": "Hannah O'Malley"
   },
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "devDependencies": {
     "@babel/cli": "7.21.0",
     "@babel/core": "7.21.0",
