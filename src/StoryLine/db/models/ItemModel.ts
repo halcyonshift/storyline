@@ -80,12 +80,6 @@ export default class ItemModel extends Model {
         return excerpts
     }
 
-    async destroyPermanently(): Promise<void> {
-        await this.tag.destroyAllPermanently()
-        await this.note.destroyAllPermanently()
-        return super.destroyPermanently()
-    }
-
     @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
 
     @writer async updateItem(data: ItemDataType) {
@@ -108,8 +102,8 @@ export default class ItemModel extends Model {
             .get<ConnectionModel>('connection')
             .query(Q.or(Q.where('id_a', this.id), Q.where('id_b', this.id)))
         connections.map((connection) => connection.delete())
-
         await this.tag.destroyAllPermanently()
+        await this.note.destroyAllPermanently()
         await this.destroyPermanently()
         return true
     }

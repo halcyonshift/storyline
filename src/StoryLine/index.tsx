@@ -43,12 +43,7 @@ const router = createHashRouter([
                     },
                     {
                         path: 'openWork',
-                        element: <StoryLineViews.OpenWorkView />,
-                        loader: async () =>
-                            await database
-                                .get<WorkModel>('work')
-                                .query(Q.sortBy('title', Q.asc))
-                                .fetch()
+                        element: <StoryLineViews.OpenWorkView />
                     },
                     {
                         path: 'importWork',
