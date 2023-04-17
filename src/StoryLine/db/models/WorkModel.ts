@@ -265,16 +265,6 @@ export default class WorkModel extends Model {
         return scenes.reduce((count, scene) => count + wordCount(scene.body), 0)
     }
 
-    async destroyPermanently(): Promise<void> {
-        this.character.destroyAllPermanently()
-        this.connection.destroyAllPermanently()
-        this.item.destroyAllPermanently()
-        this.location.destroyAllPermanently()
-        this.note.destroyAllPermanently()
-        this.section.destroyAllPermanently()
-        return super.destroyPermanently()
-    }
-
     async backup() {
         const character = await this.character.fetch()
         const item = await this.item.fetch()
@@ -516,6 +506,15 @@ export default class WorkModel extends Model {
     }
 
     @writer async delete() {
+        if (this.image) {
+            api.deleteFile(this.image)
+        }
+        await this.character.destroyAllPermanently()
+        await this.connection.destroyAllPermanently()
+        await this.item.destroyAllPermanently()
+        await this.location.destroyAllPermanently()
+        await this.note.destroyAllPermanently()
+        await this.section.destroyAllPermanently()
         await this.destroyPermanently()
         return true
     }

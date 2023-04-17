@@ -289,20 +289,6 @@ export default class SectionModel extends Model {
             : 0
     }
 
-    async destroyPermanently(): Promise<void> {
-        if (this.isChapter) {
-            const sceneCount = await this.scenes.fetchCount()
-            if (sceneCount) return
-        } else if (this.isPart) {
-            const chapterCount = await this.chapters.fetchCount()
-            if (chapterCount) return
-        }
-
-        this.note.destroyAllPermanently()
-        this.statistic.destroyAllPermanently()
-        return super.destroyPermanently()
-    }
-
     @writer async addSection(data: SectionDataType) {
         const work = await this.work.fetch()
         return await this.collections.get<SectionModel>('section').create((section) => {
@@ -398,6 +384,16 @@ export default class SectionModel extends Model {
     }
 
     @writer async delete() {
+        if (this.isChapter) {
+            const sceneCount = await this.scenes.fetchCount()
+            if (sceneCount) return
+        } else if (this.isPart) {
+            const chapterCount = await this.chapters.fetchCount()
+            if (chapterCount) return
+        }
+
+        this.note.destroyAllPermanently()
+        this.statistic.destroyAllPermanently()
         await this.destroyPermanently()
         return true
     }

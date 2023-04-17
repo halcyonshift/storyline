@@ -571,9 +571,14 @@
                 "button": "Import",
                 "bibisco": {
                     "title": "Bibisco",
-                    "text": "Relation import isn't currently supported",
+                    "text": "",
                     "error": "Sorry, the import hasn't worked"
                 }
+            },
+            "openWork": {
+                "edit": "Edit",
+                "delete": "Delete",
+                "deleteConfirm": "Are you sure? This will delete everything except any associated backups"
             },
             "info": {
                 "about": {

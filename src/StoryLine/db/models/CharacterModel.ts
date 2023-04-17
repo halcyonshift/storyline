@@ -130,25 +130,6 @@ export default class CharacterModel extends Model {
         return excerpts
     }
 
-    async destroyPermanently(): Promise<void> {
-        const connections = await this.collections
-            .get<ConnectionModel>('connection')
-            .query(Q.or(Q.where('id_a', this.id), Q.where('id_b', this.id)))
-        connections.map((connection) => connection.delete())
-
-        const scenes = await this.section.fetch()
-
-        if (scenes.length) {
-            for await (const scene of scenes) {
-                scene.updatePoVCharacter(null)
-            }
-        }
-
-        await this.tag.destroyAllPermanently()
-        await this.note.destroyAllPermanently()
-        return super.destroyPermanently()
-    }
-
     @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
 
     @writer async updateCharacter(data: CharacterDataType) {
@@ -203,6 +184,21 @@ export default class CharacterModel extends Model {
     }
 
     @writer async delete() {
+        if (this.image) {
+            api.deleteFile(this.image)
+        }
+        const connections = await this.collections
+            .get<ConnectionModel>('connection')
+            .query(Q.or(Q.where('id_a', this.id), Q.where('id_b', this.id)))
+        connections.map((connection) => connection.delete())
+        const scenes = await this.section.fetch()
+        if (scenes.length) {
+            for await (const scene of scenes) {
+                scene.updatePoVCharacter(null)
+            }
+        }
+        await this.tag.destroyAllPermanently()
+        await this.note.destroyAllPermanently()
         await this.destroyPermanently()
         return true
     }

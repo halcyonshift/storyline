@@ -93,23 +93,6 @@ export default class LocationModel extends Model {
         return excerpts
     }
 
-    async destroyPermanently(): Promise<void> {
-        const countChildren = await this.locations.fetchCount()
-        if (countChildren) return
-
-        const connections = await this.collections
-            .get<ConnectionModel>('connection')
-            .query(Q.or(Q.where('id_a', this.id), Q.where('id_b', this.id)))
-        connections.map((connection) => connection.delete())
-
-        if (this.image) {
-            api.deleteFile(this.image)
-        }
-        await this.note.destroyAllPermanently()
-        await this.tag.destroyAllPermanently()
-        return super.destroyPermanently()
-    }
-
     @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
 
     @writer async addLocation(data: LocationDataType) {
@@ -145,6 +128,20 @@ export default class LocationModel extends Model {
     }
 
     @writer async delete() {
+        const countChildren = await this.locations.fetchCount()
+        if (countChildren) return
+        if (this.image) {
+            api.deleteFile(this.image)
+        }
+        const connections = await this.collections
+            .get<ConnectionModel>('connection')
+            .query(Q.or(Q.where('id_a', this.id), Q.where('id_b', this.id)))
+        connections.map((connection) => connection.delete())
+        if (this.image) {
+            api.deleteFile(this.image)
+        }
+        await this.note.destroyAllPermanently()
+        await this.tag.destroyAllPermanently()
         await this.destroyPermanently()
         return true
     }
