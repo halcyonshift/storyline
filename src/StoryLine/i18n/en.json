@@ -458,6 +458,9 @@
                 "wordGoal": "Word goal",
                 "deadline": "Deadline",
                 "image": "Cover",
+                "alert": {
+                    "success": "The work has been saved"
+                },
                 "button": {
                     "create": "Add",
                     "update": "Edit"
