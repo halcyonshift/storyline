@@ -325,6 +325,19 @@
             "global": {
                 "none": "None"
             },
+            "backupRestore": {
+                "exportAs": {
+                    "author": "Author",
+                    "chapterTitle": "Chapter title",
+                    "chapterTitleInitialValue": "Chapter {{number}}. {{title}}",
+                    "chapterPosition": "Chapter position",
+                    "sceneSeparator": "Scene separator",
+                    "helpText": "Exporting may take a few minutes for longer works - tea time!",
+                    "button": {
+                        "export": "Export"
+                    }
+                }
+            },
             "character": {
                 "tab": {
                     "demographics": "Demographics",
