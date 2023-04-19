@@ -12,5 +12,7 @@ export default {
         ipcRenderer.invoke('backup', json, images, path),
     selectFilePath: () => ipcRenderer.invoke('select-file-path'),
     exportHTML: (fileName: string, html: string) =>
-        ipcRenderer.invoke('export-html', fileName, html)
+        ipcRenderer.invoke('export-html', fileName, html),
+    exportDocx: (fileName: string, html: string) =>
+        ipcRenderer.invoke('export-docx', fileName, html)
 }

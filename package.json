@@ -103,6 +103,7 @@
     "eslint-import-resolver-typescript": "^3.5.3",
     "formik": "^2.2.9",
     "html-react-parser": "3.0.9",
+    "html-to-docx": "^1.8.0",
     "i18next": "22.4.10",
     "i18next-browser-languagedetector": "7.0.1",
     "jspdf": "^2.5.1",
