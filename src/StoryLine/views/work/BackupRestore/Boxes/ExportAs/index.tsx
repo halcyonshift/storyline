@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import jsPDF from 'jspdf'
 import { Box } from '@mui/material'
 import { useRouteLoaderData } from 'react-router-dom'
+import Image from '@sl/components/Image'
 import { SectionModel, WorkModel } from '@sl/db/models'
 import { htmlParse } from '@sl/utils'
 import ExportAsForm from '@sl/forms/Work/ExportAs'
@@ -124,6 +125,11 @@ const ExportAsBox = () => {
                 ) : null}
                 <Box className='h-0 w-0 overflow-hidden'>
                     <div ref={exportTemplateRef}>
+                        {work.image ? (
+                            <div style={{ height: '895px' }}>
+                                <Image path={work.image} />
+                            </div>
+                        ) : null}
                         <h1 style={{ fontFamily: 'Arial', textAlign: 'center', fontSize: '16pt' }}>
                             {work.title}
                         </h1>
