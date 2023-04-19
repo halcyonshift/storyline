@@ -4,6 +4,7 @@ import contextMenu from 'electron-context-menu'
 import fs from 'fs'
 import { kebabCase } from 'lodash'
 import path from 'path'
+import HTMLtoDOCX from 'html-to-docx'
 import JSZip from 'jszip'
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
@@ -144,7 +145,7 @@ app.whenReady()
                 if (result.filePath) {
                     // eslint-disable-next-line max-nested-callbacks
                     fs.writeFile(result.filePath, buffer, () => {
-                        // Add sentry error
+                        // ToDo: Add sentry error
                     })
 
                     return result.filePath
@@ -162,7 +163,29 @@ app.whenReady()
 
             if (result.filePath) {
                 fs.writeFile(result.filePath, html, () => {
-                    // Add sentry error
+                    // ToDo: Add sentry error
+                })
+
+                return result.filePath
+            }
+        })
+
+        ipcMain.handle('export-docx', async (_, fileName: string, html: string) => {
+            const result = await dialog.showSaveDialog({
+                defaultPath: `${kebabCase(fileName)}.docx`,
+                filters: [{ name: 'All Files', extensions: ['*'] }]
+            })
+
+            const docx = (await HTMLtoDOCX(
+                html,
+                '<p></p>',
+                { orientation: 'portrait' },
+                '<p></p>'
+            )) as Buffer
+
+            if (result.filePath) {
+                fs.writeFile(result.filePath, docx, () => {
+                    // ToDo: Add sentry error
                 })
 
                 return result.filePath

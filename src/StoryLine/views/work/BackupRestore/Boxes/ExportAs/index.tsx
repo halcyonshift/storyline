@@ -75,6 +75,12 @@ const ExportAsBox = () => {
         setIsGenerating(true)
     }
 
+    const generateDocx = async (): Promise<void> => {
+        if (!exportTemplateRef?.current) return
+
+        api.exportDocx(work.title, exportTemplateRef.current.innerHTML)
+    }
+
     const generateHTML = async (): Promise<void> => {
         if (!exportTemplateRef?.current) return
 
@@ -119,6 +125,10 @@ const ExportAsBox = () => {
                 })
                 break
             case 'docx':
+                generateDocx().then(() => {
+                    setIsGenerating(false)
+                    setSettings(null)
+                })
                 break
         }
     }, [isGenerating, settings, exportTemplateRef.current])
