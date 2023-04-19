@@ -490,6 +490,13 @@
                     "label": "Backup directory",
                     "select": "Select"
                 },
+                "lineSpacing": {
+                    "label": "Line height",
+                    "normal": "Normal",
+                    "relaxed": "Relaxed",
+                    "loose": "Loose"
+                },
+                "paragraphSpacing": "Paragraph spacing",
                 "alert": {
                     "success": "The settings have been saved"
                 },

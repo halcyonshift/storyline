@@ -35,7 +35,9 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     const [fontSize, setFontSize] = useState<number>(DEFAULT_FONT_SIZE)
     const [indentParagraph, setIndentParagraph] = useState<boolean>(DEFAULT_INDENT_PARAGRAPH)
     const [language, setLanguage] = useState<LanguageType>(DEFAULT_LANGUAGE)
-    const [lineSpacing, setLineSpacing] = useState<number>(DEFAULT_LINE_SPACING)
+    const [lineSpacing, setLineSpacing] = useState<'normal' | 'relaxed' | 'loose'>(
+        DEFAULT_LINE_SPACING
+    )
     const [palette, setPalette] = useState<ColorType>(DEFAULT_PALETTE)
     const [paragraphSpacing, setParagraphSpacing] = useState<number>(DEFAULT_PARAGRAPH_SPACING)
     const [spellCheck, setSpellCheck] = useState<boolean>(DEFAULT_SPELL_CHECK)
@@ -72,7 +74,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
             setLanguage(language || DEFAULT_LANGUAGE)
         })
         database.localStorage
-            .get<number>('lineSpacing')
+            .get<'normal' | 'relaxed' | 'loose'>('lineSpacing')
             .then((lineSpacing) => setLineSpacing(lineSpacing || DEFAULT_LINE_SPACING))
         database.localStorage
             .get<ColorType>('palette')

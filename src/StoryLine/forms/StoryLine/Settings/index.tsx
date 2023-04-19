@@ -71,7 +71,7 @@ const SettingsForm = ({
         fontSize: yup.number().positive().required(),
         indentParagraph: yup.boolean(),
         language: yup.string().required(),
-        lineSpacing: yup.number().required(),
+        lineSpacing: yup.string().oneOf(['normal', 'relaxed', 'loose']).required(),
         palette: yup.string().required(),
         paragraphSpacing: yup.number().required(),
         spellCheck: yup.boolean()
@@ -255,23 +255,36 @@ const SettingsForm = ({
                             />
                         </FormControl>
                         <FormControl fullWidth>
-                            <Typography gutterBottom>Line spacing</Typography>
-                            <Slider
+                            <FormLabel id='lineSpacing'>
+                                {t('form.storyline.settings.lineSpacing.label')}
+                            </FormLabel>
+                            <RadioGroup
+                                row
+                                aria-labelledby='lineSpacing'
                                 name='lineSpacing'
-                                aria-label={t('form.storyline.settings.lineSpacing')}
-                                defaultValue={DEFAULT_LINE_SPACING}
-                                getAriaValueText={(value) => value.toString()}
-                                valueLabelDisplay='auto'
-                                step={1}
-                                marks
-                                min={0}
-                                max={10}
                                 value={form.values.lineSpacing}
-                                onChange={form.handleChange}
-                            />
+                                onChange={form.handleChange}>
+                                <FormControlLabel
+                                    value='normal'
+                                    control={<Radio />}
+                                    label={t('form.storyline.settings.lineSpacing.normal')}
+                                />
+                                <FormControlLabel
+                                    value='relaxed'
+                                    control={<Radio />}
+                                    label={t('form.storyline.settings.lineSpacing.relaxed')}
+                                />
+                                <FormControlLabel
+                                    value='loose'
+                                    control={<Radio />}
+                                    label={t('form.storyline.settings.lineSpacing.loose')}
+                                />
+                            </RadioGroup>
                         </FormControl>
                         <FormControl fullWidth>
-                            <Typography gutterBottom>Paragraph spacing</Typography>
+                            <Typography gutterBottom>
+                                {t('form.storyline.settings.paragraphSpacing')}
+                            </Typography>
                             <Slider
                                 name='paragraphSpacing'
                                 aria-label={t('form.storyline.settings.paragraphSpacing')}
@@ -280,7 +293,7 @@ const SettingsForm = ({
                                 valueLabelDisplay='auto'
                                 step={1}
                                 marks
-                                min={0}
+                                min={2}
                                 max={10}
                                 value={form.values.paragraphSpacing}
                                 onChange={form.handleChange}

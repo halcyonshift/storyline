@@ -1,8 +1,8 @@
 const theme = {
     ltr: 'ltr',
     rtl: 'rtl',
-    paragraph: 'mb-2',
-    quote: 'bg-yellow-100 mb-2',
+    paragraph: 'leading-normal my-3',
+    quote: 'bg-yellow-100 leading-normal my-3',
     list: {
         nested: {
             listitem: 'list-none'
