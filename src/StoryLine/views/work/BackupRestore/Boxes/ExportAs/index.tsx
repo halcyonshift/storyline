@@ -75,6 +75,12 @@ const ExportAsBox = () => {
         setIsGenerating(true)
     }
 
+    const generateHTML = async (): Promise<void> => {
+        if (!exportTemplateRef?.current) return
+
+        api.exportHTML(work.title, exportTemplateRef.current.innerHTML)
+    }
+
     const generatePDF = async (): Promise<void> => {
         if (!exportTemplateRef?.current) return
 
@@ -99,11 +105,21 @@ const ExportAsBox = () => {
     useEffect(() => {
         if (!isGenerating || !settings || !exportTemplateRef.current) return
 
-        if (settings.mode === 'pdf') {
-            generatePDF().then(() => {
-                setIsGenerating(false)
-                setSettings(null)
-            })
+        switch (settings.mode) {
+            case 'pdf':
+                generatePDF().then(() => {
+                    setIsGenerating(false)
+                    setSettings(null)
+                })
+                break
+            case 'html':
+                generateHTML().then(() => {
+                    setIsGenerating(false)
+                    setSettings(null)
+                })
+                break
+            case 'docx':
+                break
         }
     }, [isGenerating, settings, exportTemplateRef.current])
 
