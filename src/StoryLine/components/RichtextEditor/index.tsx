@@ -34,7 +34,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
     const [canSave, setCanSave] = useState<boolean>(false)
     const [menu, setMenu] = useState<string | null>(null)
     const [menuElement, setMenuElement] = useState<HTMLElement | null>(null)
-    const { autoSave, indentParagraph, spellCheck } = useSettings()
+    const { autoSave, indentParagraph, lineSpacing, paragraphSpacing, spellCheck } = useSettings()
     const { loadTab } = useTabs()
     const { t } = useTranslation()
     const ref = useRef<HTMLElement>()
@@ -87,10 +87,17 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                         theme: {
                             ...theme,
                             ...{
-                                paragraph: indentParagraph
-                                    ? `indent-4 ${theme.paragraph}`
-                                    : theme.paragraph,
-                                quote: indentParagraph ? `indent-4 ${theme.quote}` : theme.quote
+                                paragraph: [
+                                    `my-${paragraphSpacing}`,
+                                    `leading-${lineSpacing}`,
+                                    indentParagraph ? 'indent-4' : ''
+                                ].join(' '),
+                                quote: [
+                                    'bg-yellow-100',
+                                    `my-${paragraphSpacing}`,
+                                    `leading-${lineSpacing}`,
+                                    indentParagraph ? 'indent-4' : ''
+                                ].join(' ')
                             }
                         },
                         nodes: [ListItemNode, ListNode, QuoteNode, TagNode],
@@ -154,7 +161,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                 </LexicalComposer>
             </Box>
         ),
-        [id, initialValue, menu, menuElement]
+        [id, initialValue, menu, menuElement, paragraphSpacing, lineSpacing, indentParagraph]
     )
 }
 
