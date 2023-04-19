@@ -154,6 +154,21 @@ app.whenReady()
             return false
         })
 
+        ipcMain.handle('export-html', async (_, fileName: string, html: string) => {
+            const result = await dialog.showSaveDialog({
+                defaultPath: `${kebabCase(fileName)}.html`,
+                filters: [{ name: 'All Files', extensions: ['*'] }]
+            })
+
+            if (result.filePath) {
+                fs.writeFile(result.filePath, html, () => {
+                    // Add sentry error
+                })
+
+                return result.filePath
+            }
+        })
+
         ipcMain.handle('select-file-path', async () => {
             const filePath = await dialog.showOpenDialog({
                 properties: ['openDirectory', 'createDirectory']
@@ -256,7 +271,6 @@ app.whenReady()
             switch (method) {
                 case 'showOpenDialog':
                     return dialog.showOpenDialog(params)
-                    break
             }
         })
     })
