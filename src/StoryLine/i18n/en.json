@@ -623,15 +623,17 @@
         },
         "work": {
             "backupRestore": {
-                "storyline": {
+                "backup": {
                     "success": "Backup saved to {{filePath}}",
                     "failure": "Backup could not be saved",
-                    "restore": "This will overwrite all data within the work with the backup, any items not in the backup will be deleted.",
-                    "backup": "This backup can only be used with the restore functionality, backup to a different platform is on the roadmap.",
-                    "button": {
-                        "backup": "Backup",
-                        "restore": "Restore"
-                    }
+                    "text": "This backup can only be used with the restore functionality, backup to a different platform is on the roadmap.",
+                    "button": "Backup"
+                },
+                "restore": {
+                    "success": "The backup has been restored",
+                    "failure": "The backup could not be restored",
+                    "text": "This will overwrite all data within the work with the backup, any items not in the backup will be deleted.",
+                    "button": "Restore"
                 }
             },
             "character": {

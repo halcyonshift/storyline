@@ -9,14 +9,20 @@ const RestoreBox = () => {
     const messenger = useMessenger()
     const { t } = useTranslation()
 
-    const exportArchive = async () => {
-        const { data, images, backupPath } = await work.backup()
-        const filePath = await api.backup(data, images, backupPath)
+    const restoreWork = async () => {
+        const { images, data } = await api.restore()
 
-        if (filePath) {
-            messenger.success(t('view.work.backupRestore.storyline.success', { filePath }))
+        if (data.work[0].id !== work.id) {
+            messenger.error(t('view.work.backupRestore.restore.failure'))
+            return
+        }
+
+        const status = await work.restore(data, images)
+
+        if (status) {
+            messenger.success(t('view.work.backupRestore.restore.success'))
         } else {
-            messenger.error(t('view.work.backupRestore.storyline.failure'))
+            messenger.error(t('view.work.backupRestore.restore.failure'))
         }
     }
 
@@ -24,10 +30,10 @@ const RestoreBox = () => {
         <Box className='grid h-full place-items-center'>
             <Box className='p-3 text-center'>
                 <Typography variant='body2' className='text-amber-600 p-5'>
-                    {t('view.work.backupRestore.storyline.restore')}
+                    {t('view.work.backupRestore.restore.text')}
                 </Typography>
-                <Button onClick={exportArchive} variant='contained'>
-                    {t('view.work.backupRestore.storyline.button.restore')}
+                <Button onClick={restoreWork} variant='contained'>
+                    {t('view.work.backupRestore.restore.button')}
                 </Button>
             </Box>
         </Box>

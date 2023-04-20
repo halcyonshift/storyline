@@ -9,14 +9,14 @@ const BackupBox = () => {
     const messenger = useMessenger()
     const { t } = useTranslation()
 
-    const exportArchive = async () => {
+    const backupWork = async () => {
         const { data, images, backupPath } = await work.backup()
         const filePath = await api.backup(data, images, backupPath)
 
         if (filePath) {
-            messenger.success(t('view.work.backupRestore.storyline.success', { filePath }))
+            messenger.success(t('view.work.backupRestore.backup.success', { filePath }))
         } else {
-            messenger.error(t('view.work.backupRestore.storyline.failure'))
+            messenger.error(t('view.work.backupRestore.backup.failure'))
         }
     }
 
@@ -24,10 +24,10 @@ const BackupBox = () => {
         <Box className='grid h-full place-items-center'>
             <Box className='p-3 text-center'>
                 <Typography variant='body2' className='text-teal-600 p-5'>
-                    {t('view.work.backupRestore.storyline.backup')}
+                    {t('view.work.backupRestore.backup.text')}
                 </Typography>
-                <Button onClick={exportArchive} variant='contained'>
-                    {t('view.work.backupRestore.storyline.button.backup')}
+                <Button onClick={backupWork} variant='contained'>
+                    {t('view.work.backupRestore.backup.button')}
                 </Button>
             </Box>
         </Box>

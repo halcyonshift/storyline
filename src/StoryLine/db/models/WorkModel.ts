@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Model, Q, Query, ColumnName } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, text, writer } from '@nozbe/watermelondb/decorators'
+import { DateTime } from 'luxon'
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
 import { SectionMode } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
@@ -267,6 +269,7 @@ export default class WorkModel extends Model {
 
     async backup() {
         const character = await this.character.fetch()
+        const connection = await this.connection.fetch()
         const item = await this.item.fetch()
         const location = await this.location.fetch()
         const note = await this.note.fetch()
@@ -279,6 +282,7 @@ export default class WorkModel extends Model {
         const dbData = {
             work: [this],
             character,
+            connection,
             item,
             location,
             note,
@@ -293,6 +297,7 @@ export default class WorkModel extends Model {
         const jsonData: any = {
             work: [],
             character: [],
+            connection: [],
             item: [],
             location: [],
             note: [],
@@ -305,7 +310,8 @@ export default class WorkModel extends Model {
             const columns: ColumnName[] = Object.keys(schema.tables[table].columns)
             items.map((item) => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const data: any = {}
+                const data: any = { id: item.id }
+
                 columns.map((column) => {
                     data[column] = item._getRaw(column)
                 })
@@ -318,6 +324,194 @@ export default class WorkModel extends Model {
         })
 
         return { data: jsonData, images: [...new Set(images)], backupPath: backupPath || '' }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @writer async restore(data: any, images: string[]) {
+        if (this.image) {
+            api.deleteFile(this.image)
+        }
+        await this.character.destroyAllPermanently()
+        await this.connection.destroyAllPermanently()
+        await this.item.destroyAllPermanently()
+        await this.location.destroyAllPermanently()
+        await this.note.destroyAllPermanently()
+        await this.section.destroyAllPermanently()
+
+        await this.update((work) => {
+            work.title = data.work[0].title
+            work.author = data.work[0].author
+            work.language = data.work[0].language
+            work.summary = data.work[0].summary
+            work.wordGoal = Number(data.work[0].word_goal) || null
+            work.image = data.work[0].image
+            work.deadlineAt = DateTime.fromMillis(data.work[0].deadline_at).toJSDate()
+            work.updatedAt = DateTime.fromMillis(data.work[0].updated_at).toJSDate()
+        })
+
+        await this.batch(
+            ...data.character.map((characterData: any) =>
+                this.collections.get<CharacterModel>('character').prepareCreate((character) => {
+                    character._raw.id = characterData.id
+                    character.work.set(this)
+                    character.mode = characterData.mode
+                    character.displayName = characterData.display_name
+                    character.image = characterData.image
+                    character.firstName = characterData.first_name
+                    character.lastName = characterData.last_name
+                    character.nickname = characterData.nickname
+                    character.gender = characterData.gender
+                    character.apparentAge = characterData.apparent_age
+                    character.placeOfBirth = characterData.place_of_birth
+                    character.residence = characterData.residence
+                    character.education = characterData.education
+                    character.profession = characterData.profession
+                    character.finances = characterData.finances
+                    character.ethnicity = characterData.ethnicity
+                    character.height = characterData.height
+                    character.build = characterData.build
+                    character.hair = characterData.hair
+                    character.face = characterData.face
+                    character.distinguishingFeatures = characterData.distinguishing_features
+                    character.religion = characterData.religion
+                    character.politicalLeaning = characterData.political_leaning
+                    character.description = characterData.description
+                    character.history = characterData.history
+                    character.status = characterData.status
+                    character.createdAt = DateTime.fromMillis(characterData.created_at).toJSDate()
+                    character.updatedAt = DateTime.fromMillis(characterData.updated_at).toJSDate()
+                })
+            ),
+            ...(data.connection || []).map((connectionData: any) =>
+                this.collections.get<ConnectionModel>('connection').prepareCreate((connection) => {
+                    connection._raw.id = connectionData.id
+                    connection.work.set(this)
+                    connection.tableA = connectionData.table_a
+                    connection.tableB = connectionData.table_b
+                    connection.idA = connectionData.id_a
+                    connection.idB = connectionData.id_b
+                    connection.to = connectionData.to
+                    connection.from = connectionData.from
+                    connection.mode = connectionData.mode
+                })
+            ),
+            ...data.item.map((itemData: any) =>
+                this.collections.get<ItemModel>('item').prepareCreate((item) => {
+                    item._raw.id = itemData.id
+                    item.work.set(this)
+                    item.name = itemData.name
+                    item.body = itemData.body
+                    item.status = itemData.status
+                    item.createdAt = DateTime.fromMillis(itemData.created_at).toJSDate()
+                    item.updatedAt = DateTime.fromMillis(itemData.updated_at).toJSDate()
+                })
+            )
+        )
+
+        await this.batch(
+            ...data.location.map((locationData: any) =>
+                this.collections.get<LocationModel>('location').prepareCreate((location) => {
+                    location._raw.id = locationData.id
+                    if (locationData.location_id)
+                        location._setRaw('location_id', locationData.location_id)
+                    location.work.set(this)
+                    location.name = locationData.name
+                    location.body = locationData.body
+                    location.status = locationData.status
+                    location.createdAt = DateTime.fromMillis(locationData.created_at).toJSDate()
+                    location.updatedAt = DateTime.fromMillis(locationData.updated_at).toJSDate()
+                })
+            ),
+            ...data.section.map((sectionData: any) =>
+                this.collections.get<SectionModel>('section').prepareCreate((section) => {
+                    section._raw.id = sectionData.id
+                    if (sectionData.section_id)
+                        section._setRaw('section_id', sectionData.section_id)
+                    if (sectionData.point_of_view_character_id)
+                        section._setRaw(
+                            'point_of_view_character_id',
+                            sectionData.point_of_view_character_id
+                        )
+                    section.work.set(this)
+                    section.pointOfView = sectionData.point_of_view
+                    section.status = sectionData.status
+                    section.title = sectionData.title
+                    section.mode = sectionData.mode
+                    section.body = sectionData.body
+                    section.description = sectionData.description
+                    section.date = sectionData.date
+                    section.order = sectionData.order
+                    section.wordGoal = sectionData.word_goal
+                    section.wordGoalPerDay = sectionData.word_goal_per_day
+                    if (sectionData.deadline_at)
+                        section.deadlineAt = DateTime.fromMillis(sectionData.deadline_at).toJSDate()
+                    section.createdAt = DateTime.fromMillis(sectionData.created_at).toJSDate()
+                    section.updatedAt = DateTime.fromMillis(sectionData.updated_at).toJSDate()
+                })
+            )
+        )
+
+        for await (const noteData of data.note) {
+            await this.collections
+                .get<NoteModel>('note')
+                .create((note) => {
+                    note._raw.id = noteData.id
+                    note.work.set(this)
+                    if (noteData.character_id) note._setRaw('character_id', noteData.character_id)
+                    if (noteData.item_id) note._setRaw('item_id', noteData.item_id)
+                    if (noteData.location_id) note._setRaw('location_id', noteData.location_id)
+                    if (noteData.section_id) note._setRaw('section_id', noteData.section_id)
+                    if (noteData.note_id) note._setRaw('note_id', noteData.note_id)
+                    note.title = noteData.title
+                    note.body = noteData.body
+                    note.color = noteData.color
+                    note.date = noteData.date
+                    note.url = noteData.url
+                    note.image = noteData.image
+                    note.status = noteData.status
+                    note.createdAt = DateTime.fromMillis(noteData.created_at).toJSDate()
+                    note.updatedAt = DateTime.fromMillis(noteData.updated_at).toJSDate()
+                })
+                .catch(() => {
+                    // send to sentry?
+                })
+        }
+
+        for await (const statisticData of data.statistic) {
+            await this.collections
+                .get<StatisticModel>('statistic')
+                .create((statistic) => {
+                    statistic._raw.id = statisticData.id
+                    statistic.work.set(this)
+                    statistic._setRaw('section_id', statisticData.section_id)
+                    statistic.createdAt = DateTime.fromMillis(statisticData.created_at).toJSDate()
+                    statistic.updatedAt = DateTime.fromMillis(statisticData.updated_at).toJSDate()
+                })
+                .catch(() => {
+                    // send to sentry?
+                })
+        }
+
+        for await (const tagData of data.tag) {
+            await this.collections
+                .get<TagModel>('tag')
+                .create((tag) => {
+                    tag._raw.id = tagData.id
+                    tag.work.set(this)
+                    if (tagData.character_id) tag._setRaw('character_id', tagData.character_id)
+                    if (tagData.item_id) tag._setRaw('item_id', tagData.item_id)
+                    if (tagData.location_id) tag._setRaw('location_id', tagData.location_id)
+                    if (tagData.section_id) tag._setRaw('section_id', tagData.section_id)
+                    if (tagData.note_id) tag._setRaw('note_id', tagData.note_id)
+                    tag.createdAt = DateTime.fromMillis(tagData.created_at).toJSDate()
+                    tag.updatedAt = DateTime.fromMillis(tagData.updated_at).toJSDate()
+                })
+                .catch(() => {
+                    // send to sentry?
+                })
+        }
+
+        return true
     }
 
     @lazy sections = this.section.extend(Q.where('work_id', this.id), Q.sortBy('order', Q.asc))
@@ -515,6 +709,8 @@ export default class WorkModel extends Model {
         await this.location.destroyAllPermanently()
         await this.note.destroyAllPermanently()
         await this.section.destroyAllPermanently()
+        await this.statistic.destroyAllPermanently()
+        await this.tags.destroyAllPermanently()
         await this.destroyPermanently()
         return true
     }

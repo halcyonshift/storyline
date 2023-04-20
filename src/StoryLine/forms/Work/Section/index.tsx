@@ -81,7 +81,7 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
                     .filter((tag) => tag.note.id)
                     .map((tag) => ({
                         id: tag.note.id,
-                        label: notes.find((note) => note.id === tag.note.id).displayName
+                        label: notes.find((note) => note.id === tag.note.id)?.displayName
                     }))
             )
         })
