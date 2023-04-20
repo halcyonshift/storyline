@@ -92,14 +92,16 @@ const Spread = () => {
                     <TableRow>
                         <TableCell variant='head'></TableCell>
                         {chapters.map((chapter) => (
-                            <TableCell variant='head'>#{chapter.order}</TableCell>
+                            <TableCell variant='head' key={chapter.id}>
+                                #{chapter.order}
+                            </TableCell>
                         ))}
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {tags.characters.map((appearance: any, index: number) => (
+                    {tags.characters.map((appearance: any) => (
                         <TableRow
-                            key={index}
+                            key={appearance.character.id}
                             sx={{
                                 '&:last-child td, &:last-child th': { border: 0 }
                             }}>
@@ -116,9 +118,9 @@ const Spread = () => {
                             ))}
                         </TableRow>
                     ))}
-                    {tags.items.map((appearance: any, index: number) => (
+                    {tags.items.map((appearance: any) => (
                         <TableRow
-                            key={index}
+                            key={appearance.item.id}
                             sx={{
                                 '&:last-child td, &:last-child th': { border: 0 }
                             }}>
@@ -135,9 +137,9 @@ const Spread = () => {
                             ))}
                         </TableRow>
                     ))}
-                    {tags.locations.map((appearance: any, index: number) => (
+                    {tags.locations.map((appearance: any) => (
                         <TableRow
-                            key={index}
+                            key={appearance.location.id}
                             sx={{
                                 '&:last-child td, &:last-child th': { border: 0 }
                             }}>
@@ -154,9 +156,9 @@ const Spread = () => {
                             ))}
                         </TableRow>
                     ))}
-                    {tags.notes.map((appearance: any, index: number) => (
+                    {tags.notes.map((appearance: any) => (
                         <TableRow
-                            key={index}
+                            key={appearance.note.id}
                             sx={{
                                 '&:last-child td, &:last-child th': { border: 0 }
                             }}>

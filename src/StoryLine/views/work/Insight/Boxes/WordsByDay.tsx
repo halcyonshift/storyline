@@ -26,10 +26,13 @@ ChartJS.register(
     Legend
 )
 
-ChartJS.defaults.plugins.legend.display = false
-
 const DEFAULT_OPTIONS = {
-    responsive: true
+    responsive: true,
+    plugins: {
+        legend: {
+            display: false
+        }
+    }
 }
 
 const WordsByDayBox = () => {

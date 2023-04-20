@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
@@ -11,11 +12,11 @@ import {
     Legend
 } from 'chart.js'
 import annotationPlugin from 'chartjs-plugin-annotation'
-import { DateTime } from 'luxon'
 import { Doughnut } from 'react-chartjs-2'
 import { useRouteLoaderData } from 'react-router-dom'
+import { PointOfView } from '@sl/constants/pov'
 import { WorkModel } from '@sl/db/models'
-import { getHex } from '@sl/theme/utils'
+import { useTranslation } from 'react-i18next'
 
 ChartJS.register(
     annotationPlugin,
@@ -27,41 +28,59 @@ ChartJS.register(
     Legend
 )
 
-ChartJS.defaults.plugins.legend.display = false
+const position: any = 'right'
 
 const DEFAULT_OPTIONS = {
-    responsive: true
+    responsive: true,
+    plugins: {
+        legend: {
+            position
+        }
+    }
 }
 
 const PointOfViewBox = () => {
     const work = useRouteLoaderData('work') as WorkModel
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [statistics, setStatistics] = useState<any[]>([])
-    const [labels, setLabels] = useState<string[]>()
+    const [povStatistics, setPovStatistics] = useState<any[]>([])
+    const [povModeStatistics, setPovModeStatistics] = useState<any[]>([])
+    const [povLabels, setPovLabels] = useState<string[]>()
+    const [povModeLabels, setPovModeLabels] = useState<string[]>()
+    const { t } = useTranslation()
 
     useEffect(() => {
-        work.statistics.fetch().then((stats) => {
-            const _labels = [
-                'Monday',
-                'Tuesday',
-                'Wednesday',
-                'Thursday',
-                'Friday',
-                'Saturday',
-                'Sunday'
-            ]
-            setLabels(_labels)
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const datasets: any = {}
-            _labels.map((label, labelIndex) => {
-                stats.map((stat) => {
-                    if (!datasets[label]) datasets[label] = 0
-                    const dayOfWeek = DateTime.fromJSDate(stat.createdAt).weekday - 1
-                    if (dayOfWeek == labelIndex) datasets[label] += stat.words
-                })
-            })
+        const _povStatistics: any = {}
+        const _povModeStatistics: any = {}
 
-            setStatistics(Object.values(datasets))
+        Promise.all([work.scenes.fetch(), work.characters.fetch()]).then(([scenes, characters]) => {
+            scenes
+                .filter((scene) => scene.pointOfViewCharacter)
+                .map((scene) => {
+                    if (!_povStatistics[scene.pointOfViewCharacter.id]) {
+                        _povStatistics[scene.pointOfViewCharacter.id] = {
+                            character: characters.find(
+                                (character) => character.id === scene.pointOfViewCharacter.id
+                            ),
+                            scenes: 0
+                        }
+                    }
+                    _povStatistics[scene.pointOfViewCharacter.id].scenes += 1
+
+                    if (!_povModeStatistics[scene.pointOfView]) {
+                        _povModeStatistics[scene.pointOfView] = 0
+                    }
+                    _povModeStatistics[scene.pointOfView] += 1
+                })
+            setPovModeLabels(
+                Object.values(PointOfView).map((pov) => t(`constant.pointOfView.${pov}`))
+            )
+            setPovLabels(
+                Object.values(_povStatistics).map(
+                    (pov: any) => pov.character?.displayName || 'None'
+                )
+            )
+
+            setPovStatistics(Object.values(_povStatistics))
+            setPovModeStatistics(Object.values(_povModeStatistics))
         })
     }, [])
 
@@ -69,32 +88,14 @@ const PointOfViewBox = () => {
         <Box className='grid grid-cols-2 gap-3'>
             <Box className='relative'>
                 <Doughnut
-                    options={{
-                        ...DEFAULT_OPTIONS
-                    }}
+                    options={DEFAULT_OPTIONS}
                     data={{
-                        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                        labels: povLabels,
                         datasets: [
                             {
-                                label: '# of Votes',
-                                data: [12, 19, 3, 5, 2, 3],
-                                backgroundColor: [
-                                    'rgba(255, 99, 132, 0.2)',
-                                    'rgba(54, 162, 235, 0.2)',
-                                    'rgba(255, 206, 86, 0.2)',
-                                    'rgba(75, 192, 192, 0.2)',
-                                    'rgba(153, 102, 255, 0.2)',
-                                    'rgba(255, 159, 64, 0.2)'
-                                ],
-                                borderColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
-                                ],
-                                borderWidth: 1
+                                label: 'Uses',
+                                data: povStatistics.map((stat) => stat.scenes),
+                                borderWidth: 2
                             }
                         ]
                     }}
@@ -102,32 +103,14 @@ const PointOfViewBox = () => {
             </Box>
             <Box className='relative'>
                 <Doughnut
-                    options={{
-                        ...DEFAULT_OPTIONS
-                    }}
+                    options={DEFAULT_OPTIONS}
                     data={{
-                        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                        labels: povModeLabels,
                         datasets: [
                             {
-                                label: '# of Votes',
-                                data: [12, 19, 3, 5, 2, 3],
-                                backgroundColor: [
-                                    'rgba(255, 99, 132, 0.2)',
-                                    'rgba(54, 162, 235, 0.2)',
-                                    'rgba(255, 206, 86, 0.2)',
-                                    'rgba(75, 192, 192, 0.2)',
-                                    'rgba(153, 102, 255, 0.2)',
-                                    'rgba(255, 159, 64, 0.2)'
-                                ],
-                                borderColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
-                                ],
-                                borderWidth: 1
+                                label: 'Uses',
+                                data: povModeStatistics,
+                                borderWidth: 2
                             }
                         ]
                     }}

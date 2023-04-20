@@ -25,9 +25,12 @@ ChartJS.register(
     Legend
 )
 
-ChartJS.defaults.plugins.legend.display = false
-
 const DEFAULT_OPTIONS = {
+    plugins: {
+        legend: {
+            display: false
+        }
+    },
     responsive: true,
     scales: {
         x: {
