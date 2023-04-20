@@ -21,7 +21,6 @@ import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { YYYYMMDD } from '@sl/constants'
 import { StatisticModel, WorkModel } from '@sl/db/models'
-import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import useSettings from '@sl/theme/useSettings'
 import { getHex } from '@sl/theme/utils'
 import { ObjectNumber, ObjectObjectNumber } from '@sl/types'
@@ -36,10 +35,13 @@ ChartJS.register(
     Legend
 )
 
-ChartJS.defaults.plugins.legend.display = false
-
 const DEFAULT_OPTIONS = {
     responsive: true,
+    plugins: {
+        legend: {
+            display: false
+        }
+    },
     scales: {
         x: {
             ticks: {
@@ -61,7 +63,6 @@ const WordsBox = () => {
             .map((d) => d.start)
     )
     const settings = useSettings()
-    const tabs = useTabs()
     const { t } = useTranslation()
     const work = useRouteLoaderData('work') as WorkModel
     const [statistics, setStatistics] = useState<ObjectNumber>({})
@@ -124,7 +125,6 @@ const WordsBox = () => {
                     }, {} as ObjectNumber)
                 )
             )
-        tabs.setShowTabs(false)
     }, [])
 
     return (

@@ -36,10 +36,13 @@ ChartJS.register(
     Legend
 )
 
-ChartJS.defaults.plugins.legend.display = false
-
 const DEFAULT_OPTIONS = {
     responsive: true,
+    plugins: {
+        legend: {
+            display: false
+        }
+    },
     scales: {
         x: {
             ticks: {
@@ -181,9 +184,16 @@ const WordChartsBox = () => {
                                                       value: work.wordGoal
                                                   }
                                               }
+                                          },
+                                          legend: {
+                                              display: false
                                           }
                                       }
-                                    : {}
+                                    : {
+                                          legend: {
+                                              display: false
+                                          }
+                                      }
                             }
                         }}
                         data={{

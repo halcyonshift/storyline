@@ -1,7 +1,7 @@
 import { PointOfViewType } from '@sl/constants/pov'
 import { SectionModeType } from '@sl/constants/sectionMode'
 import { StatusType } from '@sl/constants/status'
-import { CharacterModel } from '@sl/db/models'
+import { CharacterModel, ItemModel, LocationModel, NoteModel } from '@sl/db/models'
 import { CharacterModeType } from '@sl/constants/characterMode'
 
 export type CharacterDataType = {
@@ -115,4 +115,5 @@ export type WorkDataType = {
 
 export type AllTagsType = {
     text: string[]
+    record: CharacterModel | ItemModel | LocationModel | NoteModel
 }
