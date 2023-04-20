@@ -1,10 +1,10 @@
-import { Box, Button } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { useRouteLoaderData } from 'react-router-dom'
 import { WorkModel } from '@sl/db/models'
 import useMessenger from '@sl/layouts/useMessenger'
 import { useTranslation } from 'react-i18next'
 
-const StoryLineBox = () => {
+const BackupBox = () => {
     const work = useRouteLoaderData('work') as WorkModel
     const messenger = useMessenger()
     const { t } = useTranslation()
@@ -21,12 +21,17 @@ const StoryLineBox = () => {
     }
 
     return (
-        <Box>
-            <Button onClick={exportArchive}>
-                {t('view.work.backupRestore.storyline.button.backup')}
-            </Button>
+        <Box className='grid h-full place-items-center'>
+            <Box className='p-3 text-center'>
+                <Typography variant='body2' className='text-teal-600 p-5'>
+                    {t('view.work.backupRestore.storyline.backup')}
+                </Typography>
+                <Button onClick={exportArchive} variant='contained'>
+                    {t('view.work.backupRestore.storyline.button.backup')}
+                </Button>
+            </Box>
         </Box>
     )
 }
 
-export default StoryLineBox
+export default BackupBox
