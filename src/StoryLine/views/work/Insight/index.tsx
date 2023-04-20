@@ -30,12 +30,12 @@ const InsightView = () => {
             </Paper>
             <Paper elevation={2} className='relative'>
                 <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
-                    Character point of view (tab)
+                    <Boxes.PointOfView />
                 </Box>
             </Paper>
             <Paper elevation={2} className='relative col-span-2'>
                 <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
-                    Character/Item/Note/Location distribution
+                    <Boxes.Spread />
                 </Box>
             </Paper>
         </Box>
