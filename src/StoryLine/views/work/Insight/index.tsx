@@ -25,22 +25,17 @@ const InsightView = () => {
             </Paper>
             <Paper elevation={2} className='relative'>
                 <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
-                    Character distribution & Character point of view (tab)
+                    <Boxes.WordsByDay />
                 </Box>
             </Paper>
             <Paper elevation={2} className='relative'>
                 <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
-                    Location distribution
+                    Character point of view (tab)
                 </Box>
             </Paper>
-            <Paper elevation={2} className='relative'>
+            <Paper elevation={2} className='relative col-span-2'>
                 <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
-                    Item distribution
-                </Box>
-            </Paper>
-            <Paper elevation={2} className='relative'>
-                <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
-                    Note distribution
+                    Character/Item/Note/Location distribution
                 </Box>
             </Paper>
         </Box>

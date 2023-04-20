@@ -74,6 +74,7 @@ const ChapterLengthBox = () => {
                             }
                         }),
                         borderColor: getHex('emerald', 600),
+                        backgroundColor: getHex('emerald', 100),
                         borderWidth: 2
                     }
                     datasets.push(dataset)
