@@ -594,7 +594,7 @@
                 "button": "Import",
                 "bibisco": {
                     "title": "Bibisco",
-                    "text": "",
+                    "text": "Statistics history won't be imported, just a snapshot of the most recent data",
                     "error": "Sorry, the import hasn't worked"
                 }
             },

@@ -15,9 +15,11 @@ import {
     LocationModel,
     NoteModel,
     SectionModel,
+    StatisticModel,
     TagModel,
     WorkModel
 } from '@sl/db/models'
+import { wordCount } from '@sl/utils'
 
 const cleanText = (text: string) => {
     return text.replace(/<[^>]*>/g, '').replace('&nbsp;', ' ')
@@ -502,6 +504,27 @@ const importBibisco = async (database: Database): Promise<false | string> => {
     if (eventNotes.length) {
         await database.write(async () => {
             return await database.batch(eventNotes)
+        })
+    }
+
+    const statistics: StatisticModel[] = scenes.reduce(
+        (arr: StatisticModel[], scene: SectionModel) => {
+            arr.push(
+                database.get<StatisticModel>('statistic').prepareCreate((statistic) => {
+                    statistic.section.set(scene)
+                    statistic.words = wordCount(scene.body)
+                    statistic.createdAt = scene.updatedAt
+                    statistic.updatedAt = scene.updatedAt
+                })
+            )
+            return arr
+        },
+        []
+    )
+
+    if (statistics.length) {
+        await database.write(async () => {
+            return await database.batch(statistics)
         })
     }
 
