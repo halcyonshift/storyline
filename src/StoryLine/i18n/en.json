@@ -459,10 +459,8 @@
                 },
                 "author": "Author",
                 "language": "Language",
-                "summary": "Summary",
                 "wordGoal": "Word goal",
                 "deadline": "Deadline",
-                "image": "Cover",
                 "alert": {
                     "success": "The work has been saved"
                 },
