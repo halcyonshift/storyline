@@ -337,12 +337,5 @@ app.whenReady()
         ipcMain.handle('delete-file', async (e, path) => {
             fs.rmSync(path)
         })
-
-        ipcMain.handle('dialog', (event, method, params) => {
-            switch (method) {
-                case 'showOpenDialog':
-                    return dialog.showOpenDialog(params)
-            }
-        })
     })
     .catch(() => null)
