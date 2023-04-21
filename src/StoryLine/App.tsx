@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -6,13 +7,37 @@ import { ThemeProvider } from '@mui/material/styles'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { Settings } from 'luxon'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useRouteLoaderData } from 'react-router-dom'
 import useMessenger from '@sl/layouts/useMessenger'
 import useSettings from '@sl/theme/useSettings'
+import { WorkModel } from './db/models'
+import { useTranslation } from 'react-i18next'
 
 const App = () => {
+    const { autoBackupFreq, autoBackupPath } = useSettings()
+    const work = useRouteLoaderData('work') as WorkModel
     const settings = useSettings()
     const messenger = useMessenger()
+    const { t } = useTranslation()
+
+    useEffect(() => {
+        const seconds = (autoBackupFreq ? autoBackupFreq * 60 : 315360000) * 1000
+        const intervalId = setInterval(async () => {
+            if (work && autoBackupPath) {
+                messenger.warning(t('autoBackup.warning'))
+                const { data, images, backupPath } = await work.backup()
+                const filePath = await api.backup(data, images, backupPath)
+                if (filePath) {
+                    messenger.success(t('autoBackup.success', { filePath }))
+                } else {
+                    messenger.error(t('autoBackup.failure', { filePath: autoBackupPath }))
+                }
+            }
+        }, seconds)
+        return () => {
+            clearInterval(intervalId)
+        }
+    }, [autoBackupFreq, autoBackupPath, work?.id])
 
     Settings.defaultZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 

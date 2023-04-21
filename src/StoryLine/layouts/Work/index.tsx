@@ -10,11 +10,11 @@ import * as Panel from './Panel'
 import Navigation from './Navigation'
 import Tabs from './Tabs'
 import { TabsProvider } from './Tabs/useTabs'
-
 import { LayoutProvider } from './useLayout'
 
 const WorkLayout = () => {
     const [currentPanel, setCurrentPanel] = useState<string | null>()
+
     const database = useDatabase()
     const navigate = useNavigate()
     const { t } = useTranslation()

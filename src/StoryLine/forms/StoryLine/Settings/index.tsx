@@ -25,7 +25,6 @@ import { colors } from '@sl/theme/utils'
 
 import {
     DEFAULT_AUTO_BACKUP_FREQ,
-    DEFAULT_AUTO_BACKUP_MAX,
     DEFAULT_AUTO_SAVE,
     DEFAULT_DISPLAY_MODE,
     DEFAULT_FONT,
@@ -46,7 +45,6 @@ const SettingsForm = ({
         autoSave: DEFAULT_AUTO_SAVE,
         autoBackupFreq: DEFAULT_AUTO_BACKUP_FREQ,
         autoBackupPath: '',
-        autoBackupMax: DEFAULT_AUTO_BACKUP_MAX,
         displayMode: DEFAULT_DISPLAY_MODE,
         font: DEFAULT_FONT,
         fontSize: DEFAULT_FONT_SIZE,
@@ -65,7 +63,6 @@ const SettingsForm = ({
         autoSave: yup.boolean(),
         autoBackupFreq: yup.number().required(),
         autoBackupPath: yup.string().nullable(),
-        autoBackupMax: yup.number(),
         displayMode: yup.string().required(),
         font: yup.string().required(),
         fontSize: yup.number().positive().required(),
@@ -84,7 +81,6 @@ const SettingsForm = ({
             settings.setAutoSave(values.autoSave)
             settings.setAutoBackupFreq(values.autoBackupFreq)
             settings.setAutoBackupPath(values.autoBackupPath)
-            settings.setAutoBackupMax(values.autoBackupMax)
             settings.setDisplayMode(values.displayMode)
             settings.setFont(values.font)
             settings.setFontSize(values.fontSize)
@@ -379,20 +375,6 @@ const SettingsForm = ({
                                     </InputAdornment>
                                 )
                             }}
-                        />
-                    </FormControl>
-                    <FormControl className='w-1/2'>
-                        <TextField
-                            id='autoBackupMax'
-                            label={t('form.storyline.settings.autoBackupMax')}
-                            name='autoBackupMax'
-                            variant='standard'
-                            type='number'
-                            value={form.values.autoBackupMax}
-                            onChange={form.handleChange}
-                            error={form.touched.autoBackupMax && Boolean(form.errors.autoBackupMax)}
-                            helperText={form.touched.autoBackupMax && form.errors.autoBackupMax}
-                            InputProps={{ inputProps: { min: 0, max: 20, step: 1 } }}
                         />
                     </FormControl>
                 </Box>
