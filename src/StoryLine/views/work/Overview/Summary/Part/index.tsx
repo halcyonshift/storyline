@@ -13,7 +13,7 @@ const PartSummary = ({ parts, chapters, scenes }: PartSummaryProps) => (
                     <Typography variant='h4'>{part.displayTitle}</Typography>
                     {part.description ? htmlParse(part.description) : null}
                 </Box>
-                <Box className='m-5 p-5 border-l-2'>
+                <Box className='mx-5 my-3 px-5 py-3 border-l-2'>
                     <ChapterSummary
                         chapters={chapters.filter((chapter) => chapter.section.id === part.id)}
                         scenes={scenes}
