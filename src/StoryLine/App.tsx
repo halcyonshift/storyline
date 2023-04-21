@@ -21,19 +21,17 @@ const App = () => {
     const { t } = useTranslation()
 
     useEffect(() => {
-        const seconds = (autoBackupFreq ? autoBackupFreq * 60 : 315360000) * 1000
         const intervalId = setInterval(async () => {
-            if (work && autoBackupPath) {
-                messenger.warning(t('autoBackup.warning'))
-                const { data, images, backupPath } = await work.backup()
-                const filePath = await api.backup(data, images, backupPath)
-                if (filePath) {
-                    messenger.success(t('autoBackup.success', { filePath }))
-                } else {
-                    messenger.error(t('autoBackup.failure', { filePath: autoBackupPath }))
-                }
+            if (!work || !autoBackupPath) return
+            messenger.warning(t('autoBackup.warning'))
+            const { data, images, backupPath } = await work.backup()
+            const filePath = await api.backup(data, images, backupPath)
+            if (filePath) {
+                messenger.success(t('autoBackup.success', { filePath }))
+            } else {
+                messenger.error(t('autoBackup.failure', { filePath: autoBackupPath }))
             }
-        }, seconds)
+        }, autoBackupFreq * 60 * 1000 || 315360000000)
         return () => {
             clearInterval(intervalId)
         }
