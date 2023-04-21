@@ -40,8 +40,6 @@ const createWindow = (): void => {
         }
     })
 
-    mainWindow.webContents.openDevTools()
-
     mainWindow.webContents.on('will-navigate', function (e, url) {
         if (!url.includes('localhost')) {
             e.preventDefault()
@@ -56,6 +54,7 @@ const createWindow = (): void => {
     mainWindow.once('ready-to-show', () => {
         splashWindow.close()
         mainWindow.show()
+        mainWindow.webContents.openDevTools()
     })
 
     mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY).catch(() => null)

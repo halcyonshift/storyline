@@ -3,6 +3,7 @@ import { Model, Q, Query, ColumnName } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, text, writer } from '@nozbe/watermelondb/decorators'
 import { DateTime } from 'luxon'
+import percentRound from 'percent-round'
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
 import { SectionMode } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
@@ -58,6 +59,13 @@ export default class WorkModel extends Model {
     @children('note') note!: Query<NoteModel>
     @children('section') section!: Query<SectionModel>
     @children('statistic') statistic!: Query<StatisticModel>
+
+    get displayDeadline() {
+        if (!this.deadlineAt) return ''
+
+        const date = DateTime.fromJSDate(this.deadlineAt)
+        return date.isValid ? date.toFormat('EEEE dd LLL yyyy H:mm') : ''
+    }
 
     async search(
         query: string,
@@ -265,6 +273,22 @@ export default class WorkModel extends Model {
     async wordCount() {
         const scenes = await this.scenes.fetch()
         return scenes.reduce((count, scene) => count + wordCount(scene.body), 0)
+    }
+
+    async progress() {
+        const scenes = await this.scenes.fetch()
+        const total = 100 / scenes.filter((scene) => scene.status !== Status.ARCHIVE).length
+
+        const percentages = percentRound(
+            [
+                total * scenes.filter((scene) => scene.status === Status.TODO).length,
+                total * scenes.filter((scene) => scene.status === Status.DRAFT).length,
+                total * scenes.filter((scene) => scene.status === Status.REVIEW).length,
+                total * scenes.filter((scene) => scene.status === Status.COMPLETE).length
+            ].map((percentage) => Math.round(percentage))
+        )
+
+        return percentages
     }
 
     async backup() {
