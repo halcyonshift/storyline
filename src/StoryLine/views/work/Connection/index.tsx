@@ -29,6 +29,7 @@ import {
 } from '@sl/db/models'
 import { ConnectionDataType } from '@sl/db/models/types'
 import { ObjType, NodeType, NodeTypeByID } from './types'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 const PaperComponent = (props: PaperProps) => {
     return (
@@ -56,6 +57,7 @@ const ConnectionView = () => {
     const [nodes, setNodes] = useState([])
     const [edges, setEdges] = useState([])
     const [connection, setConnection] = useState<ConnectionModel | null>()
+    const { setShowTabs } = useTabs()
     const { t } = useTranslation()
     const connections = useObservable(
         () => work.connection.observeWithColumns(['id_a', 'id_b', 'mode', 'to', 'from']),
@@ -126,6 +128,8 @@ const ConnectionView = () => {
         work.item.fetch().then((items) => setItems(items))
         work.location.fetch().then((locations) => setLocations(locations))
         work.note.fetch().then((notes) => setNotes(notes))
+
+        setShowTabs(true)
     }, [])
 
     useEffect(() => {
