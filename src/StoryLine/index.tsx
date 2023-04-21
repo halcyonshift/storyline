@@ -42,8 +42,8 @@ const router = createHashRouter([
                         element: <StoryLineViews.AddWorkView />
                     },
                     {
-                        path: 'openWork',
-                        element: <StoryLineViews.OpenWorkView />
+                        path: 'works',
+                        element: <StoryLineViews.WorksView />
                     },
                     {
                         path: 'importWork',

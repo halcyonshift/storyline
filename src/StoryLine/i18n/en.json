@@ -581,7 +581,7 @@
             "landing": {
                 "title": "",
                 "navigation": {
-                    "openWork": "Works",
+                    "works": "Works",
                     "addWork": "New",
                     "importWork": "Import",
                     "settings": "Settings",
@@ -606,7 +606,7 @@
                     "failure": "Sorry, the import hasn't worked"
                 }
             },
-            "openWork": {
+            "works": {
                 "edit": "Edit",
                 "delete": "Delete",
                 "deleteConfirm": "Are you sure? This will delete everything except any associated backups"
