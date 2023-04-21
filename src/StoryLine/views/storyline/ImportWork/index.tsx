@@ -1,36 +1,20 @@
-import { Box, Button, Typography } from '@mui/material'
-import { useDatabase } from '@nozbe/watermelondb/hooks'
-import { useTranslation } from 'react-i18next'
-import useMessenger from '@sl/layouts/useMessenger'
-import importBibisco from './importBibisco'
-import { useNavigate } from 'react-router-dom'
+import Box from '@mui/material/Box'
+import Paper from '@mui/material/Paper'
 
-const ImportWorkView = () => {
-    const database = useDatabase()
-    const messenger = useMessenger()
-    const navigate = useNavigate()
-    const { t } = useTranslation()
+import * as Boxes from './Boxes'
 
-    return (
-        <Box>
-            <Typography variant='h4'>{t('view.storyline.importWork.title')}</Typography>
-            <Typography variant='h6'>{t('view.storyline.importWork.bibisco.title')}</Typography>
-            <Typography variant='body1'>{t('view.storyline.importWork.bibisco.text')}</Typography>
-            <Button
-                variant='contained'
-                onClick={async () => {
-                    const workId = await importBibisco(database)
-
-                    if (workId) {
-                        navigate(`/work/${workId}`)
-                    } else {
-                        messenger.error(t('view.storyline.importWork.bibisco.error'))
-                    }
-                }}>
-                {t('view.storyline.importWork.button')}
-            </Button>
-        </Box>
-    )
-}
-
+const ImportWorkView = () => (
+    <Box className='p-4 grid grid-cols-2 grid-rows-2 gap-4 flex-grow bg-slate-100'>
+        <Paper elevation={2} className='relative'>
+            <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
+                <Boxes.StoryLine />
+            </Box>
+        </Paper>
+        <Paper elevation={2} className='relative'>
+            <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
+                <Boxes.Bibisco />
+            </Box>
+        </Paper>
+    </Box>
+)
 export default ImportWorkView

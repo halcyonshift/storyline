@@ -10,6 +10,7 @@ export default {
     deleteFile: (path: string) => ipcRenderer.invoke('delete-file', path),
     backup: (json: object, images: string[], path: string) =>
         ipcRenderer.invoke('backup', json, images, path),
+    restore: () => ipcRenderer.invoke('restore'),
     selectFilePath: () => ipcRenderer.invoke('select-file-path'),
     exportHTML: (fileName: string, html: string) =>
         ipcRenderer.invoke('export-html', fileName, html),
