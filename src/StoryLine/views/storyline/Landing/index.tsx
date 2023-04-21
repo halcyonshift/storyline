@@ -24,9 +24,9 @@ const LandingView = () => {
                 <List>
                     {recentWorks.length ? (
                         <ListItem
-                            link='/openWork'
+                            link='/works'
                             icon={<FileOpenIcon />}
-                            text='view.storyline.landing.navigation.openWork'
+                            text='view.storyline.landing.navigation.works'
                         />
                     ) : null}
                     <ListItem

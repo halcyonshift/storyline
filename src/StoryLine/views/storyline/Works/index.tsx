@@ -98,7 +98,7 @@ const WorkRow = ({
             <TableCell>
                 <TooltipIconButton
                     icon={GLOBAL_ICONS.edit}
-                    text={t('view.storyline.openWork.edit')}
+                    text={t('view.storyline.works.edit')}
                     onClick={() => {
                         navigate(`/work/${work.id}/edit`)
                     }}
@@ -107,7 +107,7 @@ const WorkRow = ({
             <TableCell>
                 <TooltipIconButton
                     icon={GLOBAL_ICONS.delete}
-                    text={t('view.storyline.openWork.delete')}
+                    text={t('view.storyline.works.delete')}
                     onClick={() => {
                         setWork(work)
                         setOpen(true)
@@ -118,7 +118,7 @@ const WorkRow = ({
     )
 }
 
-const OpenWorkView = () => {
+const WorksView = () => {
     const [open, setOpen] = useState<boolean>(false)
     const [work, setWork] = useState<WorkModel>()
     const database = useDatabase()
@@ -171,16 +171,16 @@ const OpenWorkView = () => {
                 aria-labelledby='alert-dialog-title'
                 aria-describedby='alert-dialog-description'>
                 <DialogTitle id='alert-dialog-title'>
-                    {t('view.storyline.openWork.delete')}
+                    {t('view.storyline.works.delete')}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id='alert-dialog-description'>
-                        {t('view.storyline.openWork.deleteConfirm')}
+                        {t('view.storyline.works.deleteConfirm')}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleDelete} autoFocus>
-                        {t('view.storyline.openWork.delete')}
+                        {t('view.storyline.works.delete')}
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -188,4 +188,4 @@ const OpenWorkView = () => {
     )
 }
 
-export default OpenWorkView
+export default WorksView
