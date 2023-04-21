@@ -1,4 +1,4 @@
-import { MenuItem, TextField as MuiTextField } from '@mui/material'
+import { Box, MenuItem, TextField as MuiTextField } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
 import { FormikProps, useFormik } from 'formik'
@@ -59,56 +59,61 @@ const WorkForm = ({ work, initialValues }: WorkFormProps) => {
         }
     })
 
+    const BaseForm = () => (
+        <>
+            <TextField autoFocus form={form} label={t('form.work.work.title.label')} name='title' />
+            <TextField label={t('form.work.work.author')} name='author' form={form} />
+            <TextField select form={form} name='language' label={t('form.work.work.language')}>
+                <MenuItem value='en-gb'>English (UK)</MenuItem>
+                <MenuItem value='en-us'>English (US)</MenuItem>
+                <MenuItem value='en-au'>English (Australian)</MenuItem>
+            </TextField>
+        </>
+    )
+
     return (
         <FormWrapper
             form={form}
             title={work?.title || t('view.storyline.work.add')}
             model={work}
             tabList={[t('component.formWrapper.tab.general')]}>
-            <>
-                <TextField
-                    autoFocus
-                    form={form}
-                    label={t('form.work.work.title.label')}
-                    name='title'
-                />
-                <TextField label={t('form.work.work.author')} name='author' form={form} />
-                <TextField select form={form} name='language' label={t('form.work.work.language')}>
-                    <MenuItem value='en-gb'>English (UK)</MenuItem>
-                    <MenuItem value='en-us'>English (US)</MenuItem>
-                    <MenuItem value='en-au'>English (Australian)</MenuItem>
-                </TextField>
-                {initialValues.title ? (
-                    <>
-                        <TextareaField
-                            form={form}
-                            fieldName='summary'
-                            label={t('form.work.work.summary')}
-                        />
-                        <TextField
-                            form={form}
-                            label={t('form.work.work.wordGoal')}
-                            name='wordGoal'
-                            type='number'
-                            InputProps={{ inputProps: { min: 0, step: 1 } }}
-                        />
-                        <ImageField form={form} label={t('form.work.work.image')} dir='works' />
-                        <DatePicker
-                            label={t('form.work.work.deadline')}
-                            inputFormat='d/M/yyyy'
-                            disableMaskedInput
-                            value={form.values.deadlineAt}
-                            onChange={(newValue: DateTime | null) => {
-                                form.setFieldValue(
-                                    'deadlineAt',
-                                    newValue ? newValue.toJSDate() : null
-                                )
-                            }}
-                            renderInput={(params) => <MuiTextField margin='dense' {...params} />}
-                        />
-                    </>
-                ) : null}
-            </>
+            {!initialValues.title ? (
+                <BaseForm />
+            ) : (
+                <>
+                    <Box className='grid grid-cols-2 gap-3'>
+                        <Box>
+                            <BaseForm />
+                            <TextField
+                                form={form}
+                                label={t('form.work.work.wordGoal')}
+                                name='wordGoal'
+                                type='number'
+                                InputProps={{ inputProps: { min: 0, step: 1 } }}
+                            />
+                            <DatePicker
+                                label={t('form.work.work.deadline')}
+                                inputFormat='d/M/yyyy'
+                                disableMaskedInput
+                                value={form.values.deadlineAt}
+                                onChange={(newValue: DateTime | null) => {
+                                    form.setFieldValue(
+                                        'deadlineAt',
+                                        newValue ? newValue.toJSDate() : null
+                                    )
+                                }}
+                                renderInput={(params) => (
+                                    <MuiTextField margin='dense' {...params} />
+                                )}
+                            />
+                        </Box>
+                        <Box className='pt-2'>
+                            <ImageField form={form} dir='works' />
+                        </Box>
+                    </Box>
+                    <TextareaField form={form} fieldName='summary' />
+                </>
+            )}
         </FormWrapper>
     )
 }
