@@ -596,6 +596,12 @@
                     "title": "Bibisco",
                     "text": "Statistics history won't be imported, just a snapshot of the most recent data",
                     "error": "Sorry, the import hasn't worked"
+                },
+                "storyLine": {
+                    "title": "StoryLine",
+                    "text": "This will only import a backup if the work doesn't already exist - if it does, use the Restore inside the work",
+                    "error": "A work with this id already exists",
+                    "failure": "Sorry, the import hasn't worked"
                 }
             },
             "openWork": {
