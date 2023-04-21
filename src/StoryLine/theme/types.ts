@@ -42,7 +42,6 @@ export type SettingsDataType = {
     autoSave: boolean
     autoBackupFreq: number
     autoBackupPath: string
-    autoBackupMax: number
     palette: ColorType
 }
 
@@ -58,7 +57,6 @@ export type SettingsContextType = {
     setAutoSave: (autoSave: boolean) => void
     setAutoBackupFreq: (autoBackupFreq: number) => void
     setAutoBackupPath: (autoBackupPath: string) => void
-    setAutoBackupMax: (autoBackupMax: number) => void
     setPalette: (palette: ColorType) => void
     theme: Theme
     getHex: (shade?: ShadeType) => string

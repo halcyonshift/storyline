@@ -1,5 +1,10 @@
 {
     "storyline": "StoryLine",
+    "autoBackup": {
+        "warning": "Back up in progress",
+        "success": "Back up saved to {{filePath}}",
+        "failure": "Could not save back up to {{filePath}}"
+    },
     "error": {
         "connection": "Some features of this area aren't available without an internet connection",
         "404": {
@@ -488,7 +493,6 @@
                     "option60": "Every hour",
                     "option120": "Every 2 hours"
                 },
-                "autoBackupMax": "Maximum number of backups",
                 "autoBackupPath": {
                     "label": "Backup directory",
                     "select": "Select"

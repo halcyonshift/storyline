@@ -6,7 +6,6 @@ import { isBoolean } from 'lodash'
 import { changeLanguage } from 'i18next'
 import {
     DEFAULT_AUTO_BACKUP_FREQ,
-    DEFAULT_AUTO_BACKUP_MAX,
     DEFAULT_AUTO_SAVE,
     DEFAULT_DISPLAY_MODE,
     DEFAULT_FONT,
@@ -27,7 +26,6 @@ const SettingsContext = createContext({} as SettingsContextType)
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     const database = useDatabase()
     const [autoBackupFreq, setAutoBackupFreq] = useState<number>(DEFAULT_AUTO_BACKUP_FREQ)
-    const [autoBackupMax, setAutoBackupMax] = useState<number>(DEFAULT_AUTO_BACKUP_MAX)
     const [autoBackupPath, setAutoBackupPath] = useState<string>('')
     const [autoSave, setAutoSave] = useState<boolean>(DEFAULT_AUTO_SAVE)
     const [displayMode, setDisplayMode] = useState<DisplayModeType>(DEFAULT_DISPLAY_MODE)
@@ -50,9 +48,6 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
         database.localStorage
             .get<string>('autoBackupPath')
             .then((autoBackupPath) => setAutoBackupPath(autoBackupPath || ''))
-        database.localStorage
-            .get<number>('autoBackupMax')
-            .then((autoBackupMax) => setAutoBackupMax(autoBackupMax || DEFAULT_AUTO_BACKUP_MAX))
         database.localStorage
             .get<boolean>('autoSave')
             .then((autoSave) => setAutoSave(autoSave || DEFAULT_AUTO_SAVE))
@@ -90,7 +85,6 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
         changeLanguage(language)
         database.localStorage.set('autoBackupFreq', autoBackupFreq)
         database.localStorage.set('autoBackupPath', autoBackupPath)
-        database.localStorage.set('autoBackupMax', autoBackupMax)
         database.localStorage.set('autoSave', autoSave)
         database.localStorage.set('displayMode', displayMode)
         database.localStorage.set('font', font)
@@ -106,7 +100,6 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     }, [
         autoBackupFreq,
         autoBackupPath,
-        autoBackupMax,
         autoSave,
         displayMode,
         font,
@@ -197,8 +190,6 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
                 setAutoBackupFreq,
                 autoBackupPath,
                 setAutoBackupPath,
-                autoBackupMax,
-                setAutoBackupMax,
                 autoSave,
                 setAutoSave,
                 displayMode,
