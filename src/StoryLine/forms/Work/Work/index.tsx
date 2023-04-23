@@ -3,6 +3,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { FormikProps, useFormik } from 'formik'
 import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router'
 import * as yup from 'yup'
 import FormWrapper from '@sl/components/FormWrapper'
 import ImageField from '@sl/components/form/ImageField'
@@ -15,6 +16,7 @@ import { WorkFormProps } from './types'
 const WorkForm = ({ work, initialValues }: WorkFormProps) => {
     const { t } = useTranslation()
     const messenger = useMessenger()
+    const navigate = useNavigate()
 
     const validationSchema = yup.object({
         title: yup.string().required(t('form.work.work.title.required')),
@@ -32,6 +34,7 @@ const WorkForm = ({ work, initialValues }: WorkFormProps) => {
         validationSchema,
         onSubmit: async (values: WorkDataType) => {
             await work.updateWork(values)
+            navigate(`/work/${work.id}`)
             messenger.success(t('form.work.work.alert.success'))
         }
     })

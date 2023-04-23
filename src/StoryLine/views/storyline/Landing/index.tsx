@@ -42,7 +42,7 @@ const LandingView = () => {
         const chapter = await part.addChapter()
         await chapter.addScene()
 
-        navigate(`/work/${work.id}`)
+        navigate(`/work/${work.id}/edit`)
     }
 
     return (
