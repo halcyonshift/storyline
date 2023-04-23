@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
@@ -7,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { GLOBAL_ICONS } from '@sl/constants/icons'
 
 const StoryLineLayout = () => {
     const [title, setTitle] = useState<string>('')
@@ -18,7 +18,7 @@ const StoryLineLayout = () => {
 
     return (
         <Box className={`flex flex-col flex-grow`}>
-            <AppBar position='static' color='transparent'>
+            <AppBar position='static' color='transparent' elevation={0} className='border-b'>
                 <Toolbar variant='dense'>
                     <Box>
                         <IconButton
@@ -28,7 +28,7 @@ const StoryLineLayout = () => {
                             color='inherit'
                             aria-label={t('navigation.back')}
                             onClick={() => navigate(-1)}>
-                            <ArrowBackIcon />
+                            {GLOBAL_ICONS.back}
                         </IconButton>
                     </Box>
                     <Box className='flex flex-grow justify-between'>
