@@ -38,10 +38,6 @@ const router = createHashRouter([
                                 .fetch()
                     },
                     {
-                        path: 'addWork',
-                        element: <StoryLineViews.AddWorkView />
-                    },
-                    {
                         path: 'works',
                         element: <StoryLineViews.WorksView />
                     },

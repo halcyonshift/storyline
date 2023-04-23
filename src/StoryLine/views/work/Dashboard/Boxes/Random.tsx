@@ -38,7 +38,7 @@ const RandomBox = () => {
         setPrompt(
             t(
                 `constant.random.prompts.prompt_${sample(
-                    Array.from({ length: PROMPTS }, (v, k) => k + 1)
+                    Array.from({ length: PROMPTS }, (_, k) => k + 1)
                 )}`
             )
         )

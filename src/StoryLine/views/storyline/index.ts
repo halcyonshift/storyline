@@ -1,4 +1,3 @@
-export { default as AddWorkView } from './AddWork'
 export { default as ErrorBoundary } from './ErrorBoundary'
 export { default as ImportWorkView } from './ImportWork'
 export { default as InfoView } from './Info'
