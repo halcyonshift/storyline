@@ -32,7 +32,11 @@ const WorkLayout = () => {
         <LayoutProvider navigationRef={navigationRef} panelRef={panelRef} mainRef={mainRef}>
             <TabsProvider>
                 <Box className={`flex flex-col flex-grow`}>
-                    <AppBar position='static' color='transparent' className='z-10'>
+                    <AppBar
+                        position='static'
+                        color='transparent'
+                        className='z-10 border-b'
+                        elevation={0}>
                         <Toolbar variant='dense'>
                             <Box>
                                 <IconButton
