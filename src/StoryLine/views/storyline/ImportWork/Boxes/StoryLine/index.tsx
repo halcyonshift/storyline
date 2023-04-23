@@ -43,7 +43,9 @@ const StoryLineBox = () => {
 
     return (
         <Box className='grid h-full place-items-center p-5'>
-            <Typography variant='h6'>{t('view.storyline.importWork.storyLine.title')}</Typography>
+            <Typography variant='h6' className='text-indigo-600'>
+                {t('view.storyline.importWork.storyLine.title')}
+            </Typography>
             <Typography variant='body1'>{t('view.storyline.importWork.storyLine.text')}</Typography>
             <Button variant='contained' onClick={importWork}>
                 {t('view.storyline.importWork.button')}

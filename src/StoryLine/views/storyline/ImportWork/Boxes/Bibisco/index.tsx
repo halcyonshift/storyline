@@ -1,9 +1,10 @@
 import { Box, Button, Typography } from '@mui/material'
-import useMessenger from '@sl/layouts/useMessenger'
-import { useTranslation } from 'react-i18next'
-import importBibisco from './importBibisco'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import Link from '@sl/components/Link'
+import useMessenger from '@sl/layouts/useMessenger'
+import importBibisco from './importBibisco'
 
 const BibiscoBox = () => {
     const database = useDatabase()
@@ -13,7 +14,11 @@ const BibiscoBox = () => {
 
     return (
         <Box className='grid h-full place-items-center p-5'>
-            <Typography variant='h6'>{t('view.storyline.importWork.bibisco.title')}</Typography>
+            <Typography variant='h6' sx={{ color: '#004000' }}>
+                <Link href='https://bibisco.com/' color='inherit'>
+                    {t('view.storyline.importWork.bibisco.title')}
+                </Link>
+            </Typography>
             <Typography variant='body1'>{t('view.storyline.importWork.bibisco.text')}</Typography>
             <Button
                 variant='contained'
