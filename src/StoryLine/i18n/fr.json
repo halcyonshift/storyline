@@ -21,7 +21,7 @@
                 "title": "",
                 "navigation": {
                     "works": "Projets",
-                    "addWork": "Nouveau projet",
+                    "new": "Nouveau projet",
                     "importWork": "Importer un projet",
                     "settings": "Paramètres",
                     "info": "Information"

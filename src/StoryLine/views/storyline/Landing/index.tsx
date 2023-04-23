@@ -6,16 +6,44 @@ import SettingsIcon from '@mui/icons-material/Settings'
 import InfoIcon from '@mui/icons-material/Info'
 import Grid from '@mui/material/Grid'
 import List from '@mui/material/List'
+import { default as MuiListItem } from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
 import Typography from '@mui/material/Typography'
+import { sample } from 'lodash'
 import { useTranslation } from 'react-i18next'
-import { useLoaderData } from 'react-router-dom'
-
+import { useLoaderData, useNavigate } from 'react-router-dom'
 import ListItem from '@sl/components/ListItem'
+import { Status } from '@sl/constants/status'
 import { WorkModel } from '@sl/db/models'
+import { useDatabase } from '@nozbe/watermelondb/hooks'
 
 const LandingView = () => {
+    const database = useDatabase()
+    const navigate = useNavigate()
     const recentWorks = useLoaderData() as WorkModel[]
     const { t } = useTranslation()
+
+    const handleNew = async () => {
+        const work = await database.write(async () => {
+            return await database.get<WorkModel>('work').create((work) => {
+                work.title = t(
+                    `view.storyline.landing.titles.title_${sample(
+                        Array.from({ length: 30 }, (_, k) => k + 1)
+                    )}`
+                )
+                work.language = 'en-gb'
+                work.status = Status.TODO
+            })
+        })
+
+        const part = await work.addPart()
+        const chapter = await part.addChapter()
+        await chapter.addScene()
+
+        navigate(`/work/${work.id}/edit`)
+    }
 
     return (
         <Grid container spacing={2}>
@@ -29,11 +57,14 @@ const LandingView = () => {
                             text='view.storyline.landing.navigation.works'
                         />
                     ) : null}
-                    <ListItem
-                        link='/addWork'
-                        icon={<AddIcon />}
-                        text='view.storyline.landing.navigation.addWork'
-                    />
+                    <MuiListItem disablePadding disableGutters>
+                        <ListItemButton onClick={handleNew}>
+                            <ListItemIcon>
+                                <AddIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={t('view.storyline.landing.navigation.new')} />
+                        </ListItemButton>
+                    </MuiListItem>
                     <ListItem
                         link='/importWork'
                         icon={<ArrowDownwardIcon />}

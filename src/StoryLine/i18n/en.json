@@ -582,13 +582,45 @@
                 "title": "",
                 "navigation": {
                     "works": "Works",
-                    "addWork": "New",
+                    "new": "New",
                     "importWork": "Import",
                     "settings": "Settings",
                     "info": "Info"
                 },
                 "recent": {
                     "title": "Recently opened"
+                },
+                "titles": {
+                    "title_1": "The Adventures of a Couch Potato Detective",
+                    "title_2": "My Cat, the CEO",
+                    "title_3": "The Curse of the Talking Toaster",
+                    "title_4": "A Zombie's Guide to Love",
+                    "title_5": "The Great Cheeto Heist",
+                    "title_6": "The Secret Life of a Professional Gummy Bear Taster",
+                    "title_7": "The Poodle Who Saved the World",
+                    "title_8": "The Chronicles of a Time-Traveling Squirrel",
+                    "title_9": "The Day the Aliens Ate My Homework",
+                    "title_10": "My Life as a Ninja Banana",
+                    "title_11": "The Misadventures of a Self-Proclaimed Superhero",
+                    "title_12": "The Revenge of the Lawn Gnomes",
+                    "title_13": "The Unfortunate Fate of the Unicorns",
+                    "title_14": "The Mysterious Case of the Disappearing Socks",
+                    "title_15": "The Diary of a Cheese Fiend",
+                    "title_16": "The Werewolf's Guide to Personal Hygiene",
+                    "title_17": "The Secret Life of a Professional Bubble Wrap Popper",
+                    "title_18": "The Adventures of a Talking Houseplant",
+                    "title_19": "The Mystery of the Haunted Lint Roller",
+                    "title_20": "The Misadventures of a Superpowered Goldfish",
+                    "title_21": "The Epic Battle of the Robot Vacuum Cleaners",
+                    "title_22": "The Day the Zombies Invaded Walmart",
+                    "title_23": "The Secret Life of a Professional Pillow Fluffer",
+                    "title_24": "The Mysterious Case of the Vanishing Toilet Paper",
+                    "title_25":  "The Adventures of a Ninja Koala",
+                    "title_26": "The Unfortunate Fate of the Last Cupcake",
+                    "title_27": "The Curse of the Dancing Chicken Nuggets",
+                    "title_28": "The Chronicles of a Time-Traveling Rubber Chicken",
+                    "title_29": "The Secret Life of a Professional Whoopee Cushion Tester",
+                    "title_30": "The Misadventures of a Time-Traveling Hamster"
                 }
             },
             "importWork": {
