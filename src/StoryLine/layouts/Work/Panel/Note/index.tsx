@@ -11,6 +11,7 @@ import { NOTE_ICONS } from '@sl/constants/icons'
 import { NoteModel, WorkModel } from '@sl/db/models'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
 import Block from './Block'
+import { Status } from '@sl/constants/status'
 
 const NotePanel = () => {
     const [group, setGroup] = useState<boolean>(false)
@@ -90,7 +91,13 @@ const NotePanel = () => {
 
     return (
         <Panel
-            action={<GroupToggle group={group} setGroup={setGroup} />}
+            action={
+                <GroupToggle
+                    label={'layout.work.panel.note.groupToggle'}
+                    group={group}
+                    setGroup={setGroup}
+                />
+            }
             navigation={[
                 { link: 'addNote', text: 'layout.work.panel.note.add', icon: NOTE_ICONS.add }
             ]}>
@@ -99,6 +106,13 @@ const NotePanel = () => {
                     {(provided) => (
                         <Box {...provided.droppableProps} ref={provided.innerRef}>
                             {notes
+                                .filter((note) =>
+                                    Boolean(
+                                        group ||
+                                            note.status !== Status.ARCHIVE ||
+                                            notes.find((child) => child.note.id === note.id)
+                                    )
+                                )
                                 .filter((note) => !note.note.id)
                                 .map((note, index) => (
                                     <Block
