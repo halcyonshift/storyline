@@ -7,6 +7,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
+    Paper,
     Table,
     TableBody,
     TableCell,
@@ -141,30 +142,40 @@ const WorksView = () => {
 
     return (
         <>
-            <TableContainer>
-                <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell></TableCell>
-                            <TableCell align='center'>Words</TableCell>
-                            <TableCell align='center'>Deadline</TableCell>
-                            <TableCell align='center'>Status</TableCell>
-                            <TableCell></TableCell>
-                            <TableCell></TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {works.map((work) => (
-                            <WorkRow
-                                key={work.id}
-                                work={work}
-                                setOpen={setOpen}
-                                setWork={setWork}
-                            />
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <Box className='p-4 bg-slate-50 h-full'>
+                <Paper elevation={1} className='relative'>
+                    <TableContainer>
+                        <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell></TableCell>
+                                    <TableCell align='center'>
+                                        {t('view.storyline.works.table.th.words')}
+                                    </TableCell>
+                                    <TableCell align='center'>
+                                        {t('view.storyline.works.table.th.deadline')}
+                                    </TableCell>
+                                    <TableCell align='center'>
+                                        {t('view.storyline.works.table.th.status')}
+                                    </TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {works.map((work) => (
+                                    <WorkRow
+                                        key={work.id}
+                                        work={work}
+                                        setOpen={setOpen}
+                                        setWork={setWork}
+                                    />
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Paper>
+            </Box>
             <Dialog
                 open={open}
                 onClose={handleClose}

@@ -8,7 +8,7 @@ const InfoView = () => {
     const { t } = useTranslation()
 
     return (
-        <Box className='grid grid-cols-2 gap-3'>
+        <Box className='grid grid-cols-2 gap-3 p-8'>
             <Box>
                 <Typography variant='h6'>{t('view.storyline.info.about.title')}</Typography>
                 <Stack spacing={1} className='mt-3'>

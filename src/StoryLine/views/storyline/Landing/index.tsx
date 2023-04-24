@@ -1,23 +1,21 @@
-import AddIcon from '@mui/icons-material/Add'
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
-import ArrowRightIcon from '@mui/icons-material/ArrowRight'
-import FileOpenIcon from '@mui/icons-material/FileOpen'
-import SettingsIcon from '@mui/icons-material/Settings'
-import InfoIcon from '@mui/icons-material/Info'
-import Grid from '@mui/material/Grid'
-import List from '@mui/material/List'
-import { default as MuiListItem } from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import Typography from '@mui/material/Typography'
+import { Add, ArrowDownward, FileOpen, Settings, Info } from '@mui/icons-material'
+import {
+    Box,
+    List,
+    ListItem as MuiListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Paper,
+    Typography
+} from '@mui/material'
+import { useDatabase } from '@nozbe/watermelondb/hooks'
 import { sample } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useLoaderData, useNavigate } from 'react-router-dom'
 import ListItem from '@sl/components/ListItem'
 import { Status } from '@sl/constants/status'
 import { WorkModel } from '@sl/db/models'
-import { useDatabase } from '@nozbe/watermelondb/hooks'
 
 const LandingView = () => {
     const database = useDatabase()
@@ -46,56 +44,61 @@ const LandingView = () => {
     }
 
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={6}>
-                <Typography variant='h5'>{t('view.storyline.landing.title')}</Typography>
+        <Box className='p-4 grid grid-cols-2 grid-rows-2 gap-4 flex-grow bg-slate-50'>
+            <Paper elevation={1} className='relative'>
+                <Typography variant='h6' className='px-4 pt-3'>
+                    {t('view.storyline.landing.title')}
+                </Typography>
                 <List>
                     {recentWorks.length ? (
                         <ListItem
                             link='/works'
-                            icon={<FileOpenIcon />}
+                            icon={<FileOpen />}
                             text='view.storyline.landing.navigation.works'
                         />
                     ) : null}
                     <MuiListItem disablePadding disableGutters>
                         <ListItemButton onClick={handleNew}>
                             <ListItemIcon>
-                                <AddIcon />
+                                <Add />
                             </ListItemIcon>
                             <ListItemText primary={t('view.storyline.landing.navigation.new')} />
                         </ListItemButton>
                     </MuiListItem>
                     <ListItem
                         link='/importWork'
-                        icon={<ArrowDownwardIcon />}
+                        icon={<ArrowDownward />}
                         text='view.storyline.landing.navigation.importWork'
                     />
                     <ListItem
                         link='/settings'
-                        icon={<SettingsIcon />}
+                        icon={<Settings />}
                         text='view.storyline.landing.navigation.settings'
                     />
                     <ListItem
                         link='/info'
-                        icon={<InfoIcon />}
+                        icon={<Info />}
                         text='view.storyline.landing.navigation.info'
                     />
                 </List>
-            </Grid>
-            {recentWorks.length ? (
-                <Grid item xs={6}>
-                    <Typography variant='h6'>{t('view.storyline.landing.recent.title')}</Typography>
+            </Paper>
+            <Paper elevation={1} className='relative'>
+                <Typography variant='h6' className='px-4 pt-3'>
+                    {t('view.storyline.landing.recent.title')}
+                </Typography>
+                <List>
                     {recentWorks.map((work) => (
-                        <ListItem
-                            key={work.id}
-                            link={`/work/${work.id}`}
-                            icon={<ArrowRightIcon />}
-                            text={work.title}
-                        />
+                        <ListItem key={work.id} link={`/work/${work.id}`} text={work.title} />
                     ))}
-                </Grid>
-            ) : null}
-        </Grid>
+                </List>
+            </Paper>
+            <Box></Box>
+            <Paper elevation={1} className='relative'>
+                <Typography variant='h6' className='px-4 pt-3'>
+                    {t('view.storyline.landing.feedback.title')}
+                </Typography>
+            </Paper>
+        </Box>
     )
 }
 

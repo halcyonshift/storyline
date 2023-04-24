@@ -583,7 +583,7 @@
     "view": {
         "storyline": {
             "landing": {
-                "title": "",
+                "title": "Welcome to StoryLine!",
                 "navigation": {
                     "works": "Works",
                     "new": "New",
@@ -593,6 +593,9 @@
                 },
                 "recent": {
                     "title": "Recently opened"
+                },
+                "feedback": {
+                    "title": "Feedback"
                 },
                 "titles": {
                     "title_1": "The Adventures of a Couch Potato Detective",
@@ -643,6 +646,13 @@
                 }
             },
             "works": {
+                "table": {
+                    "th": {
+                        "words": "Words",
+                        "deadline": "Deadline",
+                        "status": "Status"
+                    }
+                },
                 "edit": "Edit",
                 "delete": "Delete",
                 "deleteConfirm": "Are you sure? This will delete everything except any associated backups"
@@ -722,6 +732,15 @@
                     "day": "Daily",
                     "week": "Weekly",
                     "month": "Monthly"
+                },
+                "wordsByDay": {
+                    "mon": "Monday",
+                    "tue": "Tuesday",
+                    "wed": "Wednesday",
+                    "thu": "Thursday",
+                    "fri": "Friday",
+                    "sat": "Saturday",
+                    "sun": "Sunday"
                 }
             },
             "dashboard": {
