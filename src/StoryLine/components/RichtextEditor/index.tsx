@@ -34,7 +34,15 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
     const [canSave, setCanSave] = useState<boolean>(false)
     const [menu, setMenu] = useState<string | null>(null)
     const [menuElement, setMenuElement] = useState<HTMLElement | null>(null)
-    const { autoSave, indentParagraph, lineSpacing, paragraphSpacing, spellCheck } = useSettings()
+    const {
+        autoSave,
+        editorFont,
+        editorFontSize,
+        indentParagraph,
+        lineSpacing,
+        paragraphSpacing,
+        spellCheck
+    } = useSettings()
     const { loadTab } = useTabs()
     const { t } = useTranslation()
     const ref = useRef<HTMLElement>()
@@ -80,7 +88,12 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
 
     return useMemo(
         () => (
-            <Box className='flex-grow flex flex-col'>
+            <Box
+                className='flex-grow flex flex-col'
+                sx={{
+                    fontFamily: editorFont,
+                    fontSize: editorFontSize
+                }}>
                 <LexicalComposer
                     initialConfig={{
                         namespace: 'rte',

@@ -33,8 +33,10 @@ export type ShadeType = 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900
 export type SettingsDataType = {
     language: LanguageType
     displayMode: DisplayModeType
-    font: FontType
-    fontSize: number
+    appFont: FontType
+    appFontSize: number
+    editorFont: FontType
+    editorFontSize: number
     indentParagraph: boolean
     lineSpacing: 'normal' | 'relaxed' | 'loose'
     paragraphSpacing: number
@@ -47,8 +49,10 @@ export type SettingsDataType = {
 
 export type SettingsContextType = {
     setLanguage: (language: LanguageType) => void
-    setFont: (font: FontType) => void
-    setFontSize: (fontSize: number) => void
+    setAppFont: (font: FontType) => void
+    setAppFontSize: (fontSize: number) => void
+    setEditorFont: (font: FontType) => void
+    setEditorFontSize: (fontSize: number) => void
     setDisplayMode: (displayMode: DisplayModeType) => void
     setIndentParagraph: (indentParagraph: boolean) => void
     setLineSpacing: (lineSpacing: 'normal' | 'relaxed' | 'loose') => void
