@@ -165,13 +165,15 @@ const ConnectionForm = ({ work, connection, initialValues, setOpen }: Connection
                         )}
                     />
                 </Box>
-                <Box className='col-span-2 text-center'>
-                    <IconButton onClick={() => form.setFieldValue('to', !form.values.to)}>
-                        <ArrowFowardIcon color={form.values.to ? 'success' : 'inherit'} />
-                    </IconButton>
-                    <IconButton onClick={() => form.setFieldValue('from', !form.values.from)}>
-                        <ArrowBackIcon color={form.values.from ? 'success' : 'inherit'} />
-                    </IconButton>
+                <Box className='col-span-2 text-center flex flex-col justify-center'>
+                    <Box>
+                        <IconButton onClick={() => form.setFieldValue('to', !form.values.to)}>
+                            <ArrowFowardIcon color={form.values.to ? 'success' : 'inherit'} />
+                        </IconButton>
+                        <IconButton onClick={() => form.setFieldValue('from', !form.values.from)}>
+                            <ArrowBackIcon color={form.values.from ? 'success' : 'inherit'} />
+                        </IconButton>
+                    </Box>
                 </Box>
                 <Box className='col-span-5'>
                     <Box className='flex justify-around'>
@@ -210,17 +212,23 @@ const ConnectionForm = ({ work, connection, initialValues, setOpen }: Connection
                 <DateField form={form} label={'form.work.connection.date'} fieldName='date' />
                 <ColorField name='color' form={form} />
             </Box>
-            <TextareaField fieldName='body' form={form} />
-            <Button type='submit'>{t('form.work.connection.button.save')}</Button>
-            {connection?.id ? (
-                <Button
-                    onClick={async () => {
-                        await connection.delete()
-                        setOpen(false)
-                    }}>
-                    {t('form.work.connection.button.delete')}
+            <Box className='py-2'>
+                <TextareaField fieldName='body' form={form} />
+            </Box>
+            <Box className='flex justify-between'>
+                {connection?.id ? (
+                    <Button
+                        onClick={async () => {
+                            await connection.delete()
+                            setOpen(false)
+                        }}>
+                        {t('form.work.connection.button.delete')}
+                    </Button>
+                ) : null}
+                <Button type='submit' variant='contained'>
+                    {t('form.work.connection.button.save')}
                 </Button>
-            ) : null}
+            </Box>
         </Box>
     )
 }

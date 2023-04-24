@@ -725,6 +725,9 @@
                         "label": "Relation",
                         "all": "All"
                     }
+                },
+                "button": {
+                    "add": "New"
                 }
             },
             "insight": {

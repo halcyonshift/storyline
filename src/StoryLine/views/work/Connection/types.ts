@@ -7,6 +7,9 @@ export type NodeType = {
     label: string
     table: string
     obj: ObjType
+    color?: string
+    shape?: string
+    size?: number
 }
 
 export type NodeTypeByID = {
