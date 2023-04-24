@@ -6,13 +6,6 @@ export type LastUpdatedType = {
     date: DateTime
 } & TabType
 
-export type RandomCharacterType = {
-    name: string
-    job: string
-    dateOfBirth: string
-    traits: string
-}
-
 export type TimelineItemType = {
     date: DateTime
     items: { label: string; status: StatusType }[]

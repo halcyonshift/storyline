@@ -15,7 +15,7 @@ import { useRouteLoaderData } from 'react-router-dom'
 import { YYYYMMDD } from '@sl/constants'
 import { WorkModel } from '@sl/db/models'
 import useSettings from '@sl/theme/useSettings'
-import { TimelineItemType, DeadlineType } from './types'
+import { TimelineItemType, DeadlineType } from '../types'
 import { status } from '@sl/theme/utils'
 
 const DeadlinesBox = () => {

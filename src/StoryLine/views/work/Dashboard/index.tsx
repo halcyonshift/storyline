@@ -19,7 +19,9 @@ const DashboardView = () => {
                 </Box>
             </Paper>
             <Paper elevation={2} className='relative row-span-3'>
-                <Boxes.Deadlines />
+                <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
+                    <Boxes.Tracker />
+                </Box>
             </Paper>
             <Paper elevation={2} className='relative  row-span-2'>
                 <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
@@ -28,7 +30,7 @@ const DashboardView = () => {
             </Paper>
             <Paper elevation={2} className='relative row-span-2'>
                 <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
-                    <Boxes.Tracker />
+                    <Boxes.Deadlines />
                 </Box>
             </Paper>
             <Paper elevation={2} className='relative'>
