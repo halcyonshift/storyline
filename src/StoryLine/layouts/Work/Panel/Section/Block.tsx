@@ -52,8 +52,7 @@ const Block = ({ section, index, fontWeight }: BlockType) => {
                                             section.isScene
                                                 ? loadTab({
                                                       id: section.id,
-                                                      label: section.displayTitle,
-                                                      link: `section/${section.id}`
+                                                      mode: 'section'
                                                   })
                                                 : setShow(!show)
                                         }>

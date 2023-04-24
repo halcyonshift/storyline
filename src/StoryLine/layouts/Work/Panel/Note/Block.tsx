@@ -51,11 +51,7 @@ const Block = ({ note, index, fontWeight }: BlockType) => {
                                 <Box className='flex flex-grow pr-1'>
                                     <ListItemButton
                                         onClick={() => {
-                                            loadTab({
-                                                id: note.id,
-                                                label: note.title,
-                                                link: `note/${note.id}`
-                                            })
+                                            loadTab({ id: note.id, mode: 'note' })
                                             setShow(!show)
                                         }}>
                                         <Typography

@@ -1,9 +1,10 @@
 import { MutableRefObject, ReactNode } from 'react'
 
 export type TabType = {
-    id: string
-    label: string
-    link: string
+    id?: string
+    label?: string
+    link?: string
+    mode?: 'character' | 'item' | 'location' | 'note' | 'section'
 }
 
 export type TabsDataType = {

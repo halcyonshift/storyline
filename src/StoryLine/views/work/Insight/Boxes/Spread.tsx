@@ -101,7 +101,7 @@ const Spread = () => {
                 <TableBody>
                     {tags.characters.map((appearance: any) => (
                         <TableRow
-                            key={appearance.character.id}
+                            key={`spread-${appearance.character.id}`}
                             sx={{
                                 '&:last-child td, &:last-child th': { border: 0 }
                             }}>
@@ -120,7 +120,7 @@ const Spread = () => {
                     ))}
                     {tags.items.map((appearance: any) => (
                         <TableRow
-                            key={appearance.item.id}
+                            key={`spread-${appearance.item.id}`}
                             sx={{
                                 '&:last-child td, &:last-child th': { border: 0 }
                             }}>
@@ -139,7 +139,7 @@ const Spread = () => {
                     ))}
                     {tags.locations.map((appearance: any) => (
                         <TableRow
-                            key={appearance.location.id}
+                            key={`spread-${appearance.location.id}`}
                             sx={{
                                 '&:last-child td, &:last-child th': { border: 0 }
                             }}>
@@ -158,7 +158,7 @@ const Spread = () => {
                     ))}
                     {tags.notes.map((appearance: any) => (
                         <TableRow
-                            key={appearance.note.id}
+                            key={`spread-${appearance.note.id}`}
                             sx={{
                                 '&:last-child td, &:last-child th': { border: 0 }
                             }}>

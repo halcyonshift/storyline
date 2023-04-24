@@ -22,11 +22,18 @@ const Result = ({ result }: { result: SearchResultType }) => {
                 <Box className='pl-5 pr-2'>
                     {result.excerpts.map((excerpt: string, index: number) => (
                         <Typography
+                            key={`result-${index}`}
                             variant='body2'
                             onClick={() =>
                                 loadTab({
                                     id: result.id,
                                     label: result.label,
+                                    mode: result.link.split('/')[0] as
+                                        | 'character'
+                                        | 'item'
+                                        | 'location'
+                                        | 'note'
+                                        | 'section',
                                     link: result.link.includes('section/')
                                         ? `${result.link}/${index}`
                                         : result.link

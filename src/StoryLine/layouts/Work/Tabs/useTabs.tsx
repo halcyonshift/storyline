@@ -9,7 +9,6 @@ export const TabsProvider = ({ children }: TabsProviderProps) => {
     const [active, setActive] = useState<number>()
     const [showTabs, setShowTabs] = useState<boolean>(false)
     const params = useParams()
-
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -35,7 +34,8 @@ export const TabsProvider = ({ children }: TabsProviderProps) => {
             setActive(focus)
         }
         if (switchTab) {
-            navigate(`/work/${params.work_id}/${focusTab.link}`)
+            const link = focusTab.link || `${focusTab.mode}/${focusTab.id}`
+            navigate(`/work/${params.work_id}/${link}`)
         }
     }
 

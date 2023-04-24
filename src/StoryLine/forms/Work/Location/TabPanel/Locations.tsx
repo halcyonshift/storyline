@@ -55,11 +55,7 @@ const LocationsPanel = ({ location }: LocationTabPanelProps) => {
                     }>
                     <ListItemButton
                         onClick={() => {
-                            loadTab({
-                                id: location.id,
-                                label: location.displayName,
-                                link: `location/${location.id}`
-                            })
+                            loadTab({ id: location.id, mode: 'location' })
                         }}>
                         <ListItemText primary={location.displayName} />
                     </ListItemButton>
