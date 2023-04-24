@@ -21,11 +21,11 @@ const ChapterList = ({ chapters, scenes }: ChapterListProps) => {
                             backgroundColor: status(chapter.status, 100).color,
                             marginBottom: '1px'
                         }}>
-                        <Box className='col-span-2 px-2 py-1'>
+                        <Box className={`col-span-${chapter.wordGoal ? 2 : 3} px-2 py-1`}>
                             <Typography
                                 variant='body1'
                                 className='whitespace-nowrap overflow-hidden text-ellipsis
-                                    pr-3 flex justify-between'>
+                                    flex justify-between'>
                                 {chapter.displayTitle}
                                 {chapter.wordCount && !chapter.wordGoal ? (
                                     <span>
