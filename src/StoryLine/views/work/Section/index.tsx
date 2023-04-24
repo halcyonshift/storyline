@@ -8,9 +8,9 @@ const SectionView = () => {
     const section = useRouteLoaderData('section') as SectionModel
 
     if (section.isPart) {
-        return <PartView section={section} />
+        return <PartView />
     } else if (section.isChapter) {
-        return <ChapterView section={section} />
+        return <ChapterView />
     } else {
         return <SceneView section={section} />
     }
