@@ -69,7 +69,18 @@ const LastUpdatedBox = () => {
                             </IconButton>
                         </>
                     }>
-                    <ListItemButton onClick={() => loadTab(item)}>
+                    <ListItemButton
+                        onClick={() =>
+                            loadTab({
+                                id: item.id,
+                                mode: item.link.split('/')[0] as
+                                    | 'character'
+                                    | 'item'
+                                    | 'location'
+                                    | 'note'
+                                    | 'section'
+                            })
+                        }>
                         <ListItemText
                             primary={item.label}
                             secondary={item.date

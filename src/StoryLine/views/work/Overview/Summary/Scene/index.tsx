@@ -44,13 +44,7 @@ const SceneSummary = ({ scenes }: SceneSummaryProps) => {
                     <Typography variant='body2'>{scene.displayDateTime}</Typography>
                     <Typography
                         variant='h6'
-                        onClick={() =>
-                            loadTab({
-                                id: scene.id,
-                                label: scene.displayTitle,
-                                link: `section/${scene.id}`
-                            })
-                        }>
+                        onClick={() => loadTab({ id: scene.id, mode: 'section' })}>
                         {scene.displayTitle}
                     </Typography>
                     <TagList scene={scene} />

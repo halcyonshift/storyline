@@ -79,7 +79,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
             loadTab({
                 id: parts[1],
                 label: decodeURI(parts[2]),
-                link: `${parts[0]}/${parts[1]}`
+                mode: parts[0] as 'character' | 'item' | 'location' | 'note' | 'section'
             })
         }
     }

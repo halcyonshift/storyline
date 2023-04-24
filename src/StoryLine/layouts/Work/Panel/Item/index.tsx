@@ -45,13 +45,7 @@ const ItemPanel = () => {
                             primary={
                                 <Box className='flex justify-between align-middle'>
                                     <ListItemButton
-                                        onClick={() =>
-                                            loadTab({
-                                                id: item.id,
-                                                label: item.displayName,
-                                                link: `item/${item.id}`
-                                            })
-                                        }>
+                                        onClick={() => loadTab({ id: item.id, mode: 'item' })}>
                                         <Typography
                                             variant='body1'
                                             className='whitespace-nowrap text-ellipsis

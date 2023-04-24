@@ -50,8 +50,7 @@ const LocationView = () => {
                                     onClick={() => {
                                         loadTab({
                                             id: child.id,
-                                            label: child.displayName,
-                                            link: `location/${child.id}`
+                                            mode: 'location'
                                         })
                                     }}>
                                     <ListItemText primary={child.displayName} />

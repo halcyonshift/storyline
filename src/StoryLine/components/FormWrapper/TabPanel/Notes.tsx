@@ -49,11 +49,7 @@ const NotesPanel = ({ notes }: TabPanelProps) => {
                     }>
                     <ListItemButton
                         onClick={() => {
-                            loadTab({
-                                id: note.id,
-                                label: note.displayName,
-                                link: `note/${note.id}`
-                            })
+                            loadTab({ id: note.id, mode: 'note' })
                         }}>
                         <ListItemText
                             primary={note.displayName}

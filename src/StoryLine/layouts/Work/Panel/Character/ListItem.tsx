@@ -23,13 +23,7 @@ const ListItem = ({ character, showIcon }: ListItemProps) => {
                         className='flex justify-between align-middle'
                         sx={{ backgroundColor: status(character.status).color }}>
                         <ListItemButton
-                            onClick={() =>
-                                tabs.loadTab({
-                                    id: character.id,
-                                    label: character.displayName,
-                                    link: `character/${character.id}`
-                                })
-                            }>
+                            onClick={() => tabs.loadTab({ id: character.id, mode: 'character' })}>
                             {showIcon ? (
                                 <Box className='pr-1'>
                                     {

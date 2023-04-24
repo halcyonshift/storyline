@@ -31,7 +31,7 @@ const VersionPlugin = (props: MenuProps) => {
                             loadTab({
                                 id,
                                 label: `${section.displayTitle} - ${version.displayTitle}`,
-                                link: `section/${id}`
+                                mode: 'section'
                             })
                         })
                 } else {
@@ -39,7 +39,7 @@ const VersionPlugin = (props: MenuProps) => {
                         loadTab({
                             id: version.id,
                             label: `${section.displayTitle} - ${version.displayTitle}`,
-                            link: `section/${version.id}`
+                            mode: 'section'
                         })
                     })
                 }
