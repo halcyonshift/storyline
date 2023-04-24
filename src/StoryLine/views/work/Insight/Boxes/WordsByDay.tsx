@@ -15,6 +15,7 @@ import { Bar } from 'react-chartjs-2'
 import { useRouteLoaderData } from 'react-router-dom'
 import { WorkModel } from '@sl/db/models'
 import { getHex } from '@sl/theme/utils'
+import { useTranslation } from 'react-i18next'
 
 ChartJS.register(
     annotationPlugin,
@@ -40,17 +41,18 @@ const WordsByDayBox = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [statistics, setStatistics] = useState<any[]>([])
     const [labels, setLabels] = useState<string[]>()
+    const { t } = useTranslation()
 
     useEffect(() => {
         work.statistics.fetch().then((stats) => {
             const _labels = [
-                'Monday',
-                'Tuesday',
-                'Wednesday',
-                'Thursday',
-                'Friday',
-                'Saturday',
-                'Sunday'
+                t('view.work.insight.wordsByDay.mon'),
+                t('view.work.insight.wordsByDay.tue'),
+                t('view.work.insight.wordsByDay.wed'),
+                t('view.work.insight.wordsByDay.thu'),
+                t('view.work.insight.wordsByDay.fri'),
+                t('view.work.insight.wordsByDay.sat'),
+                t('view.work.insight.wordsByDay.sun')
             ]
             setLabels(_labels)
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
