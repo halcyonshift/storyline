@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Box, Stack, Typography } from '@mui/material'
 import { flatten } from 'lodash'
+import { SectionModel } from '@sl/db/models'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { htmlParse } from '@sl/utils'
 import { SceneSummaryProps } from './types'
-import { SectionModel } from '@sl/db/models'
 
 const TagList = ({ scene }: { scene: SectionModel }) => {
     const [tags, setTags] = useState<string>('')
@@ -33,18 +34,32 @@ const TagList = ({ scene }: { scene: SectionModel }) => {
     return <Typography variant='body1'>{tags}</Typography>
 }
 
-const SceneSummary = ({ scenes }: SceneSummaryProps) => (
-    <Stack spacing={2}>
-        {scenes.map((scene) => (
-            <Box key={scene.id}>
-                <Typography variant='body2'>{scene.displayDateTime}</Typography>
-                <Typography variant='h6'>{scene.displayTitle}</Typography>
-                <TagList scene={scene} />
-                {scene.description ? htmlParse(scene.description) : null}
-                <Box className='italic'>{scene.excerpts ? scene.excerpts : null}</Box>
-            </Box>
-        ))}
-    </Stack>
-)
+const SceneSummary = ({ scenes }: SceneSummaryProps) => {
+    const { loadTab } = useTabs()
+
+    return (
+        <Stack spacing={2}>
+            {scenes.map((scene) => (
+                <Box key={scene.id}>
+                    <Typography variant='body2'>{scene.displayDateTime}</Typography>
+                    <Typography
+                        variant='h6'
+                        onClick={() =>
+                            loadTab({
+                                id: scene.id,
+                                label: scene.displayTitle,
+                                link: `section/${scene.id}`
+                            })
+                        }>
+                        {scene.displayTitle}
+                    </Typography>
+                    <TagList scene={scene} />
+                    {scene.description ? htmlParse(scene.description) : null}
+                    <Box className='italic'>{scene.excerpts ? scene.excerpts : null}</Box>
+                </Box>
+            ))}
+        </Stack>
+    )
+}
 
 export default SceneSummary
