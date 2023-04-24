@@ -38,6 +38,7 @@ ChartJS.register(
 
 const DEFAULT_OPTIONS = {
     responsive: true,
+    maintainAspectRatio: true,
     plugins: {
         legend: {
             display: false
@@ -168,74 +169,79 @@ const WordChartsBox = () => {
                     </TabList>
                 </Box>
                 <TabPanel value='1' sx={PADDING}>
-                    <Line
-                        options={{
-                            ...DEFAULT_OPTIONS,
-                            ...{
-                                plugins: work.wordGoal
-                                    ? {
-                                          annotation: {
-                                              annotations: {
-                                                  target: {
-                                                      type: 'line',
-                                                      scaleID: 'y',
-                                                      borderWidth: 5,
-                                                      borderColor: settings.getHex(600),
-                                                      value: work.wordGoal
+                    <Box className='relative w-full h-0'>
+                        <Line
+                            options={{
+                                ...DEFAULT_OPTIONS,
+                                ...{
+                                    plugins: work.wordGoal
+                                        ? {
+                                              annotation: {
+                                                  annotations: {
+                                                      target: {
+                                                          type: 'line',
+                                                          scaleID: 'y',
+                                                          borderWidth: 5,
+                                                          borderColor: settings.getHex(600),
+                                                          value: work.wordGoal
+                                                      }
                                                   }
+                                              },
+                                              legend: {
+                                                  display: false
                                               }
-                                          },
-                                          legend: {
-                                              display: false
                                           }
-                                      }
-                                    : {
-                                          legend: {
-                                              display: false
+                                        : {
+                                              legend: {
+                                                  display: false
+                                              }
                                           }
-                                      }
-                            }
-                        }}
-                        data={{
-                            labels: statisticsDates.map((d) =>
-                                d.setLocale(settings.language).toFormat('LLL dd yyyy')
-                            ),
-                            datasets: [
-                                {
-                                    label: '',
-                                    data: statisticsDates.map(
-                                        (d) => statistics[d.toFormat(YYYYMMDD)] || 0
-                                    ),
-                                    borderColor: getHex('emerald', 600),
-                                    backgroundColor: getHex('emerald', 100)
                                 }
-                            ]
-                        }}
-                    />
+                            }}
+                            data={{
+                                labels: statisticsDates.map((d) =>
+                                    d.setLocale(settings.language).toFormat('LLL dd yyyy')
+                                ),
+                                datasets: [
+                                    {
+                                        label: '',
+                                        data: statisticsDates.map(
+                                            (d) => statistics[d.toFormat(YYYYMMDD)] || 0
+                                        ),
+                                        borderColor: getHex('emerald', 600),
+                                        backgroundColor: getHex('emerald', 100)
+                                    }
+                                ]
+                            }}
+                        />
+                    </Box>
                 </TabPanel>
                 <TabPanel value='2' sx={PADDING}>
-                    <Line
-                        options={DEFAULT_OPTIONS}
-                        data={{
-                            labels: statisticsDates.map((d) =>
-                                d.setLocale(settings.language).toFormat('LLL dd yyyy')
-                            ),
-                            datasets: [
-                                {
-                                    label: '',
-                                    data: statisticsDates.map((d) => {
-                                        return (
-                                            (statistics[d.toFormat(YYYYMMDD)] || 0) -
-                                            (statistics[d.minus({ days: 1 }).toFormat(YYYYMMDD)] ||
-                                                0)
-                                        )
-                                    }),
-                                    borderColor: getHex('emerald', 600),
-                                    backgroundColor: getHex('emerald', 100)
-                                }
-                            ]
-                        }}
-                    />
+                    <Box className='relative w-full h-0'>
+                        <Line
+                            options={DEFAULT_OPTIONS}
+                            data={{
+                                labels: statisticsDates.map((d) =>
+                                    d.setLocale(settings.language).toFormat('LLL dd yyyy')
+                                ),
+                                datasets: [
+                                    {
+                                        label: '',
+                                        data: statisticsDates.map((d) => {
+                                            return (
+                                                (statistics[d.toFormat(YYYYMMDD)] || 0) -
+                                                (statistics[
+                                                    d.minus({ days: 1 }).toFormat(YYYYMMDD)
+                                                ] || 0)
+                                            )
+                                        }),
+                                        borderColor: getHex('emerald', 600),
+                                        backgroundColor: getHex('emerald', 100)
+                                    }
+                                ]
+                            }}
+                        />
+                    </Box>
                 </TabPanel>
             </TabContext>
         </Box>
