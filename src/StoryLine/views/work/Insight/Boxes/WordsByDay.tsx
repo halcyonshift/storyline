@@ -79,8 +79,16 @@ const WordsByDayBox = () => {
                         {
                             label: 'Words written',
                             data: statistics,
-                            borderColor: getHex('emerald', 600),
-                            backgroundColor: getHex('emerald', 100),
+                            borderColor: getHex('white'),
+                            backgroundColor: [
+                                getHex('red', 400),
+                                getHex('orange', 400),
+                                getHex('yellow', 400),
+                                getHex('green', 400),
+                                getHex('blue', 400),
+                                getHex('indigo', 400),
+                                getHex('violet', 400)
+                            ],
                             borderWidth: 2
                         }
                     ]

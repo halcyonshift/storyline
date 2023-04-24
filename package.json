@@ -124,6 +124,7 @@
     "react-leaflet": "^4.2.1",
     "react-router-dom": "6.8.1",
     "rxjs-hooks": "^0.8.0-alpha.0",
+    "string-to-color": "^2.2.2",
     "vis-network": "^9.1.6",
     "vis-timeline": "^7.7.2",
     "yup": "^1.0.2"

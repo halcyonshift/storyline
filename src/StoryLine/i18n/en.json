@@ -715,6 +715,9 @@
                 }
             },
             "insight": {
+                "chapterLength": {
+                    "scene": "Scene {{number}}"
+                },
                 "word": {
                     "day": "Daily",
                     "week": "Weekly",

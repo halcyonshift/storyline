@@ -13,10 +13,12 @@ import {
 } from 'chart.js'
 import annotationPlugin from 'chartjs-plugin-annotation'
 import { Doughnut } from 'react-chartjs-2'
+import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { PointOfView } from '@sl/constants/pov'
 import { WorkModel } from '@sl/db/models'
-import { useTranslation } from 'react-i18next'
+import stringToColor from 'string-to-color'
+import { getHex } from '@sl/theme/utils'
 
 ChartJS.register(
     annotationPlugin,
@@ -95,7 +97,14 @@ const PointOfViewBox = () => {
                             {
                                 label: 'Uses',
                                 data: povStatistics.map((stat) => stat.scenes),
-                                borderWidth: 2
+                                borderWidth: 2,
+                                backgroundColor: povLabels
+                                    ? povLabels.map((label) =>
+                                          label === 'None'
+                                              ? getHex('slate', 200)
+                                              : stringToColor(label)
+                                      )
+                                    : []
                             }
                         ]
                     }}
@@ -110,7 +119,20 @@ const PointOfViewBox = () => {
                             {
                                 label: 'Uses',
                                 data: povModeStatistics,
-                                borderWidth: 2
+                                borderWidth: 2,
+                                backgroundColor: povModeLabels
+                                    ? povModeLabels.map((label, index) =>
+                                          label === 'None'
+                                              ? getHex('slate', 200)
+                                              : [
+                                                    getHex('red', 400),
+                                                    getHex('yellow', 400),
+                                                    getHex('green', 400),
+                                                    getHex('blue', 400),
+                                                    getHex('purple', 400)
+                                                ][index]
+                                      )
+                                    : []
                             }
                         ]
                     }}
