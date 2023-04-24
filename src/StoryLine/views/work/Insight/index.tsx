@@ -18,6 +18,11 @@ const InsightView = () => {
                     <Boxes.Words />
                 </Box>
             </Paper>
+            <Paper elevation={1} className='relative row-span-3'>
+                <Box className='absolute top-0 left-0 right-0 bottom-0'>
+                    <Boxes.Spread />
+                </Box>
+            </Paper>
             <Paper elevation={1} className='relative'>
                 <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
                     <Boxes.ChapterLength />
@@ -25,17 +30,7 @@ const InsightView = () => {
             </Paper>
             <Paper elevation={1} className='relative'>
                 <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
-                    <Boxes.WordsByDay />
-                </Box>
-            </Paper>
-            <Paper elevation={1} className='relative'>
-                <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
                     <Boxes.PointOfView />
-                </Box>
-            </Paper>
-            <Paper elevation={1} className='relative col-span-2'>
-                <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
-                    <Boxes.Spread />
                 </Box>
             </Paper>
         </Box>
