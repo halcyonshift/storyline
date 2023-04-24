@@ -537,25 +537,29 @@
                     "addTertiary": "Add tertiary character",
                     "edit": "Edit",
                     "delete": "Delete",
-                    "deleteConfirm": "Are you sure you want to delete {{name}}?"
+                    "deleteConfirm": "Are you sure you want to delete {{name}}?",
+                    "groupToggle": "Show archived"
                 },
                 "item": {
                     "add": "Add item",
                     "edit": "Edit",
                     "delete": "Delete",
-                    "deleteConfirm": "Are you sure you want to delete {{name}}?"
+                    "deleteConfirm": "Are you sure you want to delete {{name}}?",
+                    "groupToggle": "Show archived"
                 },
                 "location": {
                     "add": "Add location",
                     "edit": "Edit",
                     "delete": "Delete",
-                    "deleteConfirm": "Are you sure you want to delete {{name}}?"
+                    "deleteConfirm": "Are you sure you want to delete {{name}}?",
+                    "groupToggle": "Show archived"
                 },
                 "note": {
                     "add": "Add note",
                     "edit": "Edit",
                     "delete": "Delete",
-                    "deleteConfirm": "Are you sure you want to delete {{name}}?"
+                    "deleteConfirm": "Are you sure you want to delete {{name}}?",
+                    "groupToggle": "Show archived"
                 },
                 "search": {
                     "clear": "Clear",
@@ -583,7 +587,7 @@
     "view": {
         "storyline": {
             "landing": {
-                "title": "Welcome to StoryLine!",
+                "title": "Welcome to",
                 "navigation": {
                     "works": "Works",
                     "new": "New",
