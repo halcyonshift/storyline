@@ -108,13 +108,7 @@ const _FormWrapper = ({
                 </TabContext>
                 {!noButton.includes(value) ? (
                     <Box className='m-3'>
-                        <FormButton
-                            label={t(
-                                model
-                                    ? 'component.formButton.update'
-                                    : 'component.formButton.create'
-                            )}
-                        />
+                        <FormButton label={t('component.formButton.save')} />
                     </Box>
                 ) : null}
             </Box>

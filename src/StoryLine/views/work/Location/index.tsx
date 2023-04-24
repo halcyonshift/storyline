@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Box, Divider, List, ListItem, ListItemButton, ListItemText, Stack } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
+import { useObservable } from 'rxjs-hooks'
 import ViewWrapper from '@sl/components/ViewWrapper'
 import LocationModel from '@sl/db/models/LocationModel'
 import { htmlParse } from '@sl/utils'
@@ -15,20 +16,21 @@ const LocationView = () => {
 
     const DEFAULT_TABS = [t('component.viewWrapper.tab.general')]
 
-    const [children, setChildren] = useState<LocationModel[]>([])
     const [tabList, setTabList] = useState<string[]>(DEFAULT_TABS)
 
+    const children = useObservable(
+        () => location.locations.observeWithColumns(['name']),
+        [],
+        [location.id]
+    )
+
     useEffect(() => {
-        location.locations.fetch().then((locations) => {
-            if (locations.length) {
-                setChildren(locations)
-                setTabList(DEFAULT_TABS.concat([t('component.viewWrapper.tab.locations')]))
-            } else {
-                setChildren([])
-                setTabList(DEFAULT_TABS)
-            }
-        })
-    }, [location.id])
+        if (children.length) {
+            setTabList(DEFAULT_TABS.concat([t('component.viewWrapper.tab.locations')]))
+        } else {
+            setTabList(DEFAULT_TABS)
+        }
+    }, [location.id, children.length])
 
     return (
         <ViewWrapper tabList={tabList} model={location}>
