@@ -7,7 +7,9 @@ const Result = ({ result }: { result: SearchResultType }) => {
     const [show, setShow] = useState<boolean>(false)
     const { loadTab } = useTabs()
 
-    return (
+    const mode = result.link.split('/')[0] as 'character' | 'item' | 'location' | 'note' | 'section'
+
+    return mode === 'section' ? (
         <>
             <Box className='flex justify-between px-2 py-1' onClick={() => setShow(!show)}>
                 <Typography
@@ -28,15 +30,8 @@ const Result = ({ result }: { result: SearchResultType }) => {
                                 loadTab({
                                     id: result.id,
                                     label: result.label,
-                                    mode: result.link.split('/')[0] as
-                                        | 'character'
-                                        | 'item'
-                                        | 'location'
-                                        | 'note'
-                                        | 'section',
-                                    link: result.link.includes('section/')
-                                        ? `${result.link}/${index}`
-                                        : result.link
+                                    mode,
+                                    link: `${result.link}/${index}`
                                 })
                             }>
                             {excerpt}
@@ -45,6 +40,24 @@ const Result = ({ result }: { result: SearchResultType }) => {
                 </Box>
             ) : null}
         </>
+    ) : (
+        <Box
+            className='flex justify-between px-2 py-1'
+            onClick={() =>
+                loadTab({
+                    id: result.id,
+                    label: result.label,
+                    mode,
+                    link: result.link
+                })
+            }>
+            <Typography
+                variant='body1'
+                className='whitespace-nowrap overflow-hidden text-ellipsis
+                    pr-2'>
+                {result.label}
+            </Typography>
+        </Box>
     )
 }
 
