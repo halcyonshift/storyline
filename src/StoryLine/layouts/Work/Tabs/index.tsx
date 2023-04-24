@@ -3,9 +3,13 @@ import CloseIcon from '@mui/icons-material/Close'
 import { Box, Stack, Tabs as MuiTabs, Tab as MuiTab, Typography, styled } from '@mui/material'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
 import { useTranslation } from 'react-i18next'
+import { useObservable } from 'rxjs-hooks'
+import { WorkModel } from '@sl/db/models'
 import { getHex } from '@sl/theme/utils'
 import useTabs from './useTabs'
 import useLayout from '../useLayout'
+import { useRouteLoaderData } from 'react-router-dom'
+import { TabType } from '../types'
 
 const Tabs = () => {
     const { t } = useTranslation()
@@ -13,6 +17,16 @@ const Tabs = () => {
     const { windowWidth, panelWidth, navigationWidth } = useLayout()
     const [maxWidth, setMaxWidth] = useState<number>(windowWidth - (panelWidth + navigationWidth))
     const [tabIndex, setTabIndex] = useState<number>(0)
+    const work = useRouteLoaderData('work') as WorkModel
+    const characters = useObservable(
+        () => work.character.observeWithColumns(['display_name', 'mode']),
+        [],
+        []
+    )
+    const items = useObservable(() => work.item.observeWithColumns(['name']), [], [])
+    const locations = useObservable(() => work.location.observeWithColumns(['name']), [], [])
+    const notes = useObservable(() => work.note.observeWithColumns(['title']), [], [])
+    const sections = useObservable(() => work.section.observeWithColumns(['title']), [], [])
 
     const TabsContainer = styled(MuiTabs)(() => ({
         '.MuiTabs-flexContainer': {
@@ -53,6 +67,20 @@ const Tabs = () => {
         tabs.setTabs(newTabs)
         setTabIndex(result.destination.index)
         tabs.setActive(-1)
+    }
+
+    // eslint-disable-next-line complexity
+    const getLabel = (tab: TabType) => {
+        if (tab.link.startsWith('character/'))
+            return characters.find((character) => character.id === tab.id)?.displayName || ''
+        else if (tab.link.startsWith('item/'))
+            return items.find((item) => item.id === tab.id)?.displayName || ''
+        else if (tab.link.startsWith('location/'))
+            return locations.find((item) => item.id === tab.id)?.displayName || ''
+        else if (tab.link.startsWith('note/'))
+            return notes.find((item) => item.id === tab.id)?.displayName || ''
+        else if (tab.link.startsWith('section/'))
+            return sections.find((item) => item.id === tab.id)?.displayName || ''
     }
 
     useEffect(() => {
@@ -120,7 +148,7 @@ const Tabs = () => {
                                                                 variant='body2'
                                                                 className='max-w-[150px] truncate'
                                                                 {...props.dragHandleProps}>
-                                                                {tab.label}
+                                                                {getLabel(tab)}
                                                             </Typography>
                                                             <CloseIcon
                                                                 fontSize='small'

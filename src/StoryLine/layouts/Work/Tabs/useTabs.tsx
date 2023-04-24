@@ -9,7 +9,6 @@ export const TabsProvider = ({ children }: TabsProviderProps) => {
     const [active, setActive] = useState<number>()
     const [showTabs, setShowTabs] = useState<boolean>(false)
     const params = useParams()
-
     const navigate = useNavigate()
 
     useEffect(() => {
