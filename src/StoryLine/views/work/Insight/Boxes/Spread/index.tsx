@@ -12,6 +12,7 @@ import {
 import { useRouteLoaderData } from 'react-router'
 import { SectionModel, WorkModel } from '@sl/db/models'
 import { useEffect, useState } from 'react'
+import { getHex } from '@sl/theme/utils'
 
 const Spread = () => {
     const work = useRouteLoaderData('work') as WorkModel
@@ -120,7 +121,7 @@ const Spread = () => {
                                     scope='row'
                                     className={
                                         appearance.chapters.includes(chapter.id)
-                                            ? 'bg-emerald-100'
+                                            ? 'bg-emerald-400'
                                             : ''
                                     }></TableCell>
                             ))}
@@ -146,7 +147,7 @@ const Spread = () => {
                                     scope='row'
                                     className={
                                         appearance.chapters.includes(chapter.id)
-                                            ? 'bg-emerald-100'
+                                            ? 'bg-purple-400'
                                             : ''
                                     }></TableCell>
                             ))}
@@ -172,7 +173,7 @@ const Spread = () => {
                                     scope='row'
                                     className={
                                         appearance.chapters.includes(chapter.id)
-                                            ? 'bg-emerald-100'
+                                            ? 'bg-amber-400'
                                             : ''
                                     }></TableCell>
                             ))}
@@ -196,11 +197,13 @@ const Spread = () => {
                                     key={`note-${chapter.id}`}
                                     title={chapter.displayName}
                                     scope='row'
-                                    className={
-                                        appearance.chapters.includes(chapter.id)
-                                            ? 'bg-emerald-100'
-                                            : ''
-                                    }></TableCell>
+                                    sx={{
+                                        backgroundColor: appearance.chapters.includes(chapter.id)
+                                            ? appearance.note.color
+                                                ? appearance.note.color
+                                                : getHex('sky', 400)
+                                            : 'transparent'
+                                    }}></TableCell>
                             ))}
                         </TableRow>
                     ))}

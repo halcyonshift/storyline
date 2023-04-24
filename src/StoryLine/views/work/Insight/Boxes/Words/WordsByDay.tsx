@@ -37,7 +37,7 @@ const DEFAULT_OPTIONS = {
     }
 }
 
-const WordsByDayBox = () => {
+const WordsByDay = () => {
     const work = useRouteLoaderData('work') as WorkModel
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [statistics, setStatistics] = useState<any[]>([])
@@ -101,4 +101,4 @@ const WordsByDayBox = () => {
     )
 }
 
-export default WordsByDayBox
+export default WordsByDay
