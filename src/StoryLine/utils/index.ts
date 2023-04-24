@@ -10,6 +10,20 @@ export const dateFormat = (jsDate: Date) => {
 }
 export const htmlParse = (s: string) => parse(s, htmlParseOptions)
 export const htmlExtractExcerpts = (s: string) => parse(s, htmlExtractExcerptsOptions)
+
+export const stringToColor = (str: string) => {
+    let hash = 0
+    for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash)
+    }
+    let colour = '#'
+    for (let i = 0; i < 3; i++) {
+        const value = (hash >> (i * 8)) & 0xff
+        colour += ('00' + value.toString(16)).slice(-2)
+    }
+    return colour
+}
+
 export const wordCount = (s: string) => {
     s = s
         .replace(/<[^>]+>/g, '')
@@ -19,6 +33,7 @@ export const wordCount = (s: string) => {
 
     return s !== '' ? s.split(' ').length : 0
 }
+
 export const prettyUrl = (link: string) => {
     let url
 
