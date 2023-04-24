@@ -1,5 +1,3 @@
-import { SectionViewType } from '../types'
-
-const ChapterView = ({ section }: SectionViewType) => <p>{section.displayTitle}</p>
+const ChapterView = () => <></>
 
 export default ChapterView
