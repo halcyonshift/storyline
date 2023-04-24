@@ -29,8 +29,10 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     const [autoBackupPath, setAutoBackupPath] = useState<string>('')
     const [autoSave, setAutoSave] = useState<boolean>(DEFAULT_AUTO_SAVE)
     const [displayMode, setDisplayMode] = useState<DisplayModeType>(DEFAULT_DISPLAY_MODE)
-    const [font, setFont] = useState<FontType>(DEFAULT_FONT)
-    const [fontSize, setFontSize] = useState<number>(DEFAULT_FONT_SIZE)
+    const [appFont, setAppFont] = useState<FontType>(DEFAULT_FONT)
+    const [appFontSize, setAppFontSize] = useState<number>(DEFAULT_FONT_SIZE)
+    const [editorFont, setEditorFont] = useState<FontType>(DEFAULT_FONT)
+    const [editorFontSize, setEditorFontSize] = useState<number>(DEFAULT_FONT_SIZE)
     const [indentParagraph, setIndentParagraph] = useState<boolean>(DEFAULT_INDENT_PARAGRAPH)
     const [language, setLanguage] = useState<LanguageType>(DEFAULT_LANGUAGE)
     const [lineSpacing, setLineSpacing] = useState<'normal' | 'relaxed' | 'loose'>(
@@ -54,10 +56,18 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
         database.localStorage
             .get<DisplayModeType>('displayMode')
             .then((displayMode) => setDisplayMode(displayMode || DEFAULT_DISPLAY_MODE))
-        database.localStorage.get<FontType>('font').then((font) => setFont(font || DEFAULT_FONT))
         database.localStorage
-            .get<number>('fontSize')
-            .then((fontSize) => setFontSize(fontSize || DEFAULT_FONT_SIZE))
+            .get<FontType>('appFont')
+            .then((font) => setAppFont(font || DEFAULT_FONT))
+        database.localStorage
+            .get<number>('appFontSize')
+            .then((fontSize) => setAppFontSize(fontSize || DEFAULT_FONT_SIZE))
+        database.localStorage
+            .get<FontType>('editorFont')
+            .then((font) => setEditorFont(font || DEFAULT_FONT))
+        database.localStorage
+            .get<number>('editorFontSize')
+            .then((fontSize) => setEditorFontSize(fontSize || DEFAULT_FONT_SIZE))
         database.localStorage
             .get<boolean>('indentParagraph')
             .then((indentParagraph) =>
@@ -87,8 +97,10 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
         database.localStorage.set('autoBackupPath', autoBackupPath)
         database.localStorage.set('autoSave', autoSave)
         database.localStorage.set('displayMode', displayMode)
-        database.localStorage.set('font', font)
-        database.localStorage.set('fontSize', fontSize)
+        database.localStorage.set('appFont', appFont)
+        database.localStorage.set('appFontSize', appFontSize)
+        database.localStorage.set('editorFont', editorFont)
+        database.localStorage.set('editorFontSize', editorFontSize)
         database.localStorage.set('indentParagraph', indentParagraph)
         database.localStorage.set('i18nextLng', language).then(() => {
             localStorage.setItem('i18nextLng', language)
@@ -102,8 +114,10 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
         autoBackupPath,
         autoSave,
         displayMode,
-        font,
-        fontSize,
+        appFont,
+        appFontSize,
+        editorFont,
+        editorFontSize,
         indentParagraph,
         language,
         lineSpacing,
@@ -168,12 +182,12 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
                     }
                 },
                 typography: {
-                    fontSize,
-                    fontFamily: font
+                    fontSize: appFontSize,
+                    fontFamily: appFont
                 }
             })
         )
-    }, [displayMode, font, fontSize, palette])
+    }, [displayMode, appFont, appFontSize, palette])
 
     const getHex = (shade?: ShadeType): string => {
         if (!shade) {
@@ -194,10 +208,14 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
                 setAutoSave,
                 displayMode,
                 setDisplayMode,
-                font,
-                setFont,
-                fontSize,
-                setFontSize,
+                appFont,
+                setAppFont,
+                appFontSize,
+                setAppFontSize,
+                editorFont,
+                setEditorFont,
+                editorFontSize,
+                setEditorFontSize,
                 language,
                 setLanguage,
                 indentParagraph,

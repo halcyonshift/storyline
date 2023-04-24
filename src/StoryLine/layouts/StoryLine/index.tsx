@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import Link from '@sl/components/Link'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 
 const StoryLineLayout = () => {
@@ -35,7 +36,9 @@ const StoryLineLayout = () => {
                         <Typography variant='h6'>
                             {title ? t(`view.storyline.landing.navigation.${title}`) : ''}
                         </Typography>
-                        <Typography variant='h6'>StoryLine</Typography>
+                        <Typography variant='h6'>
+                            <Link href='/'>StoryLine</Link>
+                        </Typography>
                     </Box>
                 </Toolbar>
             </AppBar>

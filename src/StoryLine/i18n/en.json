@@ -472,6 +472,10 @@
         },
         "storyline": {
             "settings": {
+                "tab": {
+                    "app": "StoryLine",
+                    "editor": "Editor"
+                },
                 "font": "Font",
                 "fontSize": "Font size",
                 "indentParagraph": "Indent paragraphs",
