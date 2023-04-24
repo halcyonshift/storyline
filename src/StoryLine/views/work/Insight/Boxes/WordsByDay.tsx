@@ -29,6 +29,7 @@ ChartJS.register(
 
 const DEFAULT_OPTIONS = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
         legend: {
             display: false
@@ -70,7 +71,7 @@ const WordsByDayBox = () => {
     }, [])
 
     return (
-        <Box className='relative'>
+        <Box className='relative h-full p-3 w-auto grid place-items-center'>
             <Bar
                 options={{
                     ...DEFAULT_OPTIONS

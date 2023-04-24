@@ -34,6 +34,7 @@ const position: any = 'right'
 
 const DEFAULT_OPTIONS = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
         legend: {
             position
@@ -87,8 +88,8 @@ const PointOfViewBox = () => {
     }, [])
 
     return (
-        <Box className='grid grid-cols-2 gap-3'>
-            <Box className='relative'>
+        <Box className='grid grid-cols-2 gap-3 h-full'>
+            <Box className='relative h-full p-3 w-auto grid place-items-center'>
                 <Doughnut
                     options={DEFAULT_OPTIONS}
                     data={{
@@ -110,7 +111,7 @@ const PointOfViewBox = () => {
                     }}
                 />
             </Box>
-            <Box className='relative'>
+            <Box className='relative h-full p-3 w-auto grid place-items-center'>
                 <Doughnut
                     options={DEFAULT_OPTIONS}
                     data={{
