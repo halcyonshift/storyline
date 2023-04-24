@@ -29,6 +29,7 @@ const TooltipIconButton = ({
     const handleAction = async () => {
         if (onClick) await onClick()
         if (link) navigate(link)
+        setOpen(false)
     }
 
     return (

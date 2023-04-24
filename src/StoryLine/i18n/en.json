@@ -31,8 +31,7 @@
             }
         },
         "formButton": {
-            "create": "Create",
-            "update": "Update"
+            "save": "Save"
         },
         "formWrapper" : {
             "tab": {

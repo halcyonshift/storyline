@@ -1,25 +1,25 @@
-import { useEffect, useState } from 'react'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
 import { useTranslation } from 'react-i18next'
+import { useObservable } from 'rxjs-hooks'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
-import { LocationModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { status } from '@sl/theme/utils'
 import { LocationTabPanelProps } from './types'
 
 const LocationsPanel = ({ location }: LocationTabPanelProps) => {
-    const [locations, setLocations] = useState<LocationModel[]>([])
     const { loadTab } = useTabs()
     const { t } = useTranslation()
 
-    useEffect(() => {
-        location.locations.fetch().then((locations) => setLocations(locations))
-    }, [location.id])
+    const locations = useObservable(
+        () => location.locations.observeWithColumns(['name']),
+        [],
+        [location.id]
+    )
 
     return (
         <List disablePadding sx={{ marginLeft: '1px' }}>
