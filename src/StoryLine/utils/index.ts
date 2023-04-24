@@ -11,19 +11,6 @@ export const dateFormat = (jsDate: Date) => {
 export const htmlParse = (s: string) => parse(s, htmlParseOptions)
 export const htmlExtractExcerpts = (s: string) => parse(s, htmlExtractExcerptsOptions)
 
-export const stringToColor = (str: string) => {
-    let hash = 0
-    for (let i = 0; i < str.length; i++) {
-        hash = str.charCodeAt(i) + ((hash << 5) - hash)
-    }
-    let colour = '#'
-    for (let i = 0; i < 3; i++) {
-        const value = (hash >> (i * 8)) & 0xff
-        colour += ('00' + value.toString(16)).slice(-2)
-    }
-    return colour
-}
-
 export const wordCount = (s: string) => {
     s = s
         .replace(/<[^>]+>/g, '')
@@ -46,4 +33,66 @@ export const prettyUrl = (link: string) => {
     if (url.hostname && url.pathname != '/') return `${url.hostname}${url.pathname}`
     else if (url.hostname) return url.hostname
     else return link
+}
+
+// https://stackoverflow.com/a/49938542/12139765
+export const toWords = (number: number) => {
+    const first = [
+        '',
+        'one ',
+        'two ',
+        'three ',
+        'four ',
+        'five ',
+        'six ',
+        'seven ',
+        'eight ',
+        'nine ',
+        'ten ',
+        'eleven ',
+        'twelve ',
+        'thirteen ',
+        'fourteen ',
+        'fifteen ',
+        'sixteen ',
+        'seventeen ',
+        'eighteen ',
+        'nineteen '
+    ]
+    const tens = [
+        '',
+        '',
+        'twenty',
+        'thirty',
+        'forty',
+        'fifty',
+        'sixty',
+        'seventy',
+        'eighty',
+        'ninety'
+    ]
+    const mad = ['', 'thousand', 'million', 'billion', 'trillion']
+    let word = ''
+
+    for (let i = 0; i < mad.length; i++) {
+        let tempNumber = number % (100 * Math.pow(1000, i))
+        if (Math.floor(tempNumber / Math.pow(1000, i)) !== 0) {
+            if (Math.floor(tempNumber / Math.pow(1000, i)) < 20) {
+                word = first[Math.floor(tempNumber / Math.pow(1000, i))] + mad[i] + ' ' + word
+            } else {
+                word =
+                    tens[Math.floor(tempNumber / (10 * Math.pow(1000, i)))] +
+                    '-' +
+                    first[Math.floor(tempNumber / Math.pow(1000, i)) % 10] +
+                    mad[i] +
+                    ' ' +
+                    word
+            }
+        }
+
+        tempNumber = number % Math.pow(1000, i + 1)
+        if (Math.floor(tempNumber / (100 * Math.pow(1000, i))) !== 0)
+            word = first[Math.floor(tempNumber / (100 * Math.pow(1000, i)))] + 'hundred ' + word
+    }
+    return word
 }

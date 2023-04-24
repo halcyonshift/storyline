@@ -108,6 +108,7 @@ const Spread = () => {
                             <TableCell scope='row'>{appearance.character.displayName}</TableCell>
                             {chapters.map((chapter) => (
                                 <TableCell
+                                    key={`character-${chapter.id}`}
                                     title={chapter.displayName}
                                     scope='row'
                                     className={
@@ -127,6 +128,7 @@ const Spread = () => {
                             <TableCell scope='row'>{appearance.item.displayName}</TableCell>
                             {chapters.map((chapter) => (
                                 <TableCell
+                                    key={`item-${chapter.id}`}
                                     title={chapter.displayName}
                                     scope='row'
                                     className={
@@ -146,6 +148,7 @@ const Spread = () => {
                             <TableCell scope='row'>{appearance.location.displayName}</TableCell>
                             {chapters.map((chapter) => (
                                 <TableCell
+                                    key={`location-${chapter.id}`}
                                     title={chapter.displayName}
                                     scope='row'
                                     className={
@@ -165,6 +168,7 @@ const Spread = () => {
                             <TableCell scope='row'>{appearance.note.displayName}</TableCell>
                             {chapters.map((chapter) => (
                                 <TableCell
+                                    key={`note-${chapter.id}`}
                                     title={chapter.displayName}
                                     scope='row'
                                     className={

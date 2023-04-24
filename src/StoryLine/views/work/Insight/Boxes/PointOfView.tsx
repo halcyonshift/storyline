@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { PointOfView } from '@sl/constants/pov'
 import { WorkModel } from '@sl/db/models'
-import { stringToColor } from '@sl/utils'
+import stringToColor from 'string-to-color'
 import { getHex } from '@sl/theme/utils'
 
 ChartJS.register(
