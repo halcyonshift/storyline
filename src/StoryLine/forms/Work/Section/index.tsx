@@ -283,6 +283,7 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
                 <Box className='grid grid-cols-2 xl:grid-cols-4 gap-3'>
                     <DateField form={form} label={'form.work.section.date'} fieldName='date' />
                     <TextField
+                        fullWidth
                         form={form}
                         label={t('form.work.section.wordGoal')}
                         name='wordGoal'
