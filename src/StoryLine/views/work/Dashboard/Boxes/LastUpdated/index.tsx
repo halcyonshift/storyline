@@ -9,7 +9,7 @@ import { GLOBAL_ICONS } from '@sl/constants/icons'
 import { WorkModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import useSettings from '@sl/theme/useSettings'
-import { LastUpdatedType } from './types'
+import { LastUpdatedType } from '../types'
 
 const LastUpdatedBox = () => {
     const [lastUpdated, setLastUpdated] = useState<LastUpdatedType[]>([])

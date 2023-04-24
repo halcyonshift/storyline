@@ -19,7 +19,7 @@ const Progress = ({ words, goal }: ProgressProps) => {
     }, [percentage])
 
     return words && goal ? (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', paddingLeft: 3 }}>
             <Tooltip
                 title={`${words.toLocaleString(settings.language)}/${goal.toLocaleString(
                     settings.language
