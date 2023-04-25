@@ -433,6 +433,14 @@
                     "success": "The note has been saved"
                 }
             },
+            "overview": {
+                "timeline": {
+                    "filter": {
+                        "table": "Select",
+                        "button": "Update"
+                    }
+                }
+            },
             "section": {
                 "title": "Title",
                 "wordGoal": "Word goal",

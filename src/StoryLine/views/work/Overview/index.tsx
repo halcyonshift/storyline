@@ -3,12 +3,13 @@ import { FilterList as FilterListIcon } from '@mui/icons-material'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
-import { Box, IconButton, Menu, MenuItem, Tab, Typography } from '@mui/material'
+import { Box, IconButton, Menu, Tab, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { OverviewViewOption, OverviewViewOptionType } from '@sl/constants/overviewView'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { SectionModel, WorkModel } from '@sl/db/models'
+import TimelineFilterForm from '@sl/forms/Work/Overview/Timeline'
 import Summary from './Summary'
 import Timeline from './Timeline'
 
@@ -21,6 +22,9 @@ const OverviewView = () => {
     const [chapters, setChapters] = useState<SectionModel[]>([])
     const [parts, setParts] = useState<SectionModel[]>([])
     const [scenes, setScenes] = useState<SectionModel[]>([])
+    const [table, setTable] = useState<string>('character')
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [id, setId] = useState<string>('')
     const { setShowTabs } = useTabs()
     const { t } = useTranslation()
 
@@ -30,6 +34,13 @@ const OverviewView = () => {
         work.parts.fetch().then((parts) => setParts(parts))
         work.scenes.fetch().then((scenes) => setScenes(scenes))
     }, [])
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const updateFilter = () => {
+        //
+    }
+
+    const FLAG = true
 
     return (
         <Box className=' w-full'>
@@ -47,11 +58,11 @@ const OverviewView = () => {
                         />
                         <Tab
                             label={
-                                <Box className='w-full flex justify-between'>
+                                <Box className='w-full _flex _justify-between'>
                                     <Typography variant='body2'>
                                         {t('view.work.overview.timeline.title')}
                                     </Typography>
-                                    {value === OverviewViewOption.TIMELINE ? (
+                                    {value === OverviewViewOption.TIMELINE && !FLAG ? (
                                         <IconButton
                                             sx={{ padding: 0 }}
                                             id='filter-button'
@@ -86,7 +97,15 @@ const OverviewView = () => {
                 MenuListProps={{
                     'aria-labelledby': 'filter-button'
                 }}>
-                <MenuItem>Filter</MenuItem>
+                <Box className='px-3 pb-2'>
+                    <TimelineFilterForm
+                        work={work}
+                        setAnchorEl={setAnchorEl}
+                        table={table}
+                        setTable={setTable}
+                        setId={setId}
+                    />
+                </Box>
             </Menu>
         </Box>
     )
