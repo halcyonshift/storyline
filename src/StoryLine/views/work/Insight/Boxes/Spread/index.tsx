@@ -6,11 +6,13 @@ import {
     TableCell,
     TableContainer,
     TableHead,
-    TableRow
+    TableRow,
+    Typography
 } from '@mui/material'
 import { useRouteLoaderData } from 'react-router'
 import { SectionModel, WorkModel } from '@sl/db/models'
 import { useEffect, useState } from 'react'
+import { getHex } from '@sl/theme/utils'
 
 const Spread = () => {
     const work = useRouteLoaderData('work') as WorkModel
@@ -86,8 +88,8 @@ const Spread = () => {
     }, [])
 
     return (
-        <TableContainer component={Paper}>
-            <Table>
+        <TableContainer component={Paper} className='h-full scrollbar-hidden'>
+            <Table stickyHeader size='small'>
                 <TableHead>
                     <TableRow>
                         <TableCell variant='head'></TableCell>
@@ -105,7 +107,13 @@ const Spread = () => {
                             sx={{
                                 '&:last-child td, &:last-child th': { border: 0 }
                             }}>
-                            <TableCell scope='row'>{appearance.character.displayName}</TableCell>
+                            <TableCell scope='row'>
+                                <Typography
+                                    variant='body2'
+                                    className='whitespace-nowrap truncate w-40'>
+                                    {appearance.character.displayName}
+                                </Typography>
+                            </TableCell>
                             {chapters.map((chapter) => (
                                 <TableCell
                                     key={`character-${chapter.id}`}
@@ -113,7 +121,7 @@ const Spread = () => {
                                     scope='row'
                                     className={
                                         appearance.chapters.includes(chapter.id)
-                                            ? 'bg-emerald-100'
+                                            ? 'bg-emerald-400'
                                             : ''
                                     }></TableCell>
                             ))}
@@ -125,7 +133,13 @@ const Spread = () => {
                             sx={{
                                 '&:last-child td, &:last-child th': { border: 0 }
                             }}>
-                            <TableCell scope='row'>{appearance.item.displayName}</TableCell>
+                            <TableCell scope='row'>
+                                <Typography
+                                    variant='body2'
+                                    className='whitespace-nowrap truncate w-40'>
+                                    {appearance.item.displayName}
+                                </Typography>
+                            </TableCell>
                             {chapters.map((chapter) => (
                                 <TableCell
                                     key={`item-${chapter.id}`}
@@ -133,7 +147,7 @@ const Spread = () => {
                                     scope='row'
                                     className={
                                         appearance.chapters.includes(chapter.id)
-                                            ? 'bg-emerald-100'
+                                            ? 'bg-purple-400'
                                             : ''
                                     }></TableCell>
                             ))}
@@ -145,7 +159,13 @@ const Spread = () => {
                             sx={{
                                 '&:last-child td, &:last-child th': { border: 0 }
                             }}>
-                            <TableCell scope='row'>{appearance.location.displayName}</TableCell>
+                            <TableCell scope='row'>
+                                <Typography
+                                    variant='body2'
+                                    className='whitespace-nowrap truncate w-40'>
+                                    {appearance.location.displayName}
+                                </Typography>
+                            </TableCell>
                             {chapters.map((chapter) => (
                                 <TableCell
                                     key={`location-${chapter.id}`}
@@ -153,7 +173,7 @@ const Spread = () => {
                                     scope='row'
                                     className={
                                         appearance.chapters.includes(chapter.id)
-                                            ? 'bg-emerald-100'
+                                            ? 'bg-amber-400'
                                             : ''
                                     }></TableCell>
                             ))}
@@ -165,17 +185,25 @@ const Spread = () => {
                             sx={{
                                 '&:last-child td, &:last-child th': { border: 0 }
                             }}>
-                            <TableCell scope='row'>{appearance.note.displayName}</TableCell>
+                            <TableCell scope='row'>
+                                <Typography
+                                    variant='body2'
+                                    className='whitespace-nowrap truncate w-40'>
+                                    {appearance.note.displayName}
+                                </Typography>
+                            </TableCell>
                             {chapters.map((chapter) => (
                                 <TableCell
                                     key={`note-${chapter.id}`}
                                     title={chapter.displayName}
                                     scope='row'
-                                    className={
-                                        appearance.chapters.includes(chapter.id)
-                                            ? 'bg-emerald-100'
-                                            : ''
-                                    }></TableCell>
+                                    sx={{
+                                        backgroundColor: appearance.chapters.includes(chapter.id)
+                                            ? appearance.note.color
+                                                ? appearance.note.color
+                                                : getHex('sky', 400)
+                                            : 'transparent'
+                                    }}></TableCell>
                             ))}
                         </TableRow>
                     ))}

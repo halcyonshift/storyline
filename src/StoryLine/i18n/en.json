@@ -735,9 +735,8 @@
                     "scene": "Scene {{number}}"
                 },
                 "word": {
-                    "day": "Daily",
-                    "week": "Weekly",
-                    "month": "Monthly"
+                    "line": "By period",
+                    "bar": "Best day"
                 },
                 "wordsByDay": {
                     "mon": "Monday",

@@ -38,7 +38,7 @@ ChartJS.register(
 
 const DEFAULT_OPTIONS = {
     responsive: true,
-    maintainAspectRatio: true,
+    maintainAspectRatio: false,
     plugins: {
         legend: {
             display: false
@@ -53,7 +53,7 @@ const DEFAULT_OPTIONS = {
     }
 }
 
-const PADDING = { paddingX: 3, paddingY: 1 }
+const PADDING = { padding: 0, height: '82%' }
 
 const WordChartsBox = () => {
     const [value, setValue] = useState('1')
@@ -155,7 +155,7 @@ const WordChartsBox = () => {
     }, [fullStatistics])
 
     return Object.values(statistics).reduce((a, b) => a + b, 0) ? (
-        <Box className='relative'>
+        <Box className='relative h-full'>
             <TabContext value={value}>
                 <Box className='border-b'>
                     <TabList
@@ -169,7 +169,7 @@ const WordChartsBox = () => {
                     </TabList>
                 </Box>
                 <TabPanel value='1' sx={PADDING}>
-                    <Box className='relative w-full h-0'>
+                    <Box className='relative h-full p-3 w-auto grid place-items-center'>
                         <Line
                             options={{
                                 ...DEFAULT_OPTIONS,
@@ -217,7 +217,7 @@ const WordChartsBox = () => {
                     </Box>
                 </TabPanel>
                 <TabPanel value='2' sx={PADDING}>
-                    <Box className='relative w-full h-0'>
+                    <Box className='relative h-full p-3 w-auto grid place-items-center'>
                         <Line
                             options={DEFAULT_OPTIONS}
                             data={{

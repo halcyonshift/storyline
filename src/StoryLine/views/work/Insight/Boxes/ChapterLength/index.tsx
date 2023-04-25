@@ -35,6 +35,7 @@ const DEFAULT_OPTIONS = {
         }
     },
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
         x: {
             stacked: true
@@ -93,7 +94,7 @@ const ChapterLengthBox = () => {
     }, [])
 
     return (
-        <Box className='relative'>
+        <Box className='relative h-full p-3 w-auto grid place-items-center'>
             <Bar
                 options={{
                     ...DEFAULT_OPTIONS

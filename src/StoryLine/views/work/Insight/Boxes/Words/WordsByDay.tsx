@@ -29,6 +29,7 @@ ChartJS.register(
 
 const DEFAULT_OPTIONS = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
         legend: {
             display: false
@@ -36,7 +37,7 @@ const DEFAULT_OPTIONS = {
     }
 }
 
-const WordsByDayBox = () => {
+const WordsByDay = () => {
     const work = useRouteLoaderData('work') as WorkModel
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [statistics, setStatistics] = useState<any[]>([])
@@ -70,7 +71,7 @@ const WordsByDayBox = () => {
     }, [])
 
     return (
-        <Box className='relative'>
+        <Box className='relative h-full p-3 w-auto grid place-items-center'>
             <Bar
                 options={{
                     ...DEFAULT_OPTIONS
@@ -100,4 +101,4 @@ const WordsByDayBox = () => {
     )
 }
 
-export default WordsByDayBox
+export default WordsByDay
