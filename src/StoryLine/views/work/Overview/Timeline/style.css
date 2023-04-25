@@ -1,0 +1,24 @@
+.vis-item.character {
+    background-color: #a7f3d0;
+    border-color: #059669
+}
+
+.vis-item.connection {
+    background-color: #e9d5ff;
+    border-color: #9333ea
+}
+
+.vis-item.note {
+    background-color: #bae6fd;
+    border-color: #0284c7
+}
+
+.vis-item.scene {
+    background-color: #e2e8f0;
+    border-color: #475569
+}
+
+.vis-item.vis-selected {
+    background-color: #fef08a;
+    border-color: #ca8a04;
+  }
