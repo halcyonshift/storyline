@@ -7,6 +7,7 @@ import { DataSet, Timeline as VisTimeline } from 'vis-timeline/standalone/esm/vi
 import { ConnectionModel, NoteModel, SectionModel } from '@sl/db/models'
 import { OverviewTimelineProps } from '../types'
 import { ItemType } from './types'
+import './style.css'
 
 const Timeline = ({ work }: OverviewTimelineProps) => {
     const [groups, setGroups] = useState([])
@@ -36,6 +37,7 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
                             id: scene.id,
                             content: scene.displayTitle,
                             editable: { updateTime: true, updateGroup: false, remove: false },
+                            className: 'scene',
                             start: DateTime.fromSQL(scene.date)
                                 .toISO({
                                     suppressMilliseconds: true
@@ -47,6 +49,7 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
                     .concat(
                         characters.map((character) => ({
                             id: character.id,
+                            className: 'character',
                             content: t('view.work.overview.timeline.character.dob', {
                                 name: character.displayName
                             }),
@@ -62,6 +65,7 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
                     .concat(
                         notes.map((note) => ({
                             id: note.id,
+                            className: 'note',
                             content: note.displayName,
                             editable: { updateTime: true, updateGroup: false, remove: false },
                             start: DateTime.fromSQL(note.date)
@@ -78,6 +82,7 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
                             return {
                                 id: connection.id,
                                 content: displayName,
+                                className: 'connection',
                                 editable: { updateTime: true, updateGroup: false, remove: false },
                                 start: DateTime.fromSQL(connection.date)
                                     .toISO({
@@ -131,6 +136,7 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
             min: DateTime.fromISO(start).minus({ years: 10 }).toISO().split('+')[0],
             max: DateTime.fromISO(end).plus({ years: 10 }).toISO().split('+')[0],
             zoomMin: 1000 * 60 * 60 * 24, // 1 day
+            showCurrentTime: false,
             onMove: async (item: ItemType, callback: (value: ItemType) => void) => {
                 if (item.group === 'scene') {
                     const scene = await database
@@ -149,7 +155,7 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
                 return callback(item)
             }
         })
-    }, [ref.current, start, end, groups.length, items.length])
+    }, [ref.current, start, end, items.length])
 
     return <Box className='absolute w-full h-full' ref={ref}></Box>
 }
