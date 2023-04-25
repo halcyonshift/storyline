@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { DataSet, Timeline as VisTimeline } from 'vis-timeline/standalone/esm/vis-timeline-graph2d'
 import { ConnectionModel, NoteModel, SectionModel } from '@sl/db/models'
 import { OverviewTimelineProps } from '../types'
+import { ItemType } from './types'
 
 const Timeline = ({ work }: OverviewTimelineProps) => {
     const [groups, setGroups] = useState([])
@@ -123,10 +124,14 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
 
     useEffect(() => {
         if (!ref.current || !groups.length || !items.length) return
-        new VisTimeline(ref.current, items, groups, {
+        new VisTimeline(ref.current, items, {
+            height: ref.current.offsetHeight - ref.current.getBoundingClientRect().top,
             start,
             end,
-            onMove: async (item, callback) => {
+            min: DateTime.fromISO(start).minus({ years: 10 }).toISO().split('+')[0],
+            max: DateTime.fromISO(end).plus({ years: 10 }).toISO().split('+')[0],
+            zoomMin: 1000 * 60 * 60 * 24, // 1 day
+            onMove: async (item: ItemType, callback: (value: ItemType) => void) => {
                 if (item.group === 'scene') {
                     const scene = await database
                         .get<SectionModel>('section')
