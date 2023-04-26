@@ -38,7 +38,8 @@ export default class WorkModel extends Model {
         location: { type: 'has_many', foreignKey: 'work_id' },
         note: { type: 'has_many', foreignKey: 'work_id' },
         section: { type: 'has_many', foreignKey: 'work_id' },
-        statistic: { type: 'has_many', foreignKey: 'work_id' }
+        statistic: { type: 'has_many', foreignKey: 'work_id' },
+        tag: { type: 'has_many', foreignKey: 'work_id' }
     }
     @field('status') status!: StatusType
     @text('title') title!: string
@@ -59,6 +60,7 @@ export default class WorkModel extends Model {
     @children('note') note!: Query<NoteModel>
     @children('section') section!: Query<SectionModel>
     @children('statistic') statistic!: Query<StatisticModel>
+    @children('tag') tag!: Query<StatisticModel>
 
     get displayDeadline() {
         if (!this.deadlineAt) return ''
@@ -734,7 +736,7 @@ export default class WorkModel extends Model {
         await this.note.destroyAllPermanently()
         await this.section.destroyAllPermanently()
         await this.statistic.destroyAllPermanently()
-        await this.tags.destroyAllPermanently()
+        await this.tag.destroyAllPermanently()
         await this.destroyPermanently()
         return true
     }

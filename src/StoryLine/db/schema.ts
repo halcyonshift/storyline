@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 const schema = appSchema({
-    version: 1,
+    version: parseInt(process.env.DB_SCHEMA_VERSION),
     tables: [
         tableSchema({
             name: 'character',

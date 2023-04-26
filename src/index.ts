@@ -334,7 +334,9 @@ app.whenReady()
         })
 
         ipcMain.handle('delete-file', async (e, path) => {
-            fs.rmSync(path)
+            if (fs.existsSync(path)) {
+                fs.rmSync(path)
+            }
         })
     })
     .catch(() => null)

@@ -67,6 +67,16 @@ export default class ItemModel extends Model {
         return appearances
     }
 
+    async destroyPermanently(): Promise<void> {
+        await this.collections
+            .get<ConnectionModel>('connection')
+            .query(Q.or(Q.where('id_a', this.id), Q.where('id_b', this.id)))
+            .destroyAllPermanently()
+        await this.tag.destroyAllPermanently()
+        await this.note.destroyAllPermanently()
+        await super.destroyPermanently()
+    }
+
     getExcerpts(scene: SectionModel): string[] {
         const excerpts: string[] = []
 
@@ -98,12 +108,6 @@ export default class ItemModel extends Model {
     }
 
     @writer async delete() {
-        const connections = await this.collections
-            .get<ConnectionModel>('connection')
-            .query(Q.or(Q.where('id_a', this.id), Q.where('id_b', this.id)))
-        connections.map((connection) => connection.delete())
-        await this.tag.destroyAllPermanently()
-        await this.note.destroyAllPermanently()
         await this.destroyPermanently()
         return true
     }

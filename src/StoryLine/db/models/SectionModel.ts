@@ -268,6 +268,13 @@ export default class SectionModel extends Model {
         return this.wordCount
     }
 
+    async destroyPermanently(): Promise<void> {
+        this.note.destroyAllPermanently()
+        this.statistic.destroyAllPermanently()
+        this.tag.destroyAllPermanently()
+        return super.destroyPermanently()
+    }
+
     get daysRemaining(): number | undefined {
         if (!this.deadlineAt) return undefined
 
@@ -307,7 +314,9 @@ export default class SectionModel extends Model {
     }
 
     @writer async addStatistic(data: StatisticDataType) {
+        const work = await this.work.fetch()
         return await this.collections.get<StatisticModel>('statistic').create((statistic) => {
+            statistic.work.set(work)
             statistic.section.set(this)
             statistic.words = Number(data)
         })
@@ -322,6 +331,7 @@ export default class SectionModel extends Model {
             notes: NoteModel[]
         }
     ) {
+        const work = await this.work.fetch()
         await this.tag.destroyAllPermanently()
         await this.batch(
             this.prepareUpdate((section) => {
@@ -334,24 +344,28 @@ export default class SectionModel extends Model {
             }),
             ...tags.characters.map((character) =>
                 this.collections.get<TagModel>('tag').prepareCreate((tag) => {
+                    tag.work.set(work)
                     tag.section.set(this)
                     tag.character.set(character)
                 })
             ),
             ...tags.items.map((item) =>
                 this.collections.get<TagModel>('tag').prepareCreate((tag) => {
+                    tag.work.set(work)
                     tag.section.set(this)
                     tag.item.set(item)
                 })
             ),
             ...tags.locations.map((location) =>
                 this.collections.get<TagModel>('tag').prepareCreate((tag) => {
+                    tag.work.set(work)
                     tag.section.set(this)
                     tag.location.set(location)
                 })
             ),
             ...tags.notes.map((note) =>
                 this.collections.get<TagModel>('tag').prepareCreate((tag) => {
+                    tag.work.set(work)
                     tag.section.set(this)
                     tag.note.set(note)
                 })
@@ -392,8 +406,6 @@ export default class SectionModel extends Model {
             if (chapterCount) return
         }
 
-        this.note.destroyAllPermanently()
-        this.statistic.destroyAllPermanently()
         await this.destroyPermanently()
         return true
     }

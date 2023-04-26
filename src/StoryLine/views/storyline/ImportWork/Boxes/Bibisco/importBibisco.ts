@@ -511,6 +511,7 @@ const importBibisco = async (database: Database): Promise<false | string> => {
         (arr: StatisticModel[], scene: SectionModel) => {
             arr.push(
                 database.get<StatisticModel>('statistic').prepareCreate((statistic) => {
+                    statistic.work.set(work)
                     statistic.section.set(scene)
                     statistic.words = wordCount(scene.body)
                     statistic.createdAt = scene.updatedAt

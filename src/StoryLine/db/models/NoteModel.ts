@@ -103,6 +103,14 @@ export default class NoteModel extends Model {
         return appearances
     }
 
+    async destroyPermanently(): Promise<void> {
+        if (this.image) {
+            api.deleteFile(this.image)
+        }
+        this.tag.destroyAllPermanently()
+        return super.destroyPermanently()
+    }
+
     getExcerpts(scene: SectionModel): string[] {
         const excerpts: string[] = []
 
@@ -114,16 +122,6 @@ export default class NoteModel extends Model {
             })
 
         return excerpts
-    }
-
-    async destroyPermanently(): Promise<void> {
-        const children = await this.notes.fetchCount()
-        if (children) return
-        if (this.image) {
-            api.deleteFile(this.image)
-        }
-        this.tag.destroyAllPermanently()
-        return super.destroyPermanently()
     }
 
     @lazy notes = this.collections
@@ -194,6 +192,8 @@ export default class NoteModel extends Model {
     }
 
     @writer async delete() {
+        const children = await this.notes.fetchCount()
+        if (children) return
         await this.destroyPermanently()
         return true
     }
