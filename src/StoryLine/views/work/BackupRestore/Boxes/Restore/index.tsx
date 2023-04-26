@@ -10,7 +10,7 @@ const RestoreBox = () => {
     const { t } = useTranslation()
 
     const restoreWork = async () => {
-        const { images, data } = await api.restore()
+        const { images, data } = await api.restoreWork()
 
         if (data.work[0].id !== work.id) {
             messenger.error(t('view.work.backupRestore.restore.failure'))
@@ -29,7 +29,7 @@ const RestoreBox = () => {
     return (
         <Box className='grid h-full place-items-center'>
             <Box className='p-3 text-center'>
-                <Typography variant='body2' className='text-amber-600 p-5'>
+                <Typography variant='body1' className='text-amber-600 p-5'>
                     {t('view.work.backupRestore.restore.text')}
                 </Typography>
                 <Button onClick={restoreWork} variant='contained'>

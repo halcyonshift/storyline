@@ -11,7 +11,7 @@ const BackupBox = () => {
 
     const backupWork = async () => {
         const { data, images, backupPath } = await work.backup()
-        const filePath = await api.backup(data, images, backupPath)
+        const filePath = await api.backupWork(data, images, backupPath)
 
         if (filePath) {
             messenger.success(t('view.work.backupRestore.backup.success', { filePath }))
@@ -23,7 +23,7 @@ const BackupBox = () => {
     return (
         <Box className='grid h-full place-items-center'>
             <Box className='p-3 text-center'>
-                <Typography variant='body2' className='text-teal-600 p-5'>
+                <Typography variant='body1' className='text-teal-600 p-5'>
                     {t('view.work.backupRestore.backup.text')}
                 </Typography>
                 <Button onClick={backupWork} variant='contained'>

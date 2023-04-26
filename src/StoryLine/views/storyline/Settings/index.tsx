@@ -15,7 +15,7 @@ const SettingsView = () => {
         editorFontSize,
         indentParagraph,
         language,
-        lineSpacing,
+        lineHeight,
         palette,
         paragraphSpacing,
         spellCheck
@@ -31,7 +31,7 @@ const SettingsView = () => {
         editorFontSize,
         indentParagraph,
         language,
-        lineSpacing,
+        lineHeight,
         palette,
         paragraphSpacing,
         spellCheck

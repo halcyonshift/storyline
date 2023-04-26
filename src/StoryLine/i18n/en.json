@@ -44,6 +44,11 @@
             "browse": "Browse",
             "delete": "Delete"
         },
+        "lineHeight": {
+            "normal": "Normal",
+            "relaxed": "Relaxed",
+            "loose": "Loose"
+        },
         "mapField": {
             "latitude": "Latitude",
             "longitude": "Longitude",
@@ -334,9 +339,16 @@
                     "author": "Author",
                     "chapterTitle": "Chapter title",
                     "chapterTitleInitialValue": "Chapter {{number}}. {{title}}",
-                    "chapterPosition": "Chapter position",
+                    "chapterPosition": {
+                        "label":  "",
+                        "left": "Left",
+                        "center": "Center"
+                    },
+                    "font": "Font",
+                    "lineHeight": "Line height",
+                    "paragraphSpacing": "Paragraph spacing",
                     "sceneSeparator": "Scene separator",
-                    "helpText": "Exporting may take a few minutes for longer works - tea time!",
+                    "helpText": "Exporting may take a few minutes for longer works - time for a cuppa!",
                     "button": {
                         "export": "Export"
                     }
@@ -506,12 +518,7 @@
                     "label": "Backup directory",
                     "select": "Select"
                 },
-                "lineSpacing": {
-                    "label": "Line height",
-                    "normal": "Normal",
-                    "relaxed": "Relaxed",
-                    "loose": "Loose"
-                },
+                "lineHeight": "Line height",
                 "paragraphSpacing": "Paragraph spacing",
                 "alert": {
                     "success": "The settings have been saved"

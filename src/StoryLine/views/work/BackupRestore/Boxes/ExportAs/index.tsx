@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, CSSProperties } from 'react'
 import jsPDF from 'jspdf'
 import { Box } from '@mui/material'
 import { useRouteLoaderData } from 'react-router-dom'
@@ -21,7 +21,7 @@ const ExportAsBox = () => {
         <div>
             {parts.map((part) => (
                 <div key={part.id}>
-                    <h1 style={{ textAlign: 'center' }}>{part.title}</h1>
+                    <h1 style={getStyles().h1}>{part.title}</h1>
                     <Chapters partId={part.id} />
                 </div>
             ))}
@@ -35,7 +35,7 @@ const ExportAsBox = () => {
                 .map((chapter) => (
                     <div key={chapter.id}>
                         {settings?.chapterTitle ? (
-                            <h2 style={{ textAlign: settings?.chapterPosition || 'center' }}>
+                            <h2 style={getStyles().h2}>
                                 {settings.chapterTitle
                                     .replace('{{number}}', chapter.order.toString())
                                     .replace('{{title}}', chapter.displayTitle)}
@@ -54,15 +54,9 @@ const ExportAsBox = () => {
                 .map((scene, index) => (
                     <div key={scene.id}>
                         {settings?.sceneSeparator && index !== 0 ? (
-                            <p style={{ textAlign: 'center' }}>{settings.sceneSeparator}</p>
+                            <p style={getStyles().sep}>{settings.sceneSeparator}</p>
                         ) : null}
-                        <div
-                            style={{
-                                fontFamily: 'Arial',
-                                fontSize: '10pt',
-                                letterSpacing: '0.01px'
-                            }}
-                            key={scene.id}>
+                        <div style={getStyles().p} key={scene.id}>
                             {htmlParse(scene.body)}
                         </div>
                     </div>
@@ -108,6 +102,93 @@ const ExportAsBox = () => {
         pdf.save(work.title)
     }
 
+    const getStyles = useCallback(
+        () =>
+            settings
+                ? {
+                      docx: {
+                          h1: { textAlign: 'center', fontFamily: 'arial' } as CSSProperties,
+                          h2: {
+                              textAlign: settings.chapterPosition || 'center',
+                              fontFamily: 'arial'
+                          } as CSSProperties,
+                          h3: {
+                              textAlign: 'center',
+                              fontFamily: 'arial',
+                              fontSize: '13pt'
+                          } as CSSProperties,
+                          sep: { textAlign: 'center', fontFamily: 'arial' } as CSSProperties,
+                          p: {
+                              fontFamily: 'arial',
+                              fontSize: '10pt',
+                              letterSpacing: '0.01px'
+                          } as CSSProperties,
+                          cover: {
+                              margin: '0 auto',
+                              height: '842px',
+                              width: '595px',
+                              textAlign: 'center'
+                          } as CSSProperties,
+                          image: { maxWidth: '595px', maxHeight: '842px' } as CSSProperties,
+                          page: { width: '595px', margin: 'auto' } as CSSProperties
+                      },
+                      html: {
+                          h1: { textAlign: 'center', fontFamily: 'arial' } as CSSProperties,
+                          h2: {
+                              textAlign: settings.chapterPosition || 'center',
+                              fontFamily: 'arial'
+                          } as CSSProperties,
+                          h3: {
+                              textAlign: 'center',
+                              fontFamily: 'arial',
+                              fontSize: '13pt'
+                          } as CSSProperties,
+                          sep: { textAlign: 'center', fontFamily: 'arial' } as CSSProperties,
+                          p: {
+                              fontFamily: 'arial',
+                              fontSize: '12pt',
+                              letterSpacing: '0.01px'
+                          } as CSSProperties,
+                          cover: {
+                              margin: '0 auto',
+                              height: '842px',
+                              width: '595px',
+                              textAlign: 'center'
+                          } as CSSProperties,
+                          image: { maxWidth: '595px', maxHeight: '842px' } as CSSProperties,
+                          page: { width: '595px', margin: 'auto' } as CSSProperties
+                      },
+                      pdf: {
+                          h1: { textAlign: 'center', fontFamily: 'arial' } as CSSProperties,
+                          h2: {
+                              textAlign: settings.chapterPosition || 'center',
+                              fontFamily: 'arial'
+                          } as CSSProperties,
+                          h3: {
+                              textAlign: 'center',
+                              fontFamily: 'arial',
+                              fontSize: '13pt'
+                          } as CSSProperties,
+                          sep: { textAlign: 'center', fontFamily: 'arial' } as CSSProperties,
+                          p: {
+                              fontFamily: 'arial',
+                              fontSize: '10pt',
+                              letterSpacing: '0.01px'
+                          } as CSSProperties,
+                          cover: {
+                              margin: '0 auto',
+                              height: '900px',
+                              width: '595px',
+                              textAlign: 'center'
+                          } as CSSProperties,
+                          image: { maxWidth: '595px', maxHeight: '842px' } as CSSProperties,
+                          page: { width: '595px', margin: 'auto' } as CSSProperties
+                      }
+                  }[settings.mode]
+                : {},
+        [settings?.mode]
+    )
+
     useEffect(() => {
         if (!isGenerating || !settings || !exportTemplateRef.current) return
 
@@ -115,23 +196,20 @@ const ExportAsBox = () => {
             case 'pdf':
                 generatePDF().then(() => {
                     setIsGenerating(false)
-                    setSettings(null)
                 })
                 break
             case 'html':
                 generateHTML().then(() => {
                     setIsGenerating(false)
-                    setSettings(null)
                 })
                 break
             case 'docx':
                 generateDocx().then(() => {
                     setIsGenerating(false)
-                    setSettings(null)
                 })
                 break
         }
-    }, [isGenerating, settings, exportTemplateRef.current])
+    }, [isGenerating, settings?.mode, exportTemplateRef.current])
 
     useEffect(() => {
         work.parts.fetch().then((parts) => setParts(parts))
@@ -141,7 +219,7 @@ const ExportAsBox = () => {
 
     return (
         <Box className='flex items-center justify-center px-5 h-full'>
-            <Box>
+            <Box className='w-full'>
                 {exportTemplateRef.current?.innerHTML ? (
                     <ExportAsForm
                         work={work}
@@ -151,34 +229,30 @@ const ExportAsBox = () => {
                 ) : null}
                 <Box className='h-0 w-0 overflow-hidden'>
                     <div ref={exportTemplateRef}>
-                        {work.image ? (
-                            <div style={{ height: '895px' }}>
-                                <Image path={work.image} />
-                            </div>
-                        ) : null}
-                        <h1 style={{ fontFamily: 'Arial', textAlign: 'center', fontSize: '16pt' }}>
-                            {work.title}
-                        </h1>
-                        {settings?.author ? (
-                            <h3
-                                style={{
-                                    fontFamily: 'Arial',
-                                    textAlign: 'center',
-                                    fontSize: '13pt'
-                                }}>
-                                {settings?.author}
-                            </h3>
-                        ) : null}
-                        <hr style={{ marginTop: '10pt' }} />
-                        {scenes.length ? (
-                            parts.length > 1 ? (
-                                <Parts />
-                            ) : chapters.length > 1 ? (
-                                <Chapters partId={parts[0].id} />
+                        <div style={getStyles().cover}>
+                            {work.image ? (
+                                <Image path={work.image} style={getStyles().image} />
                             ) : (
-                                <Scenes chapterId={chapters[0].id} />
-                            )
-                        ) : null}
+                                <>
+                                    <h1 style={getStyles().h1}>{work.title}</h1>
+                                    {settings?.author ? (
+                                        <h3 style={getStyles().h3}>{settings?.author}</h3>
+                                    ) : null}
+                                </>
+                            )}
+                        </div>
+
+                        <div style={getStyles().page}>
+                            {scenes.length ? (
+                                parts.length > 1 ? (
+                                    <Parts />
+                                ) : chapters.length > 1 ? (
+                                    <Chapters partId={parts[0].id} />
+                                ) : (
+                                    <Scenes chapterId={chapters[0].id} />
+                                )
+                            ) : null}
+                        </div>
                     </div>
                 </Box>
             </Box>
