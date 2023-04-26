@@ -178,7 +178,7 @@ app.whenReady()
             const docx = (await HTMLtoDOCX(
                 html,
                 '<p></p>',
-                { orientation: 'portrait' },
+                { orientation: 'portrait', title: fileName },
                 '<p></p>'
             )) as Buffer
 

@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, CSSProperties } from 'react'
 import jsPDF from 'jspdf'
 import { Box } from '@mui/material'
 import { useRouteLoaderData } from 'react-router-dom'
 import Image from '@sl/components/Image'
 import { SectionModel, WorkModel } from '@sl/db/models'
-import { htmlParse } from '@sl/utils'
+import { htmlParse, exportDocxParse, exportHTMLParse } from '@sl/utils'
 import ExportAsForm from '@sl/forms/Work/ExportAs'
 import { ExportAsDataType } from '@sl/forms/Work/ExportAs/types'
 
@@ -21,7 +21,7 @@ const ExportAsBox = () => {
         <div>
             {parts.map((part) => (
                 <div key={part.id}>
-                    <h1 style={{ textAlign: 'center' }}>{part.title}</h1>
+                    <h1 style={getStyles()?.h1}>{part.title}</h1>
                     <Chapters partId={part.id} />
                 </div>
             ))}
@@ -35,7 +35,7 @@ const ExportAsBox = () => {
                 .map((chapter) => (
                     <div key={chapter.id}>
                         {settings?.chapterTitle ? (
-                            <h2 style={{ textAlign: settings?.chapterPosition || 'center' }}>
+                            <h2 style={getStyles()?.h2}>
                                 {settings.chapterTitle
                                     .replace('{{number}}', chapter.order.toString())
                                     .replace('{{title}}', chapter.displayTitle)}
@@ -54,21 +54,26 @@ const ExportAsBox = () => {
                 .map((scene, index) => (
                     <div key={scene.id}>
                         {settings?.sceneSeparator && index !== 0 ? (
-                            <p style={{ textAlign: 'center' }}>{settings.sceneSeparator}</p>
+                            <p style={getStyles().sep}>{settings.sceneSeparator}</p>
                         ) : null}
-                        <div
-                            style={{
-                                fontFamily: 'Arial',
-                                fontSize: '10pt',
-                                letterSpacing: '0.01px'
-                            }}
-                            key={scene.id}>
-                            {htmlParse(scene.body)}
+                        <div style={getStyles()?.p} key={scene.id}>
+                            {settings?.mode === 'html'
+                                ? exportHTMLParse(scene.body, settings)
+                                : settings?.mode === 'docx'
+                                ? exportDocxParse(scene.body)
+                                : htmlParse(scene.body)}
                         </div>
                     </div>
                 ))}
         </div>
     )
+
+    const wrapHTML = () => {
+        if (!exportTemplateRef?.current) return
+
+        // eslint-disable-next-line max-len
+        return `<!DOCTYPE html><html><head><title>${work.title}</title></head><body>${exportTemplateRef.current.innerHTML}</body></html>`
+    }
 
     const generateExport = async (formSettings: ExportAsDataType) => {
         setSettings(formSettings)
@@ -78,13 +83,12 @@ const ExportAsBox = () => {
     const generateDocx = async (): Promise<void> => {
         if (!exportTemplateRef?.current) return
 
-        api.exportDocx(work.title, exportTemplateRef.current.innerHTML)
+        api.exportDocx(work.title, wrapHTML())
     }
 
     const generateHTML = async (): Promise<void> => {
         if (!exportTemplateRef?.current) return
-
-        api.exportHTML(work.title, exportTemplateRef.current.innerHTML)
+        api.exportHTML(work.title, wrapHTML())
     }
 
     const generatePDF = async (): Promise<void> => {
@@ -108,6 +112,79 @@ const ExportAsBox = () => {
         pdf.save(work.title)
     }
 
+    const getStyles = useCallback(() => {
+        const fontFamily = settings?.font || 'arial'
+        const textAlign = settings?.chapterPosition || 'center'
+
+        const defaultStyle = {
+            h1: { textAlign, fontFamily } as CSSProperties,
+            h2: {
+                textAlign,
+                fontFamily
+            } as CSSProperties,
+            h3: {
+                textAlign,
+                fontFamily,
+                fontSize: '13pt'
+            } as CSSProperties,
+            sep: { textAlign: 'center', fontFamily } as CSSProperties,
+            p: {
+                fontFamily,
+                fontSize: settings?.fontSize || '12pt',
+                lineHeight: { normal: 1.2, relaxed: 1.6, loose: 1.8 }[
+                    settings?.lineHeight || 'normal'
+                ]
+            } as CSSProperties,
+            cover: {
+                margin: '0 auto',
+                height: '842px',
+                width: '595px',
+                textAlign
+            } as CSSProperties,
+            image: { maxWidth: '595px', maxHeight: '842px' } as CSSProperties,
+            page: { width: '595px', margin: 'auto' } as CSSProperties
+        }
+
+        return settings
+            ? {
+                  docx: defaultStyle,
+                  html: {
+                      ...defaultStyle,
+                      ...{
+                          cover: { ...defaultStyle.cover, ...{ height: 'auto' } },
+                          p: { ...defaultStyle.p, ...{ fontSize: `${settings.fontSize}px` } }
+                      }
+                  },
+                  pdf: {
+                      ...defaultStyle,
+                      ...{
+                          h1: {
+                              ...defaultStyle.h1,
+                              ...{ fontFamily: 'arial', fontSize: '16pt' }
+                          },
+                          h2: {
+                              ...defaultStyle.h2,
+                              ...{ fontFamily: 'arial', fontSize: '14pt' }
+                          },
+                          h3: {
+                              ...defaultStyle.h3,
+                              ...{ fontFamily: 'arial', fontSize: '13pt' }
+                          },
+                          p: {
+                              ...defaultStyle.p,
+                              ...{
+                                  fontFamily: 'arial',
+                                  fontSize: '10pt',
+                                  letterSpacing: '0.01px',
+                                  lineHeight: 'auto'
+                              }
+                          }
+                      }
+                  }
+              }[settings.mode]
+            : null
+    }, [settings])
+
     useEffect(() => {
         if (!isGenerating || !settings || !exportTemplateRef.current) return
 
@@ -115,23 +192,20 @@ const ExportAsBox = () => {
             case 'pdf':
                 generatePDF().then(() => {
                     setIsGenerating(false)
-                    setSettings(null)
                 })
                 break
             case 'html':
                 generateHTML().then(() => {
                     setIsGenerating(false)
-                    setSettings(null)
                 })
                 break
             case 'docx':
                 generateDocx().then(() => {
                     setIsGenerating(false)
-                    setSettings(null)
                 })
                 break
         }
-    }, [isGenerating, settings, exportTemplateRef.current])
+    }, [isGenerating, settings?.mode, exportTemplateRef.current])
 
     useEffect(() => {
         work.parts.fetch().then((parts) => setParts(parts))
@@ -140,36 +214,29 @@ const ExportAsBox = () => {
     }, [])
 
     return (
-        <Box className='flex items-center justify-center px-5 h-full'>
-            <Box>
-                {exportTemplateRef.current?.innerHTML ? (
-                    <ExportAsForm
-                        work={work}
-                        generateExport={generateExport}
-                        isGenerating={isGenerating}
-                    />
-                ) : null}
-                <Box className='h-0 w-0 overflow-hidden'>
-                    <div ref={exportTemplateRef}>
+        <Box className='h-full w-full'>
+            {exportTemplateRef.current?.innerHTML ? (
+                <ExportAsForm
+                    work={work}
+                    generateExport={generateExport}
+                    isGenerating={isGenerating}
+                />
+            ) : null}
+            <Box className='h-0 w-0 overflow-hidden'>
+                <div ref={exportTemplateRef}>
+                    <div style={getStyles()?.cover}>
                         {work.image ? (
-                            <div style={{ height: '895px' }}>
-                                <Image path={work.image} />
-                            </div>
-                        ) : null}
-                        <h1 style={{ fontFamily: 'Arial', textAlign: 'center', fontSize: '16pt' }}>
-                            {work.title}
-                        </h1>
-                        {settings?.author ? (
-                            <h3
-                                style={{
-                                    fontFamily: 'Arial',
-                                    textAlign: 'center',
-                                    fontSize: '13pt'
-                                }}>
-                                {settings?.author}
-                            </h3>
-                        ) : null}
-                        <hr style={{ marginTop: '10pt' }} />
+                            <Image path={work.image} style={getStyles()?.image} />
+                        ) : (
+                            <>
+                                <h1 style={getStyles()?.h1}>{work.title}</h1>
+                                {settings?.author ? (
+                                    <h3 style={getStyles().h3}>{settings?.author}</h3>
+                                ) : null}
+                            </>
+                        )}
+                    </div>
+                    <div style={getStyles()?.page}>
                         {scenes.length ? (
                             parts.length > 1 ? (
                                 <Parts />
@@ -180,7 +247,7 @@ const ExportAsBox = () => {
                             )
                         ) : null}
                     </div>
-                </Box>
+                </div>
             </Box>
         </Box>
     )

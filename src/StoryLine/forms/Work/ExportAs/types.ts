@@ -12,6 +12,11 @@ export type ExportAsDataType = {
     chapterPosition: 'center'
     author: string
     sceneSeparator: string
+    lineHeight: string
+    paragraphSpacing: number
+    indentParagraph: boolean
+    font: string
+    fontSize: number
     mode: ExportModeType
 }
 

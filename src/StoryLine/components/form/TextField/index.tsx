@@ -1,19 +1,18 @@
-import { Box, TextField as MuiTextField } from '@mui/material'
-
+import { FormControl, TextField as MuiTextField } from '@mui/material'
 import { TextFieldProps } from './types'
 
 const TextField = ({ form, name, ...props }: TextFieldProps) => (
-    <Box>
+    <FormControl>
         <MuiTextField
             id={name}
-            fullWidth={props.type === 'number' && !props.fullWidth ? false : true}
-            margin='dense'
+            fullWidth={props.type === 'number' && !props.fullWidth ? false : props.fullWidth}
+            margin={props?.margin || 'normal'}
             value={form.values[name] ? form.values[name] : ''}
             onChange={(e) => form.setFieldValue(name, e.target.value)}
             error={form.touched[name] && Boolean(form.errors[name])}
             {...props}
         />
-    </Box>
+    </FormControl>
 )
 
 export default TextField

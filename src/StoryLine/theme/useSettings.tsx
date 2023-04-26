@@ -12,7 +12,7 @@ import {
     DEFAULT_FONT_SIZE,
     DEFAULT_INDENT_PARAGRAPH,
     DEFAULT_LANGUAGE,
-    DEFAULT_LINE_SPACING,
+    DEFAULT_LINE_HEIGHT,
     DEFAULT_PALETTE,
     DEFAULT_PARAGRAPH_SPACING,
     DEFAULT_SPELL_CHECK
@@ -35,8 +35,8 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     const [editorFontSize, setEditorFontSize] = useState<number>(DEFAULT_FONT_SIZE)
     const [indentParagraph, setIndentParagraph] = useState<boolean>(DEFAULT_INDENT_PARAGRAPH)
     const [language, setLanguage] = useState<LanguageType>(DEFAULT_LANGUAGE)
-    const [lineSpacing, setLineSpacing] = useState<'normal' | 'relaxed' | 'loose'>(
-        DEFAULT_LINE_SPACING
+    const [lineHeight, setLineHeight] = useState<'normal' | 'relaxed' | 'loose'>(
+        DEFAULT_LINE_HEIGHT
     )
     const [palette, setPalette] = useState<ColorType>(DEFAULT_PALETTE)
     const [paragraphSpacing, setParagraphSpacing] = useState<number>(DEFAULT_PARAGRAPH_SPACING)
@@ -79,8 +79,8 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
             setLanguage(language || DEFAULT_LANGUAGE)
         })
         database.localStorage
-            .get<'normal' | 'relaxed' | 'loose'>('lineSpacing')
-            .then((lineSpacing) => setLineSpacing(lineSpacing || DEFAULT_LINE_SPACING))
+            .get<'normal' | 'relaxed' | 'loose'>('lineHeight')
+            .then((lineHeight) => setLineHeight(lineHeight || DEFAULT_LINE_HEIGHT))
         database.localStorage
             .get<ColorType>('palette')
             .then((palette) => setPalette(palette || DEFAULT_PALETTE))
@@ -105,7 +105,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
         database.localStorage.set('i18nextLng', language).then(() => {
             localStorage.setItem('i18nextLng', language)
         })
-        database.localStorage.set('lineSpacing', lineSpacing)
+        database.localStorage.set('lineHeight', lineHeight)
         database.localStorage.set('palette', palette)
         database.localStorage.set('paragraphSpacing', paragraphSpacing)
         database.localStorage.set('spellCheck', spellCheck)
@@ -120,7 +120,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
         editorFontSize,
         indentParagraph,
         language,
-        lineSpacing,
+        lineHeight,
         palette,
         paragraphSpacing,
         spellCheck
@@ -220,8 +220,8 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
                 setLanguage,
                 indentParagraph,
                 setIndentParagraph,
-                lineSpacing,
-                setLineSpacing,
+                lineHeight,
+                setLineHeight,
                 palette,
                 setPalette,
                 paragraphSpacing,

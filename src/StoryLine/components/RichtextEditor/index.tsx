@@ -39,7 +39,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
         editorFont,
         editorFontSize,
         indentParagraph,
-        lineSpacing,
+        lineHeight,
         paragraphSpacing,
         spellCheck
     } = useSettings()
@@ -102,13 +102,13 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                             ...{
                                 paragraph: [
                                     `my-${paragraphSpacing}`,
-                                    `leading-${lineSpacing}`,
+                                    `leading-${lineHeight}`,
                                     indentParagraph ? 'indent-4' : ''
                                 ].join(' '),
                                 quote: [
                                     'bg-yellow-100',
                                     `my-${paragraphSpacing}`,
-                                    `leading-${lineSpacing}`,
+                                    `leading-${lineHeight}`,
                                     indentParagraph ? 'indent-4' : ''
                                 ].join(' ')
                             }
@@ -174,7 +174,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                 </LexicalComposer>
             </Box>
         ),
-        [id, initialValue, menu, menuElement, paragraphSpacing, lineSpacing, indentParagraph]
+        [id, initialValue, menu, menuElement, paragraphSpacing, lineHeight, indentParagraph]
     )
 }
 

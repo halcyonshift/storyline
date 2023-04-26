@@ -38,7 +38,7 @@ export type SettingsDataType = {
     editorFont: FontType
     editorFontSize: number
     indentParagraph: boolean
-    lineSpacing: 'normal' | 'relaxed' | 'loose'
+    lineHeight: 'normal' | 'relaxed' | 'loose'
     paragraphSpacing: number
     spellCheck: boolean
     autoSave: boolean
@@ -55,7 +55,7 @@ export type SettingsContextType = {
     setEditorFontSize: (fontSize: number) => void
     setDisplayMode: (displayMode: DisplayModeType) => void
     setIndentParagraph: (indentParagraph: boolean) => void
-    setLineSpacing: (lineSpacing: 'normal' | 'relaxed' | 'loose') => void
+    setLineHeight: (lineHeight: 'normal' | 'relaxed' | 'loose') => void
     setParagraphSpacing: (paragraphSpacing: number) => void
     setSpellCheck: (spellCheck: boolean) => void
     setAutoSave: (autoSave: boolean) => void

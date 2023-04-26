@@ -1,30 +1,19 @@
+/* eslint-disable max-len */
 import { useState } from 'react'
-import TextDecreaseIcon from '@mui/icons-material/TextDecrease'
-import TextIncreaseIcon from '@mui/icons-material/TextIncrease'
 import { TabContext, TabList, TabPanel } from '@mui/lab'
-import {
-    Box,
-    Button,
-    Checkbox,
-    InputAdornment,
-    InputLabel,
-    MenuItem,
-    FormControl,
-    FormControlLabel,
-    FormLabel,
-    Radio,
-    RadioGroup,
-    Select,
-    Stack,
-    Slider,
-    Tab,
-    TextField,
-    Typography
-} from '@mui/material'
+import { Box, Button, InputAdornment, MenuItem, Tab } from '@mui/material'
 import { FormikProps, useFormik } from 'formik'
+import { capitalize } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
-import { FontFamily } from '@sl/constants/fontFamily'
+import FontFamilyField from '@sl/components/form/FontFamilyField'
+import FontSizeField from '@sl/components/form/FontSizeField'
+import LineHeightField from '@sl/components/form/LineHeightField'
+import ParagraphSpacingField from '@sl/components/form/ParagraphSpacingField'
+import RadioField from '@sl/components/form/RadioField'
+import SelectField from '@sl/components/form/SelectField'
+import SwitchField from '@sl/components/form/SwitchField'
+import TextField from '@sl/components/form/TextField'
 import useMessenger from '@sl/layouts/useMessenger'
 import { colors } from '@sl/theme/utils'
 
@@ -36,7 +25,7 @@ import {
     DEFAULT_FONT_SIZE,
     DEFAULT_INDENT_PARAGRAPH,
     DEFAULT_LANGUAGE,
-    DEFAULT_LINE_SPACING,
+    DEFAULT_LINE_HEIGHT,
     DEFAULT_PALETTE,
     DEFAULT_PARAGRAPH_SPACING,
     DEFAULT_SPELL_CHECK
@@ -44,6 +33,8 @@ import {
 import useSettings from '@sl/theme/useSettings'
 import { SettingsDataType } from '@sl/theme/types'
 import { SettingsFormProps } from './types'
+
+const PALETTE_OPTIONS = ['slate', 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']
 
 const SettingsForm = ({
     initialValues = {
@@ -57,7 +48,7 @@ const SettingsForm = ({
         editorFontSize: DEFAULT_FONT_SIZE,
         indentParagraph: DEFAULT_INDENT_PARAGRAPH,
         language: DEFAULT_LANGUAGE,
-        lineSpacing: DEFAULT_LINE_SPACING,
+        lineHeight: DEFAULT_LINE_HEIGHT,
         palette: DEFAULT_PALETTE,
         paragraphSpacing: DEFAULT_PARAGRAPH_SPACING,
         spellCheck: DEFAULT_SPELL_CHECK
@@ -78,7 +69,7 @@ const SettingsForm = ({
         editorFontSize: yup.number().positive().required(),
         indentParagraph: yup.boolean(),
         language: yup.string().required(),
-        lineSpacing: yup.string().oneOf(['normal', 'relaxed', 'loose']).required(),
+        lineHeight: yup.string().oneOf(['normal', 'relaxed', 'loose']).required(),
         palette: yup.string().required(),
         paragraphSpacing: yup.number().required(),
         spellCheck: yup.boolean()
@@ -98,7 +89,7 @@ const SettingsForm = ({
             settings.setEditorFontSize(values.editorFontSize)
             settings.setIndentParagraph(values.indentParagraph)
             settings.setLanguage(values.language)
-            settings.setLineSpacing(values.lineSpacing)
+            settings.setLineHeight(values.lineHeight)
             settings.setPalette(values.palette)
             settings.setParagraphSpacing(values.paragraphSpacing)
             settings.setSpellCheck(values.spellCheck)
@@ -121,306 +112,129 @@ const SettingsForm = ({
                 </Box>
                 <TabPanel value='app'>
                     <Box className='grid grid-cols-2 gap-5'>
-                        <FormControl fullWidth>
-                            <InputLabel id='select-app-font'>
-                                {t('form.storyline.settings.font')}
-                            </InputLabel>
-                            <Select
-                                name='appFont'
-                                labelId='select-app-font'
-                                value={form.values.appFont}
-                                label={t('form.storyline.settings.font')}
-                                onChange={form.handleChange}
-                                error={form.touched.appFont && Boolean(form.errors.appFont)}>
-                                {Object.entries(FontFamily).map(([name, label]) => (
+                        <Box className='grid grid-cols-1 gap-5'>
+                            <Box className='grid grid-cols-2 gap-5'>
+                                <FontFamilyField
+                                    form={form}
+                                    name='appFont'
+                                    label='form.storyline.settings.font'
+                                />
+                                <FontSizeField
+                                    form={form}
+                                    name='appFontSize'
+                                    label='form.storyline.settings.fontSize'
+                                />
+                            </Box>
+                            <SelectField
+                                form={form}
+                                name='language'
+                                label={t('form.storyline.settings.language')}
+                                options={[
+                                    { value: 'en', label: 'English' },
+                                    { value: 'fr', label: 'Français' }
+                                ]}
+                            />
+                        </Box>
+                        <Box className='grid grid-cols-1 gap-5'>
+                            <SelectField
+                                form={form}
+                                name='displayMode'
+                                label={t('form.storyline.settings.displayMode.label')}
+                                options={[
+                                    {
+                                        value: 'light',
+                                        label: t('form.storyline.settings.displayMode.light')
+                                    },
+                                    {
+                                        value: 'dark',
+                                        label: t('form.storyline.settings.displayMode.dark')
+                                    }
+                                ]}
+                            />
+                            <SelectField
+                                form={form}
+                                name='palette'
+                                label={t('form.storyline.settings.palette')}>
+                                {PALETTE_OPTIONS.map((option) => (
                                     <MenuItem
-                                        key={`appFont-${name}`}
-                                        value={name}
-                                        sx={{ fontFamily: name }}>
-                                        {label}
+                                        key={option}
+                                        value={option}
+                                        sx={{ backgroundColor: colors[option][200] }}>
+                                        {capitalize(option)}
                                     </MenuItem>
                                 ))}
-                            </Select>
-                        </FormControl>
-                        <FormControl fullWidth>
-                            <Stack spacing={2} direction='row' alignItems='center'>
-                                <TextDecreaseIcon />
-                                <Slider
-                                    name='appFontSize'
-                                    aria-label={t('form.storyline.settings.fontSize')}
-                                    defaultValue={DEFAULT_FONT_SIZE}
-                                    getAriaValueText={(value) => value.toString()}
-                                    valueLabelDisplay='auto'
-                                    step={1}
-                                    marks
-                                    min={12}
-                                    max={24}
-                                    value={form.values.appFontSize}
-                                    onChange={form.handleChange}
-                                />
-                                <TextIncreaseIcon fontSize='large' />
-                            </Stack>
-                        </FormControl>
-                        <FormControl fullWidth>
-                            <InputLabel id='select-language'>
-                                {t('form.storyline.settings.language')}
-                            </InputLabel>
-                            <Select
-                                name='language'
-                                labelId='select-language'
-                                value={form.values.language}
-                                label={t('form.storyline.settings.language')}
-                                onChange={form.handleChange}
-                                error={form.touched.language && Boolean(form.errors.language)}>
-                                <MenuItem value='en'>English</MenuItem>
-                                <MenuItem value='fr'>Français</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <FormControl fullWidth>
-                            <InputLabel id='select-displayMode'>
-                                {t('form.storyline.settings.displayMode.label')}
-                            </InputLabel>
-                            <Select
-                                name='displayMode'
-                                labelId='select-displayMode'
-                                value={form.values.displayMode}
-                                label={t('form.storyline.settings.displayMode.label')}
-                                onChange={form.handleChange}
-                                error={
-                                    form.touched.displayMode && Boolean(form.errors.displayMode)
-                                }>
-                                <MenuItem value='light'>
-                                    {t('form.storyline.settings.displayMode.light')}
-                                </MenuItem>
-                                <MenuItem value='dark'>
-                                    {t('form.storyline.settings.displayMode.dark')}
-                                </MenuItem>
-                            </Select>
-                        </FormControl>
-                        <FormControl fullWidth>
-                            <InputLabel id='select-palette'>
-                                {t('form.storyline.settings.palette')}
-                            </InputLabel>
-                            <Select
-                                name='palette'
-                                labelId='select-palette'
-                                value={form.values.palette}
-                                label={t('form.storyline.settings.palette')}
-                                onChange={form.handleChange}
-                                error={form.touched.palette && Boolean(form.errors.palette)}>
-                                <MenuItem value='slate' sx={{ backgroundColor: colors.slate[200] }}>
-                                    Slate
-                                </MenuItem>
-                                <MenuItem value='red' sx={{ backgroundColor: colors.red[200] }}>
-                                    Red
-                                </MenuItem>
-                                <MenuItem
-                                    value='orange'
-                                    sx={{ backgroundColor: colors.orange[200] }}>
-                                    Orange
-                                </MenuItem>
-                                <MenuItem
-                                    value='yellow'
-                                    sx={{ backgroundColor: colors.yellow[200] }}>
-                                    Yellow
-                                </MenuItem>
-                                <MenuItem value='green' sx={{ backgroundColor: colors.green[200] }}>
-                                    Green
-                                </MenuItem>
-                                <MenuItem value='blue' sx={{ backgroundColor: colors.blue[200] }}>
-                                    Blue
-                                </MenuItem>
-                                <MenuItem
-                                    value='indigo'
-                                    sx={{ backgroundColor: colors.indigo[200] }}>
-                                    Indigo
-                                </MenuItem>
-                                <MenuItem
-                                    value='violet'
-                                    sx={{ backgroundColor: colors.violet[200] }}>
-                                    Violet
-                                </MenuItem>
-                            </Select>
-                        </FormControl>
+                            </SelectField>
+                        </Box>
                     </Box>
                 </TabPanel>
                 <TabPanel value='editor'>
                     <Box className='grid grid-cols-2 gap-5'>
-                        <Box>
+                        <Box className='grid grid-cols-1 gap-5'>
                             <Box className='grid grid-cols-2 gap-5'>
-                                <FormControl fullWidth>
-                                    <InputLabel id='select-editor-font'>
-                                        {t('form.storyline.settings.font')}
-                                    </InputLabel>
-                                    <Select
-                                        name='editorFont'
-                                        labelId='select-editor-font'
-                                        value={form.values.editorFont}
-                                        label={t('form.storyline.settings.font')}
-                                        onChange={form.handleChange}
-                                        error={
-                                            form.touched.editorFont &&
-                                            Boolean(form.errors.editorFont)
-                                        }>
-                                        {Object.entries(FontFamily).map(([name, label]) => (
-                                            <MenuItem
-                                                key={`editorFont-${name}`}
-                                                value={name}
-                                                sx={{ fontFamily: name }}>
-                                                {label}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                                <FormControl fullWidth>
-                                    <Stack spacing={2} direction='row' alignItems='center'>
-                                        <TextDecreaseIcon />
-                                        <Slider
-                                            name='editorFontSize'
-                                            aria-label={t('form.storyline.settings.fontSize')}
-                                            defaultValue={DEFAULT_FONT_SIZE}
-                                            getAriaValueText={(value) => value.toString()}
-                                            valueLabelDisplay='auto'
-                                            step={1}
-                                            marks
-                                            min={12}
-                                            max={24}
-                                            value={form.values.editorFontSize}
-                                            onChange={form.handleChange}
-                                        />
-                                        <TextIncreaseIcon fontSize='large' />
-                                    </Stack>
-                                </FormControl>
+                                <FontFamilyField
+                                    form={form}
+                                    name='editorFont'
+                                    label='form.storyline.settings.font'
+                                />
+                                <FontSizeField
+                                    form={form}
+                                    name='editorFontSize'
+                                    label='form.storyline.settings.fontSize'
+                                />
                             </Box>
                             <Box className='grid grid-cols-2 gap-5'>
-                                <FormControl fullWidth>
-                                    <FormLabel id='lineSpacing'>
-                                        {t('form.storyline.settings.lineSpacing.label')}
-                                    </FormLabel>
-                                    <RadioGroup
-                                        row
-                                        aria-labelledby='lineSpacing'
-                                        name='lineSpacing'
-                                        value={form.values.lineSpacing}
-                                        onChange={form.handleChange}>
-                                        <FormControlLabel
-                                            value='normal'
-                                            control={<Radio />}
-                                            label={t('form.storyline.settings.lineSpacing.normal')}
-                                        />
-                                        <FormControlLabel
-                                            value='relaxed'
-                                            control={<Radio />}
-                                            label={t('form.storyline.settings.lineSpacing.relaxed')}
-                                        />
-                                        <FormControlLabel
-                                            value='loose'
-                                            control={<Radio />}
-                                            label={t('form.storyline.settings.lineSpacing.loose')}
-                                        />
-                                    </RadioGroup>
-                                </FormControl>
-                                <FormControl fullWidth>
-                                    <Typography gutterBottom>
-                                        {t('form.storyline.settings.paragraphSpacing')}
-                                    </Typography>
-                                    <Slider
-                                        name='paragraphSpacing'
-                                        aria-label={t('form.storyline.settings.paragraphSpacing')}
-                                        defaultValue={DEFAULT_PARAGRAPH_SPACING}
-                                        getAriaValueText={(value) => value.toString()}
-                                        valueLabelDisplay='auto'
-                                        step={1}
-                                        marks
-                                        min={2}
-                                        max={10}
-                                        value={form.values.paragraphSpacing}
-                                        onChange={form.handleChange}
-                                    />
-                                </FormControl>
+                                <LineHeightField
+                                    form={form}
+                                    name='lineHeight'
+                                    label='form.storyline.settings.lineHeight'
+                                />
+                                <ParagraphSpacingField
+                                    form={form}
+                                    name='paragraphSpacing'
+                                    label='form.storyline.settings.paragraphSpacing'
+                                />
                             </Box>
-                            <FormControl fullWidth>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            name='indentParagraph'
-                                            checked={form.values.indentParagraph}
-                                            onChange={form.handleChange}
-                                            color='success'
-                                            aria-label={t(
-                                                'form.storyline.settings.indentParagraph'
-                                            )}
-                                        />
-                                    }
-                                    label={t('form.storyline.settings.indentParagraph')}
-                                />
-                            </FormControl>
-                            <FormControl fullWidth>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            name='spellCheck'
-                                            checked={form.values.spellCheck}
-                                            onChange={form.handleChange}
-                                            color='success'
-                                            aria-label={t('form.storyline.settings.spellCheck')}
-                                        />
-                                    }
-                                    label={t('form.storyline.settings.spellCheck')}
-                                />
-                            </FormControl>
+                            <SwitchField
+                                form={form}
+                                name='indentParagraph'
+                                label='form.storyline.settings.indentParagraph'
+                            />
+                            <SwitchField
+                                form={form}
+                                name='spellCheck'
+                                label='form.storyline.settings.spellCheck'
+                            />
                         </Box>
                         <Box>
-                            <FormControl fullWidth>
-                                <FormLabel id='autoBackupFreq'>
-                                    {t('form.storyline.settings.autoBackupFreq.label')}
-                                </FormLabel>
-                                <RadioGroup
-                                    row
-                                    aria-labelledby='autoBackupFreq'
+                            <Box className='grid grid-cols-1 gap-5'>
+                                <RadioField
+                                    form={form}
                                     name='autoBackupFreq'
-                                    value={form.values.autoBackupFreq}
-                                    onChange={form.handleChange}>
-                                    <FormControlLabel
-                                        value={0}
-                                        control={<Radio />}
-                                        label={t('form.storyline.settings.autoBackupFreq.option0')}
-                                    />
-                                    <FormControlLabel
-                                        value={30}
-                                        control={<Radio />}
-                                        label={t('form.storyline.settings.autoBackupFreq.option30')}
-                                    />
-                                    <FormControlLabel
-                                        value={60}
-                                        control={<Radio />}
-                                        label={t('form.storyline.settings.autoBackupFreq.option60')}
-                                    />
-                                    <FormControlLabel
-                                        value={120}
-                                        control={<Radio />}
-                                        label={t(
-                                            'form.storyline.settings.autoBackupFreq.option120'
-                                        )}
-                                    />
-                                </RadioGroup>
-                            </FormControl>
-                            <FormControl fullWidth>
+                                    label='form.storyline.settings.autoBackupFreq.label'
+                                    options={[
+                                        {
+                                            value: 0,
+                                            label: 'form.storyline.settings.autoBackupFreq.option0'
+                                        },
+                                        {
+                                            value: 30,
+                                            label: 'form.storyline.settings.autoBackupFreq.option30'
+                                        },
+                                        {
+                                            value: 60,
+                                            label: 'form.storyline.settings.autoBackupFreq.option60'
+                                        },
+                                        {
+                                            value: 120,
+                                            label: 'form.storyline.settings.autoBackupFreq.option120'
+                                        }
+                                    ]}
+                                />
                                 <TextField
-                                    id='autoBackupPath'
-                                    label={t('form.storyline.settings.autoBackupPath.label')}
+                                    form={form}
                                     name='autoBackupPath'
-                                    variant='standard'
+                                    label={t('form.storyline.settings.autoBackupPath.label')}
                                     disabled
-                                    value={form.values.autoBackupPath}
-                                    onChange={form.handleChange}
-                                    error={
-                                        form.touched.autoBackupPath &&
-                                        Boolean(form.errors.autoBackupPath)
-                                    }
-                                    helperText={
-                                        form.touched.autoBackupPath && form.errors.autoBackupPath
-                                    }
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position='end'>
@@ -433,7 +247,6 @@ const SettingsForm = ({
                                                         )
                                                     }}>
                                                     {t(
-                                                        // eslint-disable-next-line max-len
                                                         'form.storyline.settings.autoBackupPath.select'
                                                     )}
                                                 </Button>
@@ -441,7 +254,7 @@ const SettingsForm = ({
                                         )
                                     }}
                                 />
-                            </FormControl>
+                            </Box>
                         </Box>
                     </Box>
                 </TabPanel>
