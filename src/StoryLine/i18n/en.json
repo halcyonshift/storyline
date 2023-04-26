@@ -345,6 +345,7 @@
                         "center": "Center"
                     },
                     "font": "Font",
+                    "indentParagraph": "Indent paragraphs",
                     "lineHeight": "Line height",
                     "paragraphSpacing": "Paragraph spacing",
                     "sceneSeparator": "Scene separator",

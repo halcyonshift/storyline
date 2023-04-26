@@ -14,6 +14,7 @@ export type ExportAsDataType = {
     sceneSeparator: string
     lineHeight: string
     paragraphSpacing: number
+    indentParagraph: boolean
     font: string
     fontSize: number
     mode: ExportModeType

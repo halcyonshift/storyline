@@ -128,7 +128,7 @@ const SettingsForm = ({
                             <SelectField
                                 form={form}
                                 name='language'
-                                label='form.storyline.settings.language'
+                                label={t('form.storyline.settings.language')}
                                 options={[
                                     { value: 'en', label: 'English' },
                                     { value: 'fr', label: 'Français' }
@@ -139,7 +139,7 @@ const SettingsForm = ({
                             <SelectField
                                 form={form}
                                 name='displayMode'
-                                label='form.storyline.settings.displayMode.label'
+                                label={t('form.storyline.settings.displayMode.label')}
                                 options={[
                                     {
                                         value: 'light',
@@ -154,7 +154,7 @@ const SettingsForm = ({
                             <SelectField
                                 form={form}
                                 name='palette'
-                                label='form.storyline.settings.palette'>
+                                label={t('form.storyline.settings.palette')}>
                                 {PALETTE_OPTIONS.map((option) => (
                                     <MenuItem
                                         key={option}

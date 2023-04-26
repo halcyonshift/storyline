@@ -1,6 +1,11 @@
 import parse from 'html-react-parser'
 import { DateTime } from 'luxon'
-import { htmlExtractExcerptsOptions, htmlParseOptions } from './html'
+import {
+    getExportHTMLParseOptions,
+    docxExtractExcerptsOptions,
+    htmlExtractExcerptsOptions,
+    htmlParseOptions
+} from './html'
 
 export const autoCompleteOptions = (data: { id: string; displayName: string }[]) => {
     return data.map((item) => ({ id: item.id, label: item.displayName }))
@@ -8,6 +13,11 @@ export const autoCompleteOptions = (data: { id: string; displayName: string }[])
 export const dateFormat = (jsDate: Date) => {
     return DateTime.fromJSDate(jsDate).toLocaleString(DateTime.DATETIME_SHORT)
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const exportHTMLParse = (s: string, settings: any) => {
+    return parse(s, getExportHTMLParseOptions(settings))
+}
+export const exportDocxParse = (s: string) => parse(s, docxExtractExcerptsOptions)
 export const htmlParse = (s: string) => parse(s, htmlParseOptions)
 export const htmlExtractExcerpts = (s: string) => parse(s, htmlExtractExcerptsOptions)
 

@@ -1,32 +1,16 @@
-import { InputLabel, MenuItem, FormControl, Select } from '@mui/material'
-import { useTranslation } from 'react-i18next'
+import { MenuItem } from '@mui/material'
 import { FontFamily } from '@sl/constants/fontFamily'
-import { FontFamilyFieldProps } from './types'
+import SelectField from '../SelectField'
+import { SelectFieldProps } from '../SelectField/types'
 
-const FontFamilyField = ({
-    form,
-    name = 'font',
-    label = 'component.fontFamilyField.label'
-}: FontFamilyFieldProps) => {
-    const { t } = useTranslation()
-    return (
-        <FormControl fullWidth>
-            <InputLabel id={`select-${name}`}>{t(label)}</InputLabel>
-            <Select
-                name={name}
-                labelId={`select-${name}`}
-                value={form.values[name]}
-                label={t(label)}
-                onChange={form.handleChange}
-                error={form.touched[name] && Boolean(form.errors[name])}>
-                {Object.entries(FontFamily).map(([name, label]) => (
-                    <MenuItem key={`appFont-${name}`} value={name} sx={{ fontFamily: name }}>
-                        {label}
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
-    )
-}
+const FontFamilyField = ({ form, name, label, ...props }: SelectFieldProps) => (
+    <SelectField form={form} name={name} label={label} {...props}>
+        {Object.entries(FontFamily).map(([name, label]) => (
+            <MenuItem key={`appFont-${name}`} value={name} sx={{ fontFamily: name }}>
+                {label}
+            </MenuItem>
+        ))}
+    </SelectField>
+)
 
 export default FontFamilyField
