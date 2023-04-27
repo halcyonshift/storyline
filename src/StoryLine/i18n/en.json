@@ -105,6 +105,13 @@
                 "no": "no"
             }
         },
+        "unit": {
+            "years": "years",
+            "months": "months",
+            "days": "days",
+            "hours": "hours",
+            "minutes": "minutes"
+        },
         "viewWrapper": {
             "tab": {
                 "general": "General",
@@ -746,6 +753,24 @@
                     "add": "New"
                 }
             },
+            "dashboard": {
+                "deadline": {
+                    "none": "No upcoming deadlines!"
+                },
+                "random": {
+                    "character": "Character",
+                    "prompt": "Prompt"
+                },
+                "tracker": {
+                    "remaining": "{{days}} days left ({{words}} words a day)",
+                    "deadline": "There are <strong>{{timeLeft}}</strong> left, <strong>{{wordsPerDay}} words a day</strong> will meet the deadline."
+                },
+                "wordCharts": {
+                    "count": "Total count",
+                    "written": "Daily count",
+                    "noData": "No stats to view"
+                }
+            },
             "insight": {
                 "chapterLength": {
                     "scene": "Scene {{number}}"
@@ -762,23 +787,6 @@
                     "fri": "Friday",
                     "sat": "Saturday",
                     "sun": "Sunday"
-                }
-            },
-            "dashboard": {
-                "deadline": {
-                    "none": "No upcoming deadlines!"
-                },
-                "random": {
-                    "character": "Character",
-                    "prompt": "Prompt"
-                },
-                "tracker": {
-                    "remaining": "{{days}} days left ({{words}} words a day)"
-                },
-                "wordCharts": {
-                    "count": "Total count",
-                    "written": "Daily count",
-                    "noData": "No stats to view"
                 }
             },
             "overview": {

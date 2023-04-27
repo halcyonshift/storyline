@@ -2,13 +2,14 @@
 import { Model, Q, Query, ColumnName } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, text, writer } from '@nozbe/watermelondb/decorators'
-import { DateTime } from 'luxon'
+import { DateTime, DurationLikeObject, DurationUnits, Interval } from 'luxon'
 import percentRound from 'percent-round'
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
 import { SectionMode } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
 import schema from '@sl/db/schema'
 import { SearchResultType } from '@sl/layouts/Work/Panel/Search/types'
+import { t } from 'i18next'
 
 import {
     CharacterDataType,
@@ -28,6 +29,7 @@ import {
     StatisticModel,
     TagModel
 } from '.'
+
 export default class WorkModel extends Model {
     static table = 'work'
     public static associations: Associations = {
@@ -66,6 +68,37 @@ export default class WorkModel extends Model {
 
         const date = DateTime.fromJSDate(this.deadlineAt)
         return date.isValid ? date.toFormat('EEEE dd LLL yyyy H:mm') : ''
+    }
+
+    get timeLeft() {
+        if (!this.deadlineAt) return ''
+
+        const deadline = DateTime.fromJSDate(this.deadlineAt)
+        const now = DateTime.now()
+
+        const units: DurationUnits = ['years', 'months', 'days', 'hours', 'minutes']
+
+        const diff = deadline.diff(now, units)
+
+        return units
+            .reduce((duration, unit) => {
+                const d = diff.get(unit as keyof DurationLikeObject)
+                if (d) {
+                    duration.push(`${Math.round(d)} ${t(`component.unit.${unit}`)}`)
+                }
+                return duration
+            }, [])
+            .join(' ')
+    }
+
+    wordsPerDay(currentWords: number) {
+        if (!currentWords || !this.wordGoal) return 0
+        const deadline = DateTime.fromJSDate(this.deadlineAt)
+        const now = DateTime.now()
+        const diff = Interval.fromDateTimes(now, deadline)
+        if (isNaN(diff.length('days'))) return 0
+
+        return Math.ceil((this.wordGoal - currentWords) / diff.length('days'))
     }
 
     async search(

@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
+import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles'
 import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
 import Snackbar from '@mui/material/Snackbar'
-import { ThemeProvider } from '@mui/material/styles'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { Settings } from 'luxon'
@@ -41,21 +41,25 @@ const App = () => {
 
     return (
         <LocalizationProvider dateAdapter={AdapterLuxon}>
-            <ThemeProvider theme={settings.theme}>
-                <CssBaseline />
-                <Box id='app' className={`${settings.displayMode} flex h-full`}>
-                    <Outlet />
-                    <Snackbar
-                        open={messenger.open}
-                        autoHideDuration={6000}
-                        onClose={() => messenger.setOpen(false)}
-                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-                        <Alert onClose={() => messenger.setOpen(false)} severity={messenger.status}>
-                            {messenger.message}
-                        </Alert>
-                    </Snackbar>
-                </Box>
-            </ThemeProvider>
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={settings.theme}>
+                    <CssBaseline />
+                    <Box id='app' className={`${settings.displayMode} flex h-full`}>
+                        <Outlet />
+                        <Snackbar
+                            open={messenger.open}
+                            autoHideDuration={6000}
+                            onClose={() => messenger.setOpen(false)}
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+                            <Alert
+                                onClose={() => messenger.setOpen(false)}
+                                severity={messenger.status}>
+                                {messenger.message}
+                            </Alert>
+                        </Snackbar>
+                    </Box>
+                </ThemeProvider>
+            </StyledEngineProvider>
         </LocalizationProvider>
     )
 }

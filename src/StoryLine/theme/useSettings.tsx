@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
-import { createTheme } from '@mui/material/styles'
+import { createTheme, responsiveFontSizes } from '@mui/material/styles'
 import { Theme } from '@mui/system'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
 import { isBoolean } from 'lodash'
@@ -127,66 +127,65 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     ])
 
     useEffect(() => {
-        setTheme(
-            createTheme({
-                palette: {
-                    mode: displayMode,
-                    contrastThreshold: 4.5,
-                    primary: {
-                        light: getHex(100),
-                        main: getHex(500),
-                        dark: getHex(900),
-                        contrastText: _getHex('white')
-                    },
-                    secondary: {
-                        light: _getHex('slate', 100),
-                        main: _getHex('slate', 500),
-                        dark: _getHex('slate', 900),
-                        contrastText: _getHex('white')
-                    },
-                    error: {
-                        light: _getHex('rose', 100),
-                        main: _getHex('rose', 500),
-                        dark: _getHex('rose', 900),
-                        contrastText: _getHex('white')
-                    },
-                    warning: {
-                        light: _getHex('amber', 100),
-                        main: _getHex('amber', 500),
-                        dark: _getHex('amber', 900),
-                        contrastText: _getHex('white')
-                    },
-                    info: {
-                        light: _getHex('sky', 100),
-                        main: _getHex('sky', 500),
-                        dark: _getHex('sky', 900),
-                        contrastText: _getHex('white')
-                    },
-                    success: {
-                        light: _getHex('emerald', 100),
-                        main: _getHex('emerald', 500),
-                        dark: _getHex('emerald', 900),
-                        contrastText: _getHex('white')
-                    },
-                    grey: {
-                        50: _getHex('slate', 50),
-                        100: _getHex('slate', 100),
-                        200: _getHex('slate', 200),
-                        300: _getHex('slate', 300),
-                        400: _getHex('slate', 400),
-                        500: _getHex('slate', 500),
-                        600: _getHex('slate', 600),
-                        700: _getHex('slate', 700),
-                        800: _getHex('slate', 800),
-                        900: _getHex('slate', 900)
-                    }
+        const _theme = createTheme({
+            palette: {
+                mode: displayMode,
+                contrastThreshold: 4.5,
+                primary: {
+                    light: getHex(100),
+                    main: getHex(500),
+                    dark: getHex(900),
+                    contrastText: _getHex('white')
                 },
-                typography: {
-                    fontSize: appFontSize,
-                    fontFamily: appFont
+                secondary: {
+                    light: _getHex('slate', 100),
+                    main: _getHex('slate', 500),
+                    dark: _getHex('slate', 900),
+                    contrastText: _getHex('white')
+                },
+                error: {
+                    light: _getHex('rose', 100),
+                    main: _getHex('rose', 500),
+                    dark: _getHex('rose', 900),
+                    contrastText: _getHex('white')
+                },
+                warning: {
+                    light: _getHex('amber', 100),
+                    main: _getHex('amber', 500),
+                    dark: _getHex('amber', 900),
+                    contrastText: _getHex('white')
+                },
+                info: {
+                    light: _getHex('sky', 100),
+                    main: _getHex('sky', 500),
+                    dark: _getHex('sky', 900),
+                    contrastText: _getHex('white')
+                },
+                success: {
+                    light: _getHex('emerald', 100),
+                    main: _getHex('emerald', 500),
+                    dark: _getHex('emerald', 900),
+                    contrastText: _getHex('white')
+                },
+                grey: {
+                    50: _getHex('slate', 50),
+                    100: _getHex('slate', 100),
+                    200: _getHex('slate', 200),
+                    300: _getHex('slate', 300),
+                    400: _getHex('slate', 400),
+                    500: _getHex('slate', 500),
+                    600: _getHex('slate', 600),
+                    700: _getHex('slate', 700),
+                    800: _getHex('slate', 800),
+                    900: _getHex('slate', 900)
                 }
-            })
-        )
+            },
+            typography: {
+                fontSize: appFontSize,
+                fontFamily: appFont
+            }
+        })
+        setTheme(responsiveFontSizes(_theme))
     }, [displayMode, appFont, appFontSize, palette])
 
     const getHex = (shade?: ShadeType): string => {

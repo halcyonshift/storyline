@@ -19,11 +19,11 @@ const DashboardView = () => {
                 </Box>
             </Paper>
             <Paper elevation={1} className='relative row-span-3'>
-                <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
+                <Box className='absolute top-0 left-0 right-0 bottom-0'>
                     <Boxes.Tracker />
                 </Box>
             </Paper>
-            <Paper elevation={1} className='relative  row-span-2'>
+            <Paper elevation={1} className='relative row-span-2'>
                 <Box className='absolute top-0 left-0 right-0 bottom-0 overflow-auto'>
                     <Boxes.LastUpdated />
                 </Box>
