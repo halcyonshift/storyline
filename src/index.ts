@@ -328,9 +328,13 @@ app.whenReady()
         })
 
         ipcMain.handle('show-image', async (e, filePath) => {
-            const extension = path.extname(filePath)
-            const img = fs.readFileSync(filePath).toString('base64')
-            return `data:image/${extension};base64,${img}`
+            if (fs.existsSync(filePath)) {
+                const extension = path.extname(filePath)
+                const img = fs.readFileSync(filePath).toString('base64')
+                return `data:image/${extension};base64,${img}`
+            }
+
+            return ''
         })
 
         ipcMain.handle('delete-file', async (e, path) => {

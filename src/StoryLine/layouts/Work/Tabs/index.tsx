@@ -12,7 +12,8 @@ import {
     SectionModel,
     WorkModel
 } from '@sl/db/models'
-import { getHex } from '@sl/theme/utils'
+import useSettings from '@sl/theme/useSettings'
+import { getHex, spacing } from '@sl/theme/utils'
 import useTabs from './useTabs'
 import useLayout from '../useLayout'
 import { useRouteLoaderData } from 'react-router-dom'
@@ -34,35 +35,38 @@ const Tabs = () => {
     const location = useObservable(() => work.location.observeWithColumns(['name']), [], [])
     const note = useObservable(() => work.note.observeWithColumns(['title']), [], [])
     const section = useObservable(() => work.section.observeWithColumns(['title']), [], [])
+    const settings = useSettings()
 
     const TabsContainer = styled(MuiTabs)(() => ({
         '.MuiTabs-flexContainer': {
-            borderBottom: `1px solid  ${getHex('slate', 300)}`,
+            borderBottom: '1px solid rgba(0, 0, 0, 0.23)',
             width: '100%',
             minWidth: 'max-content'
         }
     }))
 
-    const Tab = styled(MuiTab)(({ theme }) => ({
-        border: `1px solid  ${theme.palette.common.black}`,
-        borderTopLeftRadius: '5px',
-        borderTopRightRadius: '5px',
-        backgroundColor: 'transparent',
-        borderColor: 'transparent',
-        borderBottom: 'none',
-        margin: '10px 0 0 5px',
-        padding: '8px 12px',
-        minHeight: 0,
-        '& :first-of-type': {
-            flexGrow: 1
-        },
-        '&.Mui-selected': {
-            borderColor: getHex('slate', 300),
-            backgroundColor: getHex('white'),
-            borderBottom: getHex('white'),
-            boxShadow: `0 2px 0 0px ${getHex('white')}`
+    const Tab = styled(MuiTab)(() => {
+        return {
+            border: '1px solid rgba(0, 0, 0, 0.23)',
+            borderTopLeftRadius: spacing[1],
+            borderTopRightRadius: spacing[1],
+            backgroundColor: 'transparent',
+            borderColor: 'transparent',
+            borderBottom: 'none',
+            margin: `${spacing[3]} 0 0 ${spacing[1]}`,
+            padding: `${spacing[2]} ${spacing[3]}`,
+            minHeight: 0,
+            '& :first-of-type': {
+                flexGrow: 1
+            },
+            '&.Mui-selected': {
+                borderColor: 'rgba(0, 0, 0, 0.23)',
+                backgroundColor: getHex('white'),
+                borderBottom: getHex('white'),
+                boxShadow: `0 2px 0 0px ${getHex('white')}`
+            }
         }
-    }))
+    })
 
     const onDragEnd = (result: DropResult) => {
         if (!result.destination) return
@@ -76,7 +80,6 @@ const Tabs = () => {
         tabs.setActive(-1)
     }
 
-    // eslint-disable-next-line complexity
     const getLabel = (tab: TabType) => {
         const data = {
             character,
@@ -103,10 +106,9 @@ const Tabs = () => {
         () =>
             tabs.showTabs ? (
                 <Box
-                    className='bg-slate-100'
                     sx={{
-                        marginLeft: '1px',
-                        maxWidth
+                        maxWidth,
+                        backgroundColor: settings.getHex(50)
                     }}>
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Droppable droppableId='tabs' direction='horizontal'>
@@ -120,12 +122,7 @@ const Tabs = () => {
                                     scrollButtons={false}
                                     aria-label={t('layout.work.tabs')}
                                     selectionFollowsFocus
-                                    TabIndicatorProps={{
-                                        style: {
-                                            display: 'none',
-                                            backgroundColor: getHex('slate', 100)
-                                        }
-                                    }}>
+                                    TabIndicatorProps={{ style: { display: 'none' } }}>
                                     {tabs.tabs.map((tab, index) => (
                                         <Draggable
                                             key={`${tab.id}-${index}`}

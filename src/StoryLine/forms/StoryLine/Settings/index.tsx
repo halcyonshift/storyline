@@ -117,12 +117,12 @@ const SettingsForm = ({
                                 <FontFamilyField
                                     form={form}
                                     name='appFont'
-                                    label='form.storyline.settings.font'
+                                    label={t('form.storyline.settings.font')}
                                 />
                                 <FontSizeField
                                     form={form}
                                     name='appFontSize'
-                                    label='form.storyline.settings.fontSize'
+                                    label={t('form.storyline.settings.fontSize')}
                                 />
                             </Box>
                             <SelectField
@@ -174,12 +174,12 @@ const SettingsForm = ({
                                 <FontFamilyField
                                     form={form}
                                     name='editorFont'
-                                    label='form.storyline.settings.font'
+                                    label={t('form.storyline.settings.font')}
                                 />
                                 <FontSizeField
                                     form={form}
                                     name='editorFontSize'
-                                    label='form.storyline.settings.fontSize'
+                                    label={t('form.storyline.settings.fontSize')}
                                 />
                             </Box>
                             <Box className='grid grid-cols-2 gap-5'>

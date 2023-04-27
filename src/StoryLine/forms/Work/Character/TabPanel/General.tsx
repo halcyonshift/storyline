@@ -8,7 +8,7 @@ const GeneralPanel = ({ form }: TabPanelProps) => {
     const { t } = useTranslation()
 
     return (
-        <>
+        <Box className='grid grid-cols-1 gap-3 pt-3'>
             <Box className='grid grid-cols-2 gap-3'>
                 <TextField name='pronouns' label={t('form.work.character.pronouns')} form={form} />
                 <TextField
@@ -24,10 +24,8 @@ const GeneralPanel = ({ form }: TabPanelProps) => {
                 <TextField name='lastName' label={t('form.work.character.lastName')} form={form} />
                 <TextField name='nickname' label={t('form.work.character.nickname')} form={form} />
             </Box>
-            <Box>
-                <TextareaField form={form} fieldName='description' />
-            </Box>
-        </>
+            <TextareaField form={form} fieldName='description' />
+        </Box>
     )
 }
 

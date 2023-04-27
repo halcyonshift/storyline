@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next'
 import * as NotePanel from './TabPanel'
 import FormButton from '../FormButton'
 import { CharacterModel, ItemModel, LocationModel, NoteModel, SectionModel } from '@sl/db/models'
+import useSettings from '@sl/theme/useSettings'
 
 const TAB_STYLE = { padding: 0 }
 
@@ -34,6 +35,7 @@ const _FormWrapper = ({
     const tabs = useTabs()
     const { t } = useTranslation()
     const noButton = ['images', 'notes']
+    const settings = useSettings()
 
     useEffect(() => {
         if (tabs?.setShowTabs) tabs.setShowTabs(false)
@@ -42,7 +44,9 @@ const _FormWrapper = ({
 
     return (
         <Box className='flex flex-col flex-grow'>
-            <Box className='px-3 py-2 flex justify-between h-12'>
+            <Box
+                className='px-3 py-2 flex justify-between h-12 overflow-hidden'
+                sx={{ backgroundColor: settings.getHex(50) }}>
                 {title ? <Typography variant='h6'>{title}</Typography> : null}
                 <Stack spacing={1} direction='row'>
                     {header}

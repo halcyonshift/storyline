@@ -49,7 +49,7 @@ const ColorField = ({ form, name = 'color', label }: ColorFieldProps) => {
                 <Stack spacing={1} direction='row'>
                     <Button
                         aria-describedby={anchorEl ? `colorfield-${name}` : undefined}
-                        className='border-solid w-10 h-10 shadow rounded'
+                        className='border w-10 h-10 shadow rounded'
                         sx={{ backgroundColor: form.values[name] || getHex('white') }}
                         onClick={(e) => setAnchorEl(e.currentTarget)}></Button>
                     <TooltipIconButton
