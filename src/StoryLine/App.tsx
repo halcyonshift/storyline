@@ -25,7 +25,7 @@ const App = () => {
             if (!work || !autoBackupPath) return
             messenger.warning(t('autoBackup.warning'))
             const { data, images, backupPath } = await work.backup()
-            const filePath = await api.backup(data, images, backupPath)
+            const filePath = await api.backupWork(data, images, backupPath)
             if (filePath) {
                 messenger.success(t('autoBackup.success', { filePath }))
             } else {

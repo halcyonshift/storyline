@@ -9,7 +9,6 @@ import { SectionMode } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
 import schema from '@sl/db/schema'
 import { SearchResultType } from '@sl/layouts/Work/Panel/Search/types'
-import { wordCount } from '@sl/utils'
 
 import {
     CharacterDataType,
@@ -274,7 +273,7 @@ export default class WorkModel extends Model {
 
     async wordCount() {
         const scenes = await this.scenes.fetch()
-        return scenes.reduce((count, scene) => count + wordCount(scene.body), 0)
+        return scenes.reduce((count, scene) => count + scene.words, 0)
     }
 
     async progress() {

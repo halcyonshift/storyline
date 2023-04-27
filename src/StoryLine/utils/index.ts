@@ -21,14 +21,13 @@ export const exportDocxParse = (s: string) => parse(s, docxExtractExcerptsOption
 export const htmlParse = (s: string) => parse(s, htmlParseOptions)
 export const htmlExtractExcerpts = (s: string) => parse(s, htmlExtractExcerptsOptions)
 
-export const wordCount = (s: string) => {
-    s = s
-        .replace(/<[^>]+>/g, '')
-        .replace(/\s+/g, ' ')
-        .replace(/[^A-Za-z0-9 ]/g, '')
-        .trim()
-
-    return s !== '' ? s.split(' ').length : 0
+export const wordCount = (s: string, lang = 'en') => {
+    s = s.replace(/<[^>]+>/g, ' ').trim()
+    const segmenter = new Intl.Segmenter(lang, {
+        granularity: 'word'
+    })
+    const segments = segmenter.segment(s)
+    return [...segments].filter((s) => s.isWordLike).length
 }
 
 export const prettyUrl = (link: string) => {

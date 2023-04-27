@@ -128,6 +128,7 @@ const schema = appSchema({
                 { name: 'description', type: 'string', isOptional: true },
                 { name: 'order', type: 'number' },
                 { name: 'date', type: 'string', isOptional: true },
+                { name: 'words', type: 'number', isOptional: true },
                 { name: 'word_goal', type: 'number', isOptional: true },
                 { name: 'word_goal_per_day', type: 'number', isOptional: true },
                 { name: 'deadline_at', type: 'number', isOptional: true },

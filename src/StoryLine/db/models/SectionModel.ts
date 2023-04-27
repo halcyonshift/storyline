@@ -36,6 +36,7 @@ export default class SectionModel extends Model {
     @text('description') description!: string
     @text('date') date!: string
     @field('order') order!: number
+    @field('words') words!: number
     @field('word_goal') wordGoal!: number
     @field('word_goal_per_day') wordGoalPerDay!: number
     @date('deadline_at') deadlineAt!: Date
@@ -252,16 +253,16 @@ export default class SectionModel extends Model {
 
     async getWordCount(): Promise<number> {
         if (this.isScene || this.isVersion) {
-            this.wordCount = wordCount(this.body)
+            this.wordCount = this.words
         } else if (this.isChapter) {
             const scenes = await this.scenes.fetch()
-            this.wordCount = scenes.reduce((count, scene) => count + wordCount(scene.body), 0)
+            this.wordCount = scenes.reduce((count, scene) => count + scene.words, 0)
         } else {
             const chapters = await this.chapters.fetch()
             let count = 0
             for await (const chapter of chapters) {
                 const scenes = await chapter.scenes.fetch()
-                count += scenes.reduce((count, scene) => count + wordCount(scene.body), 0)
+                count += scenes.reduce((count, scene) => count + scene.words, 0)
             }
             this.wordCount = count
         }
@@ -382,6 +383,7 @@ export default class SectionModel extends Model {
     @writer async updateBody(data: string) {
         await this.update((section) => {
             section.body = data
+            section.words = wordCount(data)
         })
     }
 

@@ -167,6 +167,7 @@ const importBibisco = async (database: Database): Promise<false | string> => {
                         ? DateTime.fromISO(data.revisions[data.revision].time).toSQL()
                         : ''
                     section.body = data.revisions[data.revision].text
+                    section.words = wordCount(data.revisions[data.revision].text)
                     section.status = statusMap[data.status as keyof typeof statusMap]
                     section.pointOfView = data.revisions[data.revision].povid
                         ? povMap[data.revisions[data.revision].povid as keyof typeof povMap]
@@ -364,6 +365,7 @@ const importBibisco = async (database: Database): Promise<false | string> => {
                               section.title = data.title
                               section.order = data.position
                               section.body = revision.text
+                              section.words = wordCount(revision.text)
                               section.date = revision.time
                                   ? DateTime.fromISO(revision.time).toSQL()
                                   : ''
@@ -513,7 +515,7 @@ const importBibisco = async (database: Database): Promise<false | string> => {
                 database.get<StatisticModel>('statistic').prepareCreate((statistic) => {
                     statistic.work.set(work)
                     statistic.section.set(scene)
-                    statistic.words = wordCount(scene.body)
+                    statistic.words = scene.words
                     statistic.createdAt = scene.updatedAt
                     statistic.updatedAt = scene.updatedAt
                 })
