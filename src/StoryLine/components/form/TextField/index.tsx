@@ -6,7 +6,6 @@ const TextField = ({ form, name, ...props }: TextFieldProps) => (
         <MuiTextField
             id={name}
             fullWidth={props.type === 'number' && !props.fullWidth ? false : props.fullWidth}
-            margin={props?.margin || 'normal'}
             value={form.values[name] ? form.values[name] : ''}
             onChange={(e) => form.setFieldValue(name, e.target.value)}
             error={form.touched[name] && Boolean(form.errors[name])}

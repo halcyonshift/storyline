@@ -15,8 +15,8 @@ const TrackerBox = () => {
     const [parts, setParts] = useState<SectionModel[]>([])
     const [chapters, setChapters] = useState<SectionModel[]>([])
     const [scenes, setScenes] = useState<SectionModel[]>([])
-    const settings = useSettings()
     const work = useRouteLoaderData('work') as WorkModel
+    const settings = useSettings()
     const { t } = useTranslation()
 
     useEffect(() => {

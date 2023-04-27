@@ -763,7 +763,7 @@
                 },
                 "tracker": {
                     "remaining": "{{days}} days left ({{words}} words a day)",
-                    "deadline": "There are <strong>{{timeLeft}}</strong> left, <strong>{{wordsPerDay}} words a day</strong> will meet the deadline."
+                    "deadline": "There are <span className='font-bold'>{{timeLeft}}</span> left, <span className='font-bold'>{{wordsPerDay}} words a day</span> will meet the deadline."
                 },
                 "wordCharts": {
                     "count": "Total count",
