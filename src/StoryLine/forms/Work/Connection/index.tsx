@@ -1,16 +1,12 @@
-import { useEffect, useState, SyntheticEvent } from 'react'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import ArrowFowardIcon from '@mui/icons-material/ArrowForward'
-import CategoryIcon from '@mui/icons-material/Category'
-import PersonIcon from '@mui/icons-material/Person'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
-import StickyNote2Icon from '@mui/icons-material/StickyNote2'
+import { useEffect, useState, SyntheticEvent, ReactNode } from 'react'
+import { ArrowBack, ArrowForward } from '@mui/icons-material'
 import { Autocomplete, Box, Button, IconButton, TextField as MuiTextField } from '@mui/material'
 import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 import ColorField from '@sl/components/form/ColorField'
 import DateField from '@sl/components/form/DateField'
+import Selector from '@sl/components/Selector'
 import TextareaField from '@sl/components/form/TextareaField'
 import { CharacterModel, ItemModel, LocationModel, NoteModel } from '@sl/db/models'
 import TextField from '@sl/components/form/TextField'
@@ -34,7 +30,14 @@ const ConnectionForm = ({ work, connection, initialValues, setOpen }: Connection
     const validationSchema = yup.object({
         body: yup.string().nullable(),
         date: yup.string().nullable(),
-        color: yup.string().nullable()
+        color: yup.string().nullable(),
+        tableA: yup.string().oneOf(['character', 'item', 'location', 'note']),
+        tableB: yup.string().oneOf(['character', 'item', 'location', 'note']),
+        idA: yup.string().required(t('form.required')),
+        idB: yup.string().required(t('form.required')),
+        mode: yup.string().required(t('form.required')),
+        to: yup.boolean(),
+        from: yup.boolean()
     })
 
     const form: FormikProps<ConnectionDataType> = useFormik<ConnectionDataType>({
@@ -74,7 +77,6 @@ const ConnectionForm = ({ work, connection, initialValues, setOpen }: Connection
                 form.setFieldValue('tableB', connection.tableB)
                 form.setFieldValue('idA', connection.idA)
                 form.setFieldValue('idB', connection.idB)
-
                 setIdA({ id: connection.idA, label: fromRecord.displayName })
                 setIdB({ id: connection.idB, label: toRecord.displayName })
             }
@@ -132,23 +134,10 @@ const ConnectionForm = ({ work, connection, initialValues, setOpen }: Connection
     }, [form.values.from, form.values.to])
 
     return (
-        <Box component='form' onSubmit={form.handleSubmit}>
-            <Box className='grid grid-cols-12 gap-2'>
+        <Box component='form' className='grid grid-cols-1 gap-3' onSubmit={form.handleSubmit}>
+            <Box className='grid grid-cols-12 gap-3'>
                 <Box className='col-span-5'>
-                    <Box className='flex justify-around'>
-                        <IconButton onClick={() => form.setFieldValue('tableA', 'character')}>
-                            <PersonIcon className='text-emerald-600' />
-                        </IconButton>
-                        <IconButton onClick={() => form.setFieldValue('tableA', 'location')}>
-                            <LocationOnIcon className='text-amber-600' />
-                        </IconButton>
-                        <IconButton onClick={() => form.setFieldValue('tableA', 'item')}>
-                            <CategoryIcon className='text-purple-600' />
-                        </IconButton>
-                        <IconButton onClick={() => form.setFieldValue('tableA', 'note')}>
-                            <StickyNote2Icon className='text-sky-600' />
-                        </IconButton>
-                    </Box>
+                    <Selector onClick={(table) => form.setFieldValue('tableA', table)} />
                     <Autocomplete
                         fullWidth
                         getOptionLabel={(option: AutocompleteOption) => option?.label || ''}
@@ -161,35 +150,27 @@ const ConnectionForm = ({ work, connection, initialValues, setOpen }: Connection
                             form.setFieldValue('idA', value?.id || '')
                         }}
                         renderInput={(params) => (
-                            <MuiTextField {...params} label={t('form.work.connection.table')} />
+                            <MuiTextField
+                                {...params}
+                                label={t('form.work.connection.table')}
+                                error={form.touched.idA && Boolean(form.errors.idA)}
+                                helperText={form.touched.idA && (form.errors.idA as ReactNode)}
+                            />
                         )}
                     />
                 </Box>
                 <Box className='col-span-2 text-center flex flex-col justify-center'>
                     <Box>
                         <IconButton onClick={() => form.setFieldValue('to', !form.values.to)}>
-                            <ArrowFowardIcon color={form.values.to ? 'success' : 'inherit'} />
+                            <ArrowForward color={form.values.to ? 'success' : 'inherit'} />
                         </IconButton>
                         <IconButton onClick={() => form.setFieldValue('from', !form.values.from)}>
-                            <ArrowBackIcon color={form.values.from ? 'success' : 'inherit'} />
+                            <ArrowBack color={form.values.from ? 'success' : 'inherit'} />
                         </IconButton>
                     </Box>
                 </Box>
                 <Box className='col-span-5'>
-                    <Box className='flex justify-around'>
-                        <IconButton onClick={() => form.setFieldValue('tableB', 'character')}>
-                            <PersonIcon className='text-emerald-600' />
-                        </IconButton>
-                        <IconButton onClick={() => form.setFieldValue('tableB', 'location')}>
-                            <LocationOnIcon className='text-amber-600' />
-                        </IconButton>
-                        <IconButton onClick={() => form.setFieldValue('tableB', 'item')}>
-                            <CategoryIcon className='text-purple-600' />
-                        </IconButton>
-                        <IconButton onClick={() => form.setFieldValue('tableB', 'note')}>
-                            <StickyNote2Icon className='text-sky-600' />
-                        </IconButton>
-                    </Box>
+                    <Selector onClick={(table) => form.setFieldValue('tableB', table)} />
                     <Autocomplete
                         fullWidth
                         getOptionLabel={(option: AutocompleteOption) => option?.label || ''}
@@ -202,17 +183,27 @@ const ConnectionForm = ({ work, connection, initialValues, setOpen }: Connection
                             form.setFieldValue('idB', value?.id || '')
                         }}
                         renderInput={(params) => (
-                            <MuiTextField {...params} label={t('form.work.connection.table')} />
+                            <MuiTextField
+                                {...params}
+                                error={form.touched.idB && Boolean(form.errors.idB)}
+                                helperText={form.touched.idB && (form.errors.idB as ReactNode)}
+                                label={t('form.work.connection.table')}
+                            />
                         )}
                     />
                 </Box>
             </Box>
-            <TextField name='mode' form={form} />
+            <TextField
+                label={t('form.work.connection.mode.label')}
+                placeholder={t('form.work.connection.mode.placeholder')}
+                name='mode'
+                form={form}
+            />
             <Box className='grid grid-cols-2 gap-2'>
                 <DateField form={form} label={'form.work.connection.date'} fieldName='date' />
                 <ColorField name='color' form={form} />
             </Box>
-            <Box className='py-2'>
+            <Box>
                 <TextareaField fieldName='body' form={form} />
             </Box>
             <Box className='flex justify-between'>

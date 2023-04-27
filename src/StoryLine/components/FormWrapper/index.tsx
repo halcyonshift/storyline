@@ -3,7 +3,6 @@ import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 import Box from '@mui/material/Box'
-import Divider from '@mui/material/Divider'
 import Stack from '@mui/material/Stack'
 import Tab from '@mui/material/Tab'
 import Typography from '@mui/material/Typography'
@@ -45,7 +44,8 @@ const _FormWrapper = ({
     return (
         <Box className='flex flex-col flex-grow'>
             <Box
-                className='px-3 py-2 flex justify-between h-12 overflow-hidden'
+                // eslint-disable-next-line max-len
+                className='px-3 py-2 flex flex-shrink-0 justify-between h-12 overflow-hidden border-b'
                 sx={{ backgroundColor: settings.getHex(50) }}>
                 {title ? <Typography variant='h6'>{title}</Typography> : null}
                 <Stack spacing={1} direction='row'>
@@ -53,8 +53,11 @@ const _FormWrapper = ({
                     {model ? <Status model={model} /> : null}
                 </Stack>
             </Box>
-            <Divider />
-            <Box component='form' onSubmit={form.handleSubmit} autoComplete='off'>
+            <Box
+                component='form'
+                onSubmit={form.handleSubmit}
+                autoComplete='off'
+                className='flex-grow h-0 overflow-auto'>
                 <TabContext value={value}>
                     {tabList.length > 1 || notes.length ? (
                         <Box className='border-b'>

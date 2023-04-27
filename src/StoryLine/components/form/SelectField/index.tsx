@@ -10,7 +10,7 @@ const SelectField = ({ form, name, label, options, children, ...props }: SelectF
             value={form.values[name]}
             label={label}
             onChange={form.handleChange}
-            error={form.touched.language && Boolean(form.errors.language)}
+            error={form.touched[name] && Boolean(form.errors[name])}
             {...props}>
             {options
                 ? options.map((option, index) => (

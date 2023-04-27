@@ -94,7 +94,7 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
         title: yup.string().nullable(),
         description: yup.string().nullable(),
         date: yup.string().nullable(),
-        wordGoal: yup.number().positive().integer().nullable(),
+        wordGoal: yup.number().integer().nullable(),
         deadlineAt: yup.date().nullable(),
         pointOfView: yup.string().nullable(),
         pointOfViewCharacter: yup.string().nullable()

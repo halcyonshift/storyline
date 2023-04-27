@@ -1,5 +1,6 @@
 import { FormControl, TextField as MuiTextField } from '@mui/material'
 import { TextFieldProps } from './types'
+import { ReactNode } from 'react'
 
 const TextField = ({ form, name, ...props }: TextFieldProps) => (
     <FormControl>
@@ -9,6 +10,7 @@ const TextField = ({ form, name, ...props }: TextFieldProps) => (
             value={form.values[name] ? form.values[name] : ''}
             onChange={(e) => form.setFieldValue(name, e.target.value)}
             error={form.touched[name] && Boolean(form.errors[name])}
+            helperText={form.touched[name] && (form.errors[name] as ReactNode)}
             {...props}
         />
     </FormControl>
