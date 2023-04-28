@@ -28,7 +28,9 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
                     {action ? <Box className='ml-auto'>{action}</Box> : null}
                 </Box>
             ) : null}
-            <Box className='flex-grow overflow-y-auto scrollbar-hidden  h-0 shadow-md'>
+            <Box
+                className='flex-grow overflow-y-auto scrollbar-hidden border-r border-dotted h-0
+            shadow-md'>
                 {children}
             </Box>
             <Box

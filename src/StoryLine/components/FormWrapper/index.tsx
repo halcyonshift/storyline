@@ -87,7 +87,7 @@ const _FormWrapper = ({
     }, [form.errors, form.touched])
 
     return (
-        <Box className='flex flex-col flex-grow'>
+        <Box className='flex flex-col flex-grow overflow-hidden'>
             <Box
                 // eslint-disable-next-line max-len
                 className='px-3 py-2 flex flex-shrink-0 justify-between h-12 overflow-hidden border-b'
@@ -102,75 +102,80 @@ const _FormWrapper = ({
                 component='form'
                 onSubmit={form.handleSubmit}
                 autoComplete='off'
-                className='flex-grow h-0 overflow-auto'>
+                className='flex-grow'>
                 <TabContext value={value}>
-                    {tabList.length > 1 || notes.length ? (
-                        <Box className='border-b'>
-                            <TabList
-                                onChange={(_: SyntheticEvent, value: string) => setValue(value)}
-                                aria-label=''>
-                                {tabList.map((tab, index) => (
-                                    <Tab
-                                        key={`tab-${index + 1}`}
-                                        label={
-                                            errorBadges[index.toString()] ? (
-                                                <Badge variant='dot' color='error'>
-                                                    {tab}
-                                                </Badge>
-                                            ) : (
-                                                tab
-                                            )
-                                        }
+                    <Box className='h-full flex flex-grow flex-col'>
+                        {tabList.length > 1 || notes.length ? (
+                            <Box className='border-b'>
+                                <TabList
+                                    onChange={(_: SyntheticEvent, value: string) => setValue(value)}
+                                    aria-label=''>
+                                    {tabList.map((tab, index) => (
+                                        <Tab
+                                            key={`tab-${index + 1}`}
+                                            label={
+                                                errorBadges[index.toString()] ? (
+                                                    <Badge variant='dot' color='error'>
+                                                        {tab}
+                                                    </Badge>
+                                                ) : (
+                                                    tab
+                                                )
+                                            }
+                                            value={(index + 1).toString()}
+                                        />
+                                    ))}
+                                    {notes.filter((note) => note.image).length ? (
+                                        <Tab
+                                            label={t('component.formWrapper.tab.images')}
+                                            value='images'
+                                        />
+                                    ) : null}
+                                    {notes.length ? (
+                                        <Tab
+                                            label={t('component.formWrapper.tab.notes')}
+                                            value='notes'
+                                        />
+                                    ) : null}
+                                </TabList>
+                            </Box>
+                        ) : null}
+                        <Box className='flex-grow h-0 overflow-auto'>
+                            {Children.toArray(children).map((child: ReactElement, index) => {
+                                if (child.props.showButton === false)
+                                    noButton.push((index + 1).toString())
+                                return (
+                                    <TabPanel
+                                        ref={(el) => (panelsRef.current[index] = el)}
+                                        key={`tabPanel-${index + 1}`}
                                         value={(index + 1).toString()}
-                                    />
-                                ))}
-                                {notes.filter((note) => note.image).length ? (
-                                    <Tab
-                                        label={t('component.formWrapper.tab.images')}
-                                        value='images'
-                                    />
-                                ) : null}
-                                {notes.length ? (
-                                    <Tab
-                                        label={t('component.formWrapper.tab.notes')}
-                                        value='notes'
-                                    />
-                                ) : null}
-                            </TabList>
+                                        sx={TAB_STYLE}>
+                                        <Stack
+                                            spacing={1}
+                                            className={child.props.padding === false ? '' : 'p-3'}>
+                                            {child}
+                                        </Stack>
+                                    </TabPanel>
+                                )
+                            })}
+                            {notes.filter((note) => note.image).length ? (
+                                <TabPanel value='images' sx={TAB_STYLE}>
+                                    <NotePanel.Images notes={notes.filter((note) => note.image)} />
+                                </TabPanel>
+                            ) : null}
+                            {notes.length ? (
+                                <TabPanel value='notes' sx={TAB_STYLE}>
+                                    <NotePanel.Notes notes={notes} />
+                                </TabPanel>
+                            ) : null}
                         </Box>
-                    ) : null}
-                    {Children.toArray(children).map((child: ReactElement, index) => {
-                        if (child.props.showButton === false) noButton.push((index + 1).toString())
-                        return (
-                            <TabPanel
-                                ref={(el) => (panelsRef.current[index] = el)}
-                                key={`tabPanel-${index + 1}`}
-                                value={(index + 1).toString()}
-                                sx={TAB_STYLE}>
-                                <Stack
-                                    spacing={1}
-                                    className={child.props.padding === false ? '' : 'px-3 pt-1'}>
-                                    {child}
-                                </Stack>
-                            </TabPanel>
-                        )
-                    })}
-                    {notes.filter((note) => note.image).length ? (
-                        <TabPanel value='images' sx={TAB_STYLE}>
-                            <NotePanel.Images notes={notes.filter((note) => note.image)} />
-                        </TabPanel>
-                    ) : null}
-                    {notes.length ? (
-                        <TabPanel value='notes' sx={TAB_STYLE}>
-                            <NotePanel.Notes notes={notes} />
-                        </TabPanel>
-                    ) : null}
-                </TabContext>
-                {!noButton.includes(value) ? (
-                    <Box className='m-3'>
-                        <FormButton label={t('component.formButton.save')} />
+                        {!noButton.includes(value) ? (
+                            <Box className='p-3 border-t'>
+                                <FormButton label={t('component.formButton.save')} />
+                            </Box>
+                        ) : null}
                     </Box>
-                ) : null}
+                </TabContext>
             </Box>
         </Box>
     )

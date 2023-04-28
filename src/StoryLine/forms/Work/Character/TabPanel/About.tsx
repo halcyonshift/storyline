@@ -7,7 +7,7 @@ const AboutPanel = ({ form }: TabPanelProps) => {
     const { t } = useTranslation()
 
     return (
-        <Box className='grid grid-cols-1 gap-3 py-1'>
+        <Box className='grid grid-cols-1 gap-3'>
             <Box className='grid grid-cols-2 gap-3'>
                 <TextareaField
                     fieldName='personalityPositive'

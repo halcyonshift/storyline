@@ -8,7 +8,7 @@ const DemographicsPanel = ({ form }: TabPanelProps) => {
     const { t } = useTranslation()
 
     return (
-        <Box className='grid grid-cols-2 gap-3 pt-3'>
+        <Box className='grid grid-cols-2 gap-3'>
             <TextField
                 name='nationality'
                 label={t('form.work.character.nationality')}

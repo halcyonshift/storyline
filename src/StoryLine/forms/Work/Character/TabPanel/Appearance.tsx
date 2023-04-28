@@ -9,7 +9,7 @@ const AppearancePanel = ({ form }: TabPanelProps) => {
     const { t } = useTranslation()
 
     return (
-        <Box className='grid grid-cols-1 gap-3 pt-3'>
+        <Box className='grid grid-cols-1 gap-3'>
             <Box className='grid grid-cols-2 gap-3'>
                 <Box>
                     <Box className='grid grid-cols-2 gap-3'>
