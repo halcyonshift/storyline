@@ -1,23 +1,17 @@
-import { useEffect, useState, Children, SyntheticEvent, ReactElement } from 'react'
-import TabContext from '@mui/lab/TabContext'
-import TabList from '@mui/lab/TabList'
-import TabPanel from '@mui/lab/TabPanel'
-import Box from '@mui/material/Box'
-import Stack from '@mui/material/Stack'
-import Tab from '@mui/material/Tab'
-import Typography from '@mui/material/Typography'
+import { useEffect, useRef, useState, Children, SyntheticEvent, ReactElement } from 'react'
+import { TabContext, TabList, TabPanel } from '@mui/lab'
+import { Badge, Box, Stack, Tab, Typography } from '@mui/material'
 import withObservables from '@nozbe/with-observables'
 import { Database, Q } from '@nozbe/watermelondb'
 import { withDatabase } from '@nozbe/watermelondb/DatabaseProvider'
-import Status from '@sl/components/Status'
-import useTabs from '@sl/layouts/Work/Tabs/useTabs'
-import { FormWrapperProps } from './types'
 import { useTranslation } from 'react-i18next'
-import * as NotePanel from './TabPanel'
-import FormButton from '../FormButton'
+import Status from '@sl/components/Status'
 import { CharacterModel, ItemModel, LocationModel, NoteModel, SectionModel } from '@sl/db/models'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import useSettings from '@sl/theme/useSettings'
-
+import FormButton from '../FormButton'
+import * as NotePanel from './TabPanel'
+import { FormWrapperProps, ErrorBadgeType, FormFieldType } from './types'
 const TAB_STYLE = { padding: 0 }
 
 // eslint-disable-next-line complexity
@@ -31,15 +25,66 @@ const _FormWrapper = ({
     notes
 }: FormWrapperProps) => {
     const [value, setValue] = useState<string>('1')
+    const [errorBadges, setErrorBadges] = useState<ErrorBadgeType>({})
+    const [formFields, setFormFields] = useState<FormFieldType>({})
+    const [calledFields, setCalledFields] = useState<boolean>(false)
     const tabs = useTabs()
     const { t } = useTranslation()
     const noButton = ['images', 'notes']
     const settings = useSettings()
+    const panelsRef = useRef([])
+
+    const getFormFields = async (): Promise<void> => {
+        if (calledFields) return
+        setCalledFields(true)
+
+        for (const index of Array.from({ length: tabList.length }, (_, k) => k)) {
+            await new Promise((resolve) => setTimeout(resolve, 0))
+            setValue((index + 1).toString())
+        }
+        setValue('1')
+    }
+
+    useEffect(() => {
+        if (formFields[value]) return
+        setFormFields({
+            ...formFields,
+            [value]: Object.keys(form.initialValues).reduce((arr: string[], name: string) => {
+                const field = panelsRef.current[parseInt(value) - 1].querySelector(`#${name}`)
+                if (field) arr.push(name)
+                return arr
+            }, [])
+        })
+    }, [value])
 
     useEffect(() => {
         if (tabs?.setShowTabs) tabs.setShowTabs(false)
         setValue('1')
     }, [model?.id])
+
+    useEffect(() => {
+        panelsRef.current = panelsRef.current.slice(0, tabList.length)
+        if (panelsRef.current.length === tabList.length) {
+            getFormFields()
+        }
+    }, [tabList])
+
+    useEffect(() => {
+        setErrorBadges({})
+        if (!Object.keys(form.errors).length || !Object.keys(form.touched).length) return
+        const _errorBadges: ErrorBadgeType = {}
+
+        Object.keys(form.errors).map((name) => {
+            Object.entries(formFields).map(([key, values]) => {
+                const index = (parseInt(key) - 1).toString()
+                if (values.includes(name)) {
+                    if (!_errorBadges[index]) _errorBadges[index] = 0
+                    _errorBadges[index] += 1
+                }
+            })
+        })
+        setErrorBadges(_errorBadges)
+    }, [form.errors, form.touched])
 
     return (
         <Box className='flex flex-col flex-grow'>
@@ -67,7 +112,15 @@ const _FormWrapper = ({
                                 {tabList.map((tab, index) => (
                                     <Tab
                                         key={`tab-${index + 1}`}
-                                        label={tab}
+                                        label={
+                                            errorBadges[index.toString()] ? (
+                                                <Badge variant='dot' color='error'>
+                                                    {tab}
+                                                </Badge>
+                                            ) : (
+                                                tab
+                                            )
+                                        }
                                         value={(index + 1).toString()}
                                     />
                                 ))}
@@ -86,11 +139,11 @@ const _FormWrapper = ({
                             </TabList>
                         </Box>
                     ) : null}
-
                     {Children.toArray(children).map((child: ReactElement, index) => {
                         if (child.props.showButton === false) noButton.push((index + 1).toString())
                         return (
                             <TabPanel
+                                ref={(el) => (panelsRef.current[index] = el)}
                                 key={`tabPanel-${index + 1}`}
                                 value={(index + 1).toString()}
                                 sx={TAB_STYLE}>
