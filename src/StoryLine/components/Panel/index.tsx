@@ -13,7 +13,9 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
             sx={{ backgroundColor: settings.getHex(50), width }}
             className='flex flex-col flex-grow'>
             {navigation || action ? (
-                <Box className='flex justify-between h-12 border-b overflow-hidden'>
+                <Box
+                    // eslint-disable-next-line max-len
+                    className={`flex justify-between ${settings.getHeaderHeight()} border-b overflow-hidden`}>
                     {navigation
                         ? navigation.map((item) => (
                               <TooltipIconButton

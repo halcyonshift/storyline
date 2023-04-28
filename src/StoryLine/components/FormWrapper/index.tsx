@@ -34,6 +34,11 @@ const _FormWrapper = ({
     const settings = useSettings()
     const panelsRef = useRef([])
 
+    useEffect(() => {
+        if (tabs?.setShowTabs) tabs.setShowTabs(false)
+        setValue('1')
+    }, [model?.id])
+
     const getFormFields = async (): Promise<void> => {
         if (calledFields) return
         setCalledFields(true)
@@ -46,7 +51,7 @@ const _FormWrapper = ({
     }
 
     useEffect(() => {
-        if (formFields[value]) return
+        if (formFields[value] || tabs.showTabs) return
         setFormFields({
             ...formFields,
             [value]: Object.keys(form.initialValues).reduce((arr: string[], name: string) => {
@@ -55,19 +60,14 @@ const _FormWrapper = ({
                 return arr
             }, [])
         })
-    }, [value])
-
-    useEffect(() => {
-        if (tabs?.setShowTabs) tabs.setShowTabs(false)
-        setValue('1')
-    }, [model?.id])
+    }, [value, tabs.showTabs])
 
     useEffect(() => {
         panelsRef.current = panelsRef.current.slice(0, tabList.length)
-        if (panelsRef.current.length === tabList.length) {
+        if (!tabs.showTabs && panelsRef.current.length === tabList.length) {
             getFormFields()
         }
-    }, [tabList])
+    }, [tabList, tabs.showTabs])
 
     useEffect(() => {
         setErrorBadges({})
@@ -86,11 +86,11 @@ const _FormWrapper = ({
         setErrorBadges(_errorBadges)
     }, [form.errors, form.touched])
 
-    return (
+    return !tabs.showTabs ? (
         <Box className='flex flex-col flex-grow overflow-hidden'>
             <Box
                 // eslint-disable-next-line max-len
-                className='px-3 py-2 flex flex-shrink-0 justify-between h-12 overflow-hidden border-b'
+                className={`px-3 flex flex-shrink-0 justify-between items-center ${settings.getHeaderHeight()} overflow-hidden border-b`}
                 sx={{ backgroundColor: settings.getHex(50) }}>
                 {title ? <Typography variant='h6'>{title}</Typography> : null}
                 <Stack spacing={1} direction='row'>
@@ -178,7 +178,7 @@ const _FormWrapper = ({
                 </TabContext>
             </Box>
         </Box>
-    )
+    ) : null
 }
 
 const FormWrapper = withDatabase(

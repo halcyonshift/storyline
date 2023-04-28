@@ -136,7 +136,7 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
             title={section.displayName}
             model={section}
             tabList={[t('component.formWrapper.tab.general')]}>
-            <Box className='grid grid-cols-1 gap-3 mt-3'>
+            <Box className='grid grid-cols-1 gap-3'>
                 <TextField
                     autoFocus
                     form={form}

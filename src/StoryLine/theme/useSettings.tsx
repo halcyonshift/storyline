@@ -196,6 +196,10 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
         return _getHex(palette, shade)
     }
 
+    const getHeaderHeight = (): string => {
+        return appFontSize > 20 ? 'h-14' : 'h-12'
+    }
+
     return (
         <SettingsContext.Provider
             value={{
@@ -228,7 +232,8 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
                 spellCheck,
                 setSpellCheck,
                 theme,
-                getHex
+                getHex,
+                getHeaderHeight
             }}>
             {children}
         </SettingsContext.Provider>

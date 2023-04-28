@@ -41,6 +41,8 @@ const Tabs = () => {
         '.MuiTabs-flexContainer': {
             borderBottom: '1px solid rgba(0, 0, 0, 0.23)',
             width: '100%',
+            height: spacing[settings.getHeaderHeight() == 'h-12' ? 12 : 14],
+            paddingTop: spacing[2],
             minWidth: 'max-content'
         }
     }))
@@ -53,7 +55,7 @@ const Tabs = () => {
             backgroundColor: 'transparent',
             borderColor: 'transparent',
             borderBottom: 'none',
-            margin: `${spacing[3]} 0 0 ${spacing[1]}`,
+            margin: `0 0 0 ${spacing[2]}`,
             padding: `${spacing[2]} ${spacing[3]}`,
             minHeight: 0,
             '& :first-of-type': {
