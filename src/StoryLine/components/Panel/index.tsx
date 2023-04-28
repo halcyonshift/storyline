@@ -13,7 +13,7 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
             sx={{ backgroundColor: settings.getHex(50), width }}
             className='flex flex-col flex-grow'>
             {navigation || action ? (
-                <Box className='flex justify-between h-12'>
+                <Box className='flex justify-between h-12 border-b overflow-hidden'>
                     {navigation
                         ? navigation.map((item) => (
                               <TooltipIconButton
@@ -28,7 +28,7 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
                     {action ? <Box className='ml-auto'>{action}</Box> : null}
                 </Box>
             ) : null}
-            <Box className='flex-grow overflow-y-auto scrollbar-hidden border-t h-0 shadow'>
+            <Box className='flex-grow overflow-y-auto scrollbar-hidden  h-0 shadow-md'>
                 {children}
             </Box>
             <Box
