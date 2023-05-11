@@ -14,6 +14,9 @@ export const rendererConfig: Configuration = {
         rules
     },
     plugins,
+    externals: {
+        electron: 'commonjs electron'
+    },
     resolve: {
         alias: {
             '@sl': path.resolve(__dirname, './src/StoryLine')

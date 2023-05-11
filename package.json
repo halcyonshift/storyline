@@ -96,6 +96,8 @@
     "@mui/styles": "^5.11.13",
     "@mui/x-date-pickers": "5.0.20",
     "@nozbe/watermelondb": "0.25.5",
+    "@sentry/electron": "^4.5.0",
+    "@sentry/react": "^7.51.2",
     "chart.js": "^4.2.1",
     "chartjs-plugin-annotation": "^2.2.1",
     "electron-context-menu": "^3.6.1",

@@ -6,12 +6,14 @@ import CssBaseline from '@mui/material/CssBaseline'
 import Snackbar from '@mui/material/Snackbar'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import * as Sentry from '@sentry/react'
 import { Settings } from 'luxon'
+import { useTranslation } from 'react-i18next'
 import { Outlet, useRouteLoaderData } from 'react-router-dom'
 import useMessenger from '@sl/layouts/useMessenger'
 import useSettings from '@sl/theme/useSettings'
 import { WorkModel } from './db/models'
-import { useTranslation } from 'react-i18next'
+import { ErrorBoundary } from './views/StoryLine'
 
 const App = () => {
     const { autoBackupFreq, autoBackupPath } = useSettings()
@@ -40,23 +42,27 @@ const App = () => {
     Settings.defaultZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
     return (
-        <LocalizationProvider dateAdapter={AdapterLuxon}>
-            <ThemeProvider theme={settings.theme}>
-                <CssBaseline />
-                <Box id='app' className={`${settings.displayMode} flex h-full`}>
-                    <Outlet />
-                    <Snackbar
-                        open={messenger.open}
-                        autoHideDuration={6000}
-                        onClose={() => messenger.setOpen(false)}
-                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-                        <Alert onClose={() => messenger.setOpen(false)} severity={messenger.status}>
-                            {messenger.message}
-                        </Alert>
-                    </Snackbar>
-                </Box>
-            </ThemeProvider>
-        </LocalizationProvider>
+        <Sentry.ErrorBoundary fallback={ErrorBoundary} showDialog>
+            <LocalizationProvider dateAdapter={AdapterLuxon}>
+                <ThemeProvider theme={settings.theme}>
+                    <CssBaseline />
+                    <Box id='app' className={`${settings.displayMode} flex h-full`}>
+                        <Outlet />
+                        <Snackbar
+                            open={messenger.open}
+                            autoHideDuration={6000}
+                            onClose={() => messenger.setOpen(false)}
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+                            <Alert
+                                onClose={() => messenger.setOpen(false)}
+                                severity={messenger.status}>
+                                {messenger.message}
+                            </Alert>
+                        </Snackbar>
+                    </Box>
+                </ThemeProvider>
+            </LocalizationProvider>
+        </Sentry.ErrorBoundary>
     )
 }
 
