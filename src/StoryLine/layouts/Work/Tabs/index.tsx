@@ -71,9 +71,8 @@ const Tabs = () => {
             },
             '&.Mui-selected': {
                 borderColor: 'rgba(0, 0, 0, 0.23)',
-                backgroundColor: getHex('white'),
-                borderBottom: getHex('white'),
-                boxShadow: `0 2px 0 0px ${getHex('white')}`
+                backgroundColor: settings.isDark() ? '#121212' : getHex('white'),
+                boxShadow: `0 2px 0 0px ${settings.isDark() ? '#121212' : getHex('white')}`
             }
         }
     })
@@ -118,7 +117,7 @@ const Tabs = () => {
                 <Box
                     sx={{
                         maxWidth,
-                        backgroundColor: settings.getHex(50)
+                        backgroundColor: settings.getHex(settings.isDark() ? 800 : 50)
                     }}>
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Droppable droppableId='tabs' direction='horizontal'>

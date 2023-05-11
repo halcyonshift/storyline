@@ -20,6 +20,7 @@ const ListItem = ({ character, showIcon }: ListItemProps) => {
             disablePadding
             disableGutters
             divider
+            className='bg-slate-50 dark:bg-slate-600'
             sx={{ borderLeft: `8px solid ${status(character.status, 500).color}` }}>
             <ListItemText
                 primary={

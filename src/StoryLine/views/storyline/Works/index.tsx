@@ -142,7 +142,7 @@ const WorksView = () => {
 
     return (
         <>
-            <Box className='p-4 bg-slate-50 h-full'>
+            <Box className='p-4 bg-slate-50 h-full dark:bg-neutral-700'>
                 <Paper elevation={1} className='relative'>
                     <TableContainer>
                         <Table sx={{ minWidth: 650 }} aria-label='simple table'>

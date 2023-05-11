@@ -8,6 +8,7 @@ import Panel from '@sl/components/Panel'
 import WorkModel from '@sl/db/models/WorkModel'
 import Result from './Result'
 import useSettings from '@sl/theme/useSettings'
+import { getHex } from '@sl/theme/utils'
 
 const SearchInput = styled(InputBase)(() => ({
     '& .MuiInputBase-input': {
@@ -24,7 +25,7 @@ const SearchPanel = () => {
     const [results, setResults] = useState([])
     const { t } = useTranslation()
     const work = useRouteLoaderData('work') as WorkModel
-    const { getHeaderHeight } = useSettings()
+    const { getHeaderHeight, isDark } = useSettings()
 
     const doSearch = debounce(async (query) => {
         query = query.replace(/(<([^>]+)>)/gi, '')
@@ -52,9 +53,10 @@ const SearchPanel = () => {
                         placeholder={t('layout.work.panel.search.form.placeholder')}
                         onChange={(e) => doSearch(e.target.value)}
                         fullWidth
+                        sx={isDark() ? { color: getHex('black') } : {}}
                         className={`border-b ${getHeaderHeight()} px-3`}
                     />
-                    <Box className='grid grid-cols-1 xl:grid-cols-2 gap-0 px-2'>
+                    <Box className='grid grid-cols-1 xl:grid-cols-2 gap-0 px-2 dark:bg-slate-600'>
                         <FormControlLabel
                             className='whitespace-nowrap'
                             control={

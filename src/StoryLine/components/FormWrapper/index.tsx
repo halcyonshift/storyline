@@ -91,7 +91,7 @@ const _FormWrapper = ({
             <Box
                 // eslint-disable-next-line max-len
                 className={`px-3 flex flex-shrink-0 justify-between items-center ${settings.getHeaderHeight()} overflow-hidden border-b`}
-                sx={{ backgroundColor: settings.getHex(50) }}>
+                sx={{ backgroundColor: settings.getHex(settings.isDark() ? 800 : 50) }}>
                 {title ? <Typography variant='h6'>{title}</Typography> : null}
                 <Stack spacing={1} direction='row'>
                     {header}

@@ -32,6 +32,7 @@ const Block = ({ location, index, fontWeight }: BlockType) => {
                     <ListItem
                         {...provided.dragHandleProps}
                         title={location.name}
+                        className='bg-slate-50 dark:bg-slate-600'
                         sx={{
                             borderLeft: `8px solid ${status(location.status, 500).color}`
                         }}

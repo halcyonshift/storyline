@@ -2,6 +2,7 @@ import { Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Box, Typography } from '@mui/material'
 import Progress from '@sl/components/Progress'
+import useSettings from '@sl/theme/useSettings'
 import { status } from '@sl/theme/utils'
 
 import ChapterList from './ChapterList'
@@ -9,6 +10,7 @@ import { PartListProps } from './types'
 
 const PartList = ({ parts, chapters, scenes }: PartListProps) => {
     const { t } = useTranslation()
+    const { isDark } = useSettings()
 
     return (
         <>
@@ -17,7 +19,7 @@ const PartList = ({ parts, chapters, scenes }: PartListProps) => {
                     <Box
                         className='grid grid-cols-1 xl:grid-cols-3 gap-1 xl:pr-2'
                         sx={{
-                            backgroundColor: status(part.status, 200).color,
+                            backgroundColor: status(part.status, isDark() ? 900 : 200).color,
                             marginBottom: '1px'
                         }}>
                         <Box className='col-span-2 px-2 py-1'>

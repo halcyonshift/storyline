@@ -200,6 +200,8 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
         return appFontSize > 20 ? 'h-14' : 'h-12'
     }
 
+    const isDark = (): boolean => Boolean(displayMode === 'dark')
+
     return (
         <SettingsContext.Provider
             value={{
@@ -233,7 +235,8 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
                 setSpellCheck,
                 theme,
                 getHex,
-                getHeaderHeight
+                getHeaderHeight,
+                isDark
             }}>
             {children}
         </SettingsContext.Provider>

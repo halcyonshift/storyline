@@ -13,13 +13,13 @@ const InfoView = () => {
                 <Typography variant='h6'>{t('view.storyline.info.about.title')}</Typography>
                 <Stack spacing={1} className='mt-3'>
                     <Box>
-                        <Typography variant='body2' className='text-slate-600'>
+                        <Typography variant='body2' className='text-slate-600 dark:text-slate-200'>
                             {t('view.storyline.info.about.version')}
                         </Typography>
                         <Typography variant='body1'>{process.env.VERSION}</Typography>
                     </Box>
                     <Box>
-                        <Typography variant='body2' className='text-slate-600'>
+                        <Typography variant='body2' className='text-slate-600 dark:text-slate-200'>
                             {t('view.storyline.info.about.developer')}
                         </Typography>
                         <Typography variant='body1'>Hannah O'Malley</Typography>
