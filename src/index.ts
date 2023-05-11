@@ -71,7 +71,8 @@ const createWindow = (): void => {
 }
 
 app.on('ready', () => {
-    const template = [
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const template: any = [
         {
             label: i18n.t('menu.storyline'),
             submenu: [
