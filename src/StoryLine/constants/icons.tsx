@@ -10,9 +10,21 @@ import {
     Clear,
     EditOutlined,
     ExpandMore,
+    FormatAlignCenter,
+    FormatAlignJustify,
+    FormatAlignLeft,
+    FormatAlignRight,
+    FormatBold,
+    FormatItalic,
+    FormatListBulleted,
+    FormatListNumbered,
+    FormatStrikethrough,
+    FormatUnderlined,
     GroupAdd,
     History,
+    LabelImportant,
     LibraryBooks,
+    LocalOffer,
     PeopleAlt,
     PersonAddAlt,
     PersonAddAlt1,
@@ -20,51 +32,121 @@ import {
     PersonOutline,
     PostAdd,
     Queue,
-    RestorePage
+    Redo,
+    RestorePage,
+    Save,
+    Search,
+    Undo
 } from '@mui/icons-material'
 
+const components = {
+    Add,
+    AddCircle,
+    AddPhotoAlternate,
+    AddLocationAlt,
+    ArrowBack,
+    Article,
+    Casino,
+    ChangeCircleOutlined,
+    Clear,
+    EditOutlined,
+    ExpandMore,
+    FormatAlignCenter,
+    FormatAlignJustify,
+    FormatAlignLeft,
+    FormatAlignRight,
+    FormatBold,
+    FormatItalic,
+    FormatListBulleted,
+    FormatListNumbered,
+    FormatStrikethrough,
+    FormatUnderlined,
+    GroupAdd,
+    History,
+    LabelImportant,
+    LibraryBooks,
+    LocalOffer,
+    PeopleAlt,
+    PersonAddAlt,
+    PersonAddAlt1,
+    Person,
+    PersonOutline,
+    PostAdd,
+    Queue,
+    Redo,
+    RestorePage,
+    Save,
+    Search,
+    Undo
+}
+
+const Icon = ({ name }: { name: string }) => {
+    const MuiIcon = components[name as keyof typeof components]
+    return <MuiIcon fontSize='inherit' color='inherit' />
+}
+
 export const GLOBAL_ICONS = {
-    add: <Add fontSize='inherit' color='inherit' />,
-    addImage: <AddPhotoAlternate fontSize='inherit' color='inherit' />,
-    back: <ArrowBack fontSize='inherit' color='inherit' />,
-    change: <ChangeCircleOutlined fontSize='inherit' color='inherit' />,
-    delete: <Clear fontSize='inherit' color='inherit' />,
-    edit: <EditOutlined fontSize='inherit' color='inherit' />,
-    expand: <ExpandMore fontSize='inherit' color='inherit' />,
-    history: <History fontSize='inherit' color='inherit' />,
-    random: <Casino fontSize='inherit' color='inherit' />
+    add: <Icon name='Add' />,
+    addImage: <Icon name='AddPhotoAlternate' />,
+    back: <Icon name='ArrowBack' />,
+    change: <Icon name='ChangeCircleOutlined' />,
+    delete: <Icon name='Clear' />,
+    edit: <Icon name='EditOutlined' />,
+    expand: <Icon name='ExpandMore' />,
+    history: <Icon name='History' />,
+    random: <Icon name='Casino' />
 }
 
 export const CHARACTER_ICONS = {
-    addPrimary: <PersonAddAlt1 fontSize='inherit' color='inherit' />,
-    addSecondary: <PersonAddAlt fontSize='inherit' color='inherit' />,
-    addTertiary: <GroupAdd fontSize='inherit' color='inherit' />,
-    primary: <Person fontSize='inherit' color='inherit' />,
-    secondary: <PersonOutline fontSize='inherit' color='inherit' />,
-    tertiary: <PeopleAlt fontSize='inherit' color='inherit' />
+    addPrimary: <Icon name='PersonAddAlt1' />,
+    addSecondary: <Icon name='PersonAddAlt' />,
+    addTertiary: <Icon name='GroupAdd' />,
+    primary: <Icon name='Person' />,
+    secondary: <Icon name='PersonOutline' />,
+    tertiary: <Icon name='PeopleAlt' />
 }
 
 export const ITEM_ICONS = {
-    add: <AddCircle fontSize='inherit' color='inherit' />
+    add: <Icon name='AddCircle' />
 }
 
 export const LOCATION_ICONS = {
-    add: <AddLocationAlt fontSize='inherit' color='inherit' />
+    add: <Icon name='AddLocationAlt' />
 }
 
 export const NOTE_ICONS = {
-    add: <PostAdd fontSize='inherit' color='inherit' />
+    add: <Icon name='PostAdd' />
+}
+
+export const RICHTEXT_ICONS = {
+    bold: <Icon name='FormatBold' />,
+    italic: <Icon name='FormatItalic' />,
+    ul: <Icon name='FormatListBulleted' />,
+    ol: <Icon name='FormatListNumbered' />,
+    strike: <Icon name='FormatStrikethrough' />,
+    underline: <Icon name='FormatUnderlined' />,
+    alignLeft: <Icon name='FormatAlignLeft' />,
+    alignRight: <Icon name='FormatAlignRight' />,
+    alignCenter: <Icon name='FormatAlignCenter' />,
+    alignJustify: <Icon name='FormatAlignJustify' />,
+    tag: <Icon name='LocalOffer' />,
+    version: <Icon name='RestorePage' />,
+    redo: <Icon name='Redo' />,
+    undo: <Icon name='Undo' />,
+    save: <Icon name='Save' />,
+    search: <Icon name='Search' />,
+    excerpt: <Icon name='LabelImportant' />
 }
 
 export const SEARCH_ICONS = {
-    clear: <Clear fontSize='inherit' color='inherit' />
+    clear: <Icon name='Clear' />
 }
 
 export const SECTION_ICONS = {
-    addPart: <Queue fontSize='inherit' color='inherit' />,
-    addChapter: <LibraryBooks fontSize='inherit' color='inherit' />,
-    addScene: <Article fontSize='inherit' color='inherit' />,
-    version: <RestorePage fontSize='inherit' color='inherit' />
+    addPart: <Icon name='Queue' />,
+    addChapter: <Icon name='LibraryBooks' />,
+    addScene: <Icon name='PeopleAlt' />,
+    version: <Icon name='RestorePage' />
 }
 
 export default {

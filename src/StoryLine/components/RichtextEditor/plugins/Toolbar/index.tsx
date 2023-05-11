@@ -10,26 +10,7 @@ import { $createQuoteNode, $isQuoteNode } from '@lexical/rich-text'
 import { $wrapNodes } from '@lexical/selection'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils'
-import FormatBoldIcon from '@mui/icons-material/FormatBold'
-import FormatItalicIcon from '@mui/icons-material/FormatItalic'
-import FormatStrikethroughIcon from '@mui/icons-material/FormatStrikethrough'
-import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined'
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
-import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered'
-import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft'
-import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter'
-import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight'
-import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify'
-import LocalOfferIcon from '@mui/icons-material/LocalOffer'
-import RestorePageIcon from '@mui/icons-material/RestorePage'
-import RedoIcon from '@mui/icons-material/Redo'
-import SaveIcon from '@mui/icons-material/Save'
-import SearchIcon from '@mui/icons-material/Search'
-import LabelImportantIcon from '@mui/icons-material/LabelImportant'
-import UndoIcon from '@mui/icons-material/Undo'
-import Box from '@mui/material/Box'
-import IconButton from '@mui/material/IconButton'
-import Stack from '@mui/material/Stack'
+import { Box, IconButton, Stack } from '@mui/material'
 import {
     $createParagraphNode,
     $getSelection,
@@ -44,6 +25,7 @@ import {
     UNDO_COMMAND
 } from 'lexical'
 import { useTranslation } from 'react-i18next'
+import { RICHTEXT_ICONS } from '@sl/constants/icons'
 import useLayout from '@sl/layouts/Work/useLayout'
 import { getSelectedNode } from '../../utils/getSelectedNode'
 import { SAVE_COMMAND } from '../Save'
@@ -169,44 +151,44 @@ const ToolbarPlugin = ({
                     disabled={!canUndo}
                     aria-label={t('component.richtextEditor.toolbar.undo')}
                     onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}>
-                    <UndoIcon />
+                    {RICHTEXT_ICONS.undo}
                 </IconButton>
                 <IconButton
                     disabled={!canRedo}
                     aria-label={t('component.richtextEditor.toolbar.redo')}
                     onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}>
-                    <RedoIcon />
+                    {RICHTEXT_ICONS.redo}
                 </IconButton>
                 <IconButton
                     color={isBold ? 'primary' : 'default'}
                     aria-label={t('component.richtextEditor.toolbar.bold')}
                     onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')}>
-                    <FormatBoldIcon />
+                    {RICHTEXT_ICONS.bold}
                 </IconButton>
                 <IconButton
                     color={isItalic ? 'primary' : 'default'}
                     aria-label={t('component.richtextEditor.toolbar.italic')}
                     onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')}>
-                    <FormatItalicIcon />
+                    {RICHTEXT_ICONS.italic}
                 </IconButton>
                 <IconButton
                     color={isUnderline ? 'primary' : 'default'}
                     aria-label={t('component.richtextEditor.toolbar.underlined')}
                     onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline')}>
-                    <FormatUnderlinedIcon />
+                    {RICHTEXT_ICONS.underline}
                 </IconButton>
                 <IconButton
                     color={isStrikethrough ? 'primary' : 'default'}
                     aria-label={t('component.richtextEditor.toolbar.strikethrough')}
                     onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough')}>
-                    <FormatStrikethroughIcon />
+                    {RICHTEXT_ICONS.strike}
                 </IconButton>
                 {config.includes('excerpt') ? (
                     <IconButton
                         color={isQuote ? 'primary' : 'default'}
                         aria-label={t('component.richtextEditor.toolbar.excerpt')}
                         onClick={formatQuote}>
-                        <LabelImportantIcon />
+                        {RICHTEXT_ICONS.excerpt}
                     </IconButton>
                 ) : null}
                 <IconButton
@@ -219,7 +201,7 @@ const ToolbarPlugin = ({
                             undefined
                         )
                     }>
-                    <FormatListBulletedIcon />
+                    {RICHTEXT_ICONS.ul}
                 </IconButton>
                 <IconButton
                     aria-label={t('component.richtextEditor.toolbar.listOrdered')}
@@ -229,35 +211,35 @@ const ToolbarPlugin = ({
                             undefined
                         )
                     }>
-                    <FormatListNumberedIcon />
+                    {RICHTEXT_ICONS.ol}
                 </IconButton>
                 <IconButton
                     aria-label={t('component.richtextEditor.toolbar.alignLeft')}
                     onClick={() => {
                         editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')
                     }}>
-                    <FormatAlignLeftIcon />
+                    {RICHTEXT_ICONS.alignLeft}
                 </IconButton>
                 <IconButton
                     aria-label={t('component.richtextEditor.toolbar.alignCenter')}
                     onClick={() => {
                         editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center')
                     }}>
-                    <FormatAlignCenterIcon />
+                    {RICHTEXT_ICONS.alignCenter}
                 </IconButton>
                 <IconButton
                     aria-label={t('component.richtextEditor.toolbar.alignRight')}
                     onClick={() => {
                         editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right')
                     }}>
-                    <FormatAlignRightIcon />
+                    {RICHTEXT_ICONS.alignRight}
                 </IconButton>
                 <IconButton
                     aria-label={t('component.richtextEditor.toolbar.alignJustify')}
                     onClick={() => {
                         editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify')
                     }}>
-                    <FormatAlignJustifyIcon />
+                    {RICHTEXT_ICONS.alignJustify}
                 </IconButton>
                 {config.includes('tag') ? (
                     <IconButton
@@ -276,7 +258,7 @@ const ToolbarPlugin = ({
                                 }
                             })
                         }}>
-                        <LocalOfferIcon />
+                        {RICHTEXT_ICONS.tag}
                     </IconButton>
                 ) : null}
                 {config.includes('search') ? (
@@ -285,7 +267,7 @@ const ToolbarPlugin = ({
                         onClick={() => {
                             editor.dispatchCommand(TOGGLE_SEARCH_COMMAND, null)
                         }}>
-                        <SearchIcon />
+                        {RICHTEXT_ICONS.search}
                     </IconButton>
                 ) : null}
                 {config.includes('version') ? (
@@ -299,7 +281,7 @@ const ToolbarPlugin = ({
                             setMenu('version')
                             setMenuElement(menu ? null : e.currentTarget)
                         }}>
-                        <RestorePageIcon />
+                        {RICHTEXT_ICONS.version}
                     </IconButton>
                 ) : null}
                 {config.includes('save') ? (
@@ -308,7 +290,7 @@ const ToolbarPlugin = ({
                         onClick={() => {
                             editor.dispatchCommand(SAVE_COMMAND, null)
                         }}>
-                        <SaveIcon />
+                        {RICHTEXT_ICONS.save}
                     </IconButton>
                 ) : null}
             </Stack>
