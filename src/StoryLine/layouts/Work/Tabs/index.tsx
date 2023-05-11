@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react'
-import CloseIcon from '@mui/icons-material/Close'
 import {
     Box,
     Collapse,
@@ -7,11 +6,13 @@ import {
     Tabs as MuiTabs,
     Tab as MuiTab,
     Typography,
-    styled
+    styled,
+    IconButton
 } from '@mui/material'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
 import { useTranslation } from 'react-i18next'
 import { useObservable } from 'rxjs-hooks'
+import { GLOBAL_ICONS } from '@sl/constants/icons'
 import {
     CharacterModel,
     ItemModel,
@@ -154,7 +155,7 @@ const Tabs = () => {
                                                     label={
                                                         <Stack
                                                             direction='row'
-                                                            className='justify-middle'
+                                                            className='items-center'
                                                             spacing={2}>
                                                             <Typography
                                                                 variant='body2'
@@ -162,14 +163,15 @@ const Tabs = () => {
                                                                 {...props.dragHandleProps}>
                                                                 {tab.label || getLabel(tab)}
                                                             </Typography>
-                                                            <CloseIcon
-                                                                fontSize='small'
-                                                                color='action'
+                                                            <IconButton
+                                                                size='small'
+                                                                color='secondary'
                                                                 onClick={(e) => {
                                                                     e.stopPropagation()
                                                                     tabs.removeTab(tab.id)
-                                                                }}
-                                                            />
+                                                                }}>
+                                                                {GLOBAL_ICONS.close}
+                                                            </IconButton>
                                                         </Stack>
                                                     }
                                                 />

@@ -4,12 +4,22 @@ import {
     AddPhotoAlternate,
     AddLocationAlt,
     ArrowBack,
+    ArrowBackIosNew,
+    ArrowDownward,
+    ArrowForwardIos,
+    ArrowUpward,
     Article,
     Casino,
+    Category,
     ChangeCircleOutlined,
     Clear,
+    Close,
+    Delete,
+    Description,
     EditOutlined,
     ExpandMore,
+    FileOpen,
+    FilterList,
     FormatAlignCenter,
     FormatAlignJustify,
     FormatAlignLeft,
@@ -20,22 +30,33 @@ import {
     FormatListNumbered,
     FormatStrikethrough,
     FormatUnderlined,
+    Group,
     GroupAdd,
     History,
+    Html,
+    Hub,
+    ImportExport,
+    Info,
+    Insights,
     LabelImportant,
     LibraryBooks,
     LocalOffer,
+    LocationOn,
+    MenuBook,
     PeopleAlt,
     PersonAddAlt,
     PersonAddAlt1,
     Person,
     PersonOutline,
+    PictureAsPdf,
     PostAdd,
     Queue,
     Redo,
     RestorePage,
     Save,
     Search,
+    Settings,
+    StickyNote2,
     Undo
 } from '@mui/icons-material'
 
@@ -45,12 +66,22 @@ const components = {
     AddPhotoAlternate,
     AddLocationAlt,
     ArrowBack,
+    ArrowBackIosNew,
+    ArrowDownward,
+    ArrowForwardIos,
+    ArrowUpward,
     Article,
     Casino,
+    Category,
     ChangeCircleOutlined,
     Clear,
+    Close,
+    Delete,
+    Description,
     EditOutlined,
     ExpandMore,
+    FileOpen,
+    FilterList,
     FormatAlignCenter,
     FormatAlignJustify,
     FormatAlignLeft,
@@ -61,22 +92,33 @@ const components = {
     FormatListNumbered,
     FormatStrikethrough,
     FormatUnderlined,
+    Group,
     GroupAdd,
     History,
+    Html,
+    Hub,
+    ImportExport,
+    Info,
+    Insights,
     LabelImportant,
     LibraryBooks,
+    LocationOn,
     LocalOffer,
+    MenuBook,
     PeopleAlt,
     PersonAddAlt,
     PersonAddAlt1,
     Person,
     PersonOutline,
+    PictureAsPdf,
     PostAdd,
     Queue,
     Redo,
     RestorePage,
     Save,
     Search,
+    Settings,
+    StickyNote2,
     Undo
 }
 
@@ -88,16 +130,23 @@ const Icon = ({ name }: { name: string }) => {
 export const GLOBAL_ICONS = {
     add: <Icon name='Add' />,
     addImage: <Icon name='AddPhotoAlternate' />,
-    back: <Icon name='ArrowBack' />,
+    back: <Icon name='ArrowBackIosNew' />,
     change: <Icon name='ChangeCircleOutlined' />,
-    delete: <Icon name='Clear' />,
+    close: <Icon name='Close' />,
+    delete: <Icon name='Delete' />,
+    down: <Icon name='ArrowDownward' />,
     edit: <Icon name='EditOutlined' />,
     expand: <Icon name='ExpandMore' />,
     history: <Icon name='History' />,
-    random: <Icon name='Casino' />
+    info: <Icon name='Info' />,
+    next: <Icon name='ArrowForwardIos' />,
+    open: <Icon name='FileOpen' />,
+    random: <Icon name='Casino' />,
+    up: <Icon name='ArrowUpward' />
 }
 
 export const CHARACTER_ICONS = {
+    character: <Icon name='Group' />,
     addPrimary: <Icon name='PersonAddAlt1' />,
     addSecondary: <Icon name='PersonAddAlt' />,
     addTertiary: <Icon name='GroupAdd' />,
@@ -106,16 +155,40 @@ export const CHARACTER_ICONS = {
     tertiary: <Icon name='PeopleAlt' />
 }
 
+export const CONNECTION_ICONS = {
+    connections: <Icon name='Hub' />
+}
+
+export const IMPORTEXPORT_ICONS = {
+    docx: <Icon name='Description' />,
+    html: <Icon name='Html' />,
+    importExport: <Icon name='ImportExport' />,
+    import: <Icon name='ArrowDownward' />,
+    pdf: <Icon name='PictureAsPdf' />
+}
+
+export const INSIGHT_ICONS = {
+    insights: <Icon name='Insights' />
+}
+
 export const ITEM_ICONS = {
+    item: <Icon name='Category' />,
     add: <Icon name='AddCircle' />
 }
 
 export const LOCATION_ICONS = {
+    location: <Icon name='LocationOn' />,
     add: <Icon name='AddLocationAlt' />
 }
 
 export const NOTE_ICONS = {
+    note: <Icon name='StickyNote2' />,
     add: <Icon name='PostAdd' />
+}
+
+export const OVERVIEW_ICONS = {
+    summary: <Icon name='FormatListBulleted' />,
+    filter: <Icon name='FilterList' />
 }
 
 export const RICHTEXT_ICONS = {
@@ -139,20 +212,33 @@ export const RICHTEXT_ICONS = {
 }
 
 export const SEARCH_ICONS = {
+    search: <Icon name='Search' />,
     clear: <Icon name='Clear' />
 }
 
 export const SECTION_ICONS = {
+    section: <Icon name='MenuBook' />,
     addPart: <Icon name='Queue' />,
     addChapter: <Icon name='LibraryBooks' />,
     addScene: <Icon name='PeopleAlt' />,
     version: <Icon name='RestorePage' />
 }
 
+export const SETTINGS_ICONS = {
+    settings: <Icon name='Settings' />
+}
+
 export default {
     global: GLOBAL_ICONS,
     character: CHARACTER_ICONS,
+    connection: CONNECTION_ICONS,
+    importExport: IMPORTEXPORT_ICONS,
+    insight: INSIGHT_ICONS,
     item: ITEM_ICONS,
     location: LOCATION_ICONS,
-    section: SECTION_ICONS
+    note: NOTE_ICONS,
+    overview: OVERVIEW_ICONS,
+    search: SEARCH_ICONS,
+    section: SECTION_ICONS,
+    settings: SETTINGS_ICONS
 }

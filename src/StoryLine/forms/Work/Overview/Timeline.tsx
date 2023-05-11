@@ -1,12 +1,9 @@
 import { useEffect, useState, SyntheticEvent } from 'react'
-import CategoryIcon from '@mui/icons-material/Category'
-import PersonIcon from '@mui/icons-material/Person'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
-import StickyNote2Icon from '@mui/icons-material/StickyNote2'
 import { Autocomplete, Box, Button, IconButton, TextField as MuiTextField } from '@mui/material'
 import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
+import { CHARACTER_ICONS, ITEM_ICONS, LOCATION_ICONS, NOTE_ICONS } from '@sl/constants/icons'
 import { AutocompleteOption } from '@sl/types'
 import { TimelineFormProps, TimeLineValuesType } from './types'
 import { CharacterModel, ItemModel, LocationModel, NoteModel } from '@sl/db/models'
@@ -67,17 +64,17 @@ const TimelineFilterForm = ({ work, setAnchorEl, setTable, table, setId }: Timel
         <Box component='form' onSubmit={form.handleSubmit} className='grid grid-cols-1 gap-3 w-64'>
             <Box>
                 <Box className='flex justify-around'>
-                    <IconButton onClick={() => setTable('character')}>
-                        <PersonIcon className='text-emerald-600' />
+                    <IconButton onClick={() => setTable('character')} className='text-emerald-600'>
+                        {CHARACTER_ICONS.character}
                     </IconButton>
-                    <IconButton onClick={() => setTable('location')}>
-                        <LocationOnIcon className='text-amber-600' />
+                    <IconButton onClick={() => setTable('location')} className='text-amber-600'>
+                        {LOCATION_ICONS.location}
                     </IconButton>
-                    <IconButton onClick={() => setTable('item')}>
-                        <CategoryIcon className='text-purple-600' />
+                    <IconButton onClick={() => setTable('item')} className='text-purple-600'>
+                        {ITEM_ICONS.item}
                     </IconButton>
-                    <IconButton onClick={() => setTable('note')}>
-                        <StickyNote2Icon className='text-sky-600' />
+                    <IconButton onClick={() => setTable('note')} className='text-sky-600'>
+                        {NOTE_ICONS.note}
                     </IconButton>
                 </Box>
                 <Autocomplete

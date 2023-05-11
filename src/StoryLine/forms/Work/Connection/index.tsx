@@ -1,15 +1,15 @@
 import { useEffect, useState, SyntheticEvent, ReactNode } from 'react'
-import { ArrowBack, ArrowForward } from '@mui/icons-material'
 import { Autocomplete, Box, Button, IconButton, TextField as MuiTextField } from '@mui/material'
 import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
+import { GLOBAL_ICONS } from '@sl/constants/icons'
 import ColorField from '@sl/components/form/ColorField'
 import DateField from '@sl/components/form/DateField'
 import Selector from '@sl/components/Selector'
 import TextareaField from '@sl/components/form/TextareaField'
-import { CharacterModel, ItemModel, LocationModel, NoteModel } from '@sl/db/models'
 import TextField from '@sl/components/form/TextField'
+import { CharacterModel, ItemModel, LocationModel, NoteModel } from '@sl/db/models'
 import { ConnectionDataType } from '@sl/db/models/types'
 import useMessenger from '@sl/layouts/useMessenger'
 import { AutocompleteOption } from '@sl/types'
@@ -161,11 +161,15 @@ const ConnectionForm = ({ work, connection, initialValues, setOpen }: Connection
                 </Box>
                 <Box className='col-span-2 text-center flex flex-col justify-center'>
                     <Box>
-                        <IconButton onClick={() => form.setFieldValue('to', !form.values.to)}>
-                            <ArrowForward color={form.values.to ? 'success' : 'inherit'} />
+                        <IconButton
+                            onClick={() => form.setFieldValue('to', !form.values.to)}
+                            color={form.values.to ? 'success' : 'inherit'}>
+                            {GLOBAL_ICONS.next}
                         </IconButton>
-                        <IconButton onClick={() => form.setFieldValue('from', !form.values.from)}>
-                            <ArrowBack color={form.values.from ? 'success' : 'inherit'} />
+                        <IconButton
+                            onClick={() => form.setFieldValue('from', !form.values.from)}
+                            color={form.values.from ? 'success' : 'inherit'}>
+                            {GLOBAL_ICONS.back}
                         </IconButton>
                     </Box>
                 </Box>

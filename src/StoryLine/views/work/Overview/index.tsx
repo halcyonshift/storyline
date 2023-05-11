@@ -1,5 +1,4 @@
 import { useEffect, useState, SyntheticEvent } from 'react'
-import { FilterList as FilterListIcon } from '@mui/icons-material'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
@@ -7,6 +6,7 @@ import { Box, IconButton, Menu, Tab, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { OverviewViewOption, OverviewViewOptionType } from '@sl/constants/overviewView'
+import { OVERVIEW_ICONS } from '@sl/constants/icons'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { SectionModel, WorkModel } from '@sl/db/models'
 import TimelineFilterForm from '@sl/forms/Work/Overview/Timeline'
@@ -73,7 +73,7 @@ const OverviewView = () => {
                                                 e.stopPropagation()
                                                 setAnchorEl(e.currentTarget)
                                             }}>
-                                            <FilterListIcon fontSize='small' />
+                                            {OVERVIEW_ICONS.filter}
                                         </IconButton>
                                     ) : null}
                                 </Box>

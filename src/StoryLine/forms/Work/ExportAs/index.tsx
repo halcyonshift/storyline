@@ -1,9 +1,8 @@
-import { Description, PictureAsPdf, Html } from '@mui/icons-material'
 import { Box, Button, CircularProgress, IconButton, Typography } from '@mui/material'
-
 import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
+import { IMPORTEXPORT_ICONS } from '@sl/constants/icons'
 import FontFamilyField from '@sl/components/form/FontFamilyField'
 import FontSizeField from '@sl/components/form/FontSizeField'
 import LineHeightField from '@sl/components/form/LineHeightField'
@@ -19,22 +18,24 @@ import {
     DEFAULT_FONT_SIZE,
     DEFAULT_INDENT_PARAGRAPH
 } from '@sl/constants/defaults'
+import useSettings from '@sl/theme/useSettings'
 
 const ExportAsForm = ({ work, generateExport, isGenerating }: ExportAsFormProps) => {
+    const settings = useSettings()
     const { t } = useTranslation()
 
     const exportModes: ExportModeTypes[] = [
         {
             mode: 'pdf',
-            icon: <PictureAsPdf fontSize='large' />
+            icon: IMPORTEXPORT_ICONS.pdf
         },
         {
             mode: 'docx',
-            icon: <Description fontSize='large' />
+            icon: IMPORTEXPORT_ICONS.docx
         },
         {
             mode: 'html',
-            icon: <Html fontSize='large' />
+            icon: IMPORTEXPORT_ICONS.html
         }
     ]
 
@@ -150,6 +151,7 @@ const ExportAsForm = ({ work, generateExport, isGenerating }: ExportAsFormProps)
                             {exportModes.map((exportMode) => (
                                 <IconButton
                                     key={exportMode.mode}
+                                    sx={{ fontSize: settings.appFontSize * 3 }}
                                     color={
                                         form.values.mode === exportMode.mode ? 'info' : 'default'
                                     }
@@ -161,7 +163,7 @@ const ExportAsForm = ({ work, generateExport, isGenerating }: ExportAsFormProps)
                         <Box textAlign='center'>
                             <Button variant='contained' type='submit' disabled={isGenerating}>
                                 {isGenerating ? (
-                                    <CircularProgress size={24} />
+                                    <CircularProgress size={settings.appFontSize * 2} />
                                 ) : (
                                     t('form.work.backupRestore.exportAs.button.export')
                                 )}

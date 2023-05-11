@@ -6,15 +6,19 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { ListItemProps } from './types'
+import useSettings from '@sl/theme/useSettings'
 
 const ListItem = ({ link, icon, text, divider }: ListItemProps) => {
     const navigate = useNavigate()
+    const settings = useSettings()
     const { t } = useTranslation()
 
     return (
         <MuiListItem disablePadding disableGutters divider={divider}>
             <ListItemButton onClick={() => navigate(link)}>
-                {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+                {icon ? (
+                    <ListItemIcon sx={{ fontSize: settings.appFontSize * 2 }}>{icon}</ListItemIcon>
+                ) : null}
                 <ListItemText primary={t(text)} />
             </ListItemButton>
         </MuiListItem>

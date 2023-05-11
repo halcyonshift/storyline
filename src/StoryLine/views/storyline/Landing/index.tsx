@@ -1,4 +1,3 @@
-import { Add, ArrowDownward, FileOpen, Settings, Info } from '@mui/icons-material'
 import {
     Box,
     List,
@@ -14,13 +13,16 @@ import { sample } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useLoaderData, useNavigate } from 'react-router-dom'
 import ListItem from '@sl/components/ListItem'
+import Icons from '@sl/constants/icons'
 import { Status } from '@sl/constants/status'
 import { WorkModel } from '@sl/db/models'
+import useSettings from '@sl/theme/useSettings'
 
 const LandingView = () => {
     const database = useDatabase()
     const navigate = useNavigate()
     const recentWorks = useLoaderData() as WorkModel[]
+    const settings = useSettings()
     const { t } = useTranslation()
 
     const handleNew = async () => {
@@ -54,31 +56,31 @@ const LandingView = () => {
                     {recentWorks.length ? (
                         <ListItem
                             link='/works'
-                            icon={<FileOpen />}
+                            icon={Icons.global.open}
                             text='view.storyline.landing.navigation.works'
                         />
                     ) : null}
                     <MuiListItem disablePadding disableGutters>
                         <ListItemButton onClick={handleNew}>
-                            <ListItemIcon>
-                                <Add />
+                            <ListItemIcon sx={{ fontSize: settings.appFontSize * 2 }}>
+                                {Icons.global.add}
                             </ListItemIcon>
                             <ListItemText primary={t('view.storyline.landing.navigation.new')} />
                         </ListItemButton>
                     </MuiListItem>
                     <ListItem
                         link='/importWork'
-                        icon={<ArrowDownward />}
+                        icon={Icons.importExport.import}
                         text='view.storyline.landing.navigation.importWork'
                     />
                     <ListItem
                         link='/settings'
-                        icon={<Settings />}
+                        icon={Icons.settings.settings}
                         text='view.storyline.landing.navigation.settings'
                     />
                     <ListItem
                         link='/info'
-                        icon={<Info />}
+                        icon={Icons.global.info}
                         text='view.storyline.landing.navigation.info'
                     />
                 </List>
