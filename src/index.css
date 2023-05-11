@@ -8,6 +8,22 @@
   border-color: rgba(0, 0, 0, 0.23)
 }
 
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('StoryLine/assets/fonts/avenir/AvenirLTStd-Roman.otf');
+  font-weight: bold;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('StoryLine/assets/fonts/avenir/AvenirLTStd-Book.otf');
+  font-weight: normal;
+  font-style: normal
+}
+
+
 @font-face {
   font-family: 'OpenDyslexic';
   src: url('StoryLine/assets/fonts/open_dyslexic/OpenDyslexic-Bold.otf');
@@ -35,6 +51,7 @@
   font-weight: normal;
   font-style: normal
 }
+
 
 html, body, #root {
     height: 100vh;
