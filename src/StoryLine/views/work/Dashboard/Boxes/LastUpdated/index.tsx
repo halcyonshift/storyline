@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { IconButton, List, ListItem, ListItemButton, ListItemText } from '@mui/material'
-
 import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { take } from 'lodash'
 import { DateTime } from 'luxon'

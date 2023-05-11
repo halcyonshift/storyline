@@ -28,7 +28,7 @@ const ChapterList = ({ chapters, scenes }: ChapterListProps) => {
                             <Typography
                                 variant='body1'
                                 className='whitespace-nowrap overflow-hidden text-ellipsis
-                                    flex justify-between'>
+                flex justify-between'>
                                 {chapter.displayTitle}
                                 {chapter.wordCount && !chapter.wordGoal ? (
                                     <span>

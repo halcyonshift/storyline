@@ -1,13 +1,5 @@
 import { useEffect, useState, SyntheticEvent } from 'react'
-import {
-    Autocomplete,
-    Box,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextField as MuiTextField
-} from '@mui/material'
+import { Autocomplete, Box, TextField as MuiTextField } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { FormikProps, useFormik } from 'formik'
 import { DateTime } from 'luxon'
@@ -16,6 +8,7 @@ import * as yup from 'yup'
 import { SectionMode } from '@sl/constants/sectionMode'
 import { PointOfView } from '@sl/constants/pov'
 import DateField from '@sl/components/form/DateField'
+import SelectField from '@sl/components/form/SelectField'
 import TextField from '@sl/components/form/TextField'
 import TextareaField from '@sl/components/form/TextareaField'
 import FormWrapper from '@sl/components/FormWrapper'
@@ -101,7 +94,7 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
         title: yup.string().nullable(),
         description: yup.string().nullable(),
         date: yup.string().nullable(),
-        wordGoal: yup.number().positive().integer().nullable(),
+        wordGoal: yup.number().integer().nullable(),
         deadlineAt: yup.date().nullable(),
         pointOfView: yup.string().nullable(),
         pointOfViewCharacter: yup.string().nullable()
@@ -143,7 +136,7 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
             title={section.displayName}
             model={section}
             tabList={[t('component.formWrapper.tab.general')]}>
-            <>
+            <Box className='grid grid-cols-1 gap-3'>
                 <TextField
                     autoFocus
                     form={form}
@@ -152,27 +145,18 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
                 />
                 <TextareaField form={form} fieldName='description' />
                 {section.isScene ? (
-                    <Box className='grid grid-cols-2 gap-3 pt-2'>
-                        <FormControl>
-                            <InputLabel id='pov-label'>
-                                {t('form.work.section.pointOfView')}
-                            </InputLabel>
-                            <Select
-                                labelId='pov-label'
-                                id='pov-select'
-                                name='pointOfView'
-                                value={form.values.pointOfView || ''}
-                                label={t('form.work.section.pointOfView')}
-                                error={form.touched.pointOfView && Boolean(form.errors.pointOfView)}
-                                onChange={form.handleChange}>
-                                <MenuItem value=''>{t('form.work.global.none')}</MenuItem>
-                                {Object.keys(PointOfView).map((pov) => (
-                                    <MenuItem key={pov} value={pov}>
-                                        {t(`constant.pointOfView.${pov}`)}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                    <Box className='grid grid-cols-2 gap-3'>
+                        <SelectField
+                            form={form}
+                            name='pointOfView'
+                            label={t('form.work.section.pointOfView')}
+                            options={[{ value: '', label: t('form.work.global.none') }].concat(
+                                Object.keys(PointOfView).map((pov) => ({
+                                    value: pov,
+                                    label: t(`constant.pointOfView.${pov}`)
+                                }))
+                            )}
+                        />
                         {characterOptions.length ? (
                             <Autocomplete
                                 getOptionLabel={(option: AutocompleteOption) => option?.label || ''}
@@ -298,10 +282,10 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
                         onChange={(newValue: DateTime | null) => {
                             form.setFieldValue('deadlineAt', newValue ? newValue.toJSDate() : null)
                         }}
-                        renderInput={(params) => <MuiTextField margin='dense' {...params} />}
+                        renderInput={(params) => <MuiTextField {...params} />}
                     />
                 </Box>
-            </>
+            </Box>
         </FormWrapper>
     )
 }

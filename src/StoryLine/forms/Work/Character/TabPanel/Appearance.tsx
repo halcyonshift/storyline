@@ -9,28 +9,38 @@ const AppearancePanel = ({ form }: TabPanelProps) => {
     const { t } = useTranslation()
 
     return (
-        <>
+        <Box className='grid grid-cols-1 gap-3'>
             <Box className='grid grid-cols-2 gap-3'>
                 <Box>
-                    <TextField name='face' label={t('form.work.character.face')} form={form} />
-                    <TextField name='build' label={t('form.work.character.build')} form={form} />
-                    <TextField name='height' label={t('form.work.character.height')} form={form} />
-                    <TextField name='weight' label={t('form.work.character.weight')} form={form} />
-                    <TextField name='hair' label={t('form.work.character.hair')} form={form} />
-                    <TextField
-                        name='hairNatural'
-                        label={t('form.work.character.hairNatural')}
-                        form={form}
-                    />
+                    <Box className='grid grid-cols-2 gap-3'>
+                        <TextField name='face' label={t('form.work.character.face')} form={form} />
+                        <TextField
+                            name='build'
+                            label={t('form.work.character.build')}
+                            form={form}
+                        />
+                        <TextField
+                            name='height'
+                            label={t('form.work.character.height')}
+                            form={form}
+                        />
+                        <TextField
+                            name='weight'
+                            label={t('form.work.character.weight')}
+                            form={form}
+                        />
+                        <TextField name='hair' label={t('form.work.character.hair')} form={form} />
+                        <TextField
+                            name='hairNatural'
+                            label={t('form.work.character.hairNatural')}
+                            form={form}
+                        />
+                    </Box>
                 </Box>
-                <Box className='pt-2'>
-                    <ImageField form={form} dir='characters' />
-                </Box>
+                <ImageField form={form} dir='characters' />
             </Box>
-            <Box>
-                <TextareaField fieldName='distinguishingFeatures' form={form} />
-            </Box>
-        </>
+            <TextareaField fieldName='distinguishingFeatures' form={form} />
+        </Box>
     )
 }
 

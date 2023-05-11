@@ -158,6 +158,7 @@ const SectionPanel = () => {
                                           section={part}
                                           index={index}
                                           fontWeight={900}
+                                          group={group}
                                       />
                                   ))
                                 : chapters.length > 1
@@ -167,6 +168,7 @@ const SectionPanel = () => {
                                           section={chapter}
                                           index={index}
                                           fontWeight={500}
+                                          group={group}
                                       />
                                   ))
                                 : scenes.map((scene, index) => (
@@ -175,6 +177,7 @@ const SectionPanel = () => {
                                           section={scene}
                                           index={index}
                                           fontWeight={400}
+                                          group={group}
                                       />
                                   ))}
                             {provided.placeholder}

@@ -13,3 +13,11 @@ export type FormWrapperProps = {
     tabList: string[]
     notes: NoteModel[]
 }
+
+export type ErrorBadgeType = {
+    [key: string]: number
+}
+
+export type FormFieldType = {
+    [key: string]: string[]
+}

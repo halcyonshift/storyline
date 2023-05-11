@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
+import { ThemeProvider } from '@mui/material/styles'
 import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
 import Snackbar from '@mui/material/Snackbar'
-import { ThemeProvider } from '@mui/material/styles'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { Settings } from 'luxon'
@@ -25,7 +25,7 @@ const App = () => {
             if (!work || !autoBackupPath) return
             messenger.warning(t('autoBackup.warning'))
             const { data, images, backupPath } = await work.backup()
-            const filePath = await api.backup(data, images, backupPath)
+            const filePath = await api.backupWork(data, images, backupPath)
             if (filePath) {
                 messenger.success(t('autoBackup.success', { filePath }))
             } else {

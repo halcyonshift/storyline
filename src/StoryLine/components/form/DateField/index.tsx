@@ -29,9 +29,7 @@ const DateField = ({
                         onChange={(value: DateTime | null) => {
                             form.setFieldValue(fieldName, value ? value.toSQL() : null)
                         }}
-                        renderInput={(params) => (
-                            <MuiTextField fullWidth margin='dense' {...params} />
-                        )}
+                        renderInput={(params) => <MuiTextField fullWidth {...params} />}
                     />
                 ) : (
                     <TextField form={form} label={t(label)} name={fieldName} autoFocus />

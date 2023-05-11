@@ -1,4 +1,4 @@
-import { Box, Stack } from '@mui/material'
+import Box from '@mui/material/Box'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import useSettings from '@sl/theme/useSettings'
 import { PanelProps } from './types'
@@ -11,9 +11,11 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
     return (
         <Box
             sx={{ backgroundColor: settings.getHex(50), width }}
-            className='flex flex-col flex-grow h-0'>
+            className='flex flex-col flex-grow'>
             {navigation || action ? (
-                <Stack direction='row' alignItems='center' className='px-1 h-12'>
+                <Box
+                    // eslint-disable-next-line max-len
+                    className={`flex justify-between ${settings.getHeaderHeight()} border-b overflow-hidden`}>
                     {navigation
                         ? navigation.map((item) => (
                               <TooltipIconButton
@@ -26,12 +28,15 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
                           ))
                         : null}
                     {action ? <Box className='ml-auto'>{action}</Box> : null}
-                </Stack>
+                </Box>
             ) : null}
-            <Box className='flex-grow overflow-y-auto scrollbar-hidden border-t-2'>{children}</Box>
             <Box
-                className=' border-r-slate-400 border-r-2 absolute w-0 top-0 right-[-1px]
-        bottom-0 cursor-col-resize'
+                className='flex-grow overflow-y-auto scrollbar-hidden border-r border-dotted h-0
+            shadow-md'>
+                {children}
+            </Box>
+            <Box
+                className='absolute w-1 h-full right-0 cursor-col-resize'
                 onMouseDown={enableResize}
             />
         </Box>

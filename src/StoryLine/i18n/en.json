@@ -96,6 +96,12 @@
                 "placeholder": "Keywords"
             }
         },
+        "separator": {
+            "character": "Characters",
+            "item": "Items",
+            "location": "Locations",
+            "note": "Notes"
+        },
         "textareaField": {
             "placeholder": ""
         },
@@ -104,6 +110,13 @@
                 "yes": "Yes",
                 "no": "no"
             }
+        },
+        "unit": {
+            "years": "years",
+            "months": "months",
+            "days": "days",
+            "hours": "hours",
+            "minutes": "minutes"
         },
         "viewWrapper": {
             "tab": {
@@ -330,6 +343,7 @@
         }
     },
     "form": {
+        "required": "This is required",
         "work": {
             "global": {
                 "none": "None"
@@ -401,6 +415,10 @@
             "connection": {
                 "table": "Select",
                 "date": "Date",
+                "mode": {
+                    "label": "Connection",
+                    "placeholder": "e.g., Brother"
+                },
                 "button": {
                     "save": "Save",
                     "delete": "Delete"
@@ -746,6 +764,24 @@
                     "add": "New"
                 }
             },
+            "dashboard": {
+                "deadline": {
+                    "none": "No upcoming deadlines!"
+                },
+                "random": {
+                    "character": "Character",
+                    "prompt": "Prompt"
+                },
+                "tracker": {
+                    "remaining": "{{days}} days left ({{words}} words a day)",
+                    "deadline": "There are <span className='font-bold'>{{timeLeft}}</span> left, <span className='font-bold'>{{wordsPerDay}} words a day</span> will meet the deadline."
+                },
+                "wordCharts": {
+                    "count": "Total count",
+                    "written": "Daily count",
+                    "noData": "No stats to view"
+                }
+            },
             "insight": {
                 "chapterLength": {
                     "scene": "Scene {{number}}"
@@ -762,23 +798,6 @@
                     "fri": "Friday",
                     "sat": "Saturday",
                     "sun": "Sunday"
-                }
-            },
-            "dashboard": {
-                "deadline": {
-                    "none": "No upcoming deadlines!"
-                },
-                "random": {
-                    "character": "Character",
-                    "prompt": "Prompt"
-                },
-                "tracker": {
-                    "remaining": "{{days}} days left ({{words}} words a day)"
-                },
-                "wordCharts": {
-                    "count": "Total count",
-                    "written": "Daily count",
-                    "noData": "No stats to view"
                 }
             },
             "overview": {

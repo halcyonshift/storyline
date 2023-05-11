@@ -24,7 +24,7 @@ const PartList = ({ parts, chapters, scenes }: PartListProps) => {
                             <Typography
                                 variant='body1'
                                 className='whitespace-nowrap overflow-hidden text-ellipsis
-                                    pr-3'>
+                pr-3'>
                                 {part.displayTitle}
                             </Typography>
                             {part.daysRemaining ? (

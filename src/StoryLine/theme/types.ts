@@ -64,6 +64,7 @@ export type SettingsContextType = {
     setPalette: (palette: ColorType) => void
     theme: Theme
     getHex: (shade?: ShadeType) => string
+    getHeaderHeight: () => string
 } & SettingsDataType
 
 export type StatusMapType = {

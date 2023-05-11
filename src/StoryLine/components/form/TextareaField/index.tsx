@@ -8,9 +8,7 @@ import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
-import Box from '@mui/material/Box'
-import InputLabel from '@mui/material/InputLabel'
-import Typography from '@mui/material/Typography'
+import { Box, InputLabel, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import InitialValuePlugin from '@sl/components/RichtextEditor/plugins/InitialValue'
 import ToolbarPlugin from './plugins/Toolbar'
@@ -28,7 +26,7 @@ const TextareaField = ({ form, label, fieldName }: TextareaFieldProps) => {
     return (
         <Box>
             {label ? <InputLabel className='mb-1'>{label}</InputLabel> : null}
-            <Box className='border border-neutral-300 rounded-md'>
+            <Box className='border rounded-md'>
                 <LexicalComposer
                     initialConfig={{
                         namespace: 'rte',
@@ -39,7 +37,7 @@ const TextareaField = ({ form, label, fieldName }: TextareaFieldProps) => {
                         }
                     }}>
                     <ToolbarPlugin />
-                    <Box className='rte-container relative min-h-[100px]'>
+                    <Box className='rte-container relative min-h-[100px]' id={fieldName}>
                         <RichTextPlugin
                             contentEditable={
                                 <ContentEditable className='resize-none outline-none p-3' />

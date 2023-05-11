@@ -80,6 +80,19 @@ export default class LocationModel extends Model {
         return appearances
     }
 
+    async destroyPermanently(): Promise<void> {
+        if (this.image) {
+            api.deleteFile(this.image)
+        }
+        await this.collections
+            .get<ConnectionModel>('connection')
+            .query(Q.or(Q.where('id_a', this.id), Q.where('id_b', this.id)))
+            .destroyAllPermanently()
+        await this.note.destroyAllPermanently()
+        await this.tag.destroyAllPermanently()
+        await super.destroyPermanently()
+    }
+
     getExcerpts(scene: SectionModel): string[] {
         const excerpts: string[] = []
 
@@ -130,18 +143,6 @@ export default class LocationModel extends Model {
     @writer async delete() {
         const countChildren = await this.locations.fetchCount()
         if (countChildren) return
-        if (this.image) {
-            api.deleteFile(this.image)
-        }
-        const connections = await this.collections
-            .get<ConnectionModel>('connection')
-            .query(Q.or(Q.where('id_a', this.id), Q.where('id_b', this.id)))
-        connections.map((connection) => connection.delete())
-        if (this.image) {
-            api.deleteFile(this.image)
-        }
-        await this.note.destroyAllPermanently()
-        await this.tag.destroyAllPermanently()
         await this.destroyPermanently()
         return true
     }

@@ -2,14 +2,14 @@
 import { Model, Q, Query, ColumnName } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, text, writer } from '@nozbe/watermelondb/decorators'
-import { DateTime } from 'luxon'
+import { DateTime, DurationLikeObject, DurationUnits, Interval } from 'luxon'
 import percentRound from 'percent-round'
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
 import { SectionMode } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
 import schema from '@sl/db/schema'
 import { SearchResultType } from '@sl/layouts/Work/Panel/Search/types'
-import { wordCount } from '@sl/utils'
+import { t } from 'i18next'
 
 import {
     CharacterDataType,
@@ -29,6 +29,7 @@ import {
     StatisticModel,
     TagModel
 } from '.'
+
 export default class WorkModel extends Model {
     static table = 'work'
     public static associations: Associations = {
@@ -38,7 +39,8 @@ export default class WorkModel extends Model {
         location: { type: 'has_many', foreignKey: 'work_id' },
         note: { type: 'has_many', foreignKey: 'work_id' },
         section: { type: 'has_many', foreignKey: 'work_id' },
-        statistic: { type: 'has_many', foreignKey: 'work_id' }
+        statistic: { type: 'has_many', foreignKey: 'work_id' },
+        tag: { type: 'has_many', foreignKey: 'work_id' }
     }
     @field('status') status!: StatusType
     @text('title') title!: string
@@ -59,12 +61,44 @@ export default class WorkModel extends Model {
     @children('note') note!: Query<NoteModel>
     @children('section') section!: Query<SectionModel>
     @children('statistic') statistic!: Query<StatisticModel>
+    @children('tag') tag!: Query<StatisticModel>
 
     get displayDeadline() {
         if (!this.deadlineAt) return ''
 
         const date = DateTime.fromJSDate(this.deadlineAt)
         return date.isValid ? date.toFormat('EEEE dd LLL yyyy H:mm') : ''
+    }
+
+    get timeLeft() {
+        if (!this.deadlineAt) return ''
+
+        const deadline = DateTime.fromJSDate(this.deadlineAt)
+        const now = DateTime.now()
+
+        const units: DurationUnits = ['years', 'months', 'days', 'hours', 'minutes']
+
+        const diff = deadline.diff(now, units)
+
+        return units
+            .reduce((duration, unit) => {
+                const d = diff.get(unit as keyof DurationLikeObject)
+                if (d) {
+                    duration.push(`${Math.round(d)} ${t(`component.unit.${unit}`)}`)
+                }
+                return duration
+            }, [])
+            .join(' ')
+    }
+
+    wordsPerDay(currentWords: number) {
+        if (!currentWords || !this.wordGoal) return 0
+        const deadline = DateTime.fromJSDate(this.deadlineAt)
+        const now = DateTime.now()
+        const diff = Interval.fromDateTimes(now, deadline)
+        if (isNaN(diff.length('days'))) return 0
+
+        return Math.ceil((this.wordGoal - currentWords) / diff.length('days'))
     }
 
     async search(
@@ -272,7 +306,7 @@ export default class WorkModel extends Model {
 
     async wordCount() {
         const scenes = await this.scenes.fetch()
-        return scenes.reduce((count, scene) => count + wordCount(scene.body), 0)
+        return scenes.reduce((count, scene) => count + scene.words, 0)
     }
 
     async progress() {
@@ -734,7 +768,7 @@ export default class WorkModel extends Model {
         await this.note.destroyAllPermanently()
         await this.section.destroyAllPermanently()
         await this.statistic.destroyAllPermanently()
-        await this.tags.destroyAllPermanently()
+        await this.tag.destroyAllPermanently()
         await this.destroyPermanently()
         return true
     }

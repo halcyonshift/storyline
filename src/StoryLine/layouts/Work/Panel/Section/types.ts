@@ -4,4 +4,5 @@ export type BlockType = {
     section: SectionModel
     index: number
     fontWeight: number
+    group: boolean
 }

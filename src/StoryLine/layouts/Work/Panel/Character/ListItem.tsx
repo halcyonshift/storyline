@@ -16,12 +16,14 @@ const ListItem = ({ character, showIcon }: ListItemProps) => {
     const { t } = useTranslation()
 
     return (
-        <MuiListItem disablePadding disableGutters divider>
+        <MuiListItem
+            disablePadding
+            disableGutters
+            divider
+            sx={{ borderLeft: `8px solid ${status(character.status, 500).color}` }}>
             <ListItemText
                 primary={
-                    <Box
-                        className='flex justify-between align-middle'
-                        sx={{ backgroundColor: status(character.status).color }}>
+                    <Box className='flex justify-between align-middle'>
                         <ListItemButton
                             onClick={() => tabs.loadTab({ id: character.id, mode: 'character' })}>
                             {showIcon ? (

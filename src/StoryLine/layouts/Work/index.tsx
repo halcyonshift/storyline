@@ -35,6 +35,7 @@ const WorkLayout = () => {
                     <AppBar
                         position='static'
                         color='transparent'
+                        // eslint-disable-next-line max-len
                         className='z-10 border-b'
                         elevation={0}>
                         <Toolbar variant='dense'>

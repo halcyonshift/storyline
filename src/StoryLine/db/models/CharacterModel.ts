@@ -117,6 +117,25 @@ export default class CharacterModel extends Model {
         return appearances
     }
 
+    async destroyPermanently(): Promise<void> {
+        if (this.image) {
+            api.deleteFile(this.image)
+        }
+        await this.collections
+            .get<ConnectionModel>('connection')
+            .query(Q.or(Q.where('id_a', this.id), Q.where('id_b', this.id)))
+            .destroyAllPermanently()
+        const scenes = await this.section.fetch()
+        if (scenes.length) {
+            for await (const scene of scenes) {
+                scene.updatePoVCharacter(null)
+            }
+        }
+        await this.tag.destroyAllPermanently()
+        await this.note.destroyAllPermanently()
+        await super.destroyPermanently()
+    }
+
     getExcerpts(scene: SectionModel): string[] {
         const excerpts: string[] = []
 
@@ -184,21 +203,6 @@ export default class CharacterModel extends Model {
     }
 
     @writer async delete() {
-        if (this.image) {
-            api.deleteFile(this.image)
-        }
-        const connections = await this.collections
-            .get<ConnectionModel>('connection')
-            .query(Q.or(Q.where('id_a', this.id), Q.where('id_b', this.id)))
-        connections.map((connection) => connection.delete())
-        const scenes = await this.section.fetch()
-        if (scenes.length) {
-            for await (const scene of scenes) {
-                scene.updatePoVCharacter(null)
-            }
-        }
-        await this.tag.destroyAllPermanently()
-        await this.note.destroyAllPermanently()
         await this.destroyPermanently()
         return true
     }
