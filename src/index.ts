@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { app, BrowserWindow, ipcMain, dialog, session, shell, Dialog } from 'electron'
+import { app, BrowserWindow, ipcMain, dialog, session, shell, Menu, MenuItem } from 'electron'
 import contextMenu from 'electron-context-menu'
 import { init, captureMessage } from '@sentry/electron/main'
 import fs from 'fs'
@@ -7,6 +7,7 @@ import { kebabCase } from 'lodash'
 import path from 'path'
 import HTMLtoDOCX from 'html-to-docx'
 import JSZip from 'jszip'
+import i18n from './StoryLine/i18n'
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
@@ -61,13 +62,34 @@ const createWindow = (): void => {
     mainWindow.once('ready-to-show', () => {
         splashWindow.close()
         mainWindow.show()
-        mainWindow.webContents.openDevTools()
+        if (!app.isPackaged) {
+            mainWindow.webContents.openDevTools()
+        }
     })
 
     mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY).catch(() => null)
 }
 
 app.on('ready', () => {
+    const template = [
+        {
+            label: i18n.t('menu.storyline'),
+            submenu: [
+                {
+                    label: `${i18n.t('menu.version')}: ${app.getVersion()}`,
+                    enabled: false
+                },
+                {
+                    label: i18n.t('menu.quit'),
+                    click: app.quit
+                }
+            ]
+        }
+    ]
+
+    const menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu)
+
     createWindow()
 
     if (app.isPackaged) {
@@ -86,25 +108,6 @@ app.on('ready', () => {
             })
         })
     }
-
-    /*
-    const template: MenuItem[] = [
-        {
-            label: 'StoryLine',
-            submenu: [
-                {
-                    label: 'About StoryLine',
-                    selector: 'orderFrontStandardAboutPanel:'
-                },
-                {
-                    type: 'separator'
-                },
-            ]
-        },
-    ]
-    const menu = Menu.buildFromTemplate(template)
-    Menu.setApplicationMenu(menu)
-    */
 })
 
 app.on('window-all-closed', () => {
