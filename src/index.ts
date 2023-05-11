@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { app, BrowserWindow, ipcMain, dialog, session, shell, Dialog } from 'electron'
 import contextMenu from 'electron-context-menu'
+import { init } from '@sentry/electron/main'
 import fs from 'fs'
 import { kebabCase } from 'lodash'
 import path from 'path'
@@ -9,6 +10,12 @@ import JSZip from 'jszip'
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
+
+if (app.isPackaged) {
+    init({
+        dsn: 'https://41e621e8f6ea49b5b01855d8d13dd496@o215263.ingest.sentry.io/4505164795936768'
+    })
+}
 
 if (require('electron-squirrel-startup')) {
     app.quit()

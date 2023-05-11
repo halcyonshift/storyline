@@ -1,3 +1,4 @@
+import { WebpackPluginInstance } from 'webpack'
 import type IForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 import Dotenv from 'dotenv-webpack'
@@ -6,7 +7,7 @@ import Dotenv from 'dotenv-webpack'
 const ForkTsCheckerWebpackPlugin: typeof IForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 
 export const plugins = [
-    new Dotenv(),
+    new Dotenv() as unknown as WebpackPluginInstance,
     new ForkTsCheckerWebpackPlugin({
         logger: 'webpack-infrastructure'
     }),
