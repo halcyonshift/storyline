@@ -32,6 +32,7 @@ import { getInitialValues } from '@sl/forms/Work/utils'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { getHex } from '@sl/theme/utils'
 import { ObjType, NodeType, NodeTypeByID } from './types'
+import useSettings from '@sl/theme/useSettings'
 const PaperComponent = (props: PaperProps) => {
     return (
         <Draggable handle='#draggable' cancel={'[class*="MuiDialogContent-root"]'}>
@@ -60,6 +61,7 @@ const ConnectionView = () => {
     const [connection, setConnection] = useState<ConnectionModel | null>()
     const { setShowTabs } = useTabs()
     const { t } = useTranslation()
+    const settings = useSettings()
     const connections = useObservable(
         () => work.connection.observeWithColumns(['id_a', 'id_b', 'mode', 'to', 'from', 'color']),
         [],
@@ -176,7 +178,13 @@ const ConnectionView = () => {
 
     useEffect(() => {
         if (!ref.current || !nodesView) return
-        const network = new Network(ref.current, { nodes: nodesView, edges: edgesView }, {})
+        const network = new Network(
+            ref.current,
+            { nodes: nodesView, edges: edgesView },
+            {
+                nodes: { font: { color: getHex(settings.isDark() ? 'white' : 'black') } }
+            }
+        )
         network.on('doubleClick', (e) => {
             if (e.nodes.length) return
             const _connection = connections.find((connection) => connection.id === e.edges[0])

@@ -13,7 +13,8 @@ const BackupRestoreView = () => {
     }, [])
 
     return (
-        <Box className='p-4 grid grid-cols-2 grid-rows-2 gap-4 flex-grow bg-slate-50'>
+        // eslint-disable-next-line max-len
+        <Box className='p-4 grid grid-cols-2 grid-rows-2 gap-4 flex-grow bg-slate-50 dark:bg-neutral-700'>
             <Paper elevation={1}>
                 <Boxes.Backup />
             </Paper>

@@ -14,7 +14,7 @@ const BibiscoBox = () => {
 
     return (
         <Box className='grid h-full place-items-center p-5'>
-            <Typography variant='h6' sx={{ color: '#004000' }}>
+            <Typography variant='h6'>
                 <Link href='https://bibisco.com/' color='inherit'>
                     {t('view.storyline.importWork.bibisco.title')}
                 </Link>

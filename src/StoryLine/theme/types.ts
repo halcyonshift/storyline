@@ -65,6 +65,7 @@ export type SettingsContextType = {
     theme: Theme
     getHex: (shade?: ShadeType) => string
     getHeaderHeight: () => string
+    isDark: () => boolean
 } & SettingsDataType
 
 export type StatusMapType = {

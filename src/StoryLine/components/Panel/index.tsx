@@ -10,7 +10,7 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
 
     return (
         <Box
-            sx={{ backgroundColor: settings.getHex(50), width }}
+            sx={{ backgroundColor: settings.getHex(settings.isDark() ? 800 : 50), width }}
             className='flex flex-col flex-grow'>
             {navigation || action ? (
                 <Box

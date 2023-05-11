@@ -44,7 +44,8 @@ const LandingView = () => {
     }
 
     return (
-        <Box className='p-4 grid grid-cols-2 grid-rows-2 gap-4 flex-grow bg-slate-50'>
+        // eslint-disable-next-line max-len
+        <Box className='p-4 grid grid-cols-2 grid-rows-2 gap-4 flex-grow bg-slate-50 dark:bg-neutral-700'>
             <Paper elevation={1} className='relative'>
                 <Typography variant='h6' className='px-4 pt-3'>
                     {t('view.storyline.landing.title')}

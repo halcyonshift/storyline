@@ -18,7 +18,8 @@ const ChapterList = ({ chapters, scenes }: ChapterListProps) => {
                     <Box
                         className='grid grid-cols-1 xl:grid-cols-3 gap-1 xl:pr-2'
                         sx={{
-                            backgroundColor: status(chapter.status, 100).color,
+                            backgroundColor: status(chapter.status, settings.isDark() ? 800 : 100)
+                                .color,
                             marginBottom: '1px'
                         }}>
                         <Box

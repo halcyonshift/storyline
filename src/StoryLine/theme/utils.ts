@@ -3,6 +3,7 @@ import tailwindConfig from '../../../tailwind.config'
 
 import { Status, type StatusType } from '@sl/constants/status'
 import { ColorType, ShadeType, StatusMapType } from './types'
+import useSettings from './useSettings'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const colors: any = resolveConfig(tailwindConfig).theme.colors
@@ -18,7 +19,9 @@ export const StatusMap: StatusMapType = {
 }
 
 export const status = (status?: StatusType, shade?: number) => {
-    if (!shade) shade = 50
+    const { displayMode } = useSettings()
+
+    if (!shade) shade = displayMode === 'dark' ? 600 : 50
 
     const statusList = {
         [Status.TODO]: {

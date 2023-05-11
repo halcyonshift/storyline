@@ -39,6 +39,7 @@ const Block = ({ section, index, fontWeight, group }: BlockType) => {
                     <ListItem
                         {...provided.dragHandleProps}
                         title={section.displayTitle}
+                        className='bg-slate-50 dark:bg-slate-600'
                         sx={{
                             borderLeft: `8px solid ${status(section.status, 500).color}`
                         }}

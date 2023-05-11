@@ -51,6 +51,7 @@ const ItemPanel = () => {
                             disablePadding
                             disableGutters
                             divider
+                            className='bg-slate-50 dark:bg-slate-600'
                             sx={{
                                 borderLeft: `8px solid ${status(item.status, 500).color}`
                             }}>
