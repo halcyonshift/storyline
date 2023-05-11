@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
-import { IconButton, List, ListItem, ListItemButton, ListItemText } from '@mui/material'
+import { List, ListItem, ListItemButton, ListItemText } from '@mui/material'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { take } from 'lodash'
 import { DateTime } from 'luxon'
 import { useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
+import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { WorkModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import useSettings from '@sl/theme/useSettings'
 import { LastUpdatedType } from '../types'
+import { useTranslation } from 'react-i18next'
 
 const LastUpdatedBox = () => {
     const [lastUpdated, setLastUpdated] = useState<LastUpdatedType[]>([])
@@ -16,6 +18,7 @@ const LastUpdatedBox = () => {
     const work = useRouteLoaderData('work') as WorkModel
     const { loadTab } = useTabs()
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     useEffect(() => {
         work.section.fetch()
@@ -61,12 +64,11 @@ const LastUpdatedBox = () => {
                     divider={Boolean(index !== lastUpdated.length - 1)}
                     disablePadding
                     secondaryAction={
-                        <>
-                            <IconButton
-                                onClick={() => navigate(`/work/${work.id}/${item.link}/edit`)}>
-                                {GLOBAL_ICONS.edit}
-                            </IconButton>
-                        </>
+                        <TooltipIconButton
+                            text={t('view.work.dashboard.lastUpdated.edit')}
+                            icon={GLOBAL_ICONS.edit}
+                            onClick={() => navigate(`/work/${work.id}/${item.link}/edit`)}
+                        />
                     }>
                     <ListItemButton
                         onClick={() =>

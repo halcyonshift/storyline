@@ -40,7 +40,10 @@ const TextareaField = ({ form, label, fieldName }: TextareaFieldProps) => {
                     <Box className='rte-container relative min-h-[100px]' id={fieldName}>
                         <RichTextPlugin
                             contentEditable={
-                                <ContentEditable className='resize-none outline-none p-3' />
+                                <ContentEditable
+                                    className='resize-none outline-none p-3'
+                                    ariaLabel='text editor'
+                                />
                             }
                             placeholder={
                                 <Typography

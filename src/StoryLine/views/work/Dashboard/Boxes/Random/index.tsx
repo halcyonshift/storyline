@@ -4,10 +4,11 @@ import { faker as fr } from '@faker-js/faker/locale/fr'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
-import { Box, IconButton, Stack, Tab, Typography } from '@mui/material'
+import { Box, Stack, Tab, Typography } from '@mui/material'
 import { sampleSize, sample } from 'lodash'
 import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
+import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 import { CHARACTER_TRAITS, PROMPTS } from '@sl/constants/random'
 import useSettings from '@sl/theme/useSettings'
@@ -76,9 +77,11 @@ const RandomBox = () => {
                             ) : null}
                         </Box>
                         <Box>
-                            <IconButton onClick={() => generateCharacter()}>
-                                {GLOBAL_ICONS.random}
-                            </IconButton>
+                            <TooltipIconButton
+                                text={t('view.work.dashboard.random.generate')}
+                                icon={GLOBAL_ICONS.random}
+                                onClick={() => generateCharacter()}
+                            />
                         </Box>
                     </Stack>
                 </TabPanel>
@@ -86,9 +89,11 @@ const RandomBox = () => {
                     <Stack direction='row' spacing={3}>
                         <Typography variant='body1'>{prompt}</Typography>
                         <Box>
-                            <IconButton onClick={() => randomPrompt()}>
-                                {GLOBAL_ICONS.random}
-                            </IconButton>
+                            <TooltipIconButton
+                                text={t('view.work.dashboard.random.generate')}
+                                icon={GLOBAL_ICONS.random}
+                                onClick={() => randomPrompt()}
+                            />
                         </Box>
                     </Stack>
                 </TabPanel>

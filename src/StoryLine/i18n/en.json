@@ -330,7 +330,7 @@
                 "untidy": "Untidy",
                 "wary": "Wary",
                 "wicked": "Wicked",
-                "wises": "Wise",
+                "wise": "Wise",
                 "witty": "Witty"
             }
         },
@@ -768,9 +768,13 @@
                 "deadline": {
                     "none": "No upcoming deadlines!"
                 },
+                "lastUpdated": {
+                    "edit": "Edit"
+                },
                 "random": {
                     "character": "Character",
-                    "prompt": "Prompt"
+                    "prompt": "Prompt",
+                    "generate": "Generate"
                 },
                 "tracker": {
                     "remaining": "{{days}} days left ({{words}} words a day)",
