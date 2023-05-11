@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
-import { Box, Stack, Tabs as MuiTabs, Tab as MuiTab, Typography, styled } from '@mui/material'
+import {
+    Box,
+    Collapse,
+    Stack,
+    Tabs as MuiTabs,
+    Tab as MuiTab,
+    Typography,
+    styled
+} from '@mui/material'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
 import { useTranslation } from 'react-i18next'
 import { useObservable } from 'rxjs-hooks'
@@ -105,8 +113,8 @@ const Tabs = () => {
     )
 
     return useMemo(
-        () =>
-            tabs.showTabs ? (
+        () => (
+            <Collapse in={tabs.showTabs}>
                 <Box
                     sx={{
                         maxWidth,
@@ -175,7 +183,8 @@ const Tabs = () => {
                         </Droppable>
                     </DragDropContext>
                 </Box>
-            ) : null,
+            </Collapse>
+        ),
         [tabs.tabs, tabs.active, tabs.showTabs, maxWidth]
     )
 }
