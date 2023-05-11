@@ -6,8 +6,8 @@ import Box from '@mui/material/Box'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Tab from '@mui/material/Tab'
-import IconButton from '@mui/material/IconButton'
 import { useTranslation } from 'react-i18next'
+import TooltipIconButton from '@sl/components/TooltipIconButton'
 import WordsByDay from './WordsByDay'
 import WordsByPeriod from './WordsByPeriod'
 import { Typography } from '@mui/material'
@@ -36,18 +36,19 @@ const WordsBox = () => {
                                     {t('view.work.insight.word.line')}
                                 </Typography>
                                 {value === 'line' ? (
-                                    <IconButton
-                                        sx={{ padding: 0 }}
+                                    <TooltipIconButton
                                         id='datepicker-button'
+                                        sx={{ padding: 0 }}
                                         aria-controls={anchorEl ? 'datepicker-menu' : undefined}
                                         aria-haspopup='true'
                                         aria-expanded={anchorEl ? 'true' : undefined}
+                                        text={t('view.work.dashboard.random.generate')}
+                                        icon={<CalendarMonth fontSize='small' />}
                                         onClick={(e) => {
                                             e.stopPropagation()
                                             setAnchorEl(e.currentTarget)
-                                        }}>
-                                        <CalendarMonth fontSize='small' />
-                                    </IconButton>
+                                        }}
+                                    />
                                 ) : null}
                             </Box>
                         }

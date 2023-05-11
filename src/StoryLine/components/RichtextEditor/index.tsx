@@ -133,6 +133,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                             contentEditable={
                                 <ContentEditable
                                     id='sceneBody'
+                                    ariaLabel='text editor'
                                     className='resize-none caret-slate-500 outline-none'
                                     spellCheck={spellCheck}
                                 />

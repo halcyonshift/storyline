@@ -26,8 +26,9 @@ const TooltipIconButton = ({
 
     const [open, setOpen] = useState<boolean>(false)
 
-    const handleAction = async () => {
-        if (onClick) await onClick()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleAction = async (e: any) => {
+        if (onClick) await onClick(e)
         if (link) navigate(link)
         setOpen(false)
     }
@@ -37,11 +38,11 @@ const TooltipIconButton = ({
             <Tooltip title={t(text)}>
                 <IconButton
                     color='inherit'
-                    onClick={async () => {
+                    onClick={async (e) => {
                         if (confirm) {
                             return setOpen(true)
                         }
-                        handleAction()
+                        handleAction(e)
                     }}
                     aria-label={t(text)}
                     {...props}>

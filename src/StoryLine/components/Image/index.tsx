@@ -12,7 +12,7 @@ const Image = ({ path, ...props }: ImageProps) => {
         }
     }, [path])
 
-    return src ? <img src={src} {...props} /> : <></>
+    return src ? <img alt='' src={src} {...props} /> : <></>
 }
 
 export default Image
