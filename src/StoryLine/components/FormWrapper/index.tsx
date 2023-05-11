@@ -55,8 +55,10 @@ const _FormWrapper = ({
         setFormFields({
             ...formFields,
             [value]: Object.keys(form.initialValues).reduce((arr: string[], name: string) => {
-                const field = panelsRef.current[parseInt(value) - 1].querySelector(`#${name}`)
-                if (field) arr.push(name)
+                if (panelsRef.current[parseInt(value) - 1]) {
+                    const field = panelsRef.current[parseInt(value) - 1].querySelector(`#${name}`)
+                    if (field) arr.push(name)
+                }
                 return arr
             }, [])
         })
