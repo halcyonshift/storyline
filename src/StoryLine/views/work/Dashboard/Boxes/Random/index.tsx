@@ -28,7 +28,7 @@ const RandomBox = () => {
             job: lang.name.jobTitle(),
             dateOfBirth: DateTime.fromJSDate(lang.date.birthdate())
                 .setLocale(settings.language)
-                .toLocaleString(DateTime.DATE_SHORT),
+                ?.toLocaleString(DateTime.DATE_SHORT),
             traits: sampleSize(CHARACTER_TRAITS, 3)
                 .map((trait) => t(`constant.random.characterTrait.${trait}`))
                 .join(', ')

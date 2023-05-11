@@ -86,7 +86,7 @@ const LastUpdatedBox = () => {
                             primary={item.label}
                             secondary={item.date
                                 .setLocale(settings.language)
-                                .toLocaleString(DateTime.DATETIME_MED)}
+                                ?.toLocaleString(DateTime.DATETIME_MED)}
                         />
                     </ListItemButton>
                 </ListItem>

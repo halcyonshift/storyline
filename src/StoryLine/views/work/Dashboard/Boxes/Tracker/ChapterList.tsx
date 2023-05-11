@@ -33,7 +33,7 @@ const ChapterList = ({ chapters, scenes }: ChapterListProps) => {
                                 {chapter.displayTitle}
                                 {chapter.wordCount && !chapter.wordGoal ? (
                                     <span>
-                                        {chapter.wordCount.toLocaleString(settings.language)}
+                                        {chapter.wordCount?.toLocaleString(settings.language)}
                                     </span>
                                 ) : (
                                     ''
