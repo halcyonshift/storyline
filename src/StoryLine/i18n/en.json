@@ -1,5 +1,10 @@
 {
     "storyline": "StoryLine",
+    "menu": {
+        "storyline": "StoryLine",
+        "version": "Version",
+        "quit": "Quit StoryLine"
+    },
     "autoBackup": {
         "warning": "Back up in progress",
         "success": "Back up saved to {{filePath}}",
