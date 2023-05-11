@@ -3,21 +3,16 @@ import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 import Box from '@mui/material/Box'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
 import Tab from '@mui/material/Tab'
 import { useTranslation } from 'react-i18next'
-import TooltipIconButton from '@sl/components/TooltipIconButton'
 import WordsByDay from './WordsByDay'
 import WordsByPeriod from './WordsByPeriod'
 import { Typography } from '@mui/material'
-import { CalendarMonth } from '@mui/icons-material'
 
 const PADDING = { padding: 0, height: '82%' }
 
 const WordsBox = () => {
     const [value, setValue] = useState('line')
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const { t } = useTranslation()
 
     return (
@@ -35,21 +30,6 @@ const WordsBox = () => {
                                 <Typography variant='body2'>
                                     {t('view.work.insight.word.line')}
                                 </Typography>
-                                {value === 'line' ? (
-                                    <TooltipIconButton
-                                        id='datepicker-button'
-                                        sx={{ padding: 0 }}
-                                        aria-controls={anchorEl ? 'datepicker-menu' : undefined}
-                                        aria-haspopup='true'
-                                        aria-expanded={anchorEl ? 'true' : undefined}
-                                        text={t('view.work.dashboard.random.generate')}
-                                        icon={<CalendarMonth fontSize='small' />}
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            setAnchorEl(e.currentTarget)
-                                        }}
-                                    />
-                                ) : null}
                             </Box>
                         }
                         value='line'
@@ -63,16 +43,6 @@ const WordsBox = () => {
             <TabPanel value='bar' sx={PADDING}>
                 <WordsByDay />
             </TabPanel>
-            <Menu
-                id='datepicker-menu'
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={() => setAnchorEl(null)}
-                MenuListProps={{
-                    'aria-labelledby': 'datepicker-button'
-                }}>
-                <MenuItem>Datepicker</MenuItem>
-            </Menu>
         </TabContext>
     )
 }

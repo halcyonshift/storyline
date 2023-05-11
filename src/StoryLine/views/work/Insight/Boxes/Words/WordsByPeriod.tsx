@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
+import { DateRangePicker } from '@wojtekmaj/react-daterange-picker'
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -19,6 +20,9 @@ import { StatisticModel, WorkModel } from '@sl/db/models'
 import useSettings from '@sl/theme/useSettings'
 import { getHex } from '@sl/theme/utils'
 import { ObjectNumber, ObjectObjectNumber } from '@sl/types'
+
+import '@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css'
+import 'react-calendar/dist/Calendar.css'
 
 ChartJS.register(
     annotationPlugin,
@@ -48,17 +52,15 @@ const DEFAULT_OPTIONS = {
 }
 
 const WordsByPeriod = () => {
-    const [statisticsDates] = useState<DateTime[]>(
-        Interval.fromDateTimes(
-            DateTime.now().minus({ days: 6 }).startOf('day'),
-            DateTime.now().endOf('day')
-        )
-            .splitBy({ day: 1 })
-            .map((d) => d.start)
-    )
+    const [statisticsDates, setStatisticDates] = useState<DateTime[]>([])
     const settings = useSettings()
     const work = useRouteLoaderData('work') as WorkModel
     const [statistics, setStatistics] = useState<ObjectNumber>({})
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [value, onChange] = useState<any>([
+        DateTime.now().setZone('UTC').minus({ days: 7 }).startOf('day').toJSDate(),
+        DateTime.now().setZone('UTC').minus({ days: 1 }).endOf('day').toJSDate()
+    ])
 
     const fillStats = useCallback(
         (stats: StatisticModel[]) => {
@@ -94,13 +96,24 @@ const WordsByPeriod = () => {
     )
 
     useEffect(() => {
+        setStatisticDates(
+            Interval.fromDateTimes(
+                DateTime.fromJSDate(value[0]).startOf('day'),
+                DateTime.fromJSDate(value[1]).endOf('day')
+            )
+                .splitBy({ day: 1 })
+                .map((d) => d.start)
+        )
+    }, [value])
+
+    useEffect(() => {
         work.statistics
             .extend(
                 Q.where(
                     'created_at',
                     Q.between(
-                        DateTime.now().setZone('UTC').minus({ days: 7 }).startOf('day').toMillis(),
-                        DateTime.now().setZone('UTC').endOf('day').toMillis()
+                        DateTime.fromJSDate(value[0]).startOf('day').toMillis(),
+                        DateTime.fromJSDate(value[1]).endOf('day').toMillis()
                     )
                 ),
                 Q.sortBy('created_at', Q.asc)
@@ -122,6 +135,14 @@ const WordsByPeriod = () => {
 
     return (
         <Box className='relative h-full p-3 w-auto grid place-items-center'>
+            <Box className='absolute z-10 top-2 right-2 bg-white'>
+                <DateRangePicker
+                    value={value}
+                    onChange={onChange}
+                    clearIcon={null}
+                    calendarIcon={null}
+                />
+            </Box>
             <Line
                 options={{
                     ...DEFAULT_OPTIONS
