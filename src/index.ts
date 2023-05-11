@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { app, BrowserWindow, ipcMain, dialog, session, shell, Dialog } from 'electron'
 import contextMenu from 'electron-context-menu'
-import { init } from '@sentry/electron/main'
+import { init, captureMessage } from '@sentry/electron/main'
 import fs from 'fs'
 import { kebabCase } from 'lodash'
 import path from 'path'
@@ -136,7 +136,7 @@ app.whenReady()
                     json.work[0].title
                 )}-${Date.now().toString()}.zip`
                 fs.writeFile(fileSavePath, buffer, () => {
-                    // Add sentry error
+                    captureMessage('api.backup with localPath write failure')
                 })
                 return fileSavePath
             } else {
@@ -151,7 +151,7 @@ app.whenReady()
                 if (result.filePath) {
                     // eslint-disable-next-line max-nested-callbacks
                     fs.writeFile(result.filePath, buffer, () => {
-                        // ToDo: Add sentry error
+                        captureMessage('api.backup without localPath write failure')
                     })
 
                     return result.filePath
@@ -169,7 +169,7 @@ app.whenReady()
 
             if (result.filePath) {
                 fs.writeFile(result.filePath, html, () => {
-                    // ToDo: Add sentry error
+                    captureMessage('api.export-html write failure')
                 })
 
                 return result.filePath
@@ -191,7 +191,7 @@ app.whenReady()
 
             if (result.filePath) {
                 fs.writeFile(result.filePath, docx, () => {
-                    // ToDo: Add sentry error
+                    captureMessage('api.export-docx write failure')
                 })
 
                 return result.filePath

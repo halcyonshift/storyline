@@ -531,7 +531,7 @@ export default class WorkModel extends Model {
                     note.updatedAt = DateTime.fromMillis(noteData.updated_at).toJSDate()
                 })
                 .catch(() => {
-                    // send to sentry?
+                    //
                 })
         }
 
@@ -546,7 +546,7 @@ export default class WorkModel extends Model {
                     statistic.updatedAt = DateTime.fromMillis(statisticData.updated_at).toJSDate()
                 })
                 .catch(() => {
-                    // send to sentry?
+                    //
                 })
         }
 
@@ -565,7 +565,7 @@ export default class WorkModel extends Model {
                     tag.updatedAt = DateTime.fromMillis(tagData.updated_at).toJSDate()
                 })
                 .catch(() => {
-                    // send to sentry?
+                    //
                 })
         }
 
