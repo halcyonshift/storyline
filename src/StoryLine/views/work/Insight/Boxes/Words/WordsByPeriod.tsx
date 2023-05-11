@@ -135,10 +135,13 @@ const WordsByPeriod = () => {
 
     return (
         <Box className='relative h-full p-3 w-auto grid place-items-center'>
-            <Box
-                className='absolute z-10 top-1 right-1 opacity-20
-                hover:opacity-100 hover:bg-white'>
-                <DateRangePicker value={value} onChange={onChange} />
+            <Box className='absolute z-10 top-2 right-2 bg-white'>
+                <DateRangePicker
+                    value={value}
+                    onChange={onChange}
+                    clearIcon={null}
+                    calendarIcon={null}
+                />
             </Box>
             <Line
                 options={{
