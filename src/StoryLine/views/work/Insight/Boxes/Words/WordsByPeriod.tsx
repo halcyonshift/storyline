@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { DateRangePicker } from '@wojtekmaj/react-daterange-picker'
+import { Value } from '@wojtekmaj/react-daterange-picker/dist/cjs/shared/types'
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -56,11 +57,12 @@ const WordsByPeriod = () => {
     const settings = useSettings()
     const work = useRouteLoaderData('work') as WorkModel
     const [statistics, setStatistics] = useState<ObjectNumber>({})
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [value, onChange] = useState<any>([
-        DateTime.now().setZone('UTC').minus({ days: 7 }).startOf('day').toJSDate(),
+    const [startDate, setStartDate] = useState<Date>(
+        DateTime.now().setZone('UTC').minus({ days: 7 }).startOf('day').toJSDate()
+    )
+    const [endDate, setEndDate] = useState<Date>(
         DateTime.now().setZone('UTC').minus({ days: 1 }).endOf('day').toJSDate()
-    ])
+    )
 
     const fillStats = useCallback(
         (stats: StatisticModel[]) => {
@@ -98,13 +100,13 @@ const WordsByPeriod = () => {
     useEffect(() => {
         setStatisticDates(
             Interval.fromDateTimes(
-                DateTime.fromJSDate(value[0]).startOf('day'),
-                DateTime.fromJSDate(value[1]).endOf('day')
+                DateTime.fromJSDate(startDate).startOf('day'),
+                DateTime.fromJSDate(endDate).endOf('day')
             )
                 .splitBy({ day: 1 })
                 .map((d) => d.start)
         )
-    }, [value])
+    }, [startDate, endDate])
 
     useEffect(() => {
         work.statistics
@@ -112,8 +114,8 @@ const WordsByPeriod = () => {
                 Q.where(
                     'created_at',
                     Q.between(
-                        DateTime.fromJSDate(value[0]).startOf('day').toMillis(),
-                        DateTime.fromJSDate(value[1]).endOf('day').toMillis()
+                        DateTime.fromJSDate(startDate).startOf('day').toMillis(),
+                        DateTime.fromJSDate(endDate).endOf('day').toMillis()
                     )
                 ),
                 Q.sortBy('created_at', Q.asc)
@@ -131,14 +133,22 @@ const WordsByPeriod = () => {
                     }, {} as ObjectNumber)
                 )
             )
-    }, [])
+    }, [statisticsDates])
 
     return (
         <Box className='relative h-full p-3 w-auto grid place-items-center'>
             <Box className='absolute z-10 top-2 right-2 bg-white'>
                 <DateRangePicker
-                    value={value}
-                    onChange={onChange}
+                    value={[startDate, endDate]}
+                    onChange={(value: Value) => {
+                        if (Array.isArray(value)) {
+                            setStartDate(value[0])
+                            setEndDate(value[1])
+                        } else {
+                            setStartDate(value)
+                            setEndDate(value)
+                        }
+                    }}
                     clearIcon={null}
                     calendarIcon={null}
                 />

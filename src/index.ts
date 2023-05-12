@@ -1,4 +1,12 @@
-import { app, BrowserWindow, ipcMain, session, shell, Menu } from 'electron'
+import {
+    app,
+    BrowserWindow,
+    ipcMain,
+    session,
+    shell,
+    Menu,
+    MenuItemConstructorOptions
+} from 'electron'
 import contextMenu from 'electron-context-menu'
 import { init } from '@sentry/electron/main'
 import path from 'path'
@@ -79,8 +87,7 @@ const createWindow = (): void => {
 }
 
 app.on('ready', () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const template: any = [
+    const template = [
         {
             label: i18n.t('menu.storyline'),
             submenu: [
@@ -93,7 +100,7 @@ app.on('ready', () => {
                     accelerator: 'CmdOrCtrl+Q',
                     click: app.quit
                 }
-            ]
+            ] as MenuItemConstructorOptions[]
         },
         {
             label: 'Edit',
@@ -105,12 +112,11 @@ app.on('ready', () => {
                 { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
                 { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
                 { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' }
-            ]
+            ] as MenuItemConstructorOptions[]
         }
     ]
 
-    const menu = Menu.buildFromTemplate(template)
-    Menu.setApplicationMenu(menu)
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 
     createWindow()
 

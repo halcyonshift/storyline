@@ -7,8 +7,7 @@ import JSZip from 'jszip'
 
 const backup = async (
     _: Electron.IpcMainInvokeEvent,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    json: any,
+    json: { work: { title: string }[] },
     images: string[],
     localPath: string
 ) => {
