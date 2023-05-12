@@ -118,7 +118,8 @@ app.on('ready', () => {
         'img-src data: https://*.grammarly.com http://*.tile.osm.org',
         "connect-src 'self' https://*.grammarly.com https://*.grammarly.io wss://*.grammarly.com",
         "style-src 'self' 'unsafe-inline'",
-        "script-src 'self' 'unsafe-eval' https://*.grammarly.com"
+        "script-src 'self' 'unsafe-eval' https://*.grammarly.com",
+        "object-src 'none'"
     ]
 
     session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
