@@ -1,12 +1,16 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { app, BrowserWindow, ipcMain, dialog, session, shell, Menu, MenuItem } from 'electron'
+import { app, BrowserWindow, ipcMain, session, shell, Menu } from 'electron'
 import contextMenu from 'electron-context-menu'
-import { init, captureMessage } from '@sentry/electron/main'
-import fs from 'fs'
-import { kebabCase } from 'lodash'
+import { init } from '@sentry/electron/main'
 import path from 'path'
-import HTMLtoDOCX from 'html-to-docx'
-import JSZip from 'jszip'
+import backup from './StoryLine/api/backup'
+import * as apiExport from './StoryLine/api/export'
+import * as apiImport from './StoryLine/api/import'
+import deleteFile from './StoryLine/api/deleteFile'
+import restore from './StoryLine/api/restore'
+import selectFile from './StoryLine/api/selectFile'
+import selectFilePath from './StoryLine/api/selectFilePath'
+import selectImage from './StoryLine/api/selectImage'
+import showImage from './StoryLine/api/showImage'
 import i18n from './StoryLine/i18n'
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
@@ -138,233 +142,26 @@ app.on('activate', () => {
 
 app.whenReady()
     .then(() => {
-        ipcMain.handle('backup', async (_, json, images, localPath) => {
-            const zip = new JSZip()
-            zip.file(`${kebabCase(json.work[0].title)}.json`, JSON.stringify(json))
-            images.forEach((image: string) => {
-                const data = fs.readFileSync(image)
-                zip.file(`images/${path.basename(image)}`, data)
-            })
-
-            const buffer = await zip.generateAsync({ type: 'nodebuffer' })
-
-            if (localPath) {
-                const fileSavePath = `${localPath}${path.sep}${kebabCase(
-                    json.work[0].title
-                )}-${Date.now().toString()}.zip`
-                fs.writeFile(fileSavePath, buffer, () => {
-                    captureMessage('api.backup with localPath write failure')
-                })
-                return fileSavePath
-            } else {
-                const result = await dialog.showSaveDialog({
-                    defaultPath: `${kebabCase(json.work[0].title)}.zip`,
-                    filters: [
-                        { name: 'ZIP files', extensions: ['zip'] },
-                        { name: 'All Files', extensions: ['*'] }
-                    ]
-                })
-
-                if (result.filePath) {
-                    // eslint-disable-next-line max-nested-callbacks
-                    fs.writeFile(result.filePath, buffer, () => {
-                        captureMessage('api.backup without localPath write failure')
-                    })
-
-                    return result.filePath
-                }
-            }
-
-            return false
-        })
-
-        ipcMain.handle('export-html', async (_, fileName: string, html: string) => {
-            const result = await dialog.showSaveDialog({
-                defaultPath: `${kebabCase(fileName)}.html`,
-                filters: [{ name: 'All Files', extensions: ['*'] }]
-            })
-
-            if (result.filePath) {
-                fs.writeFile(result.filePath, html, () => {
-                    captureMessage('api.export-html write failure')
-                })
-
-                return result.filePath
-            }
-        })
-
-        ipcMain.handle('export-docx', async (_, fileName: string, html: string) => {
-            const result = await dialog.showSaveDialog({
-                defaultPath: `${kebabCase(fileName)}.docx`,
-                filters: [{ name: 'All Files', extensions: ['*'] }]
-            })
-
-            const docx = (await HTMLtoDOCX(
-                html,
-                '<p></p>',
-                { orientation: 'portrait', title: fileName },
-                '<p></p>'
-            )) as Buffer
-
-            if (result.filePath) {
-                fs.writeFile(result.filePath, docx, () => {
-                    captureMessage('api.export-docx write failure')
-                })
-
-                return result.filePath
-            }
-        })
-
-        ipcMain.handle('select-file-path', async () => {
-            const filePath = await dialog.showOpenDialog({
-                properties: ['openDirectory', 'createDirectory']
-            })
-            return filePath.canceled || !filePath.filePaths.length ? '' : filePath.filePaths[0]
-        })
-
-        ipcMain.handle('select-image', async (_, subDir) => {
-            const result = await dialog.showOpenDialog({
-                title: 'Select an image',
-                filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'gif'] }]
-            })
-
-            if (result.canceled || !result.filePaths.length) return false
-
-            const filePath = result.filePaths[0]
-            const fileDir = path.join(app.getPath('userData'), 'images', subDir)
-            await fs.promises.mkdir(fileDir, { recursive: true })
-            const saveFilePath = path.join(
-                fileDir,
-                `image-${new Date().getTime()}${path.extname(filePath)}`
-            )
-            await fs.promises.copyFile(filePath, saveFilePath)
-
-            return saveFilePath
-        })
-
-        ipcMain.handle('select-file', async (_, subDir) => {
-            const result = await dialog.showOpenDialog({
-                title: 'Select a file',
-                filters: [{ name: 'Files', extensions: ['bibisco2'] }]
-            })
-
-            if (result.canceled || !result.filePaths.length) return false
-
-            const filePath = result.filePaths[0]
-            const fileDir = path.join(app.getPath('userData'), 'import', subDir)
-            await fs.promises.mkdir(fileDir, { recursive: true })
-            const timestamp = new Date().getTime()
-            const extension = path.extname(filePath)
-            const fileName = `file-${timestamp}${extension}`
-            const saveFilePath = path.join(fileDir, fileName)
-            await fs.promises.copyFile(filePath, saveFilePath)
-            return saveFilePath
-        })
-
-        ipcMain.handle('restore', async () => {
-            const result = await dialog.showOpenDialog({
-                title: 'Select StoryLine archive',
-                filters: [{ name: 'Files', extensions: ['zip'] }]
-            })
-            if (result.canceled || !result.filePaths.length) return false
-            const filePath = result.filePaths[0]
-            const fileDir = path.join(app.getPath('userData'), 'import')
-            await fs.promises.mkdir(fileDir, { recursive: true })
-            const saveFilePath = path.join(fileDir, 'restore.zip')
-            await fs.promises.copyFile(filePath, saveFilePath)
-            const data = await fs.promises.readFile(saveFilePath)
-            const zip = await JSZip.loadAsync(data)
-            const fileNames = Object.keys(zip.files)
-
-            const jsonFile = zip.file(fileNames.find((file) => file.endsWith('.json')))
-            const jsonFileContent = await jsonFile.async('string')
-
-            const imageFiles = fileNames.filter(
-                (fileName) => !fileName.endsWith('.json') && fileName.includes('.')
-            )
-            const json = JSON.parse(jsonFileContent)
-
-            const workId = json.work[0].id
-
-            if (!workId) return false
-
-            const imageFileDir = path.join(app.getPath('userData'), 'images', 'import', workId)
-            const images = []
-
-            for (const fileName of imageFiles) {
-                const imageName = path.basename(fileName)
-                const content = await zip.file(fileName).async('nodebuffer')
-                images.push(imageName)
-                await fs.promises.mkdir(imageFileDir, { recursive: true })
-                await fs.promises.writeFile(path.join(imageFileDir, imageName), content)
-            }
-
-            fs.rmSync(saveFilePath)
-
-            return {
-                images,
-                imagePath: imageFileDir,
-                sep: path.sep,
-                data: json
-            }
-        })
-
-        ipcMain.handle('import-bibisco2', async () => {
-            const result = await dialog.showOpenDialog({
-                title: 'Select .bibisco2 archive',
-                filters: [{ name: 'Files', extensions: ['bibisco2'] }]
-            })
-            if (result.canceled || !result.filePaths.length) return false
-            const filePath = result.filePaths[0]
-            const fileDir = path.join(app.getPath('userData'), 'import')
-            await fs.promises.mkdir(fileDir, { recursive: true })
-            const saveFilePath = path.join(fileDir, 'archive.bibisco2')
-            await fs.promises.copyFile(filePath, saveFilePath)
-            const data = await fs.promises.readFile(saveFilePath)
-            const zip = await JSZip.loadAsync(data)
-            const fileNames = Object.keys(zip.files)
-
-            const jsonFile = zip.file(fileNames.find((file) => file.endsWith('.json')))
-            const jsonFileContent = await jsonFile.async('string')
-
-            const imageFiles = fileNames.filter((fileName) => !fileName.endsWith('.json'))
-            const images = []
-            const json = JSON.parse(jsonFileContent)
-
-            const workId = json.collections[0].data[0].id
-            const imageFileDir = path.join(app.getPath('userData'), 'images', 'import', workId)
-
-            for (const fileName of imageFiles) {
-                const imageName = path.basename(fileName)
-                const content = await zip.file(fileName).async('nodebuffer')
-                images.push(imageName)
-                await fs.promises.mkdir(imageFileDir, { recursive: true })
-                await fs.promises.writeFile(path.join(imageFileDir, imageName), content)
-            }
-
-            fs.rmSync(saveFilePath)
-            return {
-                images,
-                imagePath: imageFileDir,
-                sep: path.sep,
-                data: json
-            }
-        })
-
-        ipcMain.handle('show-image', async (e, filePath) => {
-            if (fs.existsSync(filePath)) {
-                const extension = path.extname(filePath)
-                const img = fs.readFileSync(filePath).toString('base64')
-                return `data:image/${extension};base64,${img}`
-            }
-
-            return ''
-        })
-
-        ipcMain.handle('delete-file', async (e, path) => {
-            if (fs.existsSync(path)) {
-                fs.rmSync(path)
-            }
-        })
+        ipcMain.handle('backup', backup)
+        ipcMain.handle('delete-file', deleteFile)
+        ipcMain.handle('export-html', apiExport.html)
+        ipcMain.handle('export-docx', apiExport.docx)
+        ipcMain.handle(
+            'import-bibisco2',
+            async () => await apiImport.bibisco(app.getPath('userData'))
+        )
+        ipcMain.handle('restore', async () => await restore(path.join(app.getPath('userData'))))
+        ipcMain.handle('select-file-path', selectFilePath)
+        ipcMain.handle(
+            'select-image',
+            async (_, subDir) =>
+                await selectImage(path.join(app.getPath('userData'), 'images', subDir))
+        )
+        ipcMain.handle(
+            'select-file',
+            async (_, subDir) =>
+                await selectFile(path.join(app.getPath('userData'), 'import', subDir))
+        )
+        ipcMain.handle('show-image', showImage)
     })
     .catch(() => null)
