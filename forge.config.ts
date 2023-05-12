@@ -12,9 +12,8 @@ const config: ForgeConfig = {
     packagerConfig: {
         icon: './src/StoryLine/assets/images/icon',
         appCopyright: "Hannah O'Malley 2023",
-        appVersion: '0.1.0',
-        appCategoryType: 'public.app-category.productivity',
-        asar: true
+        appVersion: '0.1.1',
+        appCategoryType: 'public.app-category.productivity'
     },
     rebuildConfig: {},
     makers: [
@@ -25,16 +24,17 @@ const config: ForgeConfig = {
     ],
     plugins: [
         {
-            name: '@electron-forge/plugin-auto-unpack-natives',
-            config: {}
+            name: '@electron-forge/plugin-electronegativity',
+            config: {
+                isSarif: true,
+                output: './electronegativity.json'
+            }
         },
         new WebpackPlugin({
             devServer: {
-                allowedHosts: 'auto',
                 hot: true,
                 liveReload: false
             },
-            devContentSecurityPolicy: 'connect-src *',
             mainConfig,
             renderer: {
                 config: rendererConfig,

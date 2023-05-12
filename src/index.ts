@@ -72,6 +72,10 @@ const createWindow = (): void => {
     })
 
     mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY).catch(() => null)
+
+    mainWindow.webContents.setWindowOpenHandler(() => {
+        return { action: 'deny' }
+    })
 }
 
 app.on('ready', () => {
@@ -110,22 +114,21 @@ app.on('ready', () => {
 
     createWindow()
 
-    if (app.isPackaged) {
-        session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-            callback({
-                responseHeaders: {
-                    ...details.responseHeaders,
-                    'Content-Security-Policy': [
-                        'img-src data: https://*.grammarly.com',
-                        // eslint-disable-next-line max-len
-                        'connect-src https://*.grammarly.com https://*.grammarly.io wss://*.grammarly.com',
-                        "style-src 'self' 'unsafe-inline'",
-                        "script-src 'self' 'unsafe-eval' https://*.grammarly.com"
-                    ]
-                }
-            })
+    const csp = [
+        'img-src data: https://*.grammarly.com http://*.tile.osm.org',
+        "connect-src 'self' https://*.grammarly.com https://*.grammarly.io wss://*.grammarly.com",
+        "style-src 'self' 'unsafe-inline'",
+        "script-src 'self' 'unsafe-eval' https://*.grammarly.com"
+    ]
+
+    session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+        callback({
+            responseHeaders: {
+                ...details.responseHeaders,
+                'Content-Security-Policy': csp
+            }
         })
-    }
+    })
 })
 
 app.on('window-all-closed', () => {

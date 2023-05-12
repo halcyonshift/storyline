@@ -7,7 +7,7 @@ import Dotenv from 'dotenv-webpack'
 const ForkTsCheckerWebpackPlugin: typeof IForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 
 export const plugins = [
-    new Dotenv() as unknown as WebpackPluginInstance,
+    new Dotenv({ path: `.env.${process.env.ENVIRONMENT}` }) as unknown as WebpackPluginInstance,
     new ForkTsCheckerWebpackPlugin({
         logger: 'webpack-infrastructure'
     }),
