@@ -4,12 +4,39 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "StoryLine",
+            "name": "Electron: Main",
             "runtimeExecutable": "${workspaceFolder}/node_modules/@electron-forge/cli/script/vscode.sh",
-            "runtimeArgs": [],
-            "cwd": "${workspaceFolder}"
-          }
+            "runtimeArgs": [
+                "--remote-debugging-port=9223",
+                "."
+            ],
+            "windows": {
+                "runtimeExecutable": "${workspaceFolder}/node_modules/@electron-forge/cli/script/vscode.sh"
+            }
+        },
+        {
+            "name": "Electron: Renderer",
+            "type": "chrome",
+            "request": "attach",
+            "port": 9223,
+            "restart": true,
+            "skipFiles": ["<node_internals>/**"],
+            "sourceMaps": true,
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**"
+            ],
+            "webRoot": "${workspaceFolder}",
+            "timeout": 30000
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Electron: All",
+            "configurations": [
+                "Electron: Main",
+                "Electron: Renderer"
+            ]
+        }
     ]
 }
-
-
