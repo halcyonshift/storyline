@@ -13,7 +13,7 @@
     "lint": "eslint --max-warnings=0 --ext .ts,.tsx .",
     "test:unit": "DOTENV_CONFIG_PATH=.env.test yarn jest ./__tests__/unit --silent",
     "test:integration": "PWDEBUG=1 yarn playwright test",
-    "prepare": "husky install",
+    "prepare": "husky install && chmod ug+x .husky/*",
     "translation:unused": "i18n-unused display-unused",
     "analyze": "electronegativity",
     "nuke": "rm -rf node_modules yarn.lock && yarn cache clean && yarn"
