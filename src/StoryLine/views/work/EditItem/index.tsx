@@ -6,10 +6,9 @@ import { getInitialValues } from '@sl/forms/Work/utils'
 
 const EditItemView = () => {
     const item = useRouteLoaderData('item') as ItemModel
-    const initialValues = Object.keys(getInitialValues('item', ['work_id']) as ItemDataType).reduce(
-        (o, key) => ({ ...o, [key]: item[key as keyof ItemModel] }),
-        {}
-    ) as ItemDataType
+    const initialValues = Object.keys(
+        getInitialValues('item', ['work_id', 'status']) as ItemDataType
+    ).reduce((o, key) => ({ ...o, [key]: item[key as keyof ItemModel] }), {}) as ItemDataType
 
     return <ItemForm item={item} initialValues={initialValues} />
 }

@@ -115,7 +115,7 @@ describe('SectionModel', () => {
         )
         expect(screen.queryByText(descriptionText)).toBeFalsy()
 
-        await section.updateSection(
+        await section.updateRecord(
             {
                 title: section.title,
                 description: descriptionText,

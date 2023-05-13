@@ -4,7 +4,6 @@ import { children, date, field, lazy, relation, text, writer } from '@nozbe/wate
 import { type StatusType } from '@sl/constants/status'
 import { ConnectionModel, NoteModel, SectionModel, TagModel, WorkModel } from './'
 import { ItemDataType } from './types'
-import { ImageType } from '@sl/components/Gallery/types'
 
 export default class ItemModel extends Model {
     static table = 'item'
@@ -26,25 +25,6 @@ export default class ItemModel extends Model {
 
     get displayName() {
         return this.name
-    }
-
-    async getLinks(): Promise<string[]> {
-        const notes = await this.note.extend(Q.where('url', Q.notEq('')))
-        return [this.url]
-            .concat(notes.map((note) => note.url))
-            .map((url) => url)
-            .filter((link) => link)
-    }
-
-    async getImages(): Promise<ImageType[]> {
-        const notes = await this.note.extend(Q.where('image', Q.notEq('')))
-        const images = notes.map((note) => ({ path: note.image, title: note.title }))
-        if (this.image) {
-            return [{ path: this.image, title: this.name }]
-                .concat(images)
-                .filter((image) => image.path)
-        }
-        return images
     }
 
     async getAppearances() {
@@ -92,18 +72,12 @@ export default class ItemModel extends Model {
 
     @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
 
-    @writer async updateItem(data: ItemDataType) {
+    @writer async updateRecord(data: Partial<ItemDataType>) {
         await this.update((item) => {
-            item.name = data.name
-            item.body = data.body
-            item.url = data.url
-            item.image = data.image
-        })
-    }
-
-    @writer async updateStatus(status: StatusType) {
-        await this.update((item) => {
-            item.status = status
+            for (const [key, value] of Object.entries(data)) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;(item as any)[key] = value
+            }
         })
     }
 

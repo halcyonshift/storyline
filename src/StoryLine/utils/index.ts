@@ -44,6 +44,26 @@ export const prettyUrl = (link: string) => {
     else return link
 }
 
+export const displayDate = (value: string | null): string => {
+    const date = DateTime.fromSQL(value || '')
+    return date.isValid ? date.toFormat('EEEE dd LLL yyyy') : value || ''
+}
+
+export const displayTime = (value: string | null): string => {
+    const date = DateTime.fromSQL(value || '')
+    return date.isValid ? date.toFormat('H:mm') : value || ''
+}
+
+export const displayDateTime = (value: string | null): string => {
+    const date = DateTime.fromSQL(value || '')
+    return date.isValid ? date.toFormat('EEEE dd LLL yyyy H:mm') : value || ''
+}
+
+export const sortDate = (value: string | null): number => {
+    const date = DateTime.fromSQL(value || '')
+    return date.isValid ? date.toSeconds() : 0
+}
+
 // https://stackoverflow.com/a/49938542/12139765
 export const toWords = (number: number) => {
     const first = [

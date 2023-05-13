@@ -109,7 +109,7 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
             const items = await work.items.fetch()
             const locations = await work.locations.fetch()
             const notes = await work.notes.fetch()
-            await section.updateSection(values, {
+            await section.updateRecord(values, {
                 characters: tagCharacters.map((tag) =>
                     characters.find((character) => character.id === tag.id)
                 ),

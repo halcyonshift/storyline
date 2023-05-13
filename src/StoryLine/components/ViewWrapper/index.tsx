@@ -24,8 +24,32 @@ const _ViewWrapper = ({ tabList, model, children, notes }: ViewWrapperProps) => 
     useEffect(() => {
         setValue('1')
         setShowTabs(true)
-        model.getImages().then((images) => setImages(images))
-        model.getLinks().then((links) => setLinks(links))
+        model.notes
+            .extend(Q.where('image', Q.notEq('')))
+            .fetch()
+            .then((notes) => {
+                const images = notes.map((note) => ({ path: note.image, title: note.title }))
+                if (model.image) {
+                    setImages(
+                        [{ path: model.image, title: model.displayName }]
+                            .concat(images)
+                            .filter((image) => image.path)
+                    )
+                } else {
+                    setImages(images.filter((image) => image.path))
+                }
+            })
+        model.notes
+            .extend(Q.where('url', Q.notEq('')))
+            .fetch()
+            .then((notes) => {
+                setLinks(
+                    ['url' in model ? model.url : null]
+                        .concat(notes.map((note) => note.url))
+                        .map((url) => url)
+                        .filter((link) => link)
+                )
+            })
         model.getAppearances().then((appearances) => setAppearances(appearances))
     }, [model?.id, notes])
 

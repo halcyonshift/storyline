@@ -62,18 +62,12 @@ export default class ConnectionModel extends Model {
             .find(this.idB)
     }
 
-    @writer async updateConnection(data: ConnectionDataType) {
+    @writer async updateRecord(data: Partial<ConnectionDataType>) {
         await this.update((connection) => {
-            connection.tableA = data.tableA
-            connection.tableB = data.tableB
-            connection.idA = data.idA
-            connection.idB = data.idB
-            connection.to = data.to
-            connection.from = data.from
-            connection.mode = data.mode
-            connection.body = data.body
-            connection.date = data.date
-            connection.color = data.color
+            for (const [key, value] of Object.entries(data)) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;(connection as any)[key] = value
+            }
         })
     }
 

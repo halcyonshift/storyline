@@ -323,55 +323,56 @@ export default class SectionModel extends Model {
         })
     }
 
-    @writer async updateSection(
-        data: SectionDataType,
-        tags: {
+    @writer async updateRecord(
+        data: Partial<SectionDataType>,
+        tags?: {
             characters: CharacterModel[]
             items: ItemModel[]
             locations: LocationModel[]
             notes: NoteModel[]
         }
     ) {
-        const work = await this.work.fetch()
-        await this.tag.destroyAllPermanently()
-        await this.batch(
-            this.prepareUpdate((section) => {
-                section.title = data.title
-                section.description = data.description
-                section.date = data.date
-                section.wordGoal = Number(data.wordGoal)
-                section.deadlineAt = data.deadlineAt
-                section.pointOfView = data.pointOfView
-            }),
-            ...tags.characters.map((character) =>
-                this.collections.get<TagModel>('tag').prepareCreate((tag) => {
-                    tag.work.set(work)
-                    tag.section.set(this)
-                    tag.character.set(character)
-                })
-            ),
-            ...tags.items.map((item) =>
-                this.collections.get<TagModel>('tag').prepareCreate((tag) => {
-                    tag.work.set(work)
-                    tag.section.set(this)
-                    tag.item.set(item)
-                })
-            ),
-            ...tags.locations.map((location) =>
-                this.collections.get<TagModel>('tag').prepareCreate((tag) => {
-                    tag.work.set(work)
-                    tag.section.set(this)
-                    tag.location.set(location)
-                })
-            ),
-            ...tags.notes.map((note) =>
-                this.collections.get<TagModel>('tag').prepareCreate((tag) => {
-                    tag.work.set(work)
-                    tag.section.set(this)
-                    tag.note.set(note)
-                })
+        await this.update((section) => {
+            for (const [key, value] of Object.entries(data)) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;(section as any)[key] = value
+            }
+        })
+
+        if (tags) {
+            const work = await this.work.fetch()
+            await this.tag.destroyAllPermanently()
+            await this.batch(
+                ...tags.characters.map((character) =>
+                    this.collections.get<TagModel>('tag').prepareCreate((tag) => {
+                        tag.work.set(work)
+                        tag.section.set(this)
+                        tag.character.set(character)
+                    })
+                ),
+                ...tags.items.map((item) =>
+                    this.collections.get<TagModel>('tag').prepareCreate((tag) => {
+                        tag.work.set(work)
+                        tag.section.set(this)
+                        tag.item.set(item)
+                    })
+                ),
+                ...tags.locations.map((location) =>
+                    this.collections.get<TagModel>('tag').prepareCreate((tag) => {
+                        tag.work.set(work)
+                        tag.section.set(this)
+                        tag.location.set(location)
+                    })
+                ),
+                ...tags.notes.map((note) =>
+                    this.collections.get<TagModel>('tag').prepareCreate((tag) => {
+                        tag.work.set(work)
+                        tag.section.set(this)
+                        tag.note.set(note)
+                    })
+                )
             )
-        )
+        }
     }
 
     @writer async updatePoVCharacter(character: CharacterModel | null) {
@@ -390,12 +391,6 @@ export default class SectionModel extends Model {
     @writer async updateDate(date: string) {
         await this.update((section) => {
             section.date = date
-        })
-    }
-
-    @writer async updateStatus(status: StatusType) {
-        await this.update((section) => {
-            section.status = status
         })
     }
 

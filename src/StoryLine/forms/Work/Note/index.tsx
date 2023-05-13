@@ -38,7 +38,7 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
         validationSchema,
         onSubmit: async (values: NoteDataType) => {
             if (initialValues.title) {
-                note.updateNote(values)
+                note.updateRecord(values)
                 messenger.success(t('form.work.note.alert.success'))
             } else {
                 const newNote = note ? await note.addNote(values) : await work.addNote(values)

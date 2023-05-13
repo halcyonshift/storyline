@@ -3,7 +3,6 @@ import { Associations } from '@nozbe/watermelondb/Model'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { children, date, lazy, field, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { DateTime } from 'luxon'
-import { ImageType } from '@sl/components/Gallery/types'
 import { Status, type StatusType } from '@sl/constants/status'
 import { NoteDataType } from './types'
 import { CharacterModel, ItemModel, LocationModel, SectionModel, TagModel, WorkModel } from '.'
@@ -62,25 +61,6 @@ export default class NoteModel extends Model {
     get sortDate() {
         const date = DateTime.fromSQL(this.date)
         return date.isValid ? date.toSeconds() : 0
-    }
-
-    async getLinks(): Promise<string[]> {
-        const notes = await this.notes.extend(Q.where('url', Q.notEq('')))
-        return [this.url]
-            .concat(notes.map((note) => note.url))
-            .map((url) => url)
-            .filter((link) => link)
-    }
-
-    async getImages(): Promise<ImageType[]> {
-        const notes = await this.notes.extend(Q.where('image', Q.notEq('')))
-        const images = notes.map((note) => ({ path: note.image, title: note.title }))
-        if (this.image) {
-            return [{ path: this.image, title: this.title }]
-                .concat(images)
-                .filter((image) => image.path)
-        }
-        return images.filter((image) => image.path)
     }
 
     async getAppearances() {
@@ -143,15 +123,12 @@ export default class NoteModel extends Model {
         })
     }
 
-    @writer async updateNote(data: NoteDataType) {
+    @writer async updateRecord(data: Partial<NoteDataType>) {
         await this.update((note) => {
-            note.title = data.title
-            note.body = data.body
-            note.color = data.color
-            note.date = data.date
-            note.url = data.url
-            note.image = data.image
-            note.isTaggable = data.isTaggable
+            for (const [key, value] of Object.entries(data)) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;(note as any)[key] = value
+            }
         })
     }
 
@@ -182,12 +159,6 @@ export default class NoteModel extends Model {
     @writer async updateDate(date: string) {
         await this.update((note) => {
             note.date = date
-        })
-    }
-
-    @writer async updateStatus(status: StatusType) {
-        await this.update((note) => {
-            note.status = status
         })
     }
 

@@ -633,15 +633,12 @@ export default class WorkModel extends Model {
         })
     }
 
-    @writer async updateWork(data: WorkDataType) {
+    @writer async updateRecord(data: Partial<WorkDataType>) {
         await this.update((work) => {
-            work.title = data.title.toString()
-            work.author = (data.author || '').toString()
-            work.language = data.language
-            work.summary = data.summary
-            work.wordGoal = Number(data.wordGoal) || null
-            work.image = data.image
-            work.deadlineAt = data.deadlineAt || null
+            for (const [key, value] of Object.entries(data)) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;(work as any)[key] = value
+            }
         })
     }
 
@@ -748,12 +745,6 @@ export default class WorkModel extends Model {
             section.order = count + 1
             section.mode = SectionMode.PART
             section.status = Status.TODO
-        })
-    }
-
-    @writer async updateStatus(status: StatusType) {
-        await this.update((work) => {
-            work.status = status
         })
     }
 

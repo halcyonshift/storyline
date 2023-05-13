@@ -14,7 +14,7 @@
     "test:unit": "DOTENV_CONFIG_PATH=.env.test yarn jest ./__tests__/unit --silent",
     "test:integration": "PWDEBUG=1 yarn playwright test",
     "validate": "yarn lint",
-    "precommit": "yarn validate",
+    "precommit": "yarn validate && yarn test:unit",
     "prepush": "yarn validate",
     "prepare": "husky install",
     "translation:unused": "i18n-unused display-unused",

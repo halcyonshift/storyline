@@ -33,7 +33,7 @@ const WorkForm = ({ work, initialValues }: WorkFormProps) => {
         initialValues,
         validationSchema,
         onSubmit: async (values: WorkDataType) => {
-            await work.updateWork(values)
+            await work.updateRecord(values)
             navigate(`/work/${work.id}`)
             messenger.success(t('form.work.work.alert.success'))
         }
