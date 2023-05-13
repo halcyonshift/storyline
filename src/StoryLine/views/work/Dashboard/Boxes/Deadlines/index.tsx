@@ -67,7 +67,7 @@ const DeadlinesBox = () => {
                         <TimelineOppositeContent color='secondary' fontSize='small'>
                             {deadline.date
                                 .setLocale(settings.language)
-                                .toLocaleString(DateTime.DATE_MED)}
+                                ?.toLocaleString(DateTime.DATE_MED)}
                         </TimelineOppositeContent>
                         <TimelineSeparator>
                             <TimelineDot color='primary' />

@@ -6,7 +6,14 @@ import { Database, Q } from '@nozbe/watermelondb'
 import { withDatabase } from '@nozbe/watermelondb/DatabaseProvider'
 import { useTranslation } from 'react-i18next'
 import Status from '@sl/components/Status'
-import { CharacterModel, ItemModel, LocationModel, NoteModel, SectionModel } from '@sl/db/models'
+import {
+    CharacterModel,
+    ItemModel,
+    LocationModel,
+    NoteModel,
+    SectionModel,
+    WorkModel
+} from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import useSettings from '@sl/theme/useSettings'
 import FormButton from '../FormButton'
@@ -55,8 +62,10 @@ const _FormWrapper = ({
         setFormFields({
             ...formFields,
             [value]: Object.keys(form.initialValues).reduce((arr: string[], name: string) => {
-                const field = panelsRef.current[parseInt(value) - 1].querySelector(`#${name}`)
-                if (field) arr.push(name)
+                if (panelsRef.current[parseInt(value) - 1]) {
+                    const field = panelsRef.current[parseInt(value) - 1].querySelector(`#${name}`)
+                    if (field) arr.push(name)
+                }
                 return arr
             }, [])
         })
@@ -188,7 +197,7 @@ const FormWrapper = withDatabase(
             model,
             database
         }: {
-            model: CharacterModel | ItemModel | LocationModel | NoteModel | SectionModel
+            model: CharacterModel | ItemModel | LocationModel | NoteModel | SectionModel | WorkModel
             database: Database
         }) => ({
             notes: database

@@ -1,21 +1,7 @@
-import ImportExportIcon from '@mui/icons-material/ImportExport'
-import GroupIcon from '@mui/icons-material/Group'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
-import CategoryIcon from '@mui/icons-material/Category'
-import MenuBookIcon from '@mui/icons-material/MenuBook'
-import InsightsIcon from '@mui/icons-material/Insights'
-import StickyNote2Icon from '@mui/icons-material/StickyNote2'
-import SettingsIcon from '@mui/icons-material/Settings'
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
-import SearchIcon from '@mui/icons-material/Search'
-import HubIcon from '@mui/icons-material/Hub'
-import Box from '@mui/material/Box'
-import Divider from '@mui/material/Divider'
-import IconButton from '@mui/material/IconButton'
-import Stack from '@mui/material/Stack'
-import Tooltip from '@mui/material/Tooltip'
+import { Box, Divider, IconButton, Stack, Tooltip } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
+import Icons from '@sl/constants/icons'
 import { NavigationProps, TogglePanelType } from '@sl/layouts/Work/Navigation/types'
 import useSettings from '@sl/theme/useSettings'
 import useTabs from '../Tabs/useTabs'
@@ -46,7 +32,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                         color='inherit'
                         aria-label={t('layout.work.navigation.work')}
                         onClick={() => togglePanel('section')}>
-                        <MenuBookIcon />
+                        {Icons.section.section}
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.character')} placement='right'>
@@ -54,7 +40,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                         color='inherit'
                         aria-label={t('layout.work.navigation.character')}
                         onClick={() => togglePanel('character')}>
-                        <GroupIcon />
+                        {Icons.character.character}
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.location')} placement='right'>
@@ -62,7 +48,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                         color='inherit'
                         aria-label={t('layout.work.navigation.location')}
                         onClick={() => togglePanel('location')}>
-                        <LocationOnIcon />
+                        {Icons.location.location}
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.item')} placement='right'>
@@ -70,7 +56,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                         color='inherit'
                         aria-label={t('layout.work.navigation.item')}
                         onClick={() => togglePanel('item')}>
-                        <CategoryIcon />
+                        {Icons.item.item}
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.note')} placement='right'>
@@ -78,7 +64,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                         color='inherit'
                         aria-label={t('layout.work.navigation.note')}
                         onClick={() => togglePanel('note')}>
-                        <StickyNote2Icon />
+                        {Icons.note.note}
                     </IconButton>
                 </Tooltip>
             </Stack>
@@ -89,7 +75,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                         color='inherit'
                         aria-label={t('layout.work.navigation.search')}
                         onClick={() => togglePanel('search')}>
-                        <SearchIcon />
+                        {Icons.search.search}
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.overview')} placement='right'>
@@ -102,7 +88,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                                 link: 'overview'
                             })
                         }}>
-                        <FormatListBulletedIcon />
+                        {Icons.insight.insights}
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.connection')} placement='right'>
@@ -115,7 +101,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                                 link: 'connection'
                             })
                         }}>
-                        <HubIcon />
+                        {Icons.connection.connections}
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.insight')} placement='right'>
@@ -126,7 +112,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                             togglePanel()
                             navigate(`/work/${params.work_id}/insight`)
                         }}>
-                        <InsightsIcon />
+                        {Icons.insight.insights}
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.backupRestore')} placement='right'>
@@ -137,7 +123,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                             togglePanel()
                             navigate(`/work/${params.work_id}/backupRestore`)
                         }}>
-                        <ImportExportIcon />
+                        {Icons.importExport.importExport}
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.setting')} placement='right'>
@@ -148,7 +134,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                             togglePanel()
                             navigate(`/work/${params.work_id}/edit`)
                         }}>
-                        <SettingsIcon />
+                        {Icons.settings.settings}
                     </IconButton>
                 </Tooltip>
             </Stack>

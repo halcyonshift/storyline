@@ -8,14 +8,7 @@ import {
 } from '@lexical/list'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils'
-import FormatBoldIcon from '@mui/icons-material/FormatBold'
-import FormatItalicIcon from '@mui/icons-material/FormatItalic'
-import FormatStrikethroughIcon from '@mui/icons-material/FormatStrikethrough'
-import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined'
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
-import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered'
-import IconButton from '@mui/material/IconButton'
-import Stack from '@mui/material/Stack'
+import { IconButton, Stack } from '@mui/material'
 import {
     $getSelection,
     $isRangeSelection,
@@ -23,6 +16,7 @@ import {
     SELECTION_CHANGE_COMMAND
 } from 'lexical'
 import { useTranslation } from 'react-i18next'
+import { RICHTEXT_ICONS } from '@sl/constants/icons'
 
 const ToolbarPlugin = (): ReactElement => {
     const [blockType, setBlockType] = useState<string>('paragraph')
@@ -86,25 +80,25 @@ const ToolbarPlugin = (): ReactElement => {
                     color={isBold ? 'primary' : 'default'}
                     aria-label={t('component.richtext.toolbar.bold')}
                     onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')}>
-                    <FormatBoldIcon />
+                    {RICHTEXT_ICONS.bold}
                 </IconButton>
                 <IconButton
                     color={isItalic ? 'primary' : 'default'}
                     aria-label={t('component.richtext.toolbar.italic')}
                     onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')}>
-                    <FormatItalicIcon />
+                    {RICHTEXT_ICONS.italic}
                 </IconButton>
                 <IconButton
                     color={isUnderline ? 'primary' : 'default'}
                     aria-label={t('component.richtext.toolbar.underlined')}
                     onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline')}>
-                    <FormatUnderlinedIcon />
+                    {RICHTEXT_ICONS.underline}
                 </IconButton>
                 <IconButton
                     color={isStrikethrough ? 'primary' : 'default'}
                     aria-label={t('component.richtext.toolbar.strikethrough')}
                     onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough')}>
-                    <FormatStrikethroughIcon />
+                    {RICHTEXT_ICONS.strike}
                 </IconButton>
                 <IconButton
                     aria-label={t('component.richtext.toolbar.listBulleted')}
@@ -116,7 +110,7 @@ const ToolbarPlugin = (): ReactElement => {
                             undefined
                         )
                     }>
-                    <FormatListBulletedIcon />
+                    {RICHTEXT_ICONS.ul}
                 </IconButton>
                 <IconButton
                     aria-label={t('component.richtext.toolbar.listOrdered')}
@@ -126,7 +120,7 @@ const ToolbarPlugin = (): ReactElement => {
                             undefined
                         )
                     }>
-                    <FormatListNumberedIcon />
+                    {RICHTEXT_ICONS.ol}
                 </IconButton>
             </Stack>
         </>

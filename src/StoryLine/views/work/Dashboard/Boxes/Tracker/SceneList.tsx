@@ -32,7 +32,7 @@ const SceneList = ({ scenes }: SceneListProps) => {
                             </Typography>
                         ) : (
                             <Typography variant='body2' className='text-right'>
-                                {scene.words.toLocaleString()}
+                                {scene.words?.toLocaleString()}
                             </Typography>
                         )}
                         <Progress words={scene.words} goal={scene.wordGoal} />

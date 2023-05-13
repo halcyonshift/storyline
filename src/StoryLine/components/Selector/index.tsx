@@ -1,10 +1,10 @@
 import { ReactElement, useState } from 'react'
-import { Category, Person, LocationOn, StickyNote2 } from '@mui/icons-material'
 import { Box, IconButton, Tooltip } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { CHARACTER_ICONS, ITEM_ICONS, LOCATION_ICONS, NOTE_ICONS } from '@sl/constants/icons'
+import { ColorType } from '@sl/theme/types'
 import { getHex } from '@sl/theme/utils'
 import { SelectorProps } from './types'
-import { ColorType } from '@sl/theme/types'
-import { useTranslation } from 'react-i18next'
 
 const Selector = ({ onClick }: SelectorProps) => {
     const [active, setActive] = useState<string>('character')
@@ -16,10 +16,10 @@ const Selector = ({ onClick }: SelectorProps) => {
     }
 
     const buttons: { table: string; color: ColorType; icon: ReactElement }[] = [
-        { table: 'character', color: 'emerald', icon: <Person /> },
-        { table: 'location', color: 'amber', icon: <LocationOn /> },
-        { table: 'item', color: 'purple', icon: <Category /> },
-        { table: 'note', color: 'sky', icon: <StickyNote2 /> }
+        { table: 'character', color: 'emerald', icon: CHARACTER_ICONS.character },
+        { table: 'location', color: 'amber', icon: LOCATION_ICONS.location },
+        { table: 'item', color: 'purple', icon: ITEM_ICONS.item },
+        { table: 'note', color: 'sky', icon: NOTE_ICONS.note }
     ]
 
     return (

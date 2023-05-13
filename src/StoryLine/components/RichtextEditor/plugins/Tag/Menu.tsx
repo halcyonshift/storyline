@@ -1,16 +1,8 @@
 import { useEffect, useState, ReactElement, SyntheticEvent } from 'react'
-
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import CategoryIcon from '@mui/icons-material/Category'
-import PersonIcon from '@mui/icons-material/Person'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
-import StickyNote2Icon from '@mui/icons-material/StickyNote2'
-import Autocomplete from '@mui/material/Autocomplete'
-import Box from '@mui/material/Box'
-import Menu from '@mui/material/Menu'
-import IconButton from '@mui/material/IconButton'
-import TextField from '@mui/material/TextField'
+import { Autocomplete, Box, IconButton, Menu, TextField } from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import { CHARACTER_ICONS, ITEM_ICONS, LOCATION_ICONS, NOTE_ICONS } from '@sl/constants/icons'
 import { AutocompleteOption } from '@sl/types'
 import { MenuProps } from '../../types'
 import { TOGGLE_TAG_COMMAND } from './Node'
@@ -66,17 +58,17 @@ const TagMenu = ({
                 'aria-labelledby': `menu-tag`
             }}>
             <Box className='flex justify-around'>
-                <IconButton onClick={() => setMode('character')}>
-                    <PersonIcon className='text-emerald-600' />
+                <IconButton onClick={() => setMode('character')} className='text-emerald-600'>
+                    {CHARACTER_ICONS.character}
                 </IconButton>
-                <IconButton onClick={() => setMode('location')}>
-                    <LocationOnIcon className='text-amber-600' />
+                <IconButton onClick={() => setMode('location')} className='text-amber-600'>
+                    {LOCATION_ICONS.location}
                 </IconButton>
-                <IconButton onClick={() => setMode('item')}>
-                    <CategoryIcon className='text-purple-600' />
+                <IconButton onClick={() => setMode('item')} className='text-purple-600'>
+                    {ITEM_ICONS.item}
                 </IconButton>
-                <IconButton onClick={() => setMode('note')}>
-                    <StickyNote2Icon className='text-sky-600' />
+                <IconButton onClick={() => setMode('note')} className='text-sky-600'>
+                    {NOTE_ICONS.note}
                 </IconButton>
             </Box>
             <Box className='px-3 py-1'>

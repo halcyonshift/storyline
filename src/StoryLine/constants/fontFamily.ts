@@ -1,6 +1,6 @@
 export const FontFamily = Object.freeze({
     arial: 'Arial',
-    avenir: 'Avenir',
+    Avenir: 'Avenir',
     baskerville: 'Baskerville',
     'courier new': 'Courier New',
     OpenDyslexic: 'Open Dyslexic',

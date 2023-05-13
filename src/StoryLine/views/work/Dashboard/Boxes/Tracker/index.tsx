@@ -43,7 +43,7 @@ const TrackerBox = () => {
                 <Typography variant='h6' textAlign='left' className='mb-1'>
                     {totalWords.toLocaleString(settings.language)}
                     {work.wordGoal
-                        ? ` / ${work.wordGoal.toLocaleString(
+                        ? ` / ${work.wordGoal?.toLocaleString(
                               settings.language
                           )} (${totalPercentage}%)`
                         : ''}

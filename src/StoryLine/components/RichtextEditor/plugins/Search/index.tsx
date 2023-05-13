@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import Box from '@mui/material/Box'
 import Checkbox from '@mui/material/Checkbox'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -12,6 +10,7 @@ import { $getRoot, COMMAND_PRIORITY_EDITOR, createCommand, LexicalCommand, TextN
 import debounce from 'lodash.debounce'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
+import { GLOBAL_ICONS } from '@sl/constants/icons'
 import { useOnKeyPressed } from '@sl/utils/useKeyPress'
 import { ResultType } from './types'
 
@@ -147,10 +146,10 @@ const SearchPlugin = () => {
                             {resultIndex === null ? 0 : resultIndex + 1}/{results.length}
                         </Typography>
                         <IconButton size='small' onClick={() => navigate('back')}>
-                            <ArrowUpwardIcon />
+                            {GLOBAL_ICONS.up}
                         </IconButton>
                         <IconButton size='small' onClick={() => navigate('next')}>
-                            <ArrowDownwardIcon />
+                            {GLOBAL_ICONS.down}
                         </IconButton>
                     </Box>
                 ) : null}

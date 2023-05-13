@@ -69,6 +69,9 @@
         },
         "richtextEditor": {
             "placeholder": "It was a dark and stormy night...",
+            "save": {
+                "success": "The work has been saved"
+            },
             "toolbar": {
                 "undo": "Undo",
                 "redo": "Redo",
@@ -467,14 +470,6 @@
                 "isTaggable": "Taggable",
                 "alert": {
                     "success": "The note has been saved"
-                }
-            },
-            "overview": {
-                "timeline": {
-                    "filter": {
-                        "table": "Select",
-                        "button": "Update"
-                    }
                 }
             },
             "section": {
