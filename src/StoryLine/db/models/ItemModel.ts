@@ -2,7 +2,7 @@ import { Model, Q, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { type StatusType } from '@sl/constants/status'
-import { ConnectionModel, NoteModel, SectionModel, TagModel, WorkModel } from './'
+import { ConnectionModel, NoteModel, TagModel, WorkModel } from './'
 import { ItemDataType } from './types'
 
 export default class ItemModel extends Model {
@@ -27,26 +27,6 @@ export default class ItemModel extends Model {
         return this.name
     }
 
-    async getAppearances() {
-        const work = await this.work.fetch()
-        const scenes = await work.scenes.fetch()
-
-        const appearances = []
-
-        for await (const scene of scenes) {
-            const tagged = await scene.taggedItems(this.id)
-
-            if (!tagged.length) continue
-
-            appearances.push({
-                scene,
-                text: tagged[0].text
-            })
-        }
-
-        return appearances
-    }
-
     async destroyPermanently(): Promise<void> {
         await this.collections
             .get<ConnectionModel>('connection')
@@ -55,19 +35,6 @@ export default class ItemModel extends Model {
         await this.tag.destroyAllPermanently()
         await this.note.destroyAllPermanently()
         await super.destroyPermanently()
-    }
-
-    getExcerpts(scene: SectionModel): string[] {
-        const excerpts: string[] = []
-
-        new DOMParser()
-            .parseFromString(scene.body, 'text/html')
-            .querySelectorAll(`.tag-item`)
-            .forEach((tag: HTMLAnchorElement) => {
-                excerpts.push(tag.innerHTML)
-            })
-
-        return excerpts
     }
 
     @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))

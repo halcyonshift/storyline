@@ -63,45 +63,12 @@ export default class NoteModel extends Model {
         return date.isValid ? date.toSeconds() : 0
     }
 
-    async getAppearances() {
-        const work = await this.work.fetch()
-        const scenes = await work.scenes.fetch()
-
-        const appearances = []
-
-        for await (const scene of scenes) {
-            const tagged = await scene.taggedNotes(this.id)
-
-            if (!tagged.length) continue
-
-            appearances.push({
-                scene,
-                text: tagged[0].text
-            })
-        }
-
-        return appearances
-    }
-
     async destroyPermanently(): Promise<void> {
         if (this.image) {
             api.deleteFile(this.image)
         }
         this.tag.destroyAllPermanently()
         return super.destroyPermanently()
-    }
-
-    getExcerpts(scene: SectionModel): string[] {
-        const excerpts: string[] = []
-
-        new DOMParser()
-            .parseFromString(scene.body, 'text/html')
-            .querySelectorAll('.tag-note')
-            .forEach((tag: HTMLAnchorElement) => {
-                excerpts.push(tag.innerHTML)
-            })
-
-        return excerpts
     }
 
     @lazy notes = this.collections

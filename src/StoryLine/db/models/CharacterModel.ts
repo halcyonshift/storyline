@@ -77,56 +77,22 @@ export default class CharacterModel extends Model {
         return sortDate(this.dateOfBirth)
     }
 
-    async getAppearances() {
-        const work = await this.work.fetch()
-        const scenes = await work.scenes.fetch()
-
-        const appearances = []
-
-        for await (const scene of scenes) {
-            const tagged = await scene.taggedCharacters(this.id)
-
-            if (!tagged.length && scene.pointOfViewCharacter?.id !== this.id) continue
-
-            appearances.push({
-                scene,
-                text: tagged.length ? tagged[0].text : []
-            })
-        }
-
-        return appearances
-    }
-
     async destroyPermanently(): Promise<void> {
-        if (this.image) {
-            api.deleteFile(this.image)
-        }
+        api.deleteFile(this.image)
+
         await this.collections
             .get<ConnectionModel>('connection')
             .query(Q.or(Q.where('id_a', this.id), Q.where('id_b', this.id)))
             .destroyAllPermanently()
+
         const scenes = await this.section.fetch()
-        if (scenes.length) {
-            for await (const scene of scenes) {
-                scene.updatePoVCharacter(null)
-            }
+        for await (const scene of scenes) {
+            scene.updatePoVCharacter(null)
         }
+
         await this.tag.destroyAllPermanently()
         await this.note.destroyAllPermanently()
         await super.destroyPermanently()
-    }
-
-    getExcerpts(scene: SectionModel): string[] {
-        const excerpts: string[] = []
-
-        new DOMParser()
-            .parseFromString(scene.body, 'text/html')
-            .querySelectorAll(`.tag-character`)
-            .forEach((tag: HTMLAnchorElement) => {
-                excerpts.push(tag.innerHTML)
-            })
-
-        return excerpts
     }
 
     @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))

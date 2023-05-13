@@ -4,7 +4,7 @@ import { children, date, field, lazy, relation, text, writer } from '@nozbe/wate
 import { LatLngExpression } from 'leaflet'
 import { Status, type StatusType } from '@sl/constants/status'
 import { LocationDataType } from './types'
-import { ConnectionModel, NoteModel, SectionModel, TagModel, WorkModel } from '.'
+import { ConnectionModel, NoteModel, TagModel, WorkModel } from '.'
 
 export default class LocationModel extends Model {
     static table = 'location'
@@ -40,26 +40,6 @@ export default class LocationModel extends Model {
         return null
     }
 
-    async getAppearances() {
-        const work = await this.work.fetch()
-        const scenes = await work.scenes.fetch()
-
-        const appearances = []
-
-        for await (const scene of scenes) {
-            const tagged = await scene.taggedLocations(this.id)
-
-            if (!tagged.length) continue
-
-            appearances.push({
-                scene,
-                text: tagged[0].text
-            })
-        }
-
-        return appearances
-    }
-
     async destroyPermanently(): Promise<void> {
         if (this.image) {
             api.deleteFile(this.image)
@@ -71,19 +51,6 @@ export default class LocationModel extends Model {
         await this.note.destroyAllPermanently()
         await this.tag.destroyAllPermanently()
         await super.destroyPermanently()
-    }
-
-    getExcerpts(scene: SectionModel): string[] {
-        const excerpts: string[] = []
-
-        new DOMParser()
-            .parseFromString(scene.body, 'text/html')
-            .querySelectorAll(`.tag-location`)
-            .forEach((tag: HTMLAnchorElement) => {
-                excerpts.push(tag.innerHTML)
-            })
-
-        return excerpts
     }
 
     @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))

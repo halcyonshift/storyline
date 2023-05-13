@@ -17,5 +17,5 @@ module.exports = {
     },
     transformIgnorePatterns: ["node_modules/(?!variables/.*)"],
     setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect"],
-    setupFiles: ['dotenv/config']
+    setupFiles: ['dotenv/config', './__mocks__/setup.js']
 };
