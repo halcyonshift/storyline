@@ -150,7 +150,9 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
                     const connection = await database
                         .get<ConnectionModel>('connection')
                         .find(item.id.toString())
-                    await connection.updateDate(DateTime.fromJSDate(item.start as Date).toSQL())
+                    await connection.updateRecord({
+                        date: DateTime.fromJSDate(item.start as Date).toSQL()
+                    })
                 }
                 return callback(item)
             }

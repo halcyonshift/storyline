@@ -1,7 +1,7 @@
 import { Model, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { date, field, relation, text, writer } from '@nozbe/watermelondb/decorators'
-import { DateTime } from 'luxon'
+import { displayDate, displayTime, displayDateTime, sortDate } from '@sl/utils'
 import { ConnectionDataType } from './types'
 import { CharacterModel, ItemModel, LocationModel, NoteModel, WorkModel } from '.'
 
@@ -25,29 +25,25 @@ export default class ConnectionModel extends Model {
     @date('updated_at') updatedAt!: Date
 
     get sortDate() {
-        const date = DateTime.fromSQL(this.date)
-        return date.isValid ? date.toSeconds() : 0
+        return sortDate(this.date)
+    }
+
+    get displayDate() {
+        return displayDate(this.date)
+    }
+
+    get displayTime() {
+        return displayTime(this.date)
+    }
+
+    get displayDateTime() {
+        return displayDateTime(this.date)
     }
 
     async displayName() {
         const from = await this.fromRecord()
         const to = await this.toRecord()
         return `${from.displayName} ${this.mode} ${to.displayName}`
-    }
-
-    get displayDate() {
-        const date = DateTime.fromSQL(this.date)
-        return date.isValid ? date.toFormat('EEEE dd LLL yyyy') : this.date
-    }
-
-    get displayTime() {
-        const date = DateTime.fromSQL(this.date)
-        return date.isValid ? date.toFormat('H:mm') : this.date
-    }
-
-    get displayDateTime() {
-        const date = DateTime.fromSQL(this.date)
-        return date.isValid ? date.toFormat('EEEE dd LLL yyyy H:mm') : this.date
     }
 
     async fromRecord() {
@@ -68,12 +64,6 @@ export default class ConnectionModel extends Model {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 ;(connection as any)[key] = value
             }
-        })
-    }
-
-    @writer async updateDate(date: string) {
-        await this.update((connection) => {
-            connection.date = date
         })
     }
 

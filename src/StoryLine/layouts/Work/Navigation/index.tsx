@@ -88,7 +88,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                                 link: 'overview'
                             })
                         }}>
-                        {Icons.insight.insights}
+                        {Icons.overview.summary}
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.connection')} placement='right'>
