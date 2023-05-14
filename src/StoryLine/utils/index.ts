@@ -54,7 +54,12 @@ export const displayTime = (value: string | null): string => {
     return date.isValid ? date.toFormat('H:mm') : value || ''
 }
 
-export const displayDateTime = (value: string | null): string => {
+export const displayDateTime = (value: Date | string | null): string => {
+    if (value instanceof Date) {
+        const date = DateTime.fromJSDate(value)
+        return date.toFormat('EEEE dd LLL yyyy H:mm')
+    }
+
     const date = DateTime.fromSQL(value || '')
     return date.isValid ? date.toFormat('EEEE dd LLL yyyy H:mm') : value || ''
 }

@@ -61,7 +61,7 @@ const router = createHashRouter([
                 element: <Layouts.WorkLayout />,
                 loader: async ({ params }) => {
                     const work = await database.get<WorkModel>('work').find(params.work_id)
-                    work.updateLastOpened()
+                    work.updateRecord({ lastOpenedAt: new Date() })
                     return work
                 },
                 children: [

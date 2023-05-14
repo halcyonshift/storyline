@@ -9,6 +9,7 @@ import { SectionMode } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
 import schema from '@sl/db/schema'
 import { SearchResultType } from '@sl/layouts/Work/Panel/Search/types'
+import { displayDateTime } from '@sl/utils'
 import { t } from 'i18next'
 
 import {
@@ -64,10 +65,7 @@ export default class WorkModel extends Model {
     @children('tag') tag!: Query<StatisticModel>
 
     get displayDeadline() {
-        if (!this.deadlineAt) return ''
-
-        const date = DateTime.fromJSDate(this.deadlineAt)
-        return date.isValid ? date.toFormat('EEEE dd LLL yyyy H:mm') : ''
+        return displayDateTime(this.deadlineAt)
     }
 
     get timeLeft() {
@@ -332,8 +330,8 @@ export default class WorkModel extends Model {
         const location = await this.location.fetch()
         const note = await this.note.fetch()
         const section = await this.section.fetch()
-        const statistic = await this.statistics.fetch()
-        const tag = await this.tags.fetch()
+        const statistic = await this.statistic.fetch()
+        const tag = await this.tag.fetch()
 
         const backupPath = await this.database.localStorage.get<string>('autoBackupPath')
 
@@ -384,17 +382,16 @@ export default class WorkModel extends Model {
         return { data: jsonData, images: [...new Set(images)], backupPath: backupPath || '' }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @writer async restore(data: any, images: string[]) {
-        if (this.image) {
-            api.deleteFile(this.image)
-        }
+    @writer async restore(data: any) {
+        api.deleteFile(this.image)
         await this.character.destroyAllPermanently()
         await this.connection.destroyAllPermanently()
         await this.item.destroyAllPermanently()
         await this.location.destroyAllPermanently()
         await this.note.destroyAllPermanently()
         await this.section.destroyAllPermanently()
+        await this.statistic.destroyAllPermanently()
+        await this.tag.destroyAllPermanently()
 
         await this.update((work) => {
             work.title = data.work[0].title
@@ -404,6 +401,7 @@ export default class WorkModel extends Model {
             work.wordGoal = Number(data.work[0].word_goal) || null
             work.image = data.work[0].image
             work.deadlineAt = DateTime.fromMillis(data.work[0].deadline_at).toJSDate()
+            work.createdAt = DateTime.fromMillis(data.work[0].created_at).toJSDate()
             work.updatedAt = DateTime.fromMillis(data.work[0].updated_at).toJSDate()
         })
 
@@ -527,6 +525,7 @@ export default class WorkModel extends Model {
                     note.url = noteData.url
                     note.image = noteData.image
                     note.status = noteData.status
+                    note.isTaggable = noteData.is_taggable
                     note.createdAt = DateTime.fromMillis(noteData.created_at).toJSDate()
                     note.updatedAt = DateTime.fromMillis(noteData.updated_at).toJSDate()
                 })
@@ -572,45 +571,21 @@ export default class WorkModel extends Model {
         return true
     }
 
-    @lazy sections = this.section.extend(Q.where('work_id', this.id), Q.sortBy('order', Q.asc))
-
-    @lazy parts = this.section.extend(Q.where('mode', SectionMode.PART), Q.sortBy('order', Q.asc))
-
-    @lazy chapters = this.section.extend(
-        Q.where('work_id', this.id),
-        Q.where('mode', SectionMode.CHAPTER),
-        Q.sortBy('order', Q.asc)
-    )
-
-    @lazy scenes = this.section.extend(
-        Q.where('work_id', this.id),
-        Q.where('mode', SectionMode.SCENE),
-        Q.sortBy('order', Q.asc)
-    )
-
-    @lazy primaryCharacters = this.character.extend(
-        Q.where('mode', CharacterMode.PRIMARY),
-        Q.sortBy('display_name', Q.asc)
-    )
-
-    @lazy secondaryCharacters = this.character.extend(
-        Q.where('mode', CharacterMode.SECONDARY),
-        Q.sortBy('display_name', Q.asc)
-    )
-
-    @lazy tertiaryCharacters = this.character.extend(
-        Q.where('mode', CharacterMode.TERTIARY),
-        Q.sortBy('display_name', Q.asc)
-    )
+    @lazy sections = this.section.extend(Q.sortBy('order', Q.asc))
+    @lazy parts = this.sections.extend(Q.where('mode', SectionMode.PART))
+    @lazy chapters = this.sections.extend(Q.where('mode', SectionMode.CHAPTER))
+    @lazy scenes = this.sections.extend(Q.where('mode', SectionMode.SCENE))
 
     @lazy characters = this.character.extend(Q.sortBy('display_name', Q.asc))
+    @lazy primaryCharacters = this.characters.extend(Q.where('mode', CharacterMode.PRIMARY))
+    @lazy secondaryCharacters = this.characters.extend(Q.where('mode', CharacterMode.SECONDARY))
+    @lazy tertiaryCharacters = this.characters.extend(Q.where('mode', CharacterMode.TERTIARY))
 
     @lazy items = this.item.extend(Q.sortBy('name', Q.asc))
 
     @lazy locations = this.location.extend(Q.sortBy('name', Q.asc))
 
     @lazy notes = this.note.extend(Q.sortBy('order', Q.asc))
-
     @lazy taggableNotes = this.note.extend(Q.sortBy('title', Q.asc), Q.where('is_taggable', true))
 
     @lazy statistics = this.collections
@@ -627,12 +602,6 @@ export default class WorkModel extends Model {
             Q.on('section', Q.on('work', 'id', this.id))
         )
 
-    @writer async updateLastOpened() {
-        await this.update((work) => {
-            work.lastOpenedAt = new Date()
-        })
-    }
-
     @writer async updateRecord(data: Partial<WorkDataType>) {
         await this.update((work) => {
             for (const [key, value] of Object.entries(data)) {
@@ -645,95 +614,54 @@ export default class WorkModel extends Model {
     @writer async addCharacter(mode: CharacterModeType, data: Partial<CharacterDataType>) {
         return await this.collections.get<CharacterModel>('character').create((character) => {
             character.work.set(this)
+            for (const [key, value] of Object.entries(data)) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;(character as any)[key] = value
+            }
             character.mode = mode
-            character.image = data.image
-            character.displayName = data.displayName
-            character.description = data.description
-            character.history = data.history
-            character.pronouns = data.pronouns
-            character.firstName = data.firstName
-            character.lastName = data.lastName
-            character.nickname = data.nickname
-            character.nationality = data.nationality
-            character.ethnicity = data.ethnicity
-            character.placeOfBirth = data.placeOfBirth
-            character.residence = data.residence
-            character.gender = data.gender
-            character.sexualOrientation = data.sexualOrientation
-            character.dateOfBirth = data.dateOfBirth
-            character.apparentAge = data.apparentAge
-            character.religion = data.religion
-            character.socialClass = data.socialClass
-            character.education = data.education
-            character.profession = data.profession
-            character.finances = data.finances
-            character.politicalLeaning = data.politicalLeaning
-            character.face = data.face
-            character.build = data.build
-            character.height = data.height
-            character.weight = data.weight
-            character.hair = data.hair
-            character.hairNatural = data.hairNatural
-            character.distinguishingFeatures = data.distinguishingFeatures
-            character.personalityPositive = data.personalityPositive
-            character.personalityNegative = data.personalityNegative
-            character.ambitions = data.ambitions
-            character.fears = data.fears
             character.status = Status.TODO
         })
     }
 
-    @writer async addConnection(data: ConnectionDataType) {
+    @writer async addConnection(data: Partial<ConnectionDataType>) {
         return await this.collections.get<ConnectionModel>('connection').create((connection) => {
             connection.work.set(this)
-            connection.tableA = data.tableA
-            connection.tableB = data.tableB
-            connection.idA = data.idA
-            connection.idB = data.idB
-            connection.to = data.to
-            connection.from = data.from
-            connection.mode = data.mode
-            connection.body = data.body
-            connection.date = data.date
-            connection.color = data.color
+            for (const [key, value] of Object.entries(data)) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;(connection as any)[key] = value
+            }
         })
     }
 
-    @writer async addItem(data: ItemDataType) {
+    @writer async addItem(data: Partial<ItemDataType>) {
         return await this.collections.get<ItemModel>('item').create((item) => {
             item.work.set(this)
-            item.name = data.name
-            item.body = data.body
-            item.url = data.url
-            item.image = data.image
+            for (const [key, value] of Object.entries(data)) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;(item as any)[key] = value
+            }
             item.status = Status.TODO
         })
     }
 
-    @writer async addNote(data: NoteDataType) {
+    @writer async addNote(data: Partial<NoteDataType>) {
         return await this.collections.get<NoteModel>('note').create((note) => {
             note.work.set(this)
-            note.title = data.title
-            note.body = data.body
-            note.url = data.url
-            note.image = data.image
-            note.color = data.color
-            note.date = data.date
+            for (const [key, value] of Object.entries(data)) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;(note as any)[key] = value
+            }
             note.status = Status.TODO
-            note.order = data.order
-            note.isTaggable = data.isTaggable
         })
     }
 
-    @writer async addLocation(data: LocationDataType) {
+    @writer async addLocation(data: Partial<LocationDataType>) {
         return await this.collections.get<LocationModel>('location').create((location) => {
             location.work.set(this)
-            location.name = data.name
-            location.body = data.body
-            location.latitude = data.latitude
-            location.longitude = data.longitude
-            location.url = data.url
-            location.image = data.image
+            for (const [key, value] of Object.entries(data)) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;(location as any)[key] = value
+            }
             location.status = Status.TODO
         })
     }
@@ -749,9 +677,7 @@ export default class WorkModel extends Model {
     }
 
     @writer async delete() {
-        if (this.image) {
-            api.deleteFile(this.image)
-        }
+        api.deleteFile(this.image)
         await this.character.destroyAllPermanently()
         await this.connection.destroyAllPermanently()
         await this.item.destroyAllPermanently()

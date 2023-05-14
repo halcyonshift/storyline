@@ -32,19 +32,16 @@ describe('ConnectionModel', () => {
             })
         })
 
-        aConnection = await database.write(async () => {
-            return database.get<ConnectionModel>('connection').create((connection) => {
-                connection.work.set(work)
-                connection.mode = 'Siblings'
-                connection.tableA = 'character'
-                connection.tableB = 'character'
-                connection.idA = characterA.id
-                connection.idB = characterB.id
-                connection.to = true
-                connection.from = true
-                connection.date = '2001-01-01 08:00:00'
-                connection.color = '#CCCCCC'
-            })
+        aConnection = await work.addConnection({
+            mode: 'Siblings',
+            tableA: 'character',
+            tableB: 'character',
+            idA: characterA.id,
+            idB: characterB.id,
+            to: true,
+            from: true,
+            date: '2001-01-01 08:00:00',
+            color: '#CCCCCC'
         })
     })
 
