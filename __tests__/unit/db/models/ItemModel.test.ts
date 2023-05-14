@@ -1,34 +1,48 @@
 import database from '@sl/db'
-import ItemModel from '@sl/db/models/ItemModel'
-import WorkModel from '@sl/db/models/WorkModel'
+import { ItemModel, WorkModel } from '@sl/db/models'
 
 describe('ItemModel', () => {
+    let work: WorkModel
+    let anItem: ItemModel
+
     beforeAll(async () => {
         await database.write(async () => {
             await database.unsafeResetDatabase()
         })
-    })
 
-    it('has item table', async () => {
-        expect(ItemModel.table).toBe('item')
-    })
-
-    it('displayName should return the item name', async () => {
-        const work = await database.write(async () => {
+        work = await database.write(async () => {
             return database.get<WorkModel>('work').create((work) => {
                 work.title = 'Test'
             })
         })
 
-        const itemName = 'An item'
-
-        const item = await database.write(async () => {
+        anItem = await database.write(async () => {
             return database.get<ItemModel>('item').create((item) => {
                 item.work.set(work)
-                item.name = itemName
+                item.name = 'An item'
             })
         })
+    })
 
-        expect(item.displayName).toEqual(itemName)
+    it('displayName should return the item name', async () => {
+        expect(anItem.displayName).toEqual(anItem.name)
+    })
+
+    it('fetches notes', async () => {
+        const notes = await anItem.notes.fetchCount()
+        expect(notes).toEqual(0)
+    })
+
+    it('saves new data with updateRecord', async () => {
+        const name = 'An item again'
+        await anItem.updateRecord({ name })
+        expect(anItem.name).toEqual(name)
+    })
+
+    it('deletes item', async () => {
+        const countA = await database.get<ItemModel>('item').query().fetchCount()
+        await anItem.delete()
+        const countB = await database.get<ItemModel>('item').query().fetchCount()
+        expect(countB).toEqual(countA - 1)
     })
 })

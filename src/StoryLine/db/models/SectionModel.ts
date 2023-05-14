@@ -6,7 +6,15 @@ import { DateTime, Interval } from 'luxon'
 import { type PointOfViewType } from '@sl/constants/pov'
 import { SectionMode, type SectionModeType } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
-import { htmlExtractExcerpts, htmlParse, wordCount } from '@sl/utils'
+import {
+    displayDate,
+    displayTime,
+    displayDateTime,
+    sortDate,
+    htmlExtractExcerpts,
+    htmlParse,
+    wordCount
+} from '@sl/utils'
 import { stripSlashes } from '@sl/components/RichtextEditor/plugins/Tag/utils'
 import { type AllTagsType, type SectionDataType, type StatisticDataType } from './types'
 import {
@@ -75,24 +83,20 @@ export default class SectionModel extends Model {
         return this.description ? htmlParse(this.description) : null
     }
 
+    get sortDate() {
+        return sortDate(this.date)
+    }
+
     get displayDate() {
-        const date = DateTime.fromSQL(this.date)
-        return date.isValid ? date.toFormat('EEEE dd LLL yyyy') : this.date
+        return displayDate(this.date)
     }
 
     get displayTime() {
-        const date = DateTime.fromSQL(this.date)
-        return date.isValid ? date.toFormat('H:mm') : this.date
+        return displayTime(this.date)
     }
 
     get displayDateTime() {
-        const date = DateTime.fromSQL(this.date)
-        return date.isValid ? date.toFormat('EEEE dd LLL yyyy H:mm') : this.date
-    }
-
-    get sortDate() {
-        const date = DateTime.fromSQL(this.date)
-        return date.isValid ? date.toSeconds() : 0
+        return displayDateTime(this.date)
     }
 
     get isChapter() {
@@ -186,29 +190,9 @@ export default class SectionModel extends Model {
         .get<SectionModel>('section')
         .query(Q.where('section_id', this.id), Q.sortBy('order', Q.asc))
 
-    @lazy scenes = this.collections
-        .get<SectionModel>('section')
-        .query(
-            Q.where('section_id', this.id),
-            Q.where('mode', SectionMode.SCENE),
-            Q.sortBy('order', Q.asc)
-        )
-
-    @lazy chapters = this.collections
-        .get<SectionModel>('section')
-        .query(
-            Q.where('section_id', this.id),
-            Q.where('mode', SectionMode.CHAPTER),
-            Q.sortBy('order', Q.asc)
-        )
-
-    @lazy versions = this.collections
-        .get<SectionModel>('section')
-        .query(
-            Q.where('section_id', this.id),
-            Q.where('mode', SectionMode.VERSION),
-            Q.sortBy('order', Q.desc)
-        )
+    @lazy scenes = this.sections.extend(Q.where('mode', SectionMode.SCENE))
+    @lazy chapters = this.sections.extend(Q.where('mode', SectionMode.CHAPTER))
+    @lazy versions = this.sections.extend(Q.where('mode', SectionMode.VERSION))
 
     @lazy statistics = this.collections
         .get<StatisticModel>('statistic')
@@ -273,6 +257,7 @@ export default class SectionModel extends Model {
         this.note.destroyAllPermanently()
         this.statistic.destroyAllPermanently()
         this.tag.destroyAllPermanently()
+        this.versions.destroyAllPermanently()
         return super.destroyPermanently()
     }
 
@@ -385,12 +370,6 @@ export default class SectionModel extends Model {
         await this.update((section) => {
             section.body = data
             section.words = wordCount(data)
-        })
-    }
-
-    @writer async updateDate(date: string) {
-        await this.update((section) => {
-            section.date = date
         })
     }
 

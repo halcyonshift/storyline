@@ -142,10 +142,14 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
                     const scene = await database
                         .get<SectionModel>('section')
                         .find(item.id.toString())
-                    await scene.updateDate(DateTime.fromJSDate(item.start as Date).toSQL())
+                    await scene.updateRecord({
+                        date: DateTime.fromJSDate(item.start as Date).toSQL()
+                    })
                 } else if (item.group === 'note') {
                     const note = await database.get<NoteModel>('note').find(item.id.toString())
-                    await note.updateDate(DateTime.fromJSDate(item.start as Date).toSQL())
+                    await note.updateRecord({
+                        date: DateTime.fromJSDate(item.start as Date).toSQL()
+                    })
                 } else if (item.group === 'connection') {
                     const connection = await database
                         .get<ConnectionModel>('connection')

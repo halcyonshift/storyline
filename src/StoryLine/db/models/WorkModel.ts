@@ -642,7 +642,7 @@ export default class WorkModel extends Model {
         })
     }
 
-    @writer async addCharacter(mode: CharacterModeType, data: CharacterDataType) {
+    @writer async addCharacter(mode: CharacterModeType, data: Partial<CharacterDataType>) {
         return await this.collections.get<CharacterModel>('character').create((character) => {
             character.work.set(this)
             character.mode = mode

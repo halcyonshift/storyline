@@ -2,8 +2,8 @@ import { Model, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { children, date, lazy, field, relation, text, writer } from '@nozbe/watermelondb/decorators'
-import { DateTime } from 'luxon'
 import { Status, type StatusType } from '@sl/constants/status'
+import { displayDate, displayTime, displayDateTime, sortDate } from '@sl/utils'
 import { NoteDataType } from './types'
 import { CharacterModel, ItemModel, LocationModel, SectionModel, TagModel, WorkModel } from '.'
 
@@ -43,30 +43,24 @@ export default class NoteModel extends Model {
         return this.title
     }
 
+    get sortDate() {
+        return sortDate(this.date)
+    }
+
     get displayDate() {
-        const date = DateTime.fromSQL(this.date)
-        return date.isValid ? date.toFormat('EEEE dd LLL yyyy') : this.date
+        return displayDate(this.date)
     }
 
     get displayTime() {
-        const date = DateTime.fromSQL(this.date)
-        return date.isValid ? date.toFormat('H:mm') : this.date
+        return displayTime(this.date)
     }
 
     get displayDateTime() {
-        const date = DateTime.fromSQL(this.date)
-        return date.isValid ? date.toFormat('EEEE dd LLL yyyy H:mm') : this.date
-    }
-
-    get sortDate() {
-        const date = DateTime.fromSQL(this.date)
-        return date.isValid ? date.toSeconds() : 0
+        return displayDateTime(this.date)
     }
 
     async destroyPermanently(): Promise<void> {
-        if (this.image) {
-            api.deleteFile(this.image)
-        }
+        api.deleteFile(this.image)
         this.tag.destroyAllPermanently()
         return super.destroyPermanently()
     }
@@ -114,18 +108,14 @@ export default class NoteModel extends Model {
                     note.location.set(owner as LocationModel)
                     break
                 case 'note':
-                    note.note.set(owner as NoteModel)
+                    if (owner.id !== note.id) {
+                        note.note.set(owner as NoteModel)
+                    }
                     break
                 case 'section':
                     note.section.set(owner as SectionModel)
                     break
             }
-        })
-    }
-
-    @writer async updateDate(date: string) {
-        await this.update((note) => {
-            note.date = date
         })
     }
 

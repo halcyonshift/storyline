@@ -41,9 +41,7 @@ export default class LocationModel extends Model {
     }
 
     async destroyPermanently(): Promise<void> {
-        if (this.image) {
-            api.deleteFile(this.image)
-        }
+        api.deleteFile(this.image)
         await this.collections
             .get<ConnectionModel>('connection')
             .query(Q.or(Q.where('id_a', this.id), Q.where('id_b', this.id)))
