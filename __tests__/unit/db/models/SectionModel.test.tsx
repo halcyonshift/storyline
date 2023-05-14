@@ -2,7 +2,6 @@ import { DateTime } from 'luxon'
 import database from '@sl/db'
 import { SectionMode } from '@sl/constants/sectionMode'
 import { SectionModel, WorkModel } from '@sl/db/models'
-
 import { render, screen } from '../../test-utils'
 
 describe('SectionModel', () => {
