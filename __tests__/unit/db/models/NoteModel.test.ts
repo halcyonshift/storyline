@@ -32,23 +32,23 @@ describe('NoteModel', () => {
         })
     })
 
-    it('displayName should return the note title', async () => {
+    test('displayName should return the note title', async () => {
         expect(aNote.displayName).toEqual(aNote.title)
     })
 
-    it('sortDate should return the date in milliseconds', async () => {
+    test('sortDate should return the date in milliseconds', async () => {
         expect(aNote.sortDate).toEqual(978336000)
     })
 
-    it('displayDate should return the given date', async () => {
+    test('displayDate should return the given date', async () => {
         expect(aNote.displayDate).toEqual('Monday 01 Jan 2001')
     })
 
-    it('displayTime should return the given date', async () => {
+    test('displayTime should return the given date', async () => {
         expect(aNote.displayTime).toEqual('8:00')
     })
 
-    it('displayDateTime should return the given datetime', async () => {
+    test('displayDateTime should return the given datetime', async () => {
         expect(aNote.displayDateTime).toEqual('Monday 01 Jan 2001 8:00')
     })
 

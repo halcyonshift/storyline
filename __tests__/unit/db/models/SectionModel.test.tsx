@@ -1,6 +1,7 @@
+import { DateTime } from 'luxon'
 import database from '@sl/db'
 import { SectionMode } from '@sl/constants/sectionMode'
-import { CharacterModel, SectionModel, WorkModel } from '@sl/db/models'
+import { SectionModel, WorkModel } from '@sl/db/models'
 
 import { render, screen } from '../../test-utils'
 
@@ -62,6 +63,7 @@ describe('SectionModel', () => {
                 <p>{aSection.displayBody}</p>
             </div>
         )
+
         expect(screen.queryByText(bodyText)).toBeFalsy()
 
         await aSection.updateBody(bodyText)
@@ -172,17 +174,35 @@ describe('SectionModel', () => {
     })
 
     test('fetches tags', async () => {
-        const characterTagCount = await aSection.characterTags.fetchCount()
-        expect(characterTagCount).toEqual(0)
+        const section = await work.addPart()
+        const character = await work.addCharacter('PRIMARY', {
+            displayName: 'Test'
+        })
+        const item = await work.addItem({ name: 'Item' })
+        const location = await work.addLocation({ name: 'Location' })
+        const note = await work.addNote({ title: 'Note' })
 
-        const itemTagCount = await aSection.itemTags.fetchCount()
-        expect(itemTagCount).toEqual(0)
+        await section.updateRecord(
+            {},
+            {
+                characters: [character],
+                items: [item],
+                locations: [location],
+                notes: [note]
+            }
+        )
 
-        const locationTagCount = await aSection.locationTags.fetchCount()
-        expect(locationTagCount).toEqual(0)
+        const characterTagCount = await section.characterTags.fetchCount()
+        expect(characterTagCount).toEqual(1)
 
-        const noteTagCount = await aSection.noteTags.fetchCount()
-        expect(noteTagCount).toEqual(0)
+        const itemTagCount = await section.itemTags.fetchCount()
+        expect(itemTagCount).toEqual(1)
+
+        const locationTagCount = await section.locationTags.fetchCount()
+        expect(locationTagCount).toEqual(1)
+
+        const noteTagCount = await section.noteTags.fetchCount()
+        expect(noteTagCount).toEqual(1)
     })
 
     it('updates the PoV Character', async () => {
@@ -191,6 +211,146 @@ describe('SectionModel', () => {
         })
         await aSection.updatePoVCharacter(character)
         expect(aSection.pointOfViewCharacter.id).toBe(character.id)
+    })
+
+    it('adds a statistic', async () => {
+        await aSection.addStatistic(100)
+        const statistics = await aSection.statistic.fetchCount()
+        expect(statistics).toBe(1)
+    })
+
+    test('excerpts returns all excerpt text in body', async () => {
+        await aSection.updateBody('')
+        expect(aSection.excerpts).toBeNull()
+
+        await aSection.updateBody('<p>not an excerpt</p>')
+        render(<div>{aSection.excerpts}</div>)
+        expect(screen.queryByText('not an excerpt')).toBeFalsy()
+
+        await aSection.updateBody('<blockquote>an excerpt</blockquote>')
+        render(<div>{aSection.excerpts}</div>)
+        expect(screen.getByText('an excerpt')).toBeTruthy()
+    })
+
+    test('word count returns as expected', async () => {
+        const part = await work.addPart()
+        const chapter1 = await part.addChapter()
+        const chapter2 = await part.addChapter()
+        const scene1 = await chapter1.addScene()
+        const scene2 = await chapter1.addScene()
+        const scene3 = await chapter2.addScene()
+        await scene1.updateBody('<p>This is a word count test</p>')
+        await scene2.updateBody('<p>This is a word count test</p>')
+        await scene3.updateBody('<p>This is a word count test</p>')
+
+        const partCount = await part.getWordCount()
+        expect(partCount).toEqual(18)
+
+        const chapter1Count = await chapter1.getWordCount()
+        expect(chapter1Count).toEqual(12)
+
+        const chapter2Count = await chapter2.getWordCount()
+        expect(chapter2Count).toEqual(6)
+
+        const scene1Count = await scene1.getWordCount()
+        expect(scene1Count).toEqual(6)
+
+        const scene2Count = await scene2.getWordCount()
+        expect(scene2Count).toEqual(6)
+    })
+
+    test('updateRecord with tags updates record and tags', async () => {
+        const section = await work.addPart()
+        const character = await work.addCharacter('PRIMARY', {
+            displayName: 'Test'
+        })
+        const item = await work.addItem({ name: 'Item' })
+        const location = await work.addLocation({ name: 'Location' })
+        const note = await work.addNote({ title: 'Note' })
+
+        await section.updateRecord(
+            { title: 'Test' },
+            {
+                characters: [character],
+                items: [item],
+                locations: [location],
+                notes: [note]
+            }
+        )
+        expect(section.title).toBe('Test')
+        const countTags = await section.tag.fetchCount()
+        expect(countTags).toBe(4)
+    })
+
+    test('daysRemining is null if no given deadlineAt', async () => {
+        expect(aSection.daysRemaining).toBeNull()
+    })
+
+    test('daysRemining gives days if the deadlineAt date is in the future', async () => {
+        const days = 7
+        const now = DateTime.now()
+        const deadline = now.plus({ days })
+
+        await aSection.updateRecord({ deadlineAt: deadline.toJSDate() })
+
+        expect(aSection.daysRemaining).toBe(7)
+    })
+
+    test('daysRemining gives returns 0 if the deadlineAt date is in the past', async () => {
+        const days = 7
+        const now = DateTime.now()
+        const deadline = now.minus({ days })
+
+        await aSection.updateRecord({ deadlineAt: deadline.toJSDate() })
+
+        expect(aSection.daysRemaining).toBe(0)
+    })
+
+    test('daysRemining gives returns 0 if the deadlineAt date is today', async () => {
+        await aSection.updateRecord({ deadlineAt: DateTime.now().toJSDate() })
+
+        expect(aSection.daysRemaining).toBe(0)
+    })
+
+    it('calculates words per day if they exist', async () => {
+        await aSection.updateRecord({ deadlineAt: null })
+        expect(aSection.wordsPerDay).toBeNull()
+
+        await aSection.updateRecord({ wordGoal: 1000 })
+        expect(aSection.wordsPerDay).toBeNull()
+
+        await aSection.updateRecord({ deadlineAt: DateTime.now().toJSDate() })
+        await aSection.updateBody('<p>This is some text</p>')
+        const wordCount = await aSection.getWordCount()
+        expect(aSection.wordsPerDay).toBe(1000 - wordCount)
+
+        await aSection.updateRecord({ deadlineAt: DateTime.now().plus({ days: 7 }).toJSDate() })
+        expect(aSection.wordsPerDay).toBe(143)
+    })
+
+    it('checks if a given id has been tagged in a scene', async () => {
+        const isTagged = await aSection.isTagged('abc')
+        expect(isTagged).toBeFalsy()
+    })
+
+    test('taggedCharacters returns all tagged characters', async () => {
+        const tagged = await aSection.taggedCharacters()
+        expect(tagged.length).toBe(0)
+    })
+
+    test('taggedItems returns all tagged items', async () => {
+        const tagged = await aSection.taggedItems()
+        expect(tagged.length).toBe(0)
+    })
+
+    test('taggedLocations returns all tagged locations', async () => {
+        const tagged = await aSection.taggedLocations()
+        expect(tagged.length).toBe(0)
+    })
+
+    test('taggedNotes returns all tagged notes', async () => {
+        const tagged = await aSection.taggedNotes()
+        expect(tagged.length).toBe(0)
     })
 
     it('deletes if no children', async () => {

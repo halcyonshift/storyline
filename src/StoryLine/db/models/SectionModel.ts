@@ -26,6 +26,7 @@ import {
     TagModel,
     WorkModel
 } from './'
+import { Fragment } from 'react'
 export default class SectionModel extends Model {
     static table = 'section'
     public static associations: Associations = {
@@ -261,8 +262,8 @@ export default class SectionModel extends Model {
         return super.destroyPermanently()
     }
 
-    get daysRemaining(): number | undefined {
-        if (!this.deadlineAt) return undefined
+    get daysRemaining(): number | null {
+        if (!this.deadlineAt) return null
 
         const now = DateTime.now()
         const deadline = DateTime.fromJSDate(this.deadlineAt)
@@ -273,8 +274,8 @@ export default class SectionModel extends Model {
         return Math.ceil(diff.length('days'))
     }
 
-    get wordsPerDay(): number | undefined {
-        if (!this.wordGoal || this.daysRemaining === undefined) return undefined
+    get wordsPerDay(): number | null {
+        if (!this.wordGoal || this.daysRemaining === null) return null
         else if (!this.daysRemaining) return this.wordGoal - this.wordCount
 
         return this.wordCount < this.wordGoal
