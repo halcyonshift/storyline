@@ -7,7 +7,7 @@ import { getInitialValues } from '@sl/forms/Work/utils'
 const EditLocationView = () => {
     const location = useRouteLoaderData('location') as LocationModel
     const initialValues = Object.keys(
-        getInitialValues('location', ['work_id', 'location_id']) as LocationDataType
+        getInitialValues('location', ['work_id', 'location_id', 'status']) as LocationDataType
     ).reduce(
         (o, key) => ({ ...o, [key]: location[key as keyof LocationModel] }),
         {}

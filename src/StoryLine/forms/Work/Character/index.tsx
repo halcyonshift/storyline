@@ -24,9 +24,8 @@ const CharacterForm = ({ work, character, initialValues }: CharacterFormProps) =
     }, [initialValues.mode])
 
     useEffect(() => {
-        if (character) {
-            character.updateMode(headerMode)
-        }
+        if (!character || !headerMode) return
+        character.updateRecord({ mode: headerMode })
     }, [headerMode])
 
     const validationSchema = yup.object({
@@ -81,12 +80,17 @@ const CharacterForm = ({ work, character, initialValues }: CharacterFormProps) =
         validationSchema,
         onSubmit: async (values: CharacterDataType) => {
             if (character) {
-                await character.updateCharacter(values)
-            } else {
+                await character.updateRecord(values)
+            } else if (work) {
                 character = await work.addCharacter(initialValues.mode, values)
             }
-            messenger.success(t('form.work.character.alert.success'))
-            navigate(`/work/${character.work.id}/character/${character.id}/edit`)
+
+            if (character) {
+                messenger.success(t('form.work.character.alert.success'))
+                navigate(`/work/${character.work.id}/character/${character.id}/edit`)
+            } else {
+                messenger.error(t('form.work.character.alert.failure'))
+            }
         }
     })
 

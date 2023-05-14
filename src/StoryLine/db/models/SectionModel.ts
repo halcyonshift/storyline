@@ -6,7 +6,15 @@ import { DateTime, Interval } from 'luxon'
 import { type PointOfViewType } from '@sl/constants/pov'
 import { SectionMode, type SectionModeType } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
-import { htmlExtractExcerpts, htmlParse, wordCount } from '@sl/utils'
+import {
+    displayDate,
+    displayTime,
+    displayDateTime,
+    sortDate,
+    htmlExtractExcerpts,
+    htmlParse,
+    wordCount
+} from '@sl/utils'
 import { stripSlashes } from '@sl/components/RichtextEditor/plugins/Tag/utils'
 import { type AllTagsType, type SectionDataType, type StatisticDataType } from './types'
 import {
@@ -18,6 +26,7 @@ import {
     TagModel,
     WorkModel
 } from './'
+
 export default class SectionModel extends Model {
     static table = 'section'
     public static associations: Associations = {
@@ -75,24 +84,20 @@ export default class SectionModel extends Model {
         return this.description ? htmlParse(this.description) : null
     }
 
+    get sortDate() {
+        return sortDate(this.date)
+    }
+
     get displayDate() {
-        const date = DateTime.fromSQL(this.date)
-        return date.isValid ? date.toFormat('EEEE dd LLL yyyy') : this.date
+        return displayDate(this.date)
     }
 
     get displayTime() {
-        const date = DateTime.fromSQL(this.date)
-        return date.isValid ? date.toFormat('H:mm') : this.date
+        return displayTime(this.date)
     }
 
     get displayDateTime() {
-        const date = DateTime.fromSQL(this.date)
-        return date.isValid ? date.toFormat('EEEE dd LLL yyyy H:mm') : this.date
-    }
-
-    get sortDate() {
-        const date = DateTime.fromSQL(this.date)
-        return date.isValid ? date.toSeconds() : 0
+        return displayDateTime(this.date)
     }
 
     get isChapter() {
@@ -186,29 +191,9 @@ export default class SectionModel extends Model {
         .get<SectionModel>('section')
         .query(Q.where('section_id', this.id), Q.sortBy('order', Q.asc))
 
-    @lazy scenes = this.collections
-        .get<SectionModel>('section')
-        .query(
-            Q.where('section_id', this.id),
-            Q.where('mode', SectionMode.SCENE),
-            Q.sortBy('order', Q.asc)
-        )
-
-    @lazy chapters = this.collections
-        .get<SectionModel>('section')
-        .query(
-            Q.where('section_id', this.id),
-            Q.where('mode', SectionMode.CHAPTER),
-            Q.sortBy('order', Q.asc)
-        )
-
-    @lazy versions = this.collections
-        .get<SectionModel>('section')
-        .query(
-            Q.where('section_id', this.id),
-            Q.where('mode', SectionMode.VERSION),
-            Q.sortBy('order', Q.desc)
-        )
+    @lazy scenes = this.sections.extend(Q.where('mode', SectionMode.SCENE))
+    @lazy chapters = this.sections.extend(Q.where('mode', SectionMode.CHAPTER))
+    @lazy versions = this.sections.extend(Q.where('mode', SectionMode.VERSION))
 
     @lazy statistics = this.collections
         .get<StatisticModel>('statistic')
@@ -273,11 +258,12 @@ export default class SectionModel extends Model {
         this.note.destroyAllPermanently()
         this.statistic.destroyAllPermanently()
         this.tag.destroyAllPermanently()
+        this.versions.destroyAllPermanently()
         return super.destroyPermanently()
     }
 
-    get daysRemaining(): number | undefined {
-        if (!this.deadlineAt) return undefined
+    get daysRemaining(): number | null {
+        if (!this.deadlineAt) return null
 
         const now = DateTime.now()
         const deadline = DateTime.fromJSDate(this.deadlineAt)
@@ -288,8 +274,8 @@ export default class SectionModel extends Model {
         return Math.ceil(diff.length('days'))
     }
 
-    get wordsPerDay(): number | undefined {
-        if (!this.wordGoal || this.daysRemaining === undefined) return undefined
+    get wordsPerDay(): number | null {
+        if (!this.wordGoal || this.daysRemaining === null) return null
         else if (!this.daysRemaining) return this.wordGoal - this.wordCount
 
         return this.wordCount < this.wordGoal
@@ -323,55 +309,56 @@ export default class SectionModel extends Model {
         })
     }
 
-    @writer async updateSection(
-        data: SectionDataType,
-        tags: {
+    @writer async updateRecord(
+        data: Partial<SectionDataType>,
+        tags?: {
             characters: CharacterModel[]
             items: ItemModel[]
             locations: LocationModel[]
             notes: NoteModel[]
         }
     ) {
-        const work = await this.work.fetch()
-        await this.tag.destroyAllPermanently()
-        await this.batch(
-            this.prepareUpdate((section) => {
-                section.title = data.title
-                section.description = data.description
-                section.date = data.date
-                section.wordGoal = Number(data.wordGoal)
-                section.deadlineAt = data.deadlineAt
-                section.pointOfView = data.pointOfView
-            }),
-            ...tags.characters.map((character) =>
-                this.collections.get<TagModel>('tag').prepareCreate((tag) => {
-                    tag.work.set(work)
-                    tag.section.set(this)
-                    tag.character.set(character)
-                })
-            ),
-            ...tags.items.map((item) =>
-                this.collections.get<TagModel>('tag').prepareCreate((tag) => {
-                    tag.work.set(work)
-                    tag.section.set(this)
-                    tag.item.set(item)
-                })
-            ),
-            ...tags.locations.map((location) =>
-                this.collections.get<TagModel>('tag').prepareCreate((tag) => {
-                    tag.work.set(work)
-                    tag.section.set(this)
-                    tag.location.set(location)
-                })
-            ),
-            ...tags.notes.map((note) =>
-                this.collections.get<TagModel>('tag').prepareCreate((tag) => {
-                    tag.work.set(work)
-                    tag.section.set(this)
-                    tag.note.set(note)
-                })
+        await this.update((section) => {
+            for (const [key, value] of Object.entries(data)) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;(section as any)[key] = value
+            }
+        })
+
+        if (tags) {
+            const work = await this.work.fetch()
+            await this.tag.destroyAllPermanently()
+            await this.batch(
+                ...tags.characters.map((character) =>
+                    this.collections.get<TagModel>('tag').prepareCreate((tag) => {
+                        tag.work.set(work)
+                        tag.section.set(this)
+                        tag.character.set(character)
+                    })
+                ),
+                ...tags.items.map((item) =>
+                    this.collections.get<TagModel>('tag').prepareCreate((tag) => {
+                        tag.work.set(work)
+                        tag.section.set(this)
+                        tag.item.set(item)
+                    })
+                ),
+                ...tags.locations.map((location) =>
+                    this.collections.get<TagModel>('tag').prepareCreate((tag) => {
+                        tag.work.set(work)
+                        tag.section.set(this)
+                        tag.location.set(location)
+                    })
+                ),
+                ...tags.notes.map((note) =>
+                    this.collections.get<TagModel>('tag').prepareCreate((tag) => {
+                        tag.work.set(work)
+                        tag.section.set(this)
+                        tag.note.set(note)
+                    })
+                )
             )
-        )
+        }
     }
 
     @writer async updatePoVCharacter(character: CharacterModel | null) {
@@ -384,18 +371,6 @@ export default class SectionModel extends Model {
         await this.update((section) => {
             section.body = data
             section.words = wordCount(data)
-        })
-    }
-
-    @writer async updateDate(date: string) {
-        await this.update((section) => {
-            section.date = date
-        })
-    }
-
-    @writer async updateStatus(status: StatusType) {
-        await this.update((section) => {
-            section.status = status
         })
     }
 

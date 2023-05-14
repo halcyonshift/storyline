@@ -23,7 +23,11 @@ const Status = ({ model }: StatusProps) => {
                     key={option}
                     value={option}
                     onClick={() => {
-                        model.updateStatus(option).then(() => setStatus(option))
+                        model
+                            .updateRecord({
+                                status: option
+                            })
+                            .then(() => setStatus(option))
                     }}>
                     {t(`constant.status.${option}`)}
                 </Button>

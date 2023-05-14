@@ -27,7 +27,7 @@ export type FormWrapperProps = {
         | WorkDataType
     >
     title?: string
-    model: CharacterModel | ItemModel | LocationModel | NoteModel | SectionModel | WorkModel
+    model?: CharacterModel | ItemModel | LocationModel | NoteModel | SectionModel | WorkModel
     header?: ReactElement
     children: ReactElement | ReactElement[]
     tabList: string[]

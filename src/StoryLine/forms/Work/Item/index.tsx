@@ -29,7 +29,7 @@ const ItemForm = ({ work, item, initialValues }: ItemFormProps) => {
         validationSchema,
         onSubmit: async (values: ItemDataType) => {
             if (initialValues.name) {
-                await item.updateItem(values)
+                await item.updateRecord(values)
                 messenger.success(t('form.work.item.alert.success'))
             } else {
                 item = await work.addItem(values)

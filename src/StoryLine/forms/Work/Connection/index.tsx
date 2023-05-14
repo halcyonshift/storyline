@@ -46,7 +46,7 @@ const ConnectionForm = ({ work, connection, initialValues, setOpen }: Connection
         validationSchema,
         onSubmit: async (values: ConnectionDataType) => {
             if (connection?.id) {
-                connection.updateConnection(values)
+                connection.updateRecord(values)
                 messenger.success(t('form.work.connection.alert.success'))
             } else {
                 await work.addConnection(values)

@@ -5,7 +5,8 @@ import withObservables from '@nozbe/with-observables'
 import { Database, Q } from '@nozbe/watermelondb'
 import { withDatabase } from '@nozbe/watermelondb/DatabaseProvider'
 import { useTranslation } from 'react-i18next'
-import { CharacterModel, ItemModel, LocationModel, NoteModel } from '@sl/db/models'
+import { useRouteLoaderData } from 'react-router-dom'
+import { CharacterModel, ItemModel, LocationModel, NoteModel, WorkModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { ImageType } from '../Gallery/types'
 import { ViewWrapperProps } from './types'
@@ -14,6 +15,7 @@ import * as NotePanel from './TabPanel'
 const TAB_STYLE = { padding: 0 }
 
 const _ViewWrapper = ({ tabList, model, children, notes }: ViewWrapperProps) => {
+    const work = useRouteLoaderData('work') as WorkModel
     const [value, setValue] = useState<string>('1')
     const [images, setImages] = useState<ImageType[]>([])
     const [links, setLinks] = useState<string[]>([])
@@ -24,9 +26,54 @@ const _ViewWrapper = ({ tabList, model, children, notes }: ViewWrapperProps) => 
     useEffect(() => {
         setValue('1')
         setShowTabs(true)
-        model.getImages().then((images) => setImages(images))
-        model.getLinks().then((links) => setLinks(links))
-        model.getAppearances().then((appearances) => setAppearances(appearances))
+        model.notes
+            .extend(Q.where('image', Q.notEq('')))
+            .fetch()
+            .then((notes) => {
+                const images = notes.map((note) => ({ path: note.image, title: note.title }))
+                if (model.image) {
+                    setImages(
+                        [{ path: model.image, title: model.displayName }]
+                            .concat(images)
+                            .filter((image) => image.path)
+                    )
+                } else {
+                    setImages(images.filter((image) => image.path))
+                }
+            })
+        model.notes
+            .extend(Q.where('url', Q.notEq('')))
+            .fetch()
+            .then((notes) => {
+                setLinks(
+                    ['url' in model ? model.url : null]
+                        .concat(notes.map((note) => note.url))
+                        .map((url) => url)
+                        .filter((link) => link)
+                )
+            })
+
+        work.scenes.fetch().then(async (scenes) => {
+            const appearances = []
+
+            let tagged
+
+            for await (const scene of scenes) {
+                if (model.table === 'character') tagged = await scene.taggedCharacters(model.id)
+                else if (model.table === 'item') tagged = await scene.taggedItems(model.id)
+                else if (model.table === 'location') tagged = await scene.taggedLocations(model.id)
+                else if (model.table === 'note') tagged = await scene.taggedNotes(model.id)
+
+                if (!tagged.length && scene.pointOfViewCharacter?.id !== model.id) continue
+
+                appearances.push({
+                    scene,
+                    text: tagged.length ? tagged[0].text : []
+                })
+            }
+
+            setAppearances(appearances)
+        })
     }, [model?.id, notes])
 
     return (

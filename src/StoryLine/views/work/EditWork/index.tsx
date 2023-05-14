@@ -6,7 +6,7 @@ import { getInitialValues } from '@sl/forms/Work/utils'
 
 const EditWorkView = () => {
     const work = useRouteLoaderData('work') as WorkModel
-    const initialValues = Object.keys(getInitialValues('work') as WorkDataType).reduce(
+    const initialValues = Object.keys(getInitialValues('work', ['status']) as WorkDataType).reduce(
         (o, key) => ({ ...o, [key]: work[key as keyof WorkModel] }),
         {}
     ) as WorkDataType
