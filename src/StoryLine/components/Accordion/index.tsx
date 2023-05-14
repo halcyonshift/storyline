@@ -4,9 +4,9 @@ import Box from '@mui/material/Box'
 
 import { AccordionProps } from './types'
 
-const Accordion = ({ title, children, className, ...props }: AccordionProps) => {
+const Accordion = ({ id, title, children, className, ...props }: AccordionProps) => {
     const [open, setOpen] = useState<boolean>(false)
-    const [id] = useState(Math.random().toString())
+
     return (
         <>
             <Box
@@ -14,7 +14,7 @@ const Accordion = ({ title, children, className, ...props }: AccordionProps) => 
                 {...props}
                 role='button'
                 aria-expanded={open}
-                aria-controls={`$content-${id}`}
+                aria-controls={`content-${id}`}
                 onClick={() => setOpen(!open)}>
                 <ArrowForwardIosSharpIcon
                     className='mr-1'

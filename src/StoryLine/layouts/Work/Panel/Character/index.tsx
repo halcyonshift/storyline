@@ -82,6 +82,7 @@ const CharacterPanel = () => {
                 (mode: CharacterModeType) =>
                     modeCharacters[mode].length ? (
                         <Accordion
+                            id={mode}
                             key={mode}
                             title={<Typography>{t(`constant.characterMode.${mode}`)}</Typography>}
                             sx={{ backgroundColor: settings.getHex(400) }}
