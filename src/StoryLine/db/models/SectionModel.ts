@@ -26,7 +26,7 @@ import {
     TagModel,
     WorkModel
 } from './'
-import { Fragment } from 'react'
+
 export default class SectionModel extends Model {
     static table = 'section'
     public static associations: Associations = {
