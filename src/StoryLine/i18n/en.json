@@ -45,6 +45,10 @@
                 "save": "Save"
             }
         },
+        "gallery": {
+            "back": "Back",
+            "next": "Next"
+        },
         "imageField": {
             "browse": "Browse",
             "delete": "Delete"
