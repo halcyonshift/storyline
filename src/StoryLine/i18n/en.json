@@ -35,14 +35,14 @@
                 "picker": "Switch to picker"
             }
         },
-        "formButton": {
-            "save": "Save"
-        },
         "formWrapper" : {
             "tab": {
                 "general": "General",
                 "images": "Images",
                 "notes": "Notes"
+            },
+            "button": {
+                "save": "Save"
             }
         },
         "imageField": {

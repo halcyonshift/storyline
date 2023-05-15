@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState, Children, SyntheticEvent, ReactElement } from 'react'
-import { TabContext, TabList, TabPanel } from '@mui/lab'
-import { Badge, Box, Stack, Tab, Typography } from '@mui/material'
+import { useEffect, useRef, useState, Children, ReactElement } from 'react'
+import { TabContext, TabPanel } from '@mui/lab'
+import { Box, Button, Stack, Typography } from '@mui/material'
 import withObservables from '@nozbe/with-observables'
 import { Database, Q } from '@nozbe/watermelondb'
 import { withDatabase } from '@nozbe/watermelondb/DatabaseProvider'
@@ -16,12 +16,12 @@ import {
 } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import useSettings from '@sl/theme/useSettings'
-import FormButton from '../FormButton'
 import * as NotePanel from './TabPanel'
+import TabList from './TabList'
 import { FormWrapperProps, ErrorBadgeType, FormFieldType } from './types'
+
 const TAB_STYLE = { padding: 0 }
 
-// eslint-disable-next-line complexity
 const _FormWrapper = ({
     form,
     tabList,
@@ -41,11 +41,6 @@ const _FormWrapper = ({
     const settings = useSettings()
     const panelsRef = useRef([])
 
-    useEffect(() => {
-        if (tabs?.setShowTabs) tabs.setShowTabs(false)
-        setValue('1')
-    }, [model?.id])
-
     const getFormFields = async (): Promise<void> => {
         if (calledFields) return
         setCalledFields(true)
@@ -56,6 +51,11 @@ const _FormWrapper = ({
         }
         setValue('1')
     }
+
+    useEffect(() => {
+        if (tabs?.setShowTabs) tabs.setShowTabs(false)
+        setValue('1')
+    }, [model?.id])
 
     useEffect(() => {
         if (formFields[value] || tabs.showTabs) return
@@ -98,7 +98,6 @@ const _FormWrapper = ({
     return !tabs.showTabs ? (
         <Box className='flex flex-col flex-grow overflow-hidden'>
             <Box
-                // eslint-disable-next-line max-len
                 className={`px-3 flex flex-shrink-0 justify-between items-center ${settings.getHeaderHeight()} overflow-hidden border-b`}
                 sx={{ backgroundColor: settings.getHex(settings.isDark() ? 800 : 50) }}>
                 {title ? <Typography variant='h6'>{title}</Typography> : null}
@@ -117,36 +116,11 @@ const _FormWrapper = ({
                         {tabList.length > 1 || notes.length ? (
                             <Box className='border-b'>
                                 <TabList
-                                    onChange={(_: SyntheticEvent, value: string) => setValue(value)}
-                                    aria-label=''>
-                                    {tabList.map((tab, index) => (
-                                        <Tab
-                                            key={`tab-${index + 1}`}
-                                            label={
-                                                errorBadges[index.toString()] ? (
-                                                    <Badge variant='dot' color='error'>
-                                                        {tab}
-                                                    </Badge>
-                                                ) : (
-                                                    tab
-                                                )
-                                            }
-                                            value={(index + 1).toString()}
-                                        />
-                                    ))}
-                                    {notes.filter((note) => note.image).length ? (
-                                        <Tab
-                                            label={t('component.formWrapper.tab.images')}
-                                            value='images'
-                                        />
-                                    ) : null}
-                                    {notes.length ? (
-                                        <Tab
-                                            label={t('component.formWrapper.tab.notes')}
-                                            value='notes'
-                                        />
-                                    ) : null}
-                                </TabList>
+                                    setValue={setValue}
+                                    errorBadges={errorBadges}
+                                    notes={notes}
+                                    tabList={tabList}
+                                />
                             </Box>
                         ) : null}
                         <Box className='flex-grow h-0 overflow-auto'>
@@ -180,7 +154,11 @@ const _FormWrapper = ({
                         </Box>
                         {!noButton.includes(value) ? (
                             <Box className='p-3 border-t'>
-                                <FormButton label={t('component.formButton.save')} />
+                                <Box className='text-right'>
+                                    <Button type='submit' variant='contained' color='primary'>
+                                        {t('component.formWrapper.button.save')}
+                                    </Button>
+                                </Box>
                             </Box>
                         ) : null}
                     </Box>

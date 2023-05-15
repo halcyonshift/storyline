@@ -10,11 +10,12 @@ describe('<Accordion />', () => {
             <Typography>Show me</Typography>
         </Accordion>
     )
-    beforeEach(async () => {
+
+    beforeEach(() => {
         render(accordion)
     })
 
-    it('is closed by default', async () => {
+    it('is closed by default', () => {
         expect(screen.getByText('Title')).toBeTruthy()
         expect(screen.queryByText('Show me')).toBeFalsy()
     })

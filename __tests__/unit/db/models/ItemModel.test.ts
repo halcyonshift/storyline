@@ -24,7 +24,7 @@ describe('ItemModel', () => {
         })
     })
 
-    it('displayName should return the item name', async () => {
+    it('displayName should return the item name', () => {
         expect(anItem.displayName).toEqual(anItem.name)
     })
 

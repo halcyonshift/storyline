@@ -18,7 +18,7 @@ describe('WorkModel', () => {
         })
     })
 
-    test('displayDeadline should return the given datetime', async () => {
+    test('displayDeadline should return the given datetime', () => {
         expect(aWork.displayDeadline).toEqual('Monday 01 Jan 2001 8:00')
     })
 
