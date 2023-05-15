@@ -1,5 +1,4 @@
 import { ReactElement } from 'react'
-import userEvent from '@testing-library/user-event'
 import { FormikProps, useFormik } from 'formik'
 import FormWrapper from '@sl/components/FormWrapper'
 import database from '@sl/db'
