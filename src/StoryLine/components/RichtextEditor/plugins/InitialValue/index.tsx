@@ -20,7 +20,7 @@ const InitialValuePlugin = ({ forwardRef, value }: InitialValueProps): null => {
 
                 try {
                     $insertNodes(nodes)
-                    if (forwardRef) {
+                    if (forwardRef?.current && typeof forwardRef.current?.scrollTo === 'function') {
                         setTimeout(() => forwardRef.current.scrollTo(0, 0), 1)
                     }
                 } catch {
@@ -28,7 +28,7 @@ const InitialValuePlugin = ({ forwardRef, value }: InitialValueProps): null => {
                 }
             }
         })
-    }, [value, editor])
+    }, [value, editor, forwardRef?.current])
 
     return null
 }

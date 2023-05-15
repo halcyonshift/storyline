@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Gallery /> renders correctly 1`] = `
+<div
+  className="MuiBox-root css-0"
+>
+  <div
+    aria-hidden={true}
+    className="MuiBackdrop-root z-10 css-sox5kk-MuiBackdrop-root"
+    onClick={[Function]}
+    style={
+      {
+        "opacity": 0,
+        "visibility": "hidden",
+      }
+    }
+  >
+    <div
+      className="w-[80%] css-1d9cypr-MuiStack-root"
+    >
+      <div
+        className="flex-grow MuiBox-root css-0"
+      />
+    </div>
+  </div>
+  <div
+    className="MuiBox-root css-0"
+  >
+    <div
+      className="MuiBox-root css-0"
+    >
+      <ul
+        className="MuiImageList-root MuiImageList-standard my-1 css-rvv586-MuiImageList-root"
+        style={
+          {
+            "gap": 4,
+            "gridTemplateColumns": "repeat(3, 1fr)",
+          }
+        }
+      >
+        <li
+          className="MuiImageListItem-root MuiImageListItem-standard css-ta95xa-MuiImageListItem-root"
+          onClick={[Function]}
+          style={
+            {
+              "gridColumnEnd": "span 1",
+              "gridRowEnd": "span 1",
+              "height": "auto",
+              "marginBottom": undefined,
+            }
+          }
+        >
+          <div
+            className="MuiImageListItemBar-root MuiImageListItemBar-positionBottom css-ztrqiq-MuiImageListItemBar-root"
+          >
+            <div
+              className="MuiImageListItemBar-titleWrap MuiImageListItemBar-titleWrapBottom css-1lizpae-MuiImageListItemBar-titleWrap"
+            >
+              <div
+                className="MuiImageListItemBar-title css-dasnyc-MuiImageListItemBar-title"
+              >
+                An Image
+              </div>
+              <div
+                className="MuiImageListItemBar-subtitle css-hk6gwf-MuiImageListItemBar-subtitle"
+              >
+                A subtitle
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Gallery /> renders correctly 2`] = `
+<div
+  className="MuiBox-root css-0"
+>
+  <div
+    aria-hidden={true}
+    className="MuiBackdrop-root z-10 css-sox5kk-MuiBackdrop-root"
+    onClick={[Function]}
+    style={
+      {
+        "opacity": 0,
+        "visibility": "hidden",
+      }
+    }
+  >
+    <div
+      className="w-[80%] css-1d9cypr-MuiStack-root"
+    >
+      <div
+        className="flex-grow MuiBox-root css-0"
+      />
+    </div>
+  </div>
+  <div
+    className="grid gap-1 grid-cols-2 MuiBox-root css-0"
+  >
+    <div
+      className="MuiBox-root css-0"
+    >
+      <ul
+        className="MuiImageList-root MuiImageList-standard css-rvv586-MuiImageList-root"
+        style={
+          {
+            "gap": 4,
+            "gridTemplateColumns": "repeat(3, 1fr)",
+          }
+        }
+      >
+        <li
+          className="MuiImageListItem-root MuiImageListItem-standard css-ta95xa-MuiImageListItem-root"
+          onClick={[Function]}
+          style={
+            {
+              "gridColumnEnd": "span 1",
+              "gridRowEnd": "span 1",
+              "height": "auto",
+              "marginBottom": undefined,
+            }
+          }
+        >
+          <div
+            className="MuiImageListItemBar-root MuiImageListItemBar-positionBottom css-ztrqiq-MuiImageListItemBar-root"
+          >
+            <div
+              className="MuiImageListItemBar-titleWrap MuiImageListItemBar-titleWrapBottom css-1lizpae-MuiImageListItemBar-titleWrap"
+            >
+              <div
+                className="MuiImageListItemBar-title css-dasnyc-MuiImageListItemBar-title"
+              >
+                An Image
+              </div>
+              <div
+                className="MuiImageListItemBar-subtitle css-hk6gwf-MuiImageListItemBar-subtitle"
+              >
+                A subtitle
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;

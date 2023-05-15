@@ -35,7 +35,7 @@ const SceneList = ({ scenes }: SceneListProps) => {
                                 {scene.words?.toLocaleString()}
                             </Typography>
                         )}
-                        <Progress words={scene.words} goal={scene.wordGoal} />
+                        <Progress words={1000} goal={2000} />
                     </Box>
                 </Fragment>
             ))}

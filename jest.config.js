@@ -9,7 +9,8 @@ module.exports = {
         "./src/StoryLine/App.tsx"
     ],
     moduleNameMapper: {
-      "@sl/(.*)": "<rootDir>/src/StoryLine/$1"
+      "@sl/(.*)": "<rootDir>/src/StoryLine/$1",
+      '\\.(css|less)$': 'identity-obj-proxy'
     },
     testMatch: ['**/*.test.{ts,tsx}'],
     transform: {

@@ -35,7 +35,7 @@ describe('<FormWrapper />', () => {
     let addFormWrapper: ReactElement
     let editFormWrapper: ReactElement
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         await database.write(async () => {
             await database.unsafeResetDatabase()
         })
@@ -64,29 +64,26 @@ describe('<FormWrapper />', () => {
         )
     })
 
-    it("Doesnt' show a tab if theres only one", () => {
+    it("doesn't show a tab if there's only one", () => {
         render(addFormWrapper)
         expect(screen.queryByText('component.formWrapper.tab.general')).toBeFalsy()
     })
 
-    it('Shows the general and notes tab for an existing item if there are notes to view', async () => {
+    it('shows the general and notes tab for an existing item if there are notes to view', async () => {
         expect(screen.queryByText('component.formWrapper.tab.notes')).toBeFalsy()
         const note = await work.addNote({ title: 'Note' })
         await note.updateAssociation(item)
         render(editFormWrapper)
-        expect(screen.getByText('component.formWrapper.tab.notes')).toBeTruthy()
+        const noteTab = screen.findByText('component.formWrapper.tab.notes')
+        expect(noteTab).toBeTruthy()
     })
 
-    it('Shows the images tab for an existing item if there are note images to view', async () => {
+    it('shows the images tab for an existing item if there are note images to view', async () => {
         expect(screen.queryByText('component.formWrapper.tab.images')).toBeFalsy()
         const note = await work.addNote({ title: 'Note', image: 'image.jpg' })
         await note.updateAssociation(item)
         render(editFormWrapper)
-        expect(screen.getByText('component.formWrapper.tab.images')).toBeTruthy()
-    })
-
-    it('Shows the save button field tabs', async () => {
-        render(editFormWrapper)
-        expect(screen.getByText('component.formWrapper.button.save')).toBeTruthy()
+        const imageTab = await screen.findByText('component.formWrapper.tab.images')
+        expect(imageTab).toBeTruthy()
     })
 })

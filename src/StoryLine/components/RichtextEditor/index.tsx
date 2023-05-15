@@ -124,7 +124,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                         setMenuElement={setMenuElement}
                         config={toolbar}
                     />
-                    <SearchPlugin />
+                    {'search' in toolbar ? <SearchPlugin /> : null}
                     <Box
                         className='rte-container relative flex-grow overflow-auto h-0 p-3'
                         ref={ref}
@@ -132,7 +132,8 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                         <RichTextPlugin
                             contentEditable={
                                 <ContentEditable
-                                    id='sceneBody'
+                                    id={id}
+                                    data-testid={id}
                                     ariaLabel='text editor'
                                     className='resize-none caret-slate-500 outline-none'
                                     spellCheck={spellCheck}
@@ -158,19 +159,23 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                             eventListener={handleTagDblClick}
                         />
                         <OnChangePlugin onChange={handleChange} />
-                        <VersionPlugin
-                            menu={menu}
-                            menuElement={menuElement}
-                            setMenu={setMenu}
-                            setMenuElement={setMenuElement}
-                        />
-                        <SavePlugin onSave={onSave} />
-                        <TagPlugin
-                            menu={menu}
-                            menuElement={menuElement}
-                            setMenu={setMenu}
-                            setMenuElement={setMenuElement}
-                        />
+                        {'version' in toolbar ? (
+                            <VersionPlugin
+                                menu={menu}
+                                menuElement={menuElement}
+                                setMenu={setMenu}
+                                setMenuElement={setMenuElement}
+                            />
+                        ) : null}
+                        {'save' in toolbar ? <SavePlugin onSave={onSave} /> : null}
+                        {'tag' in toolbar ? (
+                            <TagPlugin
+                                menu={menu}
+                                menuElement={menuElement}
+                                setMenu={setMenu}
+                                setMenuElement={setMenuElement}
+                            />
+                        ) : null}
                     </Box>
                 </LexicalComposer>
             </Box>

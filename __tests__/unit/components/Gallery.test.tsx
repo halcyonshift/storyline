@@ -1,5 +1,5 @@
-import { Typography } from '@mui/material'
 import userEvent from '@testing-library/user-event'
+import renderer from 'react-test-renderer'
 import Gallery from '@sl/components/Gallery'
 import { render, screen } from '../test-utils'
 
@@ -9,15 +9,18 @@ describe('<Gallery />', () => {
         expect(screen.queryByAltText('an image')).toBeFalsy()
     })
 
-    it('displays title and subtitle if given', () => {
+    it('displays title and subtitle if given', async () => {
         render(
             <Gallery
                 images={[{ path: 'image', title: 'An Image', subtitle: 'A subtitle' }]}
                 layout='vertical'
             />
         )
-        expect(screen.getByText('An Image')).toBeTruthy()
-        expect(screen.getByText('A subtitle')).toBeTruthy()
+
+        const title = await screen.findByText('An Image')
+        const subtitle = await screen.findByText('A subtitle')
+        expect(title).toBeTruthy()
+        expect(subtitle).toBeTruthy()
     })
 
     it('navigates forward', async () => {
@@ -29,12 +32,21 @@ describe('<Gallery />', () => {
                 ]}
             />
         )
-        const next = screen.getByLabelText('component.gallery.next')
-        expect(screen.getByText('Image 1')).toBeTruthy()
+
+        const next = await screen.findByLabelText('component.gallery.next')
+
+        const image1 = await screen.findByText('Image 1')
+        expect(image1).toBeTruthy()
+
         await userEvent.click(next)
-        expect(screen.getByText('Image 2')).toBeTruthy()
+
+        const image2 = await screen.findByText('Image 2')
+        expect(image2).toBeTruthy()
+
         await userEvent.click(next)
-        expect(screen.getByText('Image 1')).toBeTruthy()
+
+        const image3 = await screen.findByText('Image 1')
+        expect(image3).toBeTruthy()
     })
 
     it('navigates back', async () => {
@@ -46,11 +58,30 @@ describe('<Gallery />', () => {
                 ]}
             />
         )
-        const back = screen.getByLabelText('component.gallery.back')
-        expect(screen.getByText('Image 1')).toBeTruthy()
+
+        const back = await screen.findByLabelText('component.gallery.back')
+
+        const image1 = screen.findByText('Image 1')
+        expect(image1).toBeTruthy()
+
         await userEvent.click(back)
-        expect(screen.getByText('Image 2')).toBeTruthy()
+
+        const image2 = screen.findByText('Image 2')
+        expect(image2).toBeTruthy()
+
         await userEvent.click(back)
-        expect(screen.getByText('Image 1')).toBeTruthy()
+
+        const image3 = screen.findByText('Image 1')
+        expect(image3).toBeTruthy()
+    })
+
+    it('renders correctly', () => {
+        const images = [{ path: 'image', title: 'An Image', subtitle: 'A subtitle' }]
+
+        const verticalTree = renderer.create(<Gallery images={images} layout='vertical' />).toJSON()
+        expect(verticalTree).toMatchSnapshot()
+
+        const horizontalTree = renderer.create(<Gallery images={images} />).toJSON()
+        expect(horizontalTree).toMatchSnapshot()
     })
 })

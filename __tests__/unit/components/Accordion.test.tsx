@@ -5,14 +5,12 @@ import Accordion from '@sl/components/Accordion'
 import { render, screen } from '../test-utils'
 
 describe('<Accordion />', () => {
-    const accordion = (
-        <Accordion id='1' title={<Typography>Title</Typography>}>
-            <Typography>Show me</Typography>
-        </Accordion>
-    )
-
     beforeEach(() => {
-        render(accordion)
+        render(
+            <Accordion id='1' title={<Typography>Title</Typography>}>
+                <Typography>Show me</Typography>
+            </Accordion>
+        )
     })
 
     it('is closed by default', () => {
@@ -26,7 +24,13 @@ describe('<Accordion />', () => {
     })
 
     it('renders correctly', () => {
-        const tree = renderer.create(accordion).toJSON()
+        const tree = renderer
+            .create(
+                <Accordion id='1' title={<Typography>Title</Typography>}>
+                    <Typography>Show me</Typography>
+                </Accordion>
+            )
+            .toJSON()
         expect(tree).toMatchSnapshot()
     })
 })

@@ -1,4 +1,7 @@
+import { enableFetchMocks } from 'jest-fetch-mock'
+enableFetchMocks()
+
 window.api = {
     deleteFile: () => jest.fn(),
-    imageSrc: async () => "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII"
+    imageSrc: async () => "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
 }
