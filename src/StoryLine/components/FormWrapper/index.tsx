@@ -100,7 +100,13 @@ const _FormWrapper = ({
             <Box
                 className={`px-3 flex flex-shrink-0 justify-between items-center ${settings.getHeaderHeight()} overflow-hidden border-b`}
                 sx={{ backgroundColor: settings.getHex(settings.isDark() ? 800 : 50) }}>
-                {title ? <Typography variant='h6'>{title}</Typography> : null}
+                {title ? (
+                    <Typography
+                        variant='h6'
+                        className='flex flex-grow text-ellipses whitespace-nowrap overflow-hidden w-0'>
+                        {title}
+                    </Typography>
+                ) : null}
                 <Stack spacing={1} direction='row'>
                     {header}
                     {model ? <Status model={model} /> : null}

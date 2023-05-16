@@ -140,6 +140,28 @@ const schema = appSchema({
             ]
         }),
         tableSchema({
+            name: 'sprint',
+            columns: [
+                { name: 'work_id', type: 'string', isIndexed: true },
+                { name: 'word_goal', type: 'number', isOptional: true },
+                { name: 'start_at', type: 'number' },
+                { name: 'end_at', type: 'number' },
+                { name: 'created_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
+            ]
+        }),
+        tableSchema({
+            name: 'sprint_statistic',
+            columns: [
+                { name: 'work_id', type: 'string', isIndexed: true },
+                { name: 'sprint_id', type: 'string', isIndexed: true },
+                { name: 'section_id', type: 'string', isIndexed: true, isOptional: true },
+                { name: 'words', type: 'number' },
+                { name: 'created_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
+            ]
+        }),
+        tableSchema({
             name: 'statistic',
             columns: [
                 { name: 'work_id', type: 'string', isIndexed: true },

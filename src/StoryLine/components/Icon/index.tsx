@@ -1,4 +1,5 @@
 import {
+    AccessTime,
     Add,
     AddCircle,
     AddPhotoAlternate,
@@ -57,10 +58,13 @@ import {
     Search,
     Settings,
     StickyNote2,
-    Undo
+    Undo,
+    Visibility,
+    VisibilityOff
 } from '@mui/icons-material'
 
 const components = {
+    AccessTime,
     Add,
     AddCircle,
     AddPhotoAlternate,
@@ -119,7 +123,9 @@ const components = {
     Search,
     Settings,
     StickyNote2,
-    Undo
+    Undo,
+    Visibility,
+    VisibilityOff
 }
 
 const Icon = ({ name }: { name: string }) => {

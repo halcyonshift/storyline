@@ -494,6 +494,13 @@
                     "success": "The {{name}} has been saved"
                 }
             },
+            "sprint": {
+                "duration": "Duration",
+                "wordGoal": "Word goal",
+                "button": {
+                    "start": "Start!"
+                }
+            },
             "work": {
                 "title": {
                     "label": "Title",
@@ -611,6 +618,10 @@
                     "addPart": "Add part",
                     "addChapter": "Add chapter",
                     "addScene": "Add scene",
+                    "sprint": {
+                        "title": "Start sprint",
+                        "intro": "This will track how many words were written in the given time and replace the clock with a countdown. Click the countdown to hide it, or stop the sprint. Good luck!"
+                    },
                     "edit": "Edit",
                     "delete": "Delete",
                     "deleteConfirm": "Are you sure you want to delete {{name}}?",
@@ -795,8 +806,9 @@
                     "scene": "Scene {{number}}"
                 },
                 "word": {
-                    "line": "By period",
-                    "bar": "Best writing day"
+                    "day": "Best writing day",
+                    "period": "By period",
+                    "sprint": "Sprints"
                 },
                 "wordsByDay": {
                     "mon": "Monday",
