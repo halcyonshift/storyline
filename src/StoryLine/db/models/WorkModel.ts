@@ -42,6 +42,7 @@ export default class WorkModel extends Model {
         note: { type: 'has_many', foreignKey: 'work_id' },
         section: { type: 'has_many', foreignKey: 'work_id' },
         sprint: { type: 'has_many', foreignKey: 'work_id' },
+        sprint_statistic: { type: 'has_many', foreignKey: 'work_id' },
         statistic: { type: 'has_many', foreignKey: 'work_id' },
         tag: { type: 'has_many', foreignKey: 'work_id' }
     }
@@ -476,8 +477,8 @@ export default class WorkModel extends Model {
             )
         )
 
-        await this.batch(
-            ...data.sprint.map((sprintData: any) =>
+        /*
+                    ...data.sprint.map((sprintData: any) =>
                 this.collections.get<SprintModel>('sprint').prepareCreate((sprint) => {
                     sprint._raw.id = sprintData.id
                     sprint.work.set(this)
@@ -488,6 +489,9 @@ export default class WorkModel extends Model {
                     sprint.updatedAt = DateTime.fromMillis(sprintData.updated_at).toJSDate()
                 })
             ),
+            */
+
+        await this.batch(
             ...data.location.map((locationData: any) =>
                 this.collections.get<LocationModel>('location').prepareCreate((location) => {
                     location._raw.id = locationData.id
@@ -572,7 +576,7 @@ export default class WorkModel extends Model {
                     //
                 })
         }
-
+        /*
         for await (const statisticData of data.sprint_statistic) {
             await this.collections
                 .get<SprintStatisticModel>('sprint_statistic')
@@ -589,6 +593,7 @@ export default class WorkModel extends Model {
                     //
                 })
         }
+        */
 
         for await (const tagData of data.tag) {
             await this.collections
