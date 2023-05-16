@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TabPanel.Images /> renders correctly 1`] = `
+<ul
+  className="MuiImageList-root MuiImageList-standard m-1 css-rvv586-MuiImageList-root"
+  style={
+    {
+      "gap": 4,
+      "gridTemplateColumns": "repeat(3, 1fr)",
+    }
+  }
+/>
+`;

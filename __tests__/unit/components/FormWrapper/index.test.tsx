@@ -7,7 +7,7 @@ import { ItemDataType } from '@sl/db/models/types'
 import ImageField from '@sl/components/form/ImageField'
 import TextareaField from '@sl/components/form/TextareaField'
 import TextField from '@sl/components/form/TextField'
-import { render, screen } from '../test-utils'
+import { render, screen } from '../../test-utils'
 
 const MockForm = ({ item, initialValues }: { item?: ItemModel; initialValues: any }) => {
     const form: FormikProps<ItemDataType> = useFormik<ItemDataType>({
