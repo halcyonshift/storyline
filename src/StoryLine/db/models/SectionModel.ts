@@ -22,6 +22,7 @@ import {
     ItemModel,
     LocationModel,
     NoteModel,
+    SprintStatisticModel,
     StatisticModel,
     TagModel,
     WorkModel
@@ -32,6 +33,7 @@ export default class SectionModel extends Model {
     public static associations: Associations = {
         work: { type: 'belongs_to', key: 'work_id' },
         note: { type: 'has_many', foreignKey: 'section_id' },
+        sprint_statistic: { type: 'has_many', foreignKey: 'section_id' },
         statistic: { type: 'has_many', foreignKey: 'section_id' },
         tag: { type: 'has_many', foreignKey: 'section_id' },
         section: { type: 'belongs_to', key: 'section_id' },
@@ -56,6 +58,7 @@ export default class SectionModel extends Model {
     @relation('character', 'point_of_view_character_id')
     pointOfViewCharacter!: Relation<CharacterModel>
     @children('note') note!: Query<NoteModel>
+    @children('sprint_statistic') sprintStatistic!: Query<SprintStatisticModel>
     @children('statistic') statistic!: Query<StatisticModel>
     @children('tag') tag!: Query<TagModel>
 
@@ -257,6 +260,7 @@ export default class SectionModel extends Model {
     async destroyPermanently(): Promise<void> {
         this.note.destroyAllPermanently()
         this.statistic.destroyAllPermanently()
+        this.sprintStatistic.destroyAllPermanently()
         this.tag.destroyAllPermanently()
         this.versions.destroyAllPermanently()
         return super.destroyPermanently()

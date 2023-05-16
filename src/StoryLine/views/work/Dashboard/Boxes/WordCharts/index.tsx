@@ -164,8 +164,16 @@ const WordChartsBox = () => {
                             setValue(newValue)
                         }}
                         aria-label=''>
-                        <Tab label={t('view.work.dashboard.wordCharts.count')} value='1' />
-                        <Tab label={t('view.work.dashboard.wordCharts.written')} value='2' />
+                        <Tab
+                            sx={{ whiteSpace: 'nowrap' }}
+                            label={t('view.work.dashboard.wordCharts.count')}
+                            value='1'
+                        />
+                        <Tab
+                            sx={{ whiteSpace: 'nowrap' }}
+                            label={t('view.work.dashboard.wordCharts.written')}
+                            value='2'
+                        />
                     </TabList>
                 </Box>
                 <TabPanel value='1' sx={PADDING}>

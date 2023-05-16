@@ -14,8 +14,7 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
             className='flex flex-col flex-grow'>
             {navigation || action ? (
                 <Box
-                    // eslint-disable-next-line max-len
-                    className={`flex justify-between ${settings.getHeaderHeight()} border-b overflow-hidden`}>
+                    className={`flex justify-between items-center ${settings.getHeaderHeight()} border-b overflow-hidden`}>
                     {navigation
                         ? navigation.map((item) => (
                               <TooltipIconButton
@@ -27,12 +26,10 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
                               />
                           ))
                         : null}
-                    {action ? <Box className='ml-auto'>{action}</Box> : null}
+                    <Box className='ml-auto whitespace-nowrap'>{action}</Box>
                 </Box>
             ) : null}
-            <Box
-                className='flex-grow overflow-y-auto scrollbar-hidden border-r border-dotted h-0
-            shadow-md'>
+            <Box className='flex-grow overflow-y-auto scrollbar-hidden border-r border-dotted h-0 shadow-md'>
                 {children}
             </Box>
             <Box

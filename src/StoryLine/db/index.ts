@@ -11,6 +11,8 @@ import {
     LocationModel,
     NoteModel,
     SectionModel,
+    SprintModel,
+    SprintStatisticModel,
     StatisticModel,
     TagModel,
     WorkModel
@@ -24,7 +26,6 @@ const adapter = new LokiJSAdapter({
     dbName: process.env.DB_NAME
 })
 
-// Then, make a Watermelon database from it!
 const database = new Database({
     adapter,
     modelClasses: [
@@ -34,6 +35,8 @@ const database = new Database({
         LocationModel,
         NoteModel,
         SectionModel,
+        SprintModel,
+        SprintStatisticModel,
         StatisticModel,
         TagModel,
         WorkModel

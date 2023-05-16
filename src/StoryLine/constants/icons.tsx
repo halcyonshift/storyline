@@ -15,7 +15,9 @@ export const GLOBAL_ICONS = {
     next: <Icon name='ArrowForwardIos' />,
     open: <Icon name='FileOpen' />,
     random: <Icon name='Casino' />,
-    up: <Icon name='ArrowUpward' />
+    up: <Icon name='ArrowUpward' />,
+    show: <Icon name='Visibility' />,
+    hide: <Icon name='VisibilityOff' />
 }
 
 export const CHARACTER_ICONS = {
@@ -85,15 +87,16 @@ export const RICHTEXT_ICONS = {
 }
 
 export const SEARCH_ICONS = {
-    search: <Icon name='Search' />,
-    clear: <Icon name='Clear' />
+    clear: <Icon name='Clear' />,
+    search: <Icon name='Search' />
 }
 
 export const SECTION_ICONS = {
     section: <Icon name='MenuBook' />,
     addPart: <Icon name='Queue' />,
     addChapter: <Icon name='LibraryBooks' />,
-    addScene: <Icon name='PeopleAlt' />,
+    addScene: <Icon name='Description' />,
+    sprint: <Icon name='AccessTime' />,
     version: <Icon name='RestorePage' />
 }
 

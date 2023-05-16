@@ -11,13 +11,13 @@ import schema from '@sl/db/schema'
 import { SearchResultType } from '@sl/layouts/Work/Panel/Search/types'
 import { displayDateTime } from '@sl/utils'
 import { t } from 'i18next'
-
 import {
     CharacterDataType,
     ConnectionDataType,
     ItemDataType,
     LocationDataType,
     NoteDataType,
+    SprintDataType,
     WorkDataType
 } from './types'
 import {
@@ -27,10 +27,11 @@ import {
     LocationModel,
     NoteModel,
     SectionModel,
+    SprintModel,
+    SprintStatisticModel,
     StatisticModel,
     TagModel
 } from '.'
-
 export default class WorkModel extends Model {
     static table = 'work'
     public static associations: Associations = {
@@ -40,6 +41,7 @@ export default class WorkModel extends Model {
         location: { type: 'has_many', foreignKey: 'work_id' },
         note: { type: 'has_many', foreignKey: 'work_id' },
         section: { type: 'has_many', foreignKey: 'work_id' },
+        sprint: { type: 'has_many', foreignKey: 'work_id' },
         statistic: { type: 'has_many', foreignKey: 'work_id' },
         tag: { type: 'has_many', foreignKey: 'work_id' }
     }
@@ -61,6 +63,8 @@ export default class WorkModel extends Model {
     @children('location') location!: Query<LocationModel>
     @children('note') note!: Query<NoteModel>
     @children('section') section!: Query<SectionModel>
+    @children('sprint') sprint!: Query<SprintModel>
+    @children('sprint_statistic') sprint_statistic!: Query<SprintStatisticModel>
     @children('statistic') statistic!: Query<StatisticModel>
     @children('tag') tag!: Query<StatisticModel>
 
@@ -332,6 +336,8 @@ export default class WorkModel extends Model {
         const section = await this.section.fetch()
         const statistic = await this.statistic.fetch()
         const tag = await this.tag.fetch()
+        const sprint = await this.sprint.fetch()
+        const sprint_statistic = await this.sprint_statistic.fetch()
 
         const backupPath = await this.database.localStorage.get<string>('autoBackupPath')
 
@@ -343,6 +349,8 @@ export default class WorkModel extends Model {
             location,
             note,
             section,
+            sprint,
+            sprint_statistic,
             statistic,
             tag
         }
@@ -358,6 +366,8 @@ export default class WorkModel extends Model {
             location: [],
             note: [],
             section: [],
+            sprint: [],
+            sprint_statistic: [],
             statistic: [],
             tag: []
         }
@@ -390,6 +400,8 @@ export default class WorkModel extends Model {
         await this.location.destroyAllPermanently()
         await this.note.destroyAllPermanently()
         await this.section.destroyAllPermanently()
+        await this.sprint.destroyAllPermanently()
+        await this.sprint_statistic.destroyAllPermanently()
         await this.statistic.destroyAllPermanently()
         await this.tag.destroyAllPermanently()
 
@@ -465,6 +477,17 @@ export default class WorkModel extends Model {
         )
 
         await this.batch(
+            ...data.sprint.map((sprintData: any) =>
+                this.collections.get<SprintModel>('sprint').prepareCreate((sprint) => {
+                    sprint._raw.id = sprintData.id
+                    sprint.work.set(this)
+                    sprint.startAt = DateTime.fromMillis(sprintData.start_at).toJSDate()
+                    sprint.endAt = DateTime.fromMillis(sprintData.end_at).toJSDate()
+                    sprint.wordGoal = sprintData.word_goal
+                    sprint.createdAt = DateTime.fromMillis(sprintData.created_at).toJSDate()
+                    sprint.updatedAt = DateTime.fromMillis(sprintData.updated_at).toJSDate()
+                })
+            ),
             ...data.location.map((locationData: any) =>
                 this.collections.get<LocationModel>('location').prepareCreate((location) => {
                     location._raw.id = locationData.id
@@ -541,6 +564,24 @@ export default class WorkModel extends Model {
                     statistic._raw.id = statisticData.id
                     statistic.work.set(this)
                     statistic._setRaw('section_id', statisticData.section_id)
+                    statistic.words = statisticData.words
+                    statistic.createdAt = DateTime.fromMillis(statisticData.created_at).toJSDate()
+                    statistic.updatedAt = DateTime.fromMillis(statisticData.updated_at).toJSDate()
+                })
+                .catch(() => {
+                    //
+                })
+        }
+
+        for await (const statisticData of data.sprint_statistic) {
+            await this.collections
+                .get<SprintStatisticModel>('sprint_statistic')
+                .create((statistic) => {
+                    statistic._raw.id = statisticData.id
+                    statistic.work.set(this)
+                    statistic._setRaw('sprint_id', statisticData.sprint_id)
+                    statistic._setRaw('section_id', statisticData.section_id)
+                    statistic.words = statisticData.words
                     statistic.createdAt = DateTime.fromMillis(statisticData.created_at).toJSDate()
                     statistic.updatedAt = DateTime.fromMillis(statisticData.updated_at).toJSDate()
                 })
@@ -673,6 +714,15 @@ export default class WorkModel extends Model {
             section.order = count + 1
             section.mode = SectionMode.PART
             section.status = Status.TODO
+        })
+    }
+
+    @writer async addSprint(data: Partial<SprintDataType>) {
+        return await this.collections.get<SprintModel>('sprint').create((sprint) => {
+            sprint.work.set(this)
+            sprint.wordGoal = data.wordGoal
+            sprint.startAt = data.startAt
+            sprint.endAt = data.endAt
         })
     }
 
