@@ -3,4 +3,5 @@ export type ToolbarPluginProps = {
     setMenu: (menu: string | null) => void
     setMenuElement: (element: HTMLElement | null) => void
     config?: string[]
+    isFullscreen: boolean
 }
