@@ -15,5 +15,11 @@ export default {
     exportHTML: (fileName: string, html: string) =>
         ipcRenderer.invoke('export-html', fileName, html),
     exportDocx: (fileName: string, html: string) =>
-        ipcRenderer.invoke('export-docx', fileName, html)
+        ipcRenderer.invoke('export-docx', fileName, html),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    fullScreenEvent: (callback: any) => {
+        ipcRenderer.on('full-screen', (event, isFullScreen) => {
+            callback(isFullScreen)
+        })
+    }
 }

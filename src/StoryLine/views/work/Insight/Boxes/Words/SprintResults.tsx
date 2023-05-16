@@ -6,6 +6,7 @@ import { SprintModel, WorkModel } from '@sl/db/models'
 
 const Result = ({ sprint }: { sprint: SprintModel }) => {
     const [words, setWords] = useState<number>(0)
+
     useEffect(() => {
         sprint.wordCount().then((words) => setWords(words))
     }, [])
@@ -19,9 +20,7 @@ const Result = ({ sprint }: { sprint: SprintModel }) => {
                 {DateTime.fromJSDate(sprint.startAt).toLocaleString(DateTime.TIME_SIMPLE)} -
                 {DateTime.fromJSDate(sprint.endAt).toLocaleString(DateTime.TIME_SIMPLE)}
             </Typography>
-            <Typography>
-                {words}/{sprint.wordGoal}
-            </Typography>
+            <Typography>{sprint.wordGoal ? `${words}/${sprint.wordGoal}` : words}</Typography>
         </Box>
     )
 }

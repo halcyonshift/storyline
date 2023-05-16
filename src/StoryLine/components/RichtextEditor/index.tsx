@@ -34,6 +34,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
     const [canSave, setCanSave] = useState<boolean>(false)
     const [menu, setMenu] = useState<string | null>(null)
     const [menuElement, setMenuElement] = useState<HTMLElement | null>(null)
+    const [isFullscreen, setIsFullscreen] = useState<boolean>(false)
     const {
         autoSave,
         editorFont,
@@ -84,12 +85,27 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
         }
     }
 
+    const handleFullscreen = (state: boolean) => {
+        setIsFullscreen(state)
+    }
+
+    useEffect(() => {
+        api.fullScreenEvent(handleFullscreen)
+        return () => {
+            api.fullScreenEvent(handleFullscreen)
+        }
+    }, [])
+
     useEffect(() => setCanSave(false), [id])
 
     return useMemo(
         () => (
             <Box
-                className='flex-grow flex flex-col'
+                className={
+                    isFullscreen
+                        ? 'absolute bg-white flex flex-col top-0 bottom-0 left-0 right-0 z-50'
+                        : 'flex-grow flex flex-col'
+                }
                 sx={{
                     fontFamily: editorFont,
                     fontSize: editorFontSize
@@ -123,6 +139,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                         setMenu={setMenu}
                         setMenuElement={setMenuElement}
                         config={toolbar}
+                        isFullscreen={isFullscreen}
                     />
                     {'search' in toolbar ? <SearchPlugin /> : null}
                     <Box
@@ -180,7 +197,16 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                 </LexicalComposer>
             </Box>
         ),
-        [id, initialValue, menu, menuElement, paragraphSpacing, lineHeight, indentParagraph]
+        [
+            id,
+            initialValue,
+            menu,
+            menuElement,
+            paragraphSpacing,
+            lineHeight,
+            indentParagraph,
+            isFullscreen
+        ]
     )
 }
 

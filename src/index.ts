@@ -67,16 +67,20 @@ const createWindow = (): void => {
         }
     })
 
-    mainWindow.on('will-resize', (_, newBounds) => {
-        mainWindow.webContents.send('window-will-resize', newBounds)
-    })
-
     mainWindow.once('ready-to-show', () => {
         splashWindow.close()
         mainWindow.show()
         if (!app.isPackaged) {
             mainWindow.webContents.openDevTools()
         }
+    })
+
+    mainWindow.on('enter-full-screen', () => {
+        mainWindow.webContents.send('full-screen', true)
+    })
+
+    mainWindow.on('leave-full-screen', () => {
+        mainWindow.webContents.send('full-screen', false)
     })
 
     mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY).catch(() => null)

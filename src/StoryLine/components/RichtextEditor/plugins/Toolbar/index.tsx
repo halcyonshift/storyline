@@ -38,7 +38,8 @@ const ToolbarPlugin = ({
     menu,
     setMenu,
     setMenuElement,
-    config
+    config,
+    isFullscreen
 }: ToolbarPluginProps): ReactElement => {
     const { windowWidth, navigationWidth, panelWidth } = useLayout()
     const [toolbarWidth, setToolbarWidth] = useState<number>(
@@ -102,8 +103,8 @@ const ToolbarPlugin = ({
     }, [editor])
 
     useEffect(() => {
-        setToolbarWidth(windowWidth - navigationWidth - panelWidth)
-    }, [windowWidth, navigationWidth, panelWidth])
+        setToolbarWidth(isFullscreen ? windowWidth : windowWidth - navigationWidth - panelWidth)
+    }, [windowWidth, navigationWidth, panelWidth, isFullscreen])
 
     useEffect(
         () =>
