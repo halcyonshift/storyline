@@ -27,7 +27,7 @@ describe('CharacterModel', () => {
         })
     })
 
-    it('isPrimary should be true for main characters and false for secondary characters and tertiary characters', async () => {
+    it('isPrimary should be true for main characters and false for secondary characters and tertiary characters', () => {
         expect(aCharacter.isPrimary).toBeTruthy()
         expect(aCharacter.isSecondary).toBeFalsy()
         expect(aCharacter.isTertiary).toBeFalsy()

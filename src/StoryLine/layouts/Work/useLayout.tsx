@@ -15,10 +15,10 @@ export const LayoutProvider = ({
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth)
 
     const updateWidths = async () => {
-        setNavigationWidth(navigationRef.current.offsetWidth)
-        setPanelWidth(panelRef.current.offsetWidth)
-        setMainWidth(mainRef.current.offsetWidth)
-        setWindowWidth(window.innerWidth)
+        setNavigationWidth(navigationRef.current ? navigationRef.current.offsetWidth : 0)
+        setPanelWidth(panelRef.current ? panelRef.current.offsetWidth : 0)
+        setMainWidth(mainRef.current ? mainRef.current.offsetWidth : 0)
+        setWindowWidth(window.innerWidth || 0)
     }
 
     useEffect(() => {

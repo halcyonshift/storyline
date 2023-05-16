@@ -2,7 +2,6 @@ import { DateTime } from 'luxon'
 import database from '@sl/db'
 import { SectionMode } from '@sl/constants/sectionMode'
 import { SectionModel, WorkModel } from '@sl/db/models'
-
 import { render, screen } from '../../test-utils'
 
 describe('SectionModel', () => {
@@ -49,7 +48,7 @@ describe('SectionModel', () => {
         expect(aSection.displayTitle).toEqual('A Section Title (1)')
     })
 
-    test('displayName returns displayTitle', async () => {
+    test('displayName returns displayTitle', () => {
         expect(aSection.displayName).toEqual(aSection.displayTitle)
     })
 
@@ -99,19 +98,19 @@ describe('SectionModel', () => {
         expect(screen.getByText(descriptionText)).toBeTruthy()
     })
 
-    test('sortDate should return the date in milliseconds', async () => {
+    test('sortDate should return the date in milliseconds', () => {
         expect(aSection.sortDate).toEqual(978336000)
     })
 
-    test('displayDate should return the given date', async () => {
+    test('displayDate should return the given date', () => {
         expect(aSection.displayDate).toEqual('Monday 01 Jan 2001')
     })
 
-    test('displayTime should return the given date', async () => {
+    test('displayTime should return the given date', () => {
         expect(aSection.displayTime).toEqual('8:00')
     })
 
-    test('displayDateTime should return the given datetime', async () => {
+    test('displayDateTime should return the given datetime', () => {
         expect(aSection.displayDateTime).toEqual('Monday 01 Jan 2001 8:00')
     })
 
@@ -282,7 +281,7 @@ describe('SectionModel', () => {
         expect(countTags).toBe(4)
     })
 
-    test('daysRemining is null if no given deadlineAt', async () => {
+    test('daysRemining is null if no given deadlineAt', () => {
         expect(aSection.daysRemaining).toBeNull()
     })
 

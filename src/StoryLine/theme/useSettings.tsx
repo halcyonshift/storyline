@@ -43,7 +43,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     const [spellCheck, setSpellCheck] = useState<boolean>(DEFAULT_SPELL_CHECK)
     const [theme, setTheme] = useState<Theme>(createTheme({}))
 
-    useEffect(() => {
+    const init = () => {
         database.localStorage
             .get<number>('autoBackupFreq')
             .then((autoBackupFreq) => setAutoBackupFreq(autoBackupFreq || DEFAULT_AUTO_BACKUP_FREQ))
@@ -89,6 +89,10 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
             .then((paragraphSpacing) =>
                 setParagraphSpacing(paragraphSpacing || DEFAULT_PARAGRAPH_SPACING)
             )
+    }
+
+    useEffect(() => {
+        if (process.env.ENVIRONMENT) init()
     }, [])
 
     useEffect(() => {

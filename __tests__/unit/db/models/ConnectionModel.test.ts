@@ -45,19 +45,19 @@ describe('ConnectionModel', () => {
         })
     })
 
-    it('sortDate should return the date in milliseconds', async () => {
+    it('sortDate should return the date in milliseconds', () => {
         expect(aConnection.sortDate).toEqual(978336000)
     })
 
-    it('displayDate should return the given date', async () => {
+    it('displayDate should return the given date', () => {
         expect(aConnection.displayDate).toEqual('Monday 01 Jan 2001')
     })
 
-    it('displayTime should return the given date', async () => {
+    it('displayTime should return the given date', () => {
         expect(aConnection.displayTime).toEqual('8:00')
     })
 
-    it('displayDateTime should return the given datetime', async () => {
+    it('displayDateTime should return the given datetime', () => {
         expect(aConnection.displayDateTime).toEqual('Monday 01 Jan 2001 8:00')
     })
 

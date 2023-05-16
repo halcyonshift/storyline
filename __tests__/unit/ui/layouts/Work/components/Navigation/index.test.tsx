@@ -15,7 +15,7 @@ describe('<Navigation />', () => {
     const setCurrentPanel = jest.fn((panel: string | null) => {})
     const user = userEvent.setup()
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         render(<Navigation forwardRef={null} currentPanel='' setCurrentPanel={setCurrentPanel} />)
     })
 

@@ -17,6 +17,13 @@ import {
     WorkDataType
 } from '@sl/db/models/types'
 
+export type FormTabListProps = {
+    setValue: (value: string) => void
+    tabList: string[]
+    notes: NoteModel[]
+    errorBadges: ErrorBadgeType
+}
+
 export type FormWrapperProps = {
     form: FormikProps<
         | CharacterDataType

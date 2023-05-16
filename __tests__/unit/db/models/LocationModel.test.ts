@@ -24,7 +24,7 @@ describe('LocationModel', () => {
         })
     })
 
-    test('displayName should return the location name', async () => {
+    test('displayName should return the location name', () => {
         expect(aLocation.displayName).toEqual(aLocation.name)
     })
 
