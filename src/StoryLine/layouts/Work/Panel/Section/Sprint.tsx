@@ -94,7 +94,11 @@ const Sprint = ({ work }: SprintType) => {
             .then(async (statistics) => {
                 if (!statistics.length) {
                     const words = await section.getWordCount()
-                    await sprint.addStatistic({ section, words })
+                    await sprint.addStatistic({
+                        section,
+                        wordsStart: words,
+                        words: 0
+                    })
                 }
             })
     }, [section?.id, sprint?.id])

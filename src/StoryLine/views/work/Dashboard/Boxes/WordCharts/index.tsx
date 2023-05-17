@@ -76,7 +76,6 @@ const WordChartsBox = () => {
         async (stats: StatisticModel[]) => {
             const sectionIds = [...new Set(stats.map((stat) => stat.section.id))]
             const fill: ObjectObjectNumber = {}
-            const originalStats = await work.statistics.fetch()
 
             for await (const date of statisticsDates) {
                 const ymd = date.toFormat(YYYYMMDD)
@@ -90,7 +89,7 @@ const WordChartsBox = () => {
                     )
 
                     if (!stat) {
-                        stat = originalStats
+                        stat = fullStatistics
                             .filter(
                                 (stat) =>
                                     stat.section.id === sectionId &&

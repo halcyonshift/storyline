@@ -21,7 +21,7 @@ export default class SprintModel extends Model {
 
     async wordCount(): Promise<number> {
         const stats = await this.sprint_statistic.fetch()
-        return stats.reduce((count, stat) => count + stat.words, 0)
+        return stats.reduce((count, stat) => count + (stat.words - stat.wordsStart), 0)
     }
 
     async destroyPermanently(): Promise<void> {
@@ -44,6 +44,7 @@ export default class SprintModel extends Model {
                 statistic.work.set(work)
                 statistic.section.set(data.section)
                 statistic.words = Number(data.words)
+                statistic.wordsStart = Number(data.wordsStart)
             })
     }
 

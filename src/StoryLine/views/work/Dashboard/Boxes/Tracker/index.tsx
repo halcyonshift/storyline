@@ -38,8 +38,8 @@ const TrackerBox = () => {
     }, [])
 
     return (
-        <Box className='p-3 h-full'>
-            <Box className='pb-1'>
+        <Box className='p-3 h-full flex flex-col'>
+            <Box className='pb-2'>
                 <Typography variant='h6' textAlign='left'>
                     {totalWords.toLocaleString(settings.language)}
                     {work.wordGoal

@@ -71,34 +71,36 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
             tabList={[t('component.formWrapper.tab.general')]}>
             <>
                 <Box className='grid grid-cols-2 gap-3 '>
-                    <Box className='grid grid-cols-1 gap-3'>
-                        <TextField
-                            label={t('form.work.note.title.label')}
-                            name='title'
-                            form={form}
-                        />
-                        <TextField
-                            label={t('form.work.note.url')}
-                            name='url'
-                            form={form}
-                            type='url'
-                            placeholder='https://'
-                        />
-                        <DateField form={form} label={'form.work.note.date'} fieldName='date' />
-                        <ColorField name='color' form={form} />
-                        <FormGroup>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        name='isTaggable'
-                                        checked={form.values.isTaggable}
-                                        onChange={form.handleChange}
-                                        inputProps={{ 'aria-label': 'controlled' }}
-                                    />
-                                }
-                                label={t('form.work.note.isTaggable')}
+                    <Box>
+                        <Box className='grid grid-cols-1 gap-3'>
+                            <TextField
+                                label={t('form.work.note.title.label')}
+                                name='title'
+                                form={form}
                             />
-                        </FormGroup>
+                            <TextField
+                                label={t('form.work.note.url')}
+                                name='url'
+                                form={form}
+                                type='url'
+                                placeholder='https://'
+                            />
+                            <DateField form={form} label={'form.work.note.date'} fieldName='date' />
+                            <ColorField name='color' form={form} />
+                            <FormGroup>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name='isTaggable'
+                                            checked={form.values.isTaggable}
+                                            onChange={form.handleChange}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                        />
+                                    }
+                                    label={t('form.work.note.isTaggable')}
+                                />
+                            </FormGroup>
+                        </Box>
                     </Box>
                     <Box>
                         <ImageField form={form} dir='notes' />

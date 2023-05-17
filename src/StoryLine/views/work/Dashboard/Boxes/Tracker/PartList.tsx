@@ -25,8 +25,7 @@ const PartList = ({ parts, chapters, scenes }: PartListProps) => {
                         <Box className='col-span-2 px-2 py-1'>
                             <Typography
                                 variant='body1'
-                                className='whitespace-nowrap overflow-hidden text-ellipsis
-                pr-3'>
+                                className='whitespace-nowrap overflow-hidden text-ellipsis pr-3'>
                                 {part.displayTitle}
                             </Typography>
                             {part.daysRemaining ? (

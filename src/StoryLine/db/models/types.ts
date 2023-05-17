@@ -108,6 +108,7 @@ export type SprintDataType = {
 export type SprintStatisticDataType = {
     section: SectionModel
     words: number | null
+    wordsStart: number | null
 }
 
 export type StatisticDataType = number

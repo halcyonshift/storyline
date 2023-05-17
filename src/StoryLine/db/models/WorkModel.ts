@@ -639,7 +639,7 @@ export default class WorkModel extends Model {
         .get<StatisticModel>('statistic')
         .query(
             Q.experimentalNestedJoin('section', 'work'),
-            Q.on('section', Q.on('work', 'id', this.id))
+            Q.on('section', [Q.on('work', 'id', this.id), Q.where('mode', 'SCENE')])
         )
 
     @lazy tags = this.collections
