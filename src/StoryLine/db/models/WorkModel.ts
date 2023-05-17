@@ -393,7 +393,8 @@ export default class WorkModel extends Model {
         return { data: jsonData, images: [...new Set(images)], backupPath: backupPath || '' }
     }
 
-    @writer async restore(data: any) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @writer async restore(data: any, images: []) {
         api.deleteFile(this.image)
         await this.character.destroyAllPermanently()
         await this.connection.destroyAllPermanently()

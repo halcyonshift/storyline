@@ -28,107 +28,110 @@ describe('WorkModel', () => {
     })
 
     test('restore', async () => {
-        await aWork.restore({
-            work: [
-                {
-                    id: 'work',
-                    title: 'A restored title',
-                    deadline_at: 0,
-                    created_at: 0,
-                    updated_at: 0
-                }
-            ],
-            character: [
-                {
-                    id: 'character',
-                    mode: 'PRIMARY',
-                    created_at: 0,
-                    updated_at: 0
-                }
-            ],
-            connection: [
-                {
-                    id: 'connection',
-                    created_at: 0,
-                    updated_at: 0
-                }
-            ],
-            item: [
-                {
-                    id: 'item',
-                    created_at: 0,
-                    updated_at: 0
-                }
-            ],
-            location: [
-                {
-                    id: 'location',
-                    created_at: 0,
-                    updated_at: 0
-                },
-                {
-                    id: 'location2',
-                    location_id: 'location',
-                    created_at: 0,
-                    updated_at: 0
-                }
-            ],
-            note: [
-                {
-                    id: 'note',
-                    created_at: 0,
-                    updated_at: 0
-                },
-                {
-                    id: 'note2',
-                    note_id: 'note',
-                    is_taggable: 1,
-                    created_at: 0,
-                    updated_at: 0
-                }
-            ],
-            section: [
-                {
-                    id: 'section',
-                    mode: 'PART',
-                    created_at: 0,
-                    updated_at: 0,
-                    deadline_at: 0
-                },
-                {
-                    id: 'section2',
-                    mode: 'CHAPTER',
-                    section_id: 'section',
-                    point_of_view_character_id: 'character',
-                    created_at: 0,
-                    updated_at: 0,
-                    deadline_at: 1
-                },
-                {
-                    id: 'section3',
-                    mode: 'SCENE',
-                    section_id: 'section2',
-                    created_at: 0,
-                    updated_at: 0,
-                    deadline_at: 0
-                }
-            ],
-            statistic: [
-                {
-                    id: 'statistic',
-                    created_at: 0,
-                    updated_at: 0
-                }
-            ],
-            tag: [
-                {
-                    id: 'tag',
-                    character_id: 'character',
-                    created_at: 0,
-                    updated_at: 0
-                }
-            ]
-        })
+        await aWork.restore(
+            {
+                work: [
+                    {
+                        id: 'work',
+                        title: 'A restored title',
+                        deadline_at: 0,
+                        created_at: 0,
+                        updated_at: 0
+                    }
+                ],
+                character: [
+                    {
+                        id: 'character',
+                        mode: 'PRIMARY',
+                        created_at: 0,
+                        updated_at: 0
+                    }
+                ],
+                connection: [
+                    {
+                        id: 'connection',
+                        created_at: 0,
+                        updated_at: 0
+                    }
+                ],
+                item: [
+                    {
+                        id: 'item',
+                        created_at: 0,
+                        updated_at: 0
+                    }
+                ],
+                location: [
+                    {
+                        id: 'location',
+                        created_at: 0,
+                        updated_at: 0
+                    },
+                    {
+                        id: 'location2',
+                        location_id: 'location',
+                        created_at: 0,
+                        updated_at: 0
+                    }
+                ],
+                note: [
+                    {
+                        id: 'note',
+                        created_at: 0,
+                        updated_at: 0
+                    },
+                    {
+                        id: 'note2',
+                        note_id: 'note',
+                        is_taggable: 1,
+                        created_at: 0,
+                        updated_at: 0
+                    }
+                ],
+                section: [
+                    {
+                        id: 'section',
+                        mode: 'PART',
+                        created_at: 0,
+                        updated_at: 0,
+                        deadline_at: 0
+                    },
+                    {
+                        id: 'section2',
+                        mode: 'CHAPTER',
+                        section_id: 'section',
+                        point_of_view_character_id: 'character',
+                        created_at: 0,
+                        updated_at: 0,
+                        deadline_at: 1
+                    },
+                    {
+                        id: 'section3',
+                        mode: 'SCENE',
+                        section_id: 'section2',
+                        created_at: 0,
+                        updated_at: 0,
+                        deadline_at: 0
+                    }
+                ],
+                statistic: [
+                    {
+                        id: 'statistic',
+                        created_at: 0,
+                        updated_at: 0
+                    }
+                ],
+                tag: [
+                    {
+                        id: 'tag',
+                        character_id: 'character',
+                        created_at: 0,
+                        updated_at: 0
+                    }
+                ]
+            },
+            []
+        )
         expect(aWork.title).toEqual('A restored title')
     })
 

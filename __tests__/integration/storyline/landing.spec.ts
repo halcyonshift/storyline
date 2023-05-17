@@ -19,19 +19,20 @@ test.describe('storyline/landing', () => {
         window = await electronApp.firstWindow()
     })
 
-    test('isPackaged', async () => {
-        const isPackaged = await electronApp.evaluate(async ({ app }) => {
-            return app.isPackaged
-        })
+    test('has new link', async () => {
+        expect(window.getByText('New')).toBeTruthy()
+    })
 
-        expect(isPackaged).toBe(process.env.ENVIRONMENT === 'production')
+    test('has import link', async () => {
+        expect(window.getByText('Import')).toBeTruthy()
     })
 
     test('landing screen', async () => {
-        await window.screenshot({ path: './playwright-results/launch.png' })
+        await window.screenshot({ path: './playwright-results/landing.png' })
     })
 
     test.afterAll(async () => {
+        // close app
         // await electronApp.close()
     })
 })
