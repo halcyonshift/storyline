@@ -6,37 +6,39 @@ const TabsContext = createContext({} as TabsContextType)
 
 export const TabsProvider = ({ children }: TabsProviderProps) => {
     const [tabs, setTabs] = useState<TabType[]>([])
-    const [active, setActive] = useState<number>()
+    const [active, setActive] = useState<number>(null)
     const [showTabs, setShowTabs] = useState<boolean>(false)
     const params = useParams()
     const navigate = useNavigate()
 
-    useEffect(() => {
-        if (tabs[active]) {
-            loadTab(tabs[active])
-        }
-    }, [active])
+    useEffect(() => focusTab(), [tabs, active])
 
     useEffect(() => {
-        if (!tabs.length) {
-            setShowTabs(false)
-        }
-    }, [tabs.length])
+        if (tabs.length) return
+        setShowTabs(false)
+        setActive(null)
+    }, [tabs])
 
-    const loadTab = (focusTab: TabType, switchTab = true) => {
-        const focus = tabs.findIndex((tab) => tab.id === focusTab.id)
-        if (focus === -1) {
-            setTabs(tabs.concat([focusTab]))
-            if (switchTab) {
-                setActive(tabs.length)
-            }
+    useEffect(() => {
+        if (showTabs) focusTab()
+    }, [showTabs])
+
+    const focusTab = () => {
+        if (!tabs[active]) return
+        const tab = tabs[active]
+        const link = tab.link || `${tab.mode}/${tab.id}`
+        navigate(`/work/${params.work_id}/${link}`)
+    }
+
+    const loadTab = (tab: TabType) => {
+        const tabIndex = tabs.findIndex((t) => tab.id === t.id)
+        if (tabIndex === -1) {
+            setTabs(tabs.concat([tab]))
+            setActive(tabs.length)
         } else {
-            setActive(focus)
+            setActive(tabIndex)
         }
-        if (switchTab) {
-            const link = focusTab.link || `${focusTab.mode}/${focusTab.id}`
-            navigate(`/work/${params.work_id}/${link}`)
-        }
+        setShowTabs(true)
     }
 
     const removeTab = (id: string) => {
