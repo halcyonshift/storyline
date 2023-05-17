@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import CloseIcon from '@mui/icons-material/Close'
 import {
     Box,
     Collapse,
@@ -6,13 +7,11 @@ import {
     Tabs as MuiTabs,
     Tab as MuiTab,
     Typography,
-    styled,
-    IconButton
+    styled
 } from '@mui/material'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
 import { useTranslation } from 'react-i18next'
 import { useObservable } from 'rxjs-hooks'
-import { GLOBAL_ICONS } from '@sl/constants/icons'
 import {
     CharacterModel,
     ItemModel,
@@ -163,15 +162,14 @@ const Tabs = () => {
                                                                 {...props.dragHandleProps}>
                                                                 {tab.label || getLabel(tab)}
                                                             </Typography>
-                                                            <IconButton
-                                                                size='small'
+                                                            <CloseIcon
+                                                                fontSize='small'
                                                                 color='secondary'
                                                                 onClick={(e) => {
                                                                     e.stopPropagation()
                                                                     tabs.removeTab(tab.id)
-                                                                }}>
-                                                                {GLOBAL_ICONS.close}
-                                                            </IconButton>
+                                                                }}
+                                                            />
                                                         </Stack>
                                                     }
                                                 />
