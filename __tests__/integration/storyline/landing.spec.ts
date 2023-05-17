@@ -12,27 +12,10 @@ test.describe('storyline/landing', () => {
 
         electronApp = await electron.launch({
             args: [appInfo.main],
-            executablePath:
-                process.env.ENVIRONMENT === 'production' ? appInfo.executable : undefined
+            executablePath: appInfo.executable
         })
 
         page = await electronApp.firstWindow()
-    })
-
-    test('has new link', () => {
-        expect(page.getByText('New')).toBeTruthy()
-    })
-
-    test('has import link', () => {
-        expect(page.getByText('Import')).toBeTruthy()
-    })
-
-    test('has settings link', () => {
-        expect(page.getByText('Settings')).toBeTruthy()
-    })
-
-    test('has info link', () => {
-        expect(page.getByText('Info')).toBeTruthy()
     })
 
     test('does not have works link', async () => {
@@ -44,11 +27,49 @@ test.describe('storyline/landing', () => {
         }
     })
 
-    test('has works link when work added', async () => {
+    test('has new link', () => {
+        expect(page.getByText('New')).toBeTruthy()
+    })
+
+    test('has works link when new link clicked', async () => {
         await page.getByText('New').click()
         const [button] = await page.$$('button')
         await button.click()
         expect(page.getByText('Works')).toBeTruthy()
+    })
+
+    test('lists works when works link clicked', async () => {
+        await page.getByText('Works').click()
+        const tr = await page.$$('tbody tr')
+        expect(tr.length).toBe(1)
+
+        const td = await page.$$('tbody td')
+        expect(td[0].textContent()).toBe('0')
+
+        const buttons = await page.$$('button')
+
+        await buttons[1].click()
+        expect(page.url()).toContain('/#work')
+
+        await buttons[0].click()
+
+        await buttons[2].click()
+        expect(page.getByText).toContain('Are you sure?')
+
+        await buttons[0].click()
+    })
+
+    test('has import link', async () => {
+        await page.getByText('Import').click()
+        expect(page.url()).toContain('/#import')
+    })
+
+    test('has settings link', () => {
+        expect(page.getByText('Settings')).toBeTruthy()
+    })
+
+    test('has info link', () => {
+        expect(page.getByText('Info')).toBeTruthy()
     })
 
     test('screenshot', async () => {

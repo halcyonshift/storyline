@@ -12,8 +12,7 @@ test.describe('storyline/landing', () => {
 
         electronApp = await electron.launch({
             args: [appInfo.main],
-            executablePath:
-                process.env.ENVIRONMENT === 'production' ? appInfo.executable : undefined
+            executablePath: appInfo.executable
         })
 
         window = await electronApp.firstWindow()
