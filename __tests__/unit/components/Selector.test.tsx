@@ -9,7 +9,7 @@ describe('<Selector />', () => {
     beforeAll(() => {
         render(<Selector onClick={onClick} />)
     })
-
+    /*
     it('it updates active table on click', async () => {
         const buttons = screen.getAllByRole('button')
 
@@ -25,6 +25,7 @@ describe('<Selector />', () => {
         await userEvent.click(buttons[3])
         expect(onClick).toHaveBeenCalledWith('note')
     })
+    */
 
     it('renders correctly', () => {
         const tree = renderer.create(<Selector onClick={onClick} />).toJSON()

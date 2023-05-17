@@ -1,5 +1,9 @@
 import { enableFetchMocks } from 'jest-fetch-mock'
+import { randomUUID } from 'node:crypto'
 enableFetchMocks()
+
+
+window.crypto.randomUUID = randomUUID
 
 window.api = {
     deleteFile: () => jest.fn(),
