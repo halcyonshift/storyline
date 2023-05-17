@@ -94,8 +94,8 @@ export default class WorkModel extends Model {
             .join(' ')
     }
 
-    wordsPerDay(currentWords: number) {
-        if (!currentWords || !this.wordGoal) return 0
+    wordsPerDay(currentWords = 0): null | number {
+        if (!this.wordGoal) return null
         const deadline = DateTime.fromJSDate(this.deadlineAt)
         const now = DateTime.now()
         const diff = Interval.fromDateTimes(now, deadline)

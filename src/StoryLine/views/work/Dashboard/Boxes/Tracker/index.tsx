@@ -38,9 +38,9 @@ const TrackerBox = () => {
     }, [])
 
     return (
-        <Box className='p-3 h-full flex flex-col '>
-            <Box>
-                <Typography variant='h6' textAlign='left' className='mb-1'>
+        <Box className='p-3 h-full'>
+            <Box className='pb-1'>
+                <Typography variant='h6' textAlign='left'>
                     {totalWords.toLocaleString(settings.language)}
                     {work.wordGoal
                         ? ` / ${work.wordGoal?.toLocaleString(
@@ -49,13 +49,21 @@ const TrackerBox = () => {
                         : ''}
                 </Typography>
                 {work.deadlineAt && work.timeLeft ? (
-                    <Typography variant='body2' className='mb-3'>
-                        {htmlParse(
-                            t('view.work.dashboard.tracker.deadline', {
-                                timeLeft: work.timeLeft,
-                                wordsPerDay: work.wordsPerDay(totalWords)
-                            })
-                        )}
+                    <Typography variant='body2'>
+                        {work.deadlineAt && work.timeLeft
+                            ? htmlParse(
+                                  t('view.work.dashboard.tracker.deadline.days', {
+                                      timeLeft: work.timeLeft
+                                  })
+                              )
+                            : null}
+                        {work.wordGoal
+                            ? htmlParse(
+                                  t('view.work.dashboard.tracker.deadline.words', {
+                                      wordsPerDay: work.wordsPerDay(totalWords)
+                                  })
+                              )
+                            : null}
                     </Typography>
                 ) : null}
             </Box>
