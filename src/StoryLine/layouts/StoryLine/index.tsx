@@ -23,6 +23,7 @@ const StoryLineLayout = () => {
                 <Toolbar variant='dense'>
                     <Box>
                         <IconButton
+                            id={t('navigation.back')}
                             disabled={!title}
                             size='large'
                             edge='start'

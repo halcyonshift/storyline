@@ -27,11 +27,11 @@ test.describe('storyline/landing', () => {
         expect(isPackaged).toBe(process.env.ENVIRONMENT === 'production')
     })
 
-    test('landing screen', async () => {
+    test('screenshot', async () => {
         await window.screenshot({ path: './playwright-results/launch.png' })
     })
 
     test.afterAll(async () => {
-        // await electronApp.close()
+        await electronApp.close()
     })
 })

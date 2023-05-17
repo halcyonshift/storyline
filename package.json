@@ -12,8 +12,8 @@
     "publish": "ENVIRONMENT=production electron-forge publish",
     "lint": "eslint --max-warnings=0 --ext .ts,.tsx .",
     "test:unit": "ENVIRONMENT=test DOTENV_CONFIG_PATH=.env.test yarn jest ./__tests__/unit --silent",
-    "test:integration:development": "ENVIRONMENT=test DB_NAME_RANDOM=1 DOTENV_CONFIG_PATH=.env.test yarn playwright test --debug",
-    "test:integration:production": "ENVIRONMENT=production DOTENV_CONFIG_PATH=.env.production yarn playwright test --debug",
+    "test:integration:development": "ENVIRONMENT=test DB_NAME_RANDOM=1 DOTENV_CONFIG_PATH=.env.test yarn playwright test",
+    "test:integration:production": "ENVIRONMENT=production DOTENV_CONFIG_PATH=.env.production yarn playwright test",
     "prepare": "husky install && chmod ug+x .husky/*",
     "translation:unused": "i18n-unused display-unused",
     "nuke": "rm -rf node_modules yarn.lock && yarn cache clean && yarn"

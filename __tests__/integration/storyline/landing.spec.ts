@@ -4,7 +4,7 @@ import * as eph from 'electron-playwright-helpers'
 
 test.describe('storyline/landing', () => {
     let electronApp: ElectronApplication
-    let window: Page
+    let page: Page
 
     test.beforeAll(async () => {
         const latestBuild = eph.findLatestBuild()
@@ -16,23 +16,46 @@ test.describe('storyline/landing', () => {
                 process.env.ENVIRONMENT === 'production' ? appInfo.executable : undefined
         })
 
-        window = await electronApp.firstWindow()
+        page = await electronApp.firstWindow()
     })
 
-    test('has new link', async () => {
-        expect(window.getByText('New')).toBeTruthy()
+    test('has new link', () => {
+        expect(page.getByText('New')).toBeTruthy()
     })
 
-    test('has import link', async () => {
-        expect(window.getByText('Import')).toBeTruthy()
+    test('has import link', () => {
+        expect(page.getByText('Import')).toBeTruthy()
     })
 
-    test('landing screen', async () => {
-        await window.screenshot({ path: './playwright-results/landing.png' })
+    test('has settings link', () => {
+        expect(page.getByText('Settings')).toBeTruthy()
+    })
+
+    test('has info link', () => {
+        expect(page.getByText('Info')).toBeTruthy()
+    })
+
+    test('does not have works link', async () => {
+        if (process.env.DB_NAME_RANDOM) {
+            const pageContent = await page.textContent('body')
+            expect(pageContent.includes('Info')).toBeFalsy()
+        } else {
+            expect(page.getByText('Works')).toBeTruthy()
+        }
+    })
+
+    test('has works link when work added', async () => {
+        await page.getByText('New').click()
+        const [button] = await page.$$('button')
+        await button.click()
+        expect(page.getByText('Works')).toBeTruthy()
+    })
+
+    test('screenshot', async () => {
+        await page.screenshot({ path: './playwright-results/landing.png' })
     })
 
     test.afterAll(async () => {
-        // close app
-        // await electronApp.close()
+        await electronApp.close()
     })
 })
