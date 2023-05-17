@@ -17,8 +17,14 @@ export default {
     exportDocx: (fileName: string, html: string) =>
         ipcRenderer.invoke('export-docx', fileName, html),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    fullScreenEvent: (callback: any) => {
-        ipcRenderer.on('full-screen', (event, isFullScreen) => {
+    subscribeToFullScreenEvent: (callback: any) => {
+        ipcRenderer.on('full-screen', (_, isFullScreen) => {
+            callback(isFullScreen)
+        })
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    unsubscribeFromFullScreenEvent: (callback: any) => {
+        ipcRenderer.removeListener('full-screen', (_, isFullScreen) => {
             callback(isFullScreen)
         })
     }

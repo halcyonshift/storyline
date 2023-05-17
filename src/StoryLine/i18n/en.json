@@ -155,6 +155,7 @@
             "TERTIARY": "Tertiary"
         },
         "pointOfView": {
+            "NONE": "None",
             "FIRST": "First",
             "SECOND": "Second",
             "THIRD_OMN": "Third Omniscient",
@@ -357,9 +358,6 @@
     "form": {
         "required": "This is required",
         "work": {
-            "global": {
-                "none": "None"
-            },
             "backupRestore": {
                 "exportAs": {
                     "author": "Author",
@@ -427,6 +425,8 @@
             "connection": {
                 "table": "Select",
                 "date": "Date",
+                "to": "To",
+                "from": "From",
                 "mode": {
                     "label": "Connection",
                     "placeholder": "e.g., Brother"
@@ -771,7 +771,7 @@
                         "note": "Notes"
                     },
                     "mode": {
-                        "label": "Relation",
+                        "label": "Connection",
                         "all": "All"
                     }
                 },
@@ -807,6 +807,9 @@
             "insight": {
                 "chapterLength": {
                     "scene": "Scene {{number}}"
+                },
+                "spread": {
+                    "empty": "Add characters, items, locations or notes to view to track their appearances through scenes"
                 },
                 "word": {
                     "day": "Best writing day",

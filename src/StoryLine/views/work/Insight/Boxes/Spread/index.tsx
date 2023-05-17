@@ -13,6 +13,7 @@ import { useRouteLoaderData } from 'react-router'
 import { SectionModel, WorkModel } from '@sl/db/models'
 import { useEffect, useState } from 'react'
 import { getHex } from '@sl/theme/utils'
+import { t } from 'i18next'
 
 const Spread = () => {
     const work = useRouteLoaderData('work') as WorkModel
@@ -87,7 +88,10 @@ const Spread = () => {
         })
     }, [])
 
-    return (
+    return tags.characters.length ||
+        tags.items.length ||
+        tags.locations.length ||
+        tags.notes.length ? (
         <TableContainer component={Paper} className='h-full scrollbar-hidden'>
             <Table stickyHeader size='small'>
                 <TableHead>
@@ -210,6 +214,10 @@ const Spread = () => {
                 </TableBody>
             </Table>
         </TableContainer>
+    ) : (
+        <Typography variant='body1' className='p-5 text-center'>
+            {t('view.work.insight.spread.empty')}
+        </Typography>
     )
 }
 

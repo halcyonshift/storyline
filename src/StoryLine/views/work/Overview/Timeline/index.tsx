@@ -94,6 +94,7 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
                         })
                     )
             ).then((_items) => {
+                if (!_items.length) return
                 _items = _items.sort(
                     (a, b) =>
                         DateTime.fromISO(a.start).toMillis() - DateTime.fromISO(b.start).toMillis()

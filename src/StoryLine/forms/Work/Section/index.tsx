@@ -102,9 +102,14 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
 
     const form: FormikProps<SectionDataType> = useFormik<SectionDataType>({
         enableReinitialize: true,
-        initialValues,
+        initialValues: {
+            ...initialValues,
+            ['pointOfView']: initialValues.pointOfView || PointOfView.NONE
+        },
         validationSchema,
         onSubmit: async (values: SectionDataType) => {
+            values.wordGoal = values.wordGoal ? Number(values.wordGoal) : null
+            values.pointOfView = values.pointOfView === PointOfView.NONE ? null : values.pointOfView
             const characters = await work.characters.fetch()
             const items = await work.items.fetch()
             const locations = await work.locations.fetch()
@@ -150,12 +155,10 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
                             form={form}
                             name='pointOfView'
                             label={t('form.work.section.pointOfView')}
-                            options={[{ value: '', label: t('form.work.global.none') }].concat(
-                                Object.keys(PointOfView).map((pov) => ({
-                                    value: pov,
-                                    label: t(`constant.pointOfView.${pov}`)
-                                }))
-                            )}
+                            options={Object.keys(PointOfView).map((pov) => ({
+                                value: pov,
+                                label: t(`constant.pointOfView.${pov}`)
+                            }))}
                         />
                         {characterOptions.length ? (
                             <Autocomplete

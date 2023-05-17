@@ -90,9 +90,9 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
     }
 
     useEffect(() => {
-        api.fullScreenEvent(handleFullscreen)
+        api.subscribeToFullScreenEvent(handleFullscreen)
         return () => {
-            api.fullScreenEvent(handleFullscreen)
+            api.unsubscribeFromFullScreenEvent(handleFullscreen)
         }
     }, [])
 

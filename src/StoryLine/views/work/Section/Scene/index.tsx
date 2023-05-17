@@ -79,7 +79,7 @@ const SceneView = ({ section }: SectionViewType) => {
 
     return (
         <RichtextEditor
-            id={section.id}
+            id='sceneBody'
             onSave={onSave}
             initialValue={initialValue}
             toolbar={section.isVersion ? plugins : plugins.concat('version')}
