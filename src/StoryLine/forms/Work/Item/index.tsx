@@ -47,8 +47,8 @@ const ItemForm = ({ work, item, initialValues }: ItemFormProps) => {
             model={item}
             tabList={[t('component.formWrapper.tab.general')]}>
             <>
-                <Box className='grid grid-cols-2 gap-3'>
-                    <Box>
+                <Box className='grid grid-cols-2 gap-3 mb-1'>
+                    <Box className='grid grid-cols-1 gap-3'>
                         <TextField label={t('form.work.item.name.label')} name='name' form={form} />
                         <TextField
                             label={t('form.work.item.url')}
@@ -58,7 +58,7 @@ const ItemForm = ({ work, item, initialValues }: ItemFormProps) => {
                             placeholder='https://'
                         />
                     </Box>
-                    <Box className='mt-2'>
+                    <Box>
                         <ImageField form={form} dir='items' />
                     </Box>
                 </Box>

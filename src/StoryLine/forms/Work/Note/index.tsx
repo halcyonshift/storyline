@@ -71,10 +71,7 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
             tabList={[t('component.formWrapper.tab.general')]}>
             <>
                 <Box className='grid grid-cols-2 gap-3 '>
-                    <Box className='pt-2'>
-                        <ImageField form={form} dir='notes' />
-                    </Box>
-                    <Box>
+                    <Box className='grid grid-cols-1 gap-3'>
                         <TextField
                             label={t('form.work.note.title.label')}
                             name='title'
@@ -102,6 +99,9 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
                                 label={t('form.work.note.isTaggable')}
                             />
                         </FormGroup>
+                    </Box>
+                    <Box>
+                        <ImageField form={form} dir='notes' />
                     </Box>
                 </Box>
                 <TextareaField fieldName='body' form={form} />

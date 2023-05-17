@@ -45,7 +45,7 @@ const MapField = ({ form, fieldType }: MapFieldProps) => {
                         <Map center={center}>
                             <LocationMarker form={form} />
                         </Map>
-                        <Typography>
+                        <Typography variant='body2' textAlign='center'>
                             {form.values.latitude} {form.values.longitude}
                         </Typography>
                     </Stack>
