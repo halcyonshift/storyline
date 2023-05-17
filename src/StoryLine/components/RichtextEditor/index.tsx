@@ -141,7 +141,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                         config={toolbar}
                         isFullscreen={isFullscreen}
                     />
-                    {'search' in toolbar ? <SearchPlugin /> : null}
+                    {toolbar.includes('search') ? <SearchPlugin /> : null}
                     <Box
                         className='rte-container relative flex-grow overflow-auto h-0 p-3'
                         ref={ref}
@@ -176,7 +176,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                             eventListener={handleTagDblClick}
                         />
                         <OnChangePlugin onChange={handleChange} />
-                        {'version' in toolbar ? (
+                        {toolbar.includes('version') ? (
                             <VersionPlugin
                                 menu={menu}
                                 menuElement={menuElement}
@@ -184,8 +184,8 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                                 setMenuElement={setMenuElement}
                             />
                         ) : null}
-                        {'save' in toolbar ? <SavePlugin onSave={onSave} /> : null}
-                        {'tag' in toolbar ? (
+                        {toolbar.includes('save') ? <SavePlugin onSave={onSave} /> : null}
+                        {toolbar.includes('tag') ? (
                             <TagPlugin
                                 menu={menu}
                                 menuElement={menuElement}
