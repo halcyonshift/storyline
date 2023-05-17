@@ -92,7 +92,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     }
 
     useEffect(() => {
-        if (process.env.ENVIRONMENT) init()
+        if (['production', 'development'].includes(process.env.ENVIRONMENT)) init()
     }, [])
 
     useEffect(() => {

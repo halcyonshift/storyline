@@ -34,12 +34,12 @@ exports[`<Selector /> renders correctly 1`] = `
         aria-hidden={true}
         aria-label="Group"
         className="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root"
-        data-testid="GroupIcon"
+        data-testid="GroupOutlinedIcon"
         focusable="false"
         viewBox="0 0 24 24"
       >
         <path
-          d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"
+          d="M9 13.75c-2.34 0-7 1.17-7 3.5V19h14v-1.75c0-2.33-4.66-3.5-7-3.5zM4.34 17c.84-.58 2.87-1.25 4.66-1.25s3.82.67 4.66 1.25H4.34zM9 12c1.93 0 3.5-1.57 3.5-3.5S10.93 5 9 5 5.5 6.57 5.5 8.5 7.07 12 9 12zm0-5c.83 0 1.5.67 1.5 1.5S9.83 10 9 10s-1.5-.67-1.5-1.5S8.17 7 9 7zm7.04 6.81c1.16.84 1.96 1.96 1.96 3.44V19h4v-1.75c0-2.02-3.5-3.17-5.96-3.44zM15 12c1.93 0 3.5-1.57 3.5-3.5S16.93 5 15 5c-.54 0-1.04.13-1.5.35.63.89 1 1.98 1 3.15s-.37 2.26-1 3.15c.46.22.96.35 1.5.35z"
         />
       </svg>
       <span
@@ -77,12 +77,17 @@ exports[`<Selector /> renders correctly 1`] = `
         aria-hidden={true}
         aria-label="LocationOn"
         className="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root"
-        data-testid="LocationOnIcon"
+        data-testid="LocationOnOutlinedIcon"
         focusable="false"
         viewBox="0 0 24 24"
       >
         <path
-          d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+          d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z"
+        />
+        <circle
+          cx="12"
+          cy="9"
+          r="2.5"
         />
       </svg>
       <span
@@ -120,20 +125,12 @@ exports[`<Selector /> renders correctly 1`] = `
         aria-hidden={true}
         aria-label="Category"
         className="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root"
-        data-testid="CategoryIcon"
+        data-testid="CategoryOutlinedIcon"
         focusable="false"
         viewBox="0 0 24 24"
       >
         <path
-          d="m12 2-5.5 9h11z"
-        />
-        <circle
-          cx="17.5"
-          cy="17.5"
-          r="4.5"
-        />
-        <path
-          d="M3 13.5h8v8H3z"
+          d="m12 2-5.5 9h11L12 2zm0 3.84L13.93 9h-3.87L12 5.84zM17.5 13c-2.49 0-4.5 2.01-4.5 4.5s2.01 4.5 4.5 4.5 4.5-2.01 4.5-4.5-2.01-4.5-4.5-4.5zm0 7c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zM3 21.5h8v-8H3v8zm2-6h4v4H5v-4z"
         />
       </svg>
       <span
@@ -171,12 +168,12 @@ exports[`<Selector /> renders correctly 1`] = `
         aria-hidden={true}
         aria-label="StickyNote2"
         className="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root"
-        data-testid="StickyNote2Icon"
+        data-testid="StickyNote2OutlinedIcon"
         focusable="false"
         viewBox="0 0 24 24"
       >
         <path
-          d="M19 3H4.99C3.89 3 3 3.9 3 5l.01 14c0 1.1.89 2 1.99 2h10l6-6V5c0-1.1-.9-2-2-2zM7 8h10v2H7V8zm5 6H7v-2h5v2zm2 5.5V14h5.5L14 19.5z"
+          d="M19 5v9h-5v5H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h10l6-6V5c0-1.1-.9-2-2-2zm-7 11H7v-2h5v2zm5-4H7V8h10v2z"
         />
       </svg>
       <span

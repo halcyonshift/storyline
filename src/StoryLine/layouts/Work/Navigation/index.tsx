@@ -84,6 +84,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                         aria-label={t('layout.work.navigation.overview')}
                         onClick={() => {
                             loadTab({
+                                id: 'overview',
                                 label: t('layout.work.navigation.overview'),
                                 link: 'overview'
                             })
@@ -97,6 +98,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                         aria-label={t('layout.work.navigation.connection')}
                         onClick={() => {
                             loadTab({
+                                id: 'connection',
                                 label: t('layout.work.navigation.connection'),
                                 link: 'connection'
                             })

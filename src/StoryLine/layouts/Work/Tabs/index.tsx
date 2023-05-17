@@ -1,18 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
-import {
-    Box,
-    Collapse,
-    Stack,
-    Tabs as MuiTabs,
-    Tab as MuiTab,
-    Typography,
-    styled,
-    IconButton
-} from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
+import { Box, Stack, Tabs as MuiTabs, Tab as MuiTab, Typography, styled } from '@mui/material'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
 import { useTranslation } from 'react-i18next'
 import { useObservable } from 'rxjs-hooks'
-import { GLOBAL_ICONS } from '@sl/constants/icons'
 import {
     CharacterModel,
     ItemModel,
@@ -33,7 +24,6 @@ const Tabs = () => {
     const tabs = useTabs()
     const { windowWidth, panelWidth, navigationWidth } = useLayout()
     const [maxWidth, setMaxWidth] = useState<number>(windowWidth - (panelWidth + navigationWidth))
-    const [tabIndex, setTabIndex] = useState<number>(0)
     const work = useRouteLoaderData('work') as WorkModel
     const character = useObservable(
         () => work.character.observeWithColumns(['display_name', 'mode']),
@@ -86,8 +76,10 @@ const Tabs = () => {
         const [removed] = newTabs.splice(result.source.index, 1)
         newTabs.splice(result.destination.index, 0, removed)
         tabs.setTabs(newTabs)
-        setTabIndex(result.destination.index)
-        tabs.setActive(-1)
+        tabs.setActive(result.source.index)
+        setTimeout(() => {
+            tabs.setActive(result.destination.index)
+        }, 1)
     }
 
     const getLabel = (tab: TabType) => {
@@ -102,19 +94,14 @@ const Tabs = () => {
         return data.find((obj) => obj.id === tab.id)?.displayName || ''
     }
 
-    useEffect(() => {
-        tabs.setActive(tabIndex)
-        tabs.setShowTabs(Boolean(tabs.tabs.length))
-    }, [tabIndex, tabs.active])
-
     useEffect(
         () => setMaxWidth(windowWidth - (panelWidth + navigationWidth)),
         [windowWidth, panelWidth, navigationWidth]
     )
 
     return useMemo(
-        () => (
-            <Collapse in={tabs.showTabs}>
+        () =>
+            tabs.showTabs ? (
                 <Box
                     sx={{
                         maxWidth,
@@ -127,7 +114,6 @@ const Tabs = () => {
                                     ref={props.innerRef}
                                     {...props.droppableProps}
                                     value={tabs.active}
-                                    onChange={(_, value) => tabs.setActive(value)}
                                     variant='scrollable'
                                     scrollButtons={false}
                                     aria-label={t('layout.work.tabs')}
@@ -163,15 +149,14 @@ const Tabs = () => {
                                                                 {...props.dragHandleProps}>
                                                                 {tab.label || getLabel(tab)}
                                                             </Typography>
-                                                            <IconButton
-                                                                size='small'
+                                                            <CloseIcon
+                                                                fontSize='small'
                                                                 color='secondary'
                                                                 onClick={(e) => {
                                                                     e.stopPropagation()
                                                                     tabs.removeTab(tab.id)
-                                                                }}>
-                                                                {GLOBAL_ICONS.close}
-                                                            </IconButton>
+                                                                }}
+                                                            />
                                                         </Stack>
                                                     }
                                                 />
@@ -184,8 +169,7 @@ const Tabs = () => {
                         </Droppable>
                     </DragDropContext>
                 </Box>
-            </Collapse>
-        ),
+            ) : null,
         [tabs.tabs, tabs.active, tabs.showTabs, maxWidth]
     )
 }

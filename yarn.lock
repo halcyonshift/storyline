@@ -1282,13 +1282,13 @@
     cross-zip "^4.0.0"
     fs-extra "^10.0.0"
 
-"@electron-forge/plugin-auto-unpack-natives@6.0.5":
-  version "6.0.5"
-  resolved "https://registry.yarnpkg.com/@electron-forge/plugin-auto-unpack-natives/-/plugin-auto-unpack-natives-6.0.5.tgz#a44f9b1b2c2464c5f68aa9807d7a164a411c4ab3"
-  integrity sha512-1k7GbETyBpOZybdBuQUSd8SfjOV+oyAs0EWeNti0F2F+ESR9znJgtYFWoqC9gJs5SlNqm3P+pcD++GafBHu8vw==
+"@electron-forge/plugin-auto-unpack-natives@^6.1.1":
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/@electron-forge/plugin-auto-unpack-natives/-/plugin-auto-unpack-natives-6.1.1.tgz#13e309172dc93ccb132317a2f403eee1ffabb1b9"
+  integrity sha512-Vl36aRxb8KJ1X6Zgqx6B3ay6qqiwWNxe6JF6gClmXwlKUP7P/NqMYKbAGlMBzq7V7CypddkJWBf48LamTPfKiQ==
   dependencies:
-    "@electron-forge/plugin-base" "6.0.5"
-    "@electron-forge/shared-types" "6.0.5"
+    "@electron-forge/plugin-base" "6.1.1"
+    "@electron-forge/shared-types" "6.1.1"
 
 "@electron-forge/plugin-base@6.0.5":
   version "6.0.5"
@@ -1296,6 +1296,13 @@
   integrity sha512-Q2ywNq6Qzb9K1W59qzbJvI+NZaDPrHz7iq9W8UfyHoEDYLJsD368PzHtNaQFJx+ofZNgsSpukXoL9mGvN1lVbA==
   dependencies:
     "@electron-forge/shared-types" "6.0.5"
+
+"@electron-forge/plugin-base@6.1.1":
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/@electron-forge/plugin-base/-/plugin-base-6.1.1.tgz#73f4688654cd29591af533be53c2a3a656405331"
+  integrity sha512-xZWZxvD2fQYnkFREK+46FS59vMEsPFINwydtD24QGTBoRMOKXkfXv16yN4eexVi+02Hj6mihYY8zhxJi56OmxA==
+  dependencies:
+    "@electron-forge/shared-types" "6.1.1"
 
 "@electron-forge/plugin-electronegativity@6.0.5":
   version "6.0.5"
@@ -1334,6 +1341,15 @@
   version "6.0.5"
   resolved "https://registry.yarnpkg.com/@electron-forge/shared-types/-/shared-types-6.0.5.tgz#8b265687fad188799384f88fba821f8f0eac689e"
   integrity sha512-FrJI11afw/Cxk0JwgWyKg9aPoHOdmMi4JHTY6pnmi95MjarQ1d0SIqKJUzX7q2lXPUAxqPKA2Wmykg6F2CThlg==
+  dependencies:
+    "@electron/rebuild" "^3.2.10"
+    electron-packager "^17.1.1"
+    listr2 "^5.0.3"
+
+"@electron-forge/shared-types@6.1.1":
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/@electron-forge/shared-types/-/shared-types-6.1.1.tgz#f08cf783bf0a086331784b9f13110b4fade84846"
+  integrity sha512-sFQQ2ldMq5mlNv4m7lZOZLf9aOn6MLNc8QVeTzOBQ+psxI3mVTDjb+/Lhs/jU8dm2igVfEqAmlj57Gi+C4u4Vw==
   dependencies:
     "@electron/rebuild" "^3.2.10"
     electron-packager "^17.1.1"
@@ -1379,7 +1395,7 @@
     xterm-addon-fit "^0.5.0"
     xterm-addon-search "^0.8.0"
 
-"@electron/asar@^3.0.3", "@electron/asar@^3.2.1":
+"@electron/asar@^3.0.3", "@electron/asar@^3.2.1", "@electron/asar@^3.2.2":
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/@electron/asar/-/asar-3.2.4.tgz#7e8635a3c4f6d8b3f8ae6efaf5ecb9fbf3bd9864"
   integrity sha512-lykfY3TJRRWFeTxccEKdf1I6BLl2Plw81H0bbp4Fc5iEc67foDCa5pjJQULVgo0wF+Dli75f3xVcdb/67FFZ/g==
@@ -3157,7 +3173,7 @@
     hoist-non-react-statics "^3.3.0"
     redux "^4.0.0"
 
-"@types/react-test-renderer@^18.0.0":
+"@types/react-test-renderer@18.0.0":
   version "18.0.0"
   resolved "https://registry.yarnpkg.com/@types/react-test-renderer/-/react-test-renderer-18.0.0.tgz#7b7f69ca98821ea5501b21ba24ea7b6139da2243"
   integrity sha512-C7/5FBJ3g3sqUahguGi03O79b8afNeSD6T8/GU50oQrJCU0bVCCGQHaGKUbg2Ce8VQEEqTw8/HiS6lXHHdgkdQ==
@@ -3284,7 +3300,7 @@
   resolved "https://registry.yarnpkg.com/@types/which/-/which-1.3.2.tgz#9c246fc0c93ded311c8512df2891fb41f6227fdf"
   integrity sha512-8oDqyLC7eD4HM307boe2QWKyuzdzWBj56xI/imSl2cpL+U3tCMaTAkMJ4ee5JBZ/FsOJlvRGeIShiZDAl1qERA==
 
-"@types/wojtekmaj__react-daterange-picker@5.0.1":
+"@types/wojtekmaj__react-daterange-picker@^5.0.1":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@types/wojtekmaj__react-daterange-picker/-/wojtekmaj__react-daterange-picker-5.0.1.tgz#0c21babb2ae2cd28295a00c98bf04c38dd9c5207"
   integrity sha512-beKOKw7/AGKYIf36nuVbyhaeCDrLGJa4KuHqWIczDJwCs1S3rHhQ4L42/kNzZveEwSjnkI3bQHUpzdPM8pn+6Q==
@@ -4537,7 +4553,7 @@ chromium-pickle-js@^0.2.0:
   resolved "https://registry.yarnpkg.com/chromium-pickle-js/-/chromium-pickle-js-0.2.0.tgz#04a106672c18b085ab774d983dfa3ea138f22205"
   integrity sha512-1R5Fho+jBq0DDydt+/vHWj5KJNJCKdARKOCwZUen84I5BreWoLqRLANH1U87eJy1tiASPtMnGqJJq0ZsLoRPOw==
 
-chrono-node@^2.6.3:
+chrono-node@2.6.3:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/chrono-node/-/chrono-node-2.6.3.tgz#fa257cffb2dfc33fa5a01b26bd86f93741ca6dc5"
   integrity sha512-VkWaaZnNulqzNH9i4XCdyI05OX6MFEnCMNKdZOR4w//wS5/E2qkwAss/O5sj6SfTZK84fX4SSOG4pzqjqIseiA==
@@ -5657,6 +5673,13 @@ electron-packager@^17.1.1:
     resolve "^1.1.6"
     semver "^7.1.3"
     yargs-parser "^21.1.1"
+
+electron-playwright-helpers@1.5.4:
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/electron-playwright-helpers/-/electron-playwright-helpers-1.5.4.tgz#f64c8cad21c19231e26b3677fc34aaeafad6de4c"
+  integrity sha512-bZoaiDzVqy8/JCjHc6VEuxZDYZntVZHcBrJkY8C2+7EIXv2K8UA1KnpdDYFLPHDPa0rbGtUJUEmaUaktJAvcBw==
+  dependencies:
+    "@electron/asar" "^3.2.2"
 
 electron-squirrel-startup@1.0.0:
   version "1.0.0"
@@ -7501,7 +7524,7 @@ icss-utils@^5.0.0, icss-utils@^5.1.0:
   resolved "https://registry.yarnpkg.com/icss-utils/-/icss-utils-5.1.0.tgz#c6be6858abd013d768e98366ae47e25d5887b1ae"
   integrity sha512-soFhflCVWLfRNOPU3iv5Z9VUdT44xFRbzjLsEzSr5AQmgqPMTHdU3PMT1Cf1ssx8fLNJDA1juftYl+PUcv3MqA==
 
-identity-obj-proxy@^3.0.0:
+identity-obj-proxy@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/identity-obj-proxy/-/identity-obj-proxy-3.0.0.tgz#94d2bda96084453ef36fbc5aaec37e0f79f1fc14"
   integrity sha512-00n6YnVHKrinT9t0d9+5yZC6UBNJANpYEQvL2LlX6Ab9lnmxzIRcEmTPuyGScvl1+jKuCICX1Z0Ab1pPKKdikA==
@@ -8124,7 +8147,7 @@ jest-environment-node@^29.5.0:
     jest-mock "^29.5.0"
     jest-util "^29.5.0"
 
-jest-fetch-mock@^3.0.3:
+jest-fetch-mock@3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/jest-fetch-mock/-/jest-fetch-mock-3.0.3.tgz#31749c456ae27b8919d69824f1c2bd85fe0a1f3b"
   integrity sha512-Ux1nWprtLrdrH4XwE7O7InRY6psIi3GOsqNESJgMJ+M5cv4A8Lh7SN9d2V2kKRZ8ebAfcd1LNyZguAOb6JiDqw==
@@ -10379,7 +10402,7 @@ react-color@2.19.3:
     reactcss "^1.2.0"
     tinycolor2 "^1.4.1"
 
-react-countdown@^2.3.5:
+react-countdown@2.3.5:
   version "2.3.5"
   resolved "https://registry.yarnpkg.com/react-countdown/-/react-countdown-2.3.5.tgz#70c035b5cbc7e8fdb4ad91fe5f44afd7a7933a68"
   integrity sha512-K26ENYEesMfPxhRRtm1r+Pf70SErrvW3g4CArLi/x6MPFjgfDFYePT4UghEj8p2nI0cqVV7/JjDgjyr//U60Og==
@@ -10547,7 +10570,7 @@ react-shallow-renderer@^16.15.0:
     object-assign "^4.1.1"
     react-is "^16.12.0 || ^17.0.0 || ^18.0.0"
 
-react-test-renderer@^18.2.0:
+react-test-renderer@18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-18.2.0.tgz#1dd912bd908ff26da5b9fca4fd1c489b9523d37e"
   integrity sha512-JWD+aQ0lh2gvh4NM3bBM42Kx+XybOxCpgYK7F8ugAlpaTSnWsX+39Z4XkOykGZAHrjwwTZT3x3KxswVWxHPUqA==

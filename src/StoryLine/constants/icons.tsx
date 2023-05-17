@@ -4,11 +4,11 @@ export const GLOBAL_ICONS = {
     add: <Icon name='Add' />,
     addImage: <Icon name='AddPhotoAlternate' />,
     back: <Icon name='ArrowBackIosNew' />,
-    change: <Icon name='ChangeCircleOutlined' />,
+    change: <Icon name='ChangeCircle' />,
     close: <Icon name='Close' />,
     delete: <Icon name='Delete' />,
     down: <Icon name='ArrowDownward' />,
-    edit: <Icon name='EditOutlined' />,
+    edit: <Icon name='Edit' />,
     expand: <Icon name='ExpandMore' />,
     history: <Icon name='History' />,
     info: <Icon name='Info' />,
@@ -22,11 +22,11 @@ export const GLOBAL_ICONS = {
 
 export const CHARACTER_ICONS = {
     character: <Icon name='Group' />,
-    addPrimary: <Icon name='PersonAddAlt1' />,
+    addPrimary: <Icon name='PersonAdd' />,
     addSecondary: <Icon name='PersonAddAlt' />,
     addTertiary: <Icon name='GroupAdd' />,
-    primary: <Icon name='Person' />,
-    secondary: <Icon name='PersonOutline' />,
+    primary: <Icon name='Person4' />,
+    secondary: <Icon name='Person' />,
     tertiary: <Icon name='PeopleAlt' />
 }
 

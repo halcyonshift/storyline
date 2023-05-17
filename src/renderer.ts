@@ -1,7 +1,7 @@
 import { init } from '@sentry/electron/renderer'
 import { init as reactInit } from '@sentry/react'
 
-if (parseInt(process.env.DEBUG) === 0) {
+if (parseInt(process.env.MONITOR) === 1) {
     init({ dsn: process.env.SENTRY }, reactInit)
 }
 

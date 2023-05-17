@@ -1,5 +1,5 @@
 import { useEffect, useState, SyntheticEvent, ReactNode } from 'react'
-import { Autocomplete, Box, Button, IconButton, TextField as MuiTextField } from '@mui/material'
+import { Autocomplete, Box, Button, TextField as MuiTextField } from '@mui/material'
 import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
@@ -14,6 +14,7 @@ import { ConnectionDataType } from '@sl/db/models/types'
 import useMessenger from '@sl/layouts/useMessenger'
 import { AutocompleteOption } from '@sl/types'
 import { ConnectionFormProps } from './types'
+import TooltipIconButton from '@sl/components/TooltipIconButton'
 
 const ConnectionForm = ({ work, connection, initialValues, setOpen }: ConnectionFormProps) => {
     const { t } = useTranslation()
@@ -161,16 +162,18 @@ const ConnectionForm = ({ work, connection, initialValues, setOpen }: Connection
                 </Box>
                 <Box className='col-span-2 text-center flex flex-col justify-center'>
                     <Box>
-                        <IconButton
+                        <TooltipIconButton
+                            text={t('form.work.connection.to')}
+                            icon={GLOBAL_ICONS.next}
+                            color={form.values.to ? 'success' : 'inherit'}
                             onClick={() => form.setFieldValue('to', !form.values.to)}
-                            color={form.values.to ? 'success' : 'inherit'}>
-                            {GLOBAL_ICONS.next}
-                        </IconButton>
-                        <IconButton
+                        />
+                        <TooltipIconButton
+                            text={t('form.work.connection.from')}
+                            icon={GLOBAL_ICONS.back}
+                            color={form.values.from ? 'success' : 'inherit'}
                             onClick={() => form.setFieldValue('from', !form.values.from)}
-                            color={form.values.from ? 'success' : 'inherit'}>
-                            {GLOBAL_ICONS.back}
-                        </IconButton>
+                        />
                     </Box>
                 </Box>
                 <Box className='col-span-5'>

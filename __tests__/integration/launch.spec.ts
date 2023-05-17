@@ -1,22 +1,36 @@
-// @ts-check
-import { _electron as electron } from 'playwright'
+import { ElectronApplication, Page, _electron as electron } from 'playwright'
 import { test, expect } from '@playwright/test'
+import * as eph from 'electron-playwright-helpers'
 
-test('lauch app', async () => {
-    const electronApp = await electron.launch({ args: ['.'] })
-    const isPackaged = await electronApp.evaluate(async ({ app }) => {
-        // This runs in Electron's main process, parameter here is always
-        // the result of the require('electron') in the main app script.
-        return app.isPackaged
+test.describe('storyline/landing', () => {
+    let electronApp: ElectronApplication
+    let window: Page
+
+    test.beforeAll(async () => {
+        const latestBuild = eph.findLatestBuild()
+        const appInfo = eph.parseElectronApp(latestBuild)
+
+        electronApp = await electron.launch({
+            args: [appInfo.main],
+            executablePath: appInfo.executable
+        })
+
+        window = await electronApp.firstWindow()
     })
 
-    expect(isPackaged).toBe(false)
+    test('isPackaged', async () => {
+        const isPackaged = await electronApp.evaluate(async ({ app }) => {
+            return app.isPackaged
+        })
 
-    // Wait for the first BrowserWindow to open
-    // and return its Page object
-    const window = await electronApp.firstWindow()
-    await window.screenshot({ path: 'intro.png' })
+        expect(isPackaged).toBe(process.env.ENVIRONMENT === 'production')
+    })
 
-    // close app
-    await electronApp.close()
+    test('screenshot', async () => {
+        await window.screenshot({ path: './playwright-results/launch.png' })
+    })
+
+    test.afterAll(async () => {
+        await electronApp.close()
+    })
 })

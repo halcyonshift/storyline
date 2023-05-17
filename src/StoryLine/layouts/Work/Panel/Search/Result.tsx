@@ -29,7 +29,6 @@ const Result = ({ result }: { result: SearchResultType }) => {
                             onClick={() =>
                                 loadTab({
                                     id: result.id,
-                                    label: result.label,
                                     mode,
                                     link: `${result.link}/${index}`
                                 })
@@ -46,9 +45,8 @@ const Result = ({ result }: { result: SearchResultType }) => {
             onClick={() =>
                 loadTab({
                     id: result.id,
-                    label: result.label,
                     mode,
-                    link: result.link
+                    link: `${result.link}/edit`
                 })
             }>
             <Typography

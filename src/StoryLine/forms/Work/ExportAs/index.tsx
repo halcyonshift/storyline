@@ -146,7 +146,7 @@ const ExportAsForm = ({ work, generateExport, isGenerating }: ExportAsFormProps)
                         name='sceneSeparator'
                         form={form}
                     />
-                    <Box className='grid grid-cols-2 gap-3'>
+                    <Box className='grid grid-cols-1 gap-3'>
                         <Box>
                             {exportModes.map((exportMode) => (
                                 <IconButton

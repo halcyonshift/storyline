@@ -42,7 +42,7 @@ const LastUpdatedBox = () => {
                     _lastUpdated.push({
                         id: item.id,
                         label: item.displayName,
-                        link: `${table}/${item.id}`,
+                        link: `${table}/${item.id}${table !== 'section' ? '/edit' : ''}`,
                         date: DateTime.fromJSDate(item.updatedAt)
                     })
                 )
@@ -67,7 +67,7 @@ const LastUpdatedBox = () => {
                         <TooltipIconButton
                             text={t('view.work.dashboard.lastUpdated.edit')}
                             icon={GLOBAL_ICONS.edit}
-                            onClick={() => navigate(`/work/${work.id}/${item.link}/edit`)}
+                            onClick={() => navigate(`/work/${work.id}/${item.link}`)}
                         />
                     }>
                     <ListItemButton

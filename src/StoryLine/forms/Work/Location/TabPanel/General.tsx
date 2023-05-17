@@ -13,15 +13,7 @@ const GeneralPanel = ({ form }: TabPanelProps) => {
     const { t } = useTranslation()
 
     return (
-        <>
-            {!isOnline ? <Alert severity='warning'>{t('error.connection')}</Alert> : null}
-            <TextField
-                autoFocus
-                label={t('form.work.location.name.label')}
-                name='name'
-                form={form}
-            />
-            <TextField label={t('form.work.location.url')} name='url' form={form} />
+        <Box className='grid grid-cols-1 gap-3'>
             <Box className='grid grid-cols-2 gap-3'>
                 <Box>
                     <MapField form={form} />
@@ -30,8 +22,18 @@ const GeneralPanel = ({ form }: TabPanelProps) => {
                     <ImageField form={form} dir='locations' />
                 </Box>
             </Box>
+            <Box className='grid grid-cols-1 gap-3'>
+                {!isOnline ? <Alert severity='warning'>{t('error.connection')}</Alert> : null}
+                <TextField
+                    autoFocus
+                    label={t('form.work.location.name.label')}
+                    name='name'
+                    form={form}
+                />
+                <TextField label={t('form.work.location.url')} name='url' form={form} />
+            </Box>
             <TextareaField fieldName='body' form={form}></TextareaField>
-        </>
+        </Box>
     )
 }
 

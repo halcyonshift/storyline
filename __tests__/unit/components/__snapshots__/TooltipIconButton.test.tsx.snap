@@ -28,7 +28,7 @@ exports[`<TooltipIconButton /> renders correctly 1`] = `
     aria-hidden={true}
     aria-label="Add"
     className="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root"
-    data-testid="AddIcon"
+    data-testid="AddOutlinedIcon"
     focusable="false"
     viewBox="0 0 24 24"
   >

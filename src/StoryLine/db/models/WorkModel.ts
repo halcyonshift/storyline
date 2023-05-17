@@ -94,8 +94,8 @@ export default class WorkModel extends Model {
             .join(' ')
     }
 
-    wordsPerDay(currentWords: number) {
-        if (!currentWords || !this.wordGoal) return 0
+    wordsPerDay(currentWords = 0): null | number {
+        if (!this.wordGoal) return null
         const deadline = DateTime.fromJSDate(this.deadlineAt)
         const now = DateTime.now()
         const diff = Interval.fromDateTimes(now, deadline)
@@ -393,7 +393,8 @@ export default class WorkModel extends Model {
         return { data: jsonData, images: [...new Set(images)], backupPath: backupPath || '' }
     }
 
-    @writer async restore(data: any) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @writer async restore(data: any, images: []) {
         api.deleteFile(this.image)
         await this.character.destroyAllPermanently()
         await this.connection.destroyAllPermanently()
@@ -638,7 +639,7 @@ export default class WorkModel extends Model {
         .get<StatisticModel>('statistic')
         .query(
             Q.experimentalNestedJoin('section', 'work'),
-            Q.on('section', Q.on('work', 'id', this.id))
+            Q.on('section', [Q.on('work', 'id', this.id), Q.where('mode', 'SCENE')])
         )
 
     @lazy tags = this.collections

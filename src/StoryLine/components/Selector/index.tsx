@@ -25,7 +25,9 @@ const Selector = ({ onClick }: SelectorProps) => {
     return (
         <Box className='flex justify-around'>
             {buttons.map((button) => (
-                <Box className={button.table === active ? 'opacity-100' : 'opacity-50'}>
+                <Box
+                    key={crypto.randomUUID()}
+                    className={button.table === active ? 'opacity-100' : 'opacity-50'}>
                     <Tooltip title={t(`component.separator.${button.table}`)}>
                         <IconButton
                             key={button.table}

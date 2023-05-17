@@ -156,6 +156,7 @@ const schema = appSchema({
                 { name: 'work_id', type: 'string', isIndexed: true },
                 { name: 'sprint_id', type: 'string', isIndexed: true },
                 { name: 'section_id', type: 'string', isIndexed: true, isOptional: true },
+                { name: 'words_start', type: 'number' },
                 { name: 'words', type: 'number' },
                 { name: 'created_at', type: 'number' },
                 { name: 'updated_at', type: 'number' }

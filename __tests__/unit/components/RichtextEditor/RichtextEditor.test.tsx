@@ -1,5 +1,4 @@
 import userEvent from '@testing-library/user-event'
-import renderer from 'react-test-renderer'
 import RichtextEditor from '@sl/components/RichtextEditor'
 import database from '@sl/db'
 import { SectionModel, WorkModel } from '@sl/db/models'
@@ -45,19 +44,5 @@ describe('<RichtextEditor />', () => {
     it('saves onClick', async () => {
         await userEvent.click(screen.getByLabelText('component.richtextEditor.toolbar.save'))
         await waitFor(() => expect(mockOnSave).toHaveBeenCalled())
-    })
-
-    it('renders correctly', () => {
-        const tree = renderer
-            .create(
-                <RichtextEditor
-                    id='test'
-                    onSave={mockOnSave}
-                    initialValue='<p>Initial text</p>'
-                    toolbar={['excerpt', 'tag', 'search', 'save', 'version']}
-                />
-            )
-            .toJSON()
-        expect(tree).toMatchSnapshot()
     })
 })

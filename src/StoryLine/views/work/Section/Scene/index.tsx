@@ -67,9 +67,7 @@ const SceneView = ({ section }: SectionViewType) => {
                 .extend(Q.where('section_id', section.id))
                 .fetch()
 
-            if (!sprintStatistics.length) {
-                await sprint.addStatistic({ section, words })
-            } else {
+            if (sprintStatistics.length) {
                 await sprintStatistics[0].updateWords(words)
             }
         }
@@ -79,7 +77,7 @@ const SceneView = ({ section }: SectionViewType) => {
 
     return (
         <RichtextEditor
-            id={section.id}
+            id='sceneBody'
             onSave={onSave}
             initialValue={initialValue}
             toolbar={section.isVersion ? plugins : plugins.concat('version')}

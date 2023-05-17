@@ -12,6 +12,7 @@ export default class SprintStatisticModel extends Model {
     }
 
     @field('words') words!: number
+    @field('words_start') wordsStart!: number
     @date('created_at') createdAt!: Date
     @date('updated_at') updatedAt!: Date
     @relation('section', 'section_id') section!: Relation<SectionModel>
