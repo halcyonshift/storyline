@@ -11,7 +11,7 @@ import { rendererConfig } from './webpack.renderer.config'
 const config: ForgeConfig = {
     packagerConfig: {
         icon: './src/StoryLine/assets/images/icon',
-        appCopyright: "Hannah O'Malley 2023",
+        appCopyright: "Hannah O'Malley",
         appVersion: '0.1.1',
         appCategoryType: 'public.app-category.productivity',
         asar: true,
@@ -22,10 +22,19 @@ const config: ForgeConfig = {
             /^\/\.husky(\/|$)/,
             /^\/\.vscode(\/|$)/,
             /^\/coverage(\/|$)/,
+            /^\/playwright-report(\/|$)/,
+            /^\/playwright-results(\/|$)/,
+            /^\/src\/StoryLine\/db\/__mocks__(\/|$)/,
+            /^\/\.env\.development$/,
+            /^\/\.env\.production$/,
+            /^\/\.env\.test$/,
             /^\/\.gitignore$/,
             /^\/babel.config.json$/,
+            /^\/electronegativity.json$/,
             /^\/jest.config.js$/,
-            /^\/sentry.properties$/
+            /^\/sentry.properties$/,
+            /^\/tailwind.config.js$/,
+            /^\/tsconfig.json$/
         ]
     },
     rebuildConfig: {},
