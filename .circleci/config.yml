@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.1.0
+  win: circleci/windows@5.0.0
 
 commands:
   install:
@@ -26,13 +27,30 @@ jobs:
     parameters:
       arch:
         type: enum
-        enum: [ 'arm64' ]
+        enum: [ 'x64', 'arm64' ]
     macos:
       xcode: '13.4.0'
     resource_class: macos.x86.medium.gen2
     steps:
       - install
-      - run: npx yarn run publisher --arch=<< parameters.arch >> --dry-run
+      - run: npx yarn run publish --arch=<< parameters.arch >> --dry-run
+      - store_artifacts:
+          path: out
+      - persist_to_workspace:
+          root: .
+          paths:
+            - out
+  win-build:
+    parameters:
+      arch:
+        type: enum
+        enum: [ 'x64', 'arm64', 'ia32' ]
+    executor:
+      name: win/default
+      shell: bash.exe
+    steps:
+      - install
+      - run: npx yarn run publish --arch=<< parameters.arch >> --dry-run
       - store_artifacts:
           path: out
       - persist_to_workspace:
@@ -68,18 +86,36 @@ jobs:
             sentry-cli releases files $SENTRY_RELEASE upload-sourcemaps --url-prefix=~/.webpack ./.webpack/
             sentry-cli releases finalize $SENTRY_RELEASE
             sentry-cli releases deploys $SENTRY_RELEASE new -e $SENTRY_ENVIRONMENT
-
 workflows:
   build:
     jobs:
       - mac-build:
           matrix:
             parameters:
-              arch: [ arm64 ]
+              arch: [ x64, arm64 ]
+          filters:
+            tags:
+              only:
+                - /^v.*/
+            branches:
+              ignore: /.*/
+      - win-build:
+          matrix:
+            parameters:
+              arch: [ x64, ia32 ]
+          filters:
+            tags:
+              only:
+                - /^v.*/
+            branches:
+              ignore: /.*/
       - publish-to-github:
           context: storyline-release
           requires:
+            - mac-build-x64
             - mac-build-arm64
+            - win-build-ia32
+            - win-build-x64
       - notify-sentry-deploy:
           requires:
             - publish-to-github

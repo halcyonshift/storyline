@@ -12,7 +12,7 @@ const config: ForgeConfig = {
     packagerConfig: {
         icon: './src/StoryLine/assets/images/icon',
         appCopyright: "Hannah O'Malley",
-        appVersion: '0.1.2',
+        appVersion: '0.1.3',
         appCategoryType: 'public.app-category.productivity',
         asar: true
     },
