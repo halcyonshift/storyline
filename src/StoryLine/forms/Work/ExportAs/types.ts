@@ -20,7 +20,7 @@ export type ExportAsDataType = {
     mode: ExportModeType
 }
 
-export type ExportModeType = 'html' | 'pdf' | 'docx'
+export type ExportModeType = 'html' | 'pdf' | 'docx' | 'epub'
 export type ExportModeTypes = {
     mode: ExportModeType
     icon: ReactElement

@@ -158,8 +158,9 @@ app.whenReady()
     .then(() => {
         ipcMain.handle('backup', backup)
         ipcMain.handle('delete-file', deleteFile)
-        ipcMain.handle('export-html', apiExport.html)
         ipcMain.handle('export-docx', apiExport.docx)
+        ipcMain.handle('export-epub', apiExport.epub)
+        ipcMain.handle('export-html', apiExport.html)
         ipcMain.handle(
             'import-bibisco2',
             async () => await apiImport.bibisco(app.getPath('userData'))

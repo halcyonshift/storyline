@@ -36,6 +36,7 @@ export const CONNECTION_ICONS = {
 
 export const IMPORTEXPORT_ICONS = {
     docx: <Icon name='Description' />,
+    epub: <Icon name='Book' />,
     html: <Icon name='Html' />,
     importExport: <Icon name='ImportExport' />,
     import: <Icon name='ArrowDownward' />,

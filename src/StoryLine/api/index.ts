@@ -1,4 +1,5 @@
 import { ipcRenderer } from 'electron'
+import { Content, Options } from 'epub-gen-memory'
 
 export default {
     backupWork: (json: object, images: string[], path: string) =>
@@ -16,6 +17,8 @@ export default {
         ipcRenderer.invoke('export-html', fileName, html),
     exportDocx: (fileName: string, html: string) =>
         ipcRenderer.invoke('export-docx', fileName, html),
+    exportEpub: (fileName: string, options: Options, chapters: Content) =>
+        ipcRenderer.invoke('export-epub', fileName, options, chapters),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     subscribeToFullScreenEvent: (callback: any) => {
         ipcRenderer.on('full-screen', (_, isFullScreen) => {

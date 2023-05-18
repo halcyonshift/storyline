@@ -1,10 +1,11 @@
-import { Box, Button, CircularProgress, IconButton, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Typography } from '@mui/material'
 import { FormikProps, useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 import { IMPORTEXPORT_ICONS } from '@sl/constants/icons'
 import FontFamilyField from '@sl/components/form/FontFamilyField'
 import FontSizeField from '@sl/components/form/FontSizeField'
+import TooltipIconButton from '@sl/components/TooltipIconButton'
 import LineHeightField from '@sl/components/form/LineHeightField'
 import ParagraphSpacingField from '@sl/components/form/ParagraphSpacingField'
 import RadioField from '@sl/components/form/RadioField'
@@ -25,6 +26,10 @@ const ExportAsForm = ({ work, generateExport, isGenerating }: ExportAsFormProps)
     const { t } = useTranslation()
 
     const exportModes: ExportModeTypes[] = [
+        {
+            mode: 'epub',
+            icon: IMPORTEXPORT_ICONS.epub
+        },
         {
             mode: 'pdf',
             icon: IMPORTEXPORT_ICONS.pdf
@@ -54,7 +59,7 @@ const ExportAsForm = ({ work, generateExport, isGenerating }: ExportAsFormProps)
     const form: FormikProps<ExportAsDataType> = useFormik<ExportAsDataType>({
         enableReinitialize: true,
         initialValues: {
-            mode: 'pdf',
+            mode: 'epub',
             author: work.author,
             chapterTitle: t('form.work.backupRestore.exportAs.chapterTitleInitialValue'),
             chapterPosition: 'center',
@@ -147,17 +152,18 @@ const ExportAsForm = ({ work, generateExport, isGenerating }: ExportAsFormProps)
                         form={form}
                     />
                     <Box className='grid grid-cols-1 gap-3'>
-                        <Box>
+                        <Box className='flex justify-around bg-slate-200 dark:bg-slate-600 rounded-lg p-3'>
                             {exportModes.map((exportMode) => (
-                                <IconButton
+                                <TooltipIconButton
+                                    text={`.${exportMode.mode}`}
+                                    icon={exportMode.icon}
                                     key={exportMode.mode}
                                     sx={{ fontSize: settings.appFontSize * 3 }}
                                     color={
                                         form.values.mode === exportMode.mode ? 'info' : 'default'
                                     }
-                                    onClick={() => form.setFieldValue('mode', exportMode.mode)}>
-                                    {exportMode.icon}
-                                </IconButton>
+                                    onClick={() => form.setFieldValue('mode', exportMode.mode)}
+                                />
                             ))}
                         </Box>
                         <Box textAlign='center'>
