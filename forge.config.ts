@@ -12,30 +12,9 @@ const config: ForgeConfig = {
     packagerConfig: {
         icon: './src/StoryLine/assets/images/icon',
         appCopyright: "Hannah O'Malley",
-        appVersion: '0.1.1',
+        appVersion: '0.1.2',
         appCategoryType: 'public.app-category.productivity',
-        asar: true,
-        ignore: [
-            /^\/__tests__(\/|$)/,
-            /^\/__mocks__(\/|$)/,
-            /^\/\.git(\/|$)/,
-            /^\/\.husky(\/|$)/,
-            /^\/\.vscode(\/|$)/,
-            /^\/coverage(\/|$)/,
-            /^\/playwright-report(\/|$)/,
-            /^\/playwright-results(\/|$)/,
-            /^\/src\/StoryLine\/db\/__mocks__(\/|$)/,
-            /^\/\.env\.development$/,
-            /^\/\.env\.production$/,
-            /^\/\.env\.test$/,
-            /^\/\.gitignore$/,
-            /^\/babel.config.json$/,
-            /^\/electronegativity.json$/,
-            /^\/jest.config.js$/,
-            /^\/sentry.properties$/,
-            /^\/tailwind.config.js$/,
-            /^\/tsconfig.json$/
-        ]
+        asar: true
     },
     rebuildConfig: {},
     makers: [
@@ -44,8 +23,19 @@ const config: ForgeConfig = {
         new MakerRpm({}),
         new MakerDeb({})
     ],
+    publishers: [
+        {
+            name: '@electron-forge/publisher-github',
+            config: {
+                repository: {
+                    owner: 'halcyonshift',
+                    name: 'storyline'
+                },
+                prerelease: true
+            }
+        }
+    ],
     plugins: [
-        /*
         {
             name: '@electron-forge/plugin-electronegativity',
             config: {
@@ -57,7 +47,6 @@ const config: ForgeConfig = {
             name: '@electron-forge/plugin-auto-unpack-natives',
             config: {}
         },
-        */
         new WebpackPlugin({
             devServer: {
                 hot: true,
