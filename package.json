@@ -9,7 +9,7 @@
     "package:test": "ENVIRONMENT=test electron-forge package --platform=darwin",
     "package:production": "ENVIRONMENT=production electron-forge package --arch=ia32,x64 --platform=darwin,win32",
     "maker": "ENVIRONMENT=production electron-forge make --arch=ia32,x64 --platform=darwin,win32",
-    "publisher": "ENVIRONMENT=production electron-forge publish",
+    "publisher": "electron-forge publish",
     "lint": "eslint --max-warnings=0 --ext .ts,.tsx .",
     "test:ci": "ENVIRONMENT=test DOTENV_CONFIG_PATH=.env.test yarn jest ./__tests__/unit --silent",
     "test:unit": "ENVIRONMENT=test DOTENV_CONFIG_PATH=.env.test yarn jest ./__tests__/unit --silent",
