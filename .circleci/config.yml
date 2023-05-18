@@ -29,35 +29,6 @@ jobs:
     steps:
       - install
       - run: yarn run lint
-  mac-test:
-    parameters:
-      arch:
-        type: enum
-        enum: [ 'x64', 'arm64' ]
-    macos:
-      xcode: '13.4.0'
-    resource_class: macos.x86.medium.gen2
-    steps:
-      - install
-  win-test:
-    parameters:
-      arch:
-        type: enum
-        enum: [ 'x64', 'arm64', 'ia32' ]
-    executor:
-      name: win/default
-      shell: bash.exe
-    steps:
-      - install
-  linux-test:
-    parameters:
-      arch:
-        type: enum
-        enum: [ 'x64', 'arm64','armv7l' ]
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - install
   mac-build:
     parameters:
       arch:
@@ -149,21 +120,9 @@ jobs:
             sentry-cli releases deploys $SENTRY_RELEASE new -e $SENTRY_ENVIRONMENT
 
 workflows:
-  build-and-test:
+  build:
     jobs:
       - lint
-      - mac-test:
-          matrix:
-            parameters:
-              arch: [ x64, arm64 ]
-      - win-test:
-          matrix:
-            parameters:
-              arch: [ x64 ]
-      - linux-test:
-          matrix:
-            parameters:
-              arch: [ x64 ]
       - mac-build:
           matrix:
             parameters:
