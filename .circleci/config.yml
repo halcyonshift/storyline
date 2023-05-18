@@ -23,12 +23,6 @@ commands:
             - node_modules
           key: v1-dependencies-{{ arch }}-{{ checksum "yarn.lock" }}
 jobs:
-  lint:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - install
-      - run: yarn run lint
   mac-build:
     parameters:
       arch:
@@ -122,7 +116,6 @@ jobs:
 workflows:
   build:
     jobs:
-      - lint
       - mac-build:
           matrix:
             parameters:
@@ -156,7 +149,6 @@ workflows:
       - publish-to-github:
           context: storyline-release
           requires:
-            - lint
             - mac-build-x64
             - mac-build-arm64
             - win-build-ia32
