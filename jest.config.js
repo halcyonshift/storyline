@@ -16,6 +16,11 @@ module.exports = {
     transform: {
       "\\.[jt]sx?$": "babel-jest"
     },
+    testPathIgnorePatterns: [
+      "<rootDir>/out/",
+      "<rootDir>/node_modules/",
+      "<rootDir>/src/"
+    ],
     transformIgnorePatterns: ["node_modules/(?!variables/.*)"],
     setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect"],
     setupFiles: ['dotenv/config', './__mocks__/setup.js']
