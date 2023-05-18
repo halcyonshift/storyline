@@ -1,32 +1,222 @@
 version: 2.1
-jobs:
-  build:
-    working_directory: ~/repo
-    docker:
-      - image: cimg/node:18.8.0
+
+orbs:
+  node: circleci/node@5.1.0
+  win: circleci/windows@5.0.0
+
+commands:
+  install:
     steps:
+      - run: git config --global core.autocrlf input
+      - node/install:
+          node-version: '18.4.0'
+      - run: nvm use 18.4.0
       - checkout
-      - run:
-          name: Update NPM
-          command: "sudo npm install -g npm"
       - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: Install Dependencies
-          command: npm install
-      - run:
-          name: Install dpkg and fakeroot
-          command: |
-            sudo apt-get update -y
-            sudo apt-get install -y dpkg fakeroot
-
+          keys:
+            - v1-dependencies-{{ arch }}-{{ checksum "yarn.lock" }}
+            - v1-dependencies-{{ arch }}
+      - run: npm install --global yarn
+      - run: yarn install --frozen-lockfile
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
           paths:
-            - ./node_modules
-      - run:
-          name: Generate Builds
-          command: npm run make
-
+            - node_modules
+          key: v1-dependencies-{{ arch }}-{{ checksum "yarn.lock" }}
+jobs:
+  lint:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - install
+      - run: yarn run lint
+  mac-test:
+    parameters:
+      arch:
+        type: enum
+        enum: [ 'x64', 'arm64' ]
+    macos:
+      xcode: '13.4.0'
+    resource_class: macos.x86.medium.gen2
+    steps:
+      - install
+  win-test:
+    parameters:
+      arch:
+        type: enum
+        enum: [ 'x64', 'arm64', 'ia32' ]
+    executor:
+      name: win/default
+      shell: bash.exe
+    steps:
+      - install
+  linux-test:
+    parameters:
+      arch:
+        type: enum
+        enum: [ 'x64', 'arm64','armv7l' ]
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - install
+  mac-build:
+    parameters:
+      arch:
+        type: enum
+        enum: [ 'x64', 'arm64' ]
+    macos:
+      xcode: '13.4.0'
+    resource_class: macos.x86.medium.gen2
+    steps:
+      - install
+      - run: npx yarn run publish --arch=<< parameters.arch >> --dry-run
       - store_artifacts:
-          path: ~/repo/out/make
+          path: out
+      - persist_to_workspace:
+          root: .
+          paths:
+            - out
+  win-build:
+    parameters:
+      arch:
+        type: enum
+        enum: [ 'x64', 'arm64', 'ia32' ]
+    executor:
+      name: win/default
+      shell: bash.exe
+    steps:
+      - install
+      - run: npx yarn run publish --arch=<< parameters.arch >> --dry-run
+      - store_artifacts:
+          path: out
+      - persist_to_workspace:
+          root: .
+          paths:
+            - out
+  linux-build:
+    parameters:
+      arch:
+        type: enum
+        enum: [ 'x64', 'arm64','armv7l' ]
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run: sudo apt-get update && sudo apt install rpm
+      - install
+      - run: npx yarn run publish --arch=<< parameters.arch >> --dry-run
+      # CircleCI doesn't let you persist files with the same name from multiple
+      # jobs, so only persist the .webpack path from the x64 linux-build job
+      - when:
+          condition:
+            not:
+              equal: [ << parameters.arch >>, x64 ]
+          steps:
+            - run: rm -rf .webpack/*
+      - store_artifacts:
+          path: out
+      - persist_to_workspace:
+          root: .
+          paths:
+            - out
+            - .webpack
+  publish-to-github:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - install
+      - attach_workspace:
+          at: .
+      - run: yarn run publish --from-dry-run
+  notify-sentry-deploy:
+    docker:
+      - image: cimg/base:stable
+    environment:
+      SENTRY_ORG: halcyonshift
+      SENTRY_PROJECT: storyline
+      SENTRY_ENVIRONMENT: production
+    steps:
+      - install
+      - attach_workspace:
+          at: .
+      - run:
+          name: Create release and notify Sentry of deploy
+          command: |
+            curl -sL https://sentry.io/get-cli/ | bash
+            export SENTRY_RELEASE=StoryLine@${CIRCLE_TAG:1}
+            sentry-cli releases new -p $SENTRY_PROJECT $SENTRY_RELEASE
+            sentry-cli releases set-commits $SENTRY_RELEASE --auto
+            sentry-cli releases files $SENTRY_RELEASE upload-sourcemaps --url-prefix=~/.webpack ./.webpack/
+            sentry-cli releases finalize $SENTRY_RELEASE
+            sentry-cli releases deploys $SENTRY_RELEASE new -e $SENTRY_ENVIRONMENT
+
+workflows:
+  build-and-test:
+    jobs:
+      - lint
+      - mac-test:
+          matrix:
+            parameters:
+              arch: [ x64, arm64 ]
+      - win-test:
+          matrix:
+            parameters:
+              arch: [ x64 ]
+      - linux-test:
+          matrix:
+            parameters:
+              arch: [ x64 ]
+      - mac-build:
+          matrix:
+            parameters:
+              arch: [ x64, arm64 ]
+          filters:
+            tags:
+              only:
+                - /^v.*/
+            branches:
+              ignore: /.*/
+      - win-build:
+          matrix:
+            parameters:
+              arch: [ x64, ia32 ]
+          filters:
+            tags:
+              only:
+                - /^v.*/
+            branches:
+              ignore: /.*/
+      - linux-build:
+          matrix:
+            parameters:
+              arch: [ x64, arm64, armv7l ]
+          filters:
+            tags:
+              only:
+                - /^v.*/
+            branches:
+              ignore: /.*/
+      - publish-to-github:
+          context: storyline-release
+          requires:
+            - lint
+            - mac-build-x64
+            - mac-build-arm64
+            - win-build-ia32
+            - win-build-x64
+            - linux-build-x64
+            - linux-build-arm64
+            - linux-build-armv7l
+          filters:
+            tags:
+              only:
+                - /^v.*/
+            branches:
+              ignore: /.*/
+      - notify-sentry-deploy:
+          requires:
+            - publish-to-github
+          filters:
+            tags:
+              only:
+                - /^v.*/
+            branches:
+              ignore: /.*/
