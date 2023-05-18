@@ -1,6 +1,6 @@
 import { Box, Divider, IconButton, Stack, Tooltip } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Icons from '@sl/constants/icons'
 import { NavigationProps, TogglePanelType } from '@sl/layouts/Work/Navigation/types'
 import useSettings from '@sl/theme/useSettings'
@@ -10,15 +10,21 @@ import useLayout from '../useLayout'
 const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationProps) => {
     const { t } = useTranslation()
     const params = useParams()
+    const location = useLocation()
     const navigate = useNavigate()
     const settings = useSettings()
     const { loadTab } = useTabs()
     const { setPanelWidth } = useLayout()
 
+    const INACTIVE = 'opacity-80'
+    const ACTIVE = 'opacity-100'
+
     const togglePanel = (panel?: TogglePanelType) => {
         setCurrentPanel(panel !== currentPanel ? panel : null)
         setPanelWidth(0)
     }
+
+    const getClassName = (find: string) => (location.pathname.includes(find) ? ACTIVE : INACTIVE)
 
     return (
         <Box
@@ -30,6 +36,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 <Tooltip title={t('layout.work.navigation.work')} placement='right'>
                     <IconButton
                         color='inherit'
+                        className={getClassName('/section')}
                         aria-label={t('layout.work.navigation.work')}
                         onClick={() => togglePanel('section')}>
                         {Icons.section.section}
@@ -38,6 +45,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 <Tooltip title={t('layout.work.navigation.character')} placement='right'>
                     <IconButton
                         color='inherit'
+                        className={getClassName('/character')}
                         aria-label={t('layout.work.navigation.character')}
                         onClick={() => togglePanel('character')}>
                         {Icons.character.character}
@@ -46,6 +54,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 <Tooltip title={t('layout.work.navigation.location')} placement='right'>
                     <IconButton
                         color='inherit'
+                        className={getClassName('/location')}
                         aria-label={t('layout.work.navigation.location')}
                         onClick={() => togglePanel('location')}>
                         {Icons.location.location}
@@ -54,6 +63,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 <Tooltip title={t('layout.work.navigation.item')} placement='right'>
                     <IconButton
                         color='inherit'
+                        className={getClassName('/item')}
                         aria-label={t('layout.work.navigation.item')}
                         onClick={() => togglePanel('item')}>
                         {Icons.item.item}
@@ -62,6 +72,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 <Tooltip title={t('layout.work.navigation.note')} placement='right'>
                     <IconButton
                         color='inherit'
+                        className={getClassName('/note')}
                         aria-label={t('layout.work.navigation.note')}
                         onClick={() => togglePanel('note')}>
                         {Icons.note.note}
@@ -73,6 +84,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 <Tooltip title={t('layout.work.navigation.search')} placement='right'>
                     <IconButton
                         color='inherit'
+                        className={getClassName('/search')}
                         aria-label={t('layout.work.navigation.search')}
                         onClick={() => togglePanel('search')}>
                         {Icons.search.search}
@@ -81,6 +93,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 <Tooltip title={t('layout.work.navigation.overview')} placement='right'>
                     <IconButton
                         color='inherit'
+                        className={getClassName('/overview')}
                         aria-label={t('layout.work.navigation.overview')}
                         onClick={() => {
                             loadTab({
@@ -95,6 +108,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 <Tooltip title={t('layout.work.navigation.connection')} placement='right'>
                     <IconButton
                         color='inherit'
+                        className={getClassName('/connection')}
                         aria-label={t('layout.work.navigation.connection')}
                         onClick={() => {
                             loadTab({
@@ -108,6 +122,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.insight')} placement='right'>
                     <IconButton
+                        className={getClassName('/insight')}
                         color='inherit'
                         aria-label={t('layout.work.navigation.insight')}
                         onClick={() => {
@@ -120,6 +135,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 <Tooltip title={t('layout.work.navigation.backupRestore')} placement='right'>
                     <IconButton
                         color='inherit'
+                        className={getClassName('/backupRestore')}
                         aria-label={t('layout.work.navigation.backupRestore')}
                         onClick={() => {
                             togglePanel()
@@ -131,6 +147,9 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 <Tooltip title={t('layout.work.navigation.setting')} placement='right'>
                     <IconButton
                         color='inherit'
+                        className={
+                            location.pathname === `/work/${params.work_id}/edit` ? ACTIVE : INACTIVE
+                        }
                         aria-label={t('layout.work.navigation.setting')}
                         onClick={() => {
                             togglePanel()

@@ -12,8 +12,8 @@ const theme = {
     },
     tag: {
         character: 'tag tag-character text-emerald-600',
-        item: 'tag tag-item text-amber-600',
-        location: 'tag tag-location text-purple-600',
+        item: 'tag tag-item text-purple-600',
+        location: 'tag tag-location text-amber-600',
         note: 'tag tag-note text-sky-600'
     },
     text: {
