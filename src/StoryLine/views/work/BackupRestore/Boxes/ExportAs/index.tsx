@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, CSSProperties } from 'react'
-import jsPDF from 'jspdf'
 import { Box } from '@mui/material'
+
+import jsPDF from 'jspdf'
 import { useRouteLoaderData } from 'react-router-dom'
 import Image from '@sl/components/Image'
 import { SectionModel, WorkModel } from '@sl/db/models'
@@ -86,6 +87,32 @@ const ExportAsBox = () => {
         api.exportDocx(work.title, wrapHTML())
     }
 
+    const generateEpub = async (): Promise<void> => {
+        if (!exportTemplateRef?.current) return
+
+        api.exportEpub(
+            work.title,
+            {
+                title: work.title,
+                author: settings.author || undefined,
+                description: work.summary || undefined,
+                cover: work.image ? `file://${work.image}` : undefined,
+                lang: work.language
+            },
+            chapters.map((chapter) => ({
+                title: settings?.chapterTitle
+                    ? settings.chapterTitle
+                          .replace('{{number}}', chapter.order.toString())
+                          .replace('{{title}}', chapter.displayTitle)
+                    : undefined,
+                content: scenes
+                    .filter((scene) => scene.section.id === chapter.id)
+                    .map((scene) => scene.body.replace(/<a.*?>.*?<\/a>/gi, ''))
+                    .join(settings.sceneSeparator)
+            }))
+        )
+    }
+
     const generateHTML = async (): Promise<void> => {
         if (!exportTemplateRef?.current) return
         api.exportHTML(work.title, wrapHTML())
@@ -148,6 +175,13 @@ const ExportAsBox = () => {
         return settings
             ? {
                   docx: defaultStyle,
+                  epub: {
+                      ...defaultStyle,
+                      ...{
+                          cover: { ...defaultStyle.cover, ...{ height: 'auto' } },
+                          p: { ...defaultStyle.p, ...{ fontSize: `${settings.fontSize}px` } }
+                      }
+                  },
                   html: {
                       ...defaultStyle,
                       ...{
@@ -189,8 +223,13 @@ const ExportAsBox = () => {
         if (!isGenerating || !settings || !exportTemplateRef.current) return
 
         switch (settings.mode) {
-            case 'pdf':
-                generatePDF().then(() => {
+            case 'docx':
+                generateDocx().then(() => {
+                    setIsGenerating(false)
+                })
+                break
+            case 'epub':
+                generateEpub().then(() => {
                     setIsGenerating(false)
                 })
                 break
@@ -199,8 +238,8 @@ const ExportAsBox = () => {
                     setIsGenerating(false)
                 })
                 break
-            case 'docx':
-                generateDocx().then(() => {
+            case 'pdf':
+                generatePDF().then(() => {
                     setIsGenerating(false)
                 })
                 break
