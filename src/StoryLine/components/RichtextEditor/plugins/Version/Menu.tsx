@@ -34,7 +34,7 @@ const VersionMenu = ({ open, menuElement, setMenu, setMenuElement }: MenuProps):
                 horizontal: 'center'
             }}
             MenuListProps={{
-                'aria-labelledby': `menu-tag`
+                'aria-labelledby': `menu-version`
             }}>
             <MenuItem
                 onClick={() => {

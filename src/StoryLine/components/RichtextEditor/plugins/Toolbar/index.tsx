@@ -102,6 +102,11 @@ const ToolbarPlugin = ({
         }
     }, [editor])
 
+    // this stops the editor losing focus first tag click - no touchy!
+    useEffect(() => {
+        setMenuElement(document.getElementById('menu-tag'))
+    }, [])
+
     useEffect(() => {
         setToolbarWidth(isFullscreen ? windowWidth : windowWidth - navigationWidth - panelWidth)
     }, [windowWidth, navigationWidth, panelWidth, isFullscreen])
@@ -253,9 +258,9 @@ const ToolbarPlugin = ({
                             editor.update(() => {
                                 const selection = $getSelection()
                                 if (selection.getTextContent() || isTag) {
+                                    setMenuElement(menu ? null : e.currentTarget)
                                     editor.dispatchCommand(TOGGLE_TAG_COMMAND, null)
                                     setMenu('tag')
-                                    setMenuElement(menu ? null : e.currentTarget)
                                 }
                             })
                         }}>
