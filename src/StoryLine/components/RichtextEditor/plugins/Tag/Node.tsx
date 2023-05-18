@@ -52,7 +52,7 @@ export class TagNode extends LinkNode {
             element.href = `${element}/0`
         } else {
             element.href = `/${parts.join('/')}`
-            element.title = parts[2]
+            element.title = decodeURI(parts[2])
         }
         utils.addClassNamesToElement(element, config.theme.tag[parts[0]])
         return element
