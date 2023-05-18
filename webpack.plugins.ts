@@ -4,7 +4,7 @@ import Dotenv from 'dotenv-webpack'
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 
 export const plugins = [
-    new Dotenv({ path: `.env.${process.env.ENVIRONMENT}` }) as unknown as WebpackPluginInstance,
+    new Dotenv() as unknown as WebpackPluginInstance,
     new ForkTsCheckerWebpackPlugin({
         logger: 'webpack-infrastructure'
     }),
