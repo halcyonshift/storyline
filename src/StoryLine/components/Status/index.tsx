@@ -17,13 +17,17 @@ const Status = ({ model }: StatusProps) => {
             {Object.keys(Options).map((option: StatusType) => (
                 <Button
                     disableElevation
-                    sx={{ textTransform: 'capitalize' }}
+                    sx={{ textTransform: 'capitalize', whiteSpace: 'nowrap' }}
                     color={option === status ? StatusMap[option] : 'inherit'}
                     variant='contained'
                     key={option}
                     value={option}
                     onClick={() => {
-                        model.updateStatus(option).then(() => setStatus(option))
+                        model
+                            .updateRecord({
+                                status: option
+                            })
+                            .then(() => setStatus(option))
                     }}>
                     {t(`constant.status.${option}`)}
                 </Button>

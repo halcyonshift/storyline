@@ -13,6 +13,7 @@ import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMo
 import { WorkModel } from '@sl/db/models'
 import useSettings from '@sl/theme/useSettings'
 import ListItem from './ListItem'
+import { Status } from '@sl/constants/status'
 
 const CharacterPanel = () => {
     const work = useRouteLoaderData('work') as WorkModel
@@ -39,16 +40,27 @@ const CharacterPanel = () => {
     })
 
     useEffect(() => {
+        let _characters = characters
+        if (!group) {
+            _characters = _characters.filter((character) => character.status !== Status.ARCHIVE)
+        }
+
         setModeCharacters({
-            PRIMARY: characters.filter((character) => character.isPrimary),
-            SECONDARY: characters.filter((character) => character.isSecondary),
-            TERTIARY: characters.filter((character) => character.isTertiary)
+            PRIMARY: _characters.filter((character) => character.isPrimary),
+            SECONDARY: _characters.filter((character) => character.isSecondary),
+            TERTIARY: _characters.filter((character) => character.isTertiary)
         })
-    }, [characters])
+    }, [characters, group])
 
     return (
         <Panel
-            action={<GroupToggle group={group} setGroup={setGroup} />}
+            action={
+                <GroupToggle
+                    label={'layout.work.panel.character.groupToggle'}
+                    group={group}
+                    setGroup={setGroup}
+                />
+            }
             navigation={[
                 {
                     link: `addCharacter/${CharacterMode.PRIMARY}`,
@@ -66,31 +78,22 @@ const CharacterPanel = () => {
                     icon: CHARACTER_ICONS.addTertiary
                 }
             ]}>
-            {!group ? (
-                [CharacterMode.PRIMARY, CharacterMode.SECONDARY, CharacterMode.TERTIARY].map(
-                    (mode: CharacterModeType) =>
-                        modeCharacters[mode].length ? (
-                            <Accordion
-                                key={mode}
-                                title={
-                                    <Typography>{t(`constant.characterMode.${mode}`)}</Typography>
-                                }
-                                sx={{ backgroundColor: settings.getHex(400) }}
-                                className='text-white p-1 border-b'>
-                                <List dense disablePadding className='bg-white'>
-                                    {modeCharacters[mode].map((character) => (
-                                        <ListItem key={character.id} character={character} />
-                                    ))}
-                                </List>
-                            </Accordion>
-                        ) : null
-                )
-            ) : (
-                <List dense disablePadding className='bg-white'>
-                    {characters.map((character) => (
-                        <ListItem showIcon={true} key={character.id} character={character} />
-                    ))}
-                </List>
+            {[CharacterMode.PRIMARY, CharacterMode.SECONDARY, CharacterMode.TERTIARY].map(
+                (mode: CharacterModeType) =>
+                    modeCharacters[mode].length ? (
+                        <Accordion
+                            id={mode}
+                            key={mode}
+                            title={<Typography>{t(`constant.characterMode.${mode}`)}</Typography>}
+                            sx={{ backgroundColor: settings.getHex(400) }}
+                            className='text-white p-1 border-b'>
+                            <List dense disablePadding className='bg-white'>
+                                {modeCharacters[mode].map((character) => (
+                                    <ListItem key={character.id} character={character} />
+                                ))}
+                            </List>
+                        </Accordion>
+                    ) : null
             )}
         </Panel>
     )

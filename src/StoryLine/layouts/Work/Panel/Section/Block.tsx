@@ -11,8 +11,9 @@ import { SectionMode } from '@sl/constants/sectionMode'
 import { status } from '@sl/theme/utils'
 import useTabs from '../../Tabs/useTabs'
 import { BlockType } from './types'
+import { Status } from '@sl/constants/status'
 
-const Block = ({ section, index, fontWeight }: BlockType) => {
+const Block = ({ section, index, fontWeight, group }: BlockType) => {
     const [show, setShow] = useState<boolean>(false)
     const children = useObservable(
         () =>
@@ -38,6 +39,7 @@ const Block = ({ section, index, fontWeight }: BlockType) => {
                     <ListItem
                         {...provided.dragHandleProps}
                         title={section.displayTitle}
+                        className='bg-slate-50 dark:bg-slate-600'
                         sx={{
                             borderLeft: `8px solid ${status(section.status, 500).color}`
                         }}
@@ -52,8 +54,7 @@ const Block = ({ section, index, fontWeight }: BlockType) => {
                                             section.isScene
                                                 ? loadTab({
                                                       id: section.id,
-                                                      label: section.displayTitle,
-                                                      link: `section/${section.id}`
+                                                      mode: 'section'
                                                   })
                                                 : setShow(!show)
                                         }>
@@ -121,14 +122,22 @@ const Block = ({ section, index, fontWeight }: BlockType) => {
                         <Droppable droppableId={section.id} type={section.mode}>
                             {(provided) => (
                                 <Box ref={provided.innerRef} {...provided.droppableProps}>
-                                    {children.map((section, index) => (
-                                        <Block
-                                            key={section.id}
-                                            section={section}
-                                            index={index}
-                                            fontWeight={fontWeight - 400}
-                                        />
-                                    ))}
+                                    {children
+                                        .filter(
+                                            (section) =>
+                                                !section.isScene ||
+                                                section.status !== Status.ARCHIVE ||
+                                                group
+                                        )
+                                        .map((section, index) => (
+                                            <Block
+                                                group={group}
+                                                key={section.id}
+                                                section={section}
+                                                index={index}
+                                                fontWeight={fontWeight - 400}
+                                            />
+                                        ))}
                                     {provided.placeholder}
                                 </Box>
                             )}

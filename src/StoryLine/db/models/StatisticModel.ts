@@ -2,7 +2,7 @@ import { Model, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { date, field, relation, writer } from '@nozbe/watermelondb/decorators'
 import { DateTime } from 'luxon'
-import SectionModel from './SectionModel'
+import { SectionModel, WorkModel } from '.'
 
 export default class StatisticModel extends Model {
     static table = 'statistic'
@@ -15,6 +15,7 @@ export default class StatisticModel extends Model {
     @date('created_at') createdAt!: Date
     @date('updated_at') updatedAt!: Date
     @relation('section', 'section_id') section!: Relation<SectionModel>
+    @relation('work', 'work_id') work!: Relation<WorkModel>
 
     get isToday(): boolean {
         return Boolean(

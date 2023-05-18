@@ -18,24 +18,28 @@ const ChapterList = ({ chapters, scenes }: ChapterListProps) => {
                     <Box
                         className='grid grid-cols-1 xl:grid-cols-3 gap-1 xl:pr-2'
                         sx={{
-                            backgroundColor: status(chapter.status, 100).color,
+                            backgroundColor: status(chapter.status, settings.isDark() ? 800 : 100)
+                                .color,
                             marginBottom: '1px'
                         }}>
-                        <Box className='col-span-2 px-2 py-1'>
+                        <Box
+                            className={`${
+                                chapter.wordGoal ? 'col-span-2' : 'col-span-3'
+                            } px-2 py-1`}>
                             <Typography
                                 variant='body1'
                                 className='whitespace-nowrap overflow-hidden text-ellipsis
-                                    pr-3 flex justify-between'>
+                flex justify-between'>
                                 {chapter.displayTitle}
                                 {chapter.wordCount && !chapter.wordGoal ? (
                                     <span>
-                                        {chapter.wordCount.toLocaleString(settings.language)}
+                                        {chapter.wordCount?.toLocaleString(settings.language)}
                                     </span>
                                 ) : (
                                     ''
                                 )}
                             </Typography>
-                            {chapter.daysRemaining ? (
+                            {chapter.daysRemaining && chapter.wordGoal ? (
                                 <Typography variant='body2'>
                                     {t('view.work.dashboard.tracker.remaining', {
                                         days: chapter.daysRemaining,

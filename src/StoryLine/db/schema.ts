@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 const schema = appSchema({
-    version: 1,
+    version: parseInt(process.env.DB_SCHEMA_VERSION),
     tables: [
         tableSchema({
             name: 'character',
@@ -128,12 +128,36 @@ const schema = appSchema({
                 { name: 'description', type: 'string', isOptional: true },
                 { name: 'order', type: 'number' },
                 { name: 'date', type: 'string', isOptional: true },
+                { name: 'words', type: 'number', isOptional: true },
                 { name: 'word_goal', type: 'number', isOptional: true },
                 { name: 'word_goal_per_day', type: 'number', isOptional: true },
                 { name: 'deadline_at', type: 'number', isOptional: true },
                 { name: 'status', type: 'string', isIndexed: true },
                 { name: 'point_of_view', type: 'string', isOptional: true },
                 { name: 'point_of_view_character_id', type: 'string', isOptional: true },
+                { name: 'created_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
+            ]
+        }),
+        tableSchema({
+            name: 'sprint',
+            columns: [
+                { name: 'work_id', type: 'string', isIndexed: true },
+                { name: 'word_goal', type: 'number', isOptional: true },
+                { name: 'start_at', type: 'number' },
+                { name: 'end_at', type: 'number' },
+                { name: 'created_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
+            ]
+        }),
+        tableSchema({
+            name: 'sprint_statistic',
+            columns: [
+                { name: 'work_id', type: 'string', isIndexed: true },
+                { name: 'sprint_id', type: 'string', isIndexed: true },
+                { name: 'section_id', type: 'string', isIndexed: true, isOptional: true },
+                { name: 'words_start', type: 'number' },
+                { name: 'words', type: 'number' },
                 { name: 'created_at', type: 'number' },
                 { name: 'updated_at', type: 'number' }
             ]

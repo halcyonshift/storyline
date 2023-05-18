@@ -44,8 +44,7 @@ const AppearancesPanel = ({ appearances }: AppearancesPanelProps) => {
                                 onClick={() => {
                                     loadTab({
                                         id: appearance.scene.id,
-                                        label: appearance.scene.displayTitle,
-                                        link: `section/${appearance.scene.id}`
+                                        mode: 'section'
                                     })
                                 }}>
                                 {appearance.scene.displayTitle}

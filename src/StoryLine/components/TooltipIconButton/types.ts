@@ -1,5 +1,5 @@
+import { MouseEvent, ReactElement } from 'react'
 import { IconButtonProps } from '@mui/material'
-import { ReactElement } from 'react'
 
 export type TooltipIconButtonProps = {
     text: string
@@ -7,5 +7,5 @@ export type TooltipIconButtonProps = {
     link?: string
     confirm?: string
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onClick?: () => Promise<void> | void
+    onClick?: (e?: MouseEvent<HTMLButtonElement, MouseEvent>) => Promise<void> | void
 } & IconButtonProps

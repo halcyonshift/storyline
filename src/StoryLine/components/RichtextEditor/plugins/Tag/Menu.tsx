@@ -1,16 +1,8 @@
-import { useEffect, useState, ReactElement, SyntheticEvent } from 'react'
-
+import { useEffect, useState, ReactElement } from 'react'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import CategoryIcon from '@mui/icons-material/Category'
-import PersonIcon from '@mui/icons-material/Person'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
-import StickyNote2Icon from '@mui/icons-material/StickyNote2'
-import Autocomplete from '@mui/material/Autocomplete'
-import Box from '@mui/material/Box'
-import Menu from '@mui/material/Menu'
-import IconButton from '@mui/material/IconButton'
-import TextField from '@mui/material/TextField'
+import { Box, Menu, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import Selector from '@sl/components/Selector'
 import { AutocompleteOption } from '@sl/types'
 import { MenuProps } from '../../types'
 import { TOGGLE_TAG_COMMAND } from './Node'
@@ -28,10 +20,13 @@ const TagMenu = ({
 }: MenuProps): ReactElement => {
     const [mode, setMode] = useState<TagModeType>('character')
     const [options, setOptions] = useState<AutocompleteOption[]>([])
-    const [id, setId] = useState<string>('')
-    const [label, setLabel] = useState<string>('')
+    const [id, setId] = useState<string>('none')
     const [editor] = useLexicalComposerContext()
     const { t } = useTranslation()
+
+    useEffect(() => {
+        setId('none')
+    }, [open])
 
     useEffect(() => {
         const data = {
@@ -49,6 +44,11 @@ const TagMenu = ({
         )
     }, [mode, characters, items, locations, notes])
 
+    useEffect(() => {
+        setId('none')
+        editor.dispatchCommand(TOGGLE_TAG_COMMAND, null)
+    }, [mode])
+
     return (
         <Menu
             id='menu'
@@ -65,51 +65,41 @@ const TagMenu = ({
             MenuListProps={{
                 'aria-labelledby': `menu-tag`
             }}>
-            <Box className='flex justify-around'>
-                <IconButton onClick={() => setMode('character')}>
-                    <PersonIcon className='text-emerald-600' />
-                </IconButton>
-                <IconButton onClick={() => setMode('location')}>
-                    <LocationOnIcon className='text-amber-600' />
-                </IconButton>
-                <IconButton onClick={() => setMode('item')}>
-                    <CategoryIcon className='text-purple-600' />
-                </IconButton>
-                <IconButton onClick={() => setMode('note')}>
-                    <StickyNote2Icon className='text-sky-600' />
-                </IconButton>
-            </Box>
+            <Selector onClick={(mode: TagModeType) => setMode(mode)} />
             <Box className='px-3 py-1'>
-                <Autocomplete
+                <Select
                     className='w-[300px]'
-                    getOptionLabel={(option: AutocompleteOption) => option?.label || ''}
-                    options={options}
-                    value={{ id, label }}
-                    freeSolo
-                    forcePopupIcon={true}
-                    onChange={(event: SyntheticEvent, value: AutocompleteOption) => {
-                        setId(value?.id || '')
-                        setLabel(value?.label || '')
+                    value={id}
+                    onChange={(event: SelectChangeEvent) => {
+                        const _label =
+                            options.find((option) => option.id === event.target.value)?.label ||
+                            'none'
+                        setId(event.target.value as string)
                         editor.dispatchCommand(
                             TOGGLE_TAG_COMMAND,
-                            value?.id
+                            event.target.value !== 'none'
                                 ? {
                                       mode,
-                                      id: value.id,
-                                      title: value.label
+                                      id: event.target.value,
+                                      title: _label
                                   }
                                 : null
                         )
                     }}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label={t('component.richtextEditor.toolbar.tag.label', {
-                                mode: t(`component.richtextEditor.toolbar.tag.${mode}`)
-                            })}
-                        />
-                    )}
-                />
+                    label={t('component.richtextEditor.toolbar.tag.label', {
+                        mode: t(`component.richtextEditor.toolbar.tag.${mode}`)
+                    })}>
+                    <MenuItem value='none'>
+                        {t('component.richtextEditor.toolbar.tag.label', {
+                            mode: t(`component.richtextEditor.toolbar.tag.${mode}`)
+                        })}
+                    </MenuItem>
+                    {options.map((option) => (
+                        <MenuItem key={option.id} value={option.id}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </Select>
             </Box>
         </Menu>
     )

@@ -12,7 +12,8 @@ const EditSectionView = () => {
         getInitialValues('section', [
             'work_id',
             'section_id',
-            'point_of_view_character_id'
+            'point_of_view_character_id',
+            'status'
         ]) as SectionDataType
     ).reduce(
         (o, key) => ({ ...o, [key]: section[key as keyof SectionModel] }),

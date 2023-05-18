@@ -34,7 +34,16 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
     const [canSave, setCanSave] = useState<boolean>(false)
     const [menu, setMenu] = useState<string | null>(null)
     const [menuElement, setMenuElement] = useState<HTMLElement | null>(null)
-    const { autoSave, indentParagraph, lineSpacing, paragraphSpacing, spellCheck } = useSettings()
+    const [isFullscreen, setIsFullscreen] = useState<boolean>(false)
+    const {
+        autoSave,
+        editorFont,
+        editorFontSize,
+        indentParagraph,
+        lineHeight,
+        paragraphSpacing,
+        spellCheck
+    } = useSettings()
     const { loadTab } = useTabs()
     const { t } = useTranslation()
     const ref = useRef<HTMLElement>()
@@ -71,16 +80,36 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
             loadTab({
                 id: parts[1],
                 label: decodeURI(parts[2]),
-                link: `${parts[0]}/${parts[1]}`
+                mode: parts[0] as 'character' | 'item' | 'location' | 'note' | 'section'
             })
         }
     }
+
+    const handleFullscreen = (state: boolean) => {
+        setIsFullscreen(state)
+    }
+
+    useEffect(() => {
+        api.subscribeToFullScreenEvent(handleFullscreen)
+        return () => {
+            api.unsubscribeFromFullScreenEvent(handleFullscreen)
+        }
+    }, [])
 
     useEffect(() => setCanSave(false), [id])
 
     return useMemo(
         () => (
-            <Box className='flex-grow flex flex-col'>
+            <Box
+                className={
+                    isFullscreen
+                        ? 'absolute bg-white flex flex-col top-0 bottom-0 left-0 right-0 z-50'
+                        : 'flex-grow flex flex-col'
+                }
+                sx={{
+                    fontFamily: editorFont,
+                    fontSize: editorFontSize
+                }}>
                 <LexicalComposer
                     initialConfig={{
                         namespace: 'rte',
@@ -89,13 +118,13 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                             ...{
                                 paragraph: [
                                     `my-${paragraphSpacing}`,
-                                    `leading-${lineSpacing}`,
+                                    `leading-${lineHeight}`,
                                     indentParagraph ? 'indent-4' : ''
                                 ].join(' '),
                                 quote: [
                                     'bg-yellow-100',
                                     `my-${paragraphSpacing}`,
-                                    `leading-${lineSpacing}`,
+                                    `leading-${lineHeight}`,
                                     indentParagraph ? 'indent-4' : ''
                                 ].join(' ')
                             }
@@ -110,8 +139,9 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                         setMenu={setMenu}
                         setMenuElement={setMenuElement}
                         config={toolbar}
+                        isFullscreen={isFullscreen}
                     />
-                    <SearchPlugin />
+                    {toolbar.includes('search') ? <SearchPlugin /> : null}
                     <Box
                         className='rte-container relative flex-grow overflow-auto h-0 p-3'
                         ref={ref}
@@ -119,7 +149,9 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                         <RichTextPlugin
                             contentEditable={
                                 <ContentEditable
-                                    id='sceneBody'
+                                    id={id}
+                                    data-testid={id}
+                                    ariaLabel='text editor'
                                     className='resize-none caret-slate-500 outline-none'
                                     spellCheck={spellCheck}
                                 />
@@ -144,24 +176,37 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                             eventListener={handleTagDblClick}
                         />
                         <OnChangePlugin onChange={handleChange} />
-                        <VersionPlugin
-                            menu={menu}
-                            menuElement={menuElement}
-                            setMenu={setMenu}
-                            setMenuElement={setMenuElement}
-                        />
-                        <SavePlugin onSave={onSave} />
-                        <TagPlugin
-                            menu={menu}
-                            menuElement={menuElement}
-                            setMenu={setMenu}
-                            setMenuElement={setMenuElement}
-                        />
+                        {toolbar.includes('version') ? (
+                            <VersionPlugin
+                                menu={menu}
+                                menuElement={menuElement}
+                                setMenu={setMenu}
+                                setMenuElement={setMenuElement}
+                            />
+                        ) : null}
+                        {toolbar.includes('save') ? <SavePlugin onSave={onSave} /> : null}
+                        {toolbar.includes('tag') ? (
+                            <TagPlugin
+                                menu={menu}
+                                menuElement={menuElement}
+                                setMenu={setMenu}
+                                setMenuElement={setMenuElement}
+                            />
+                        ) : null}
                     </Box>
                 </LexicalComposer>
             </Box>
         ),
-        [id, initialValue, menu, menuElement, paragraphSpacing, lineSpacing, indentParagraph]
+        [
+            id,
+            initialValue,
+            menu,
+            menuElement,
+            paragraphSpacing,
+            lineHeight,
+            indentParagraph,
+            isFullscreen
+        ]
     )
 }
 

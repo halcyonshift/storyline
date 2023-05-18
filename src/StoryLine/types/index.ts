@@ -20,3 +20,8 @@ export type ObjectObjectNumber = {
 export type ObjectDateTime = {
     [key: string]: DateTime
 }
+
+export type OptionType = {
+    value: number | string
+    label: string
+}

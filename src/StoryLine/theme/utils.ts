@@ -1,6 +1,5 @@
 import resolveConfig from 'tailwindcss/resolveConfig'
 import tailwindConfig from '../../../tailwind.config'
-
 import { Status, type StatusType } from '@sl/constants/status'
 import { ColorType, ShadeType, StatusMapType } from './types'
 

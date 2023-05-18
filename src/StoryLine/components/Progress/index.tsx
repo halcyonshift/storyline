@@ -7,8 +7,9 @@ import useSettings from '@sl/theme/useSettings'
 
 const Progress = ({ words, goal }: ProgressProps) => {
     const [percentage] = useState<number>((100 / goal) * words > 100 ? 100 : (100 / goal) * words)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [color, setColor] = useState<any>('inherit')
+    const [color, setColor] = useState<'success' | 'info' | 'warning' | 'error' | 'inherit'>(
+        'inherit'
+    )
     const settings = useSettings()
 
     useEffect(() => {
@@ -18,8 +19,8 @@ const Progress = ({ words, goal }: ProgressProps) => {
         else setColor('error')
     }, [percentage])
 
-    return words && goal ? (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+    return goal ? (
+        <Box sx={{ display: 'flex', alignItems: 'center', paddingLeft: 3 }}>
             <Tooltip
                 title={`${words.toLocaleString(settings.language)}/${goal.toLocaleString(
                     settings.language

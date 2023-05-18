@@ -41,7 +41,7 @@ const useResize = (): UseResize => {
         if (width < newWidth || width > _maxWidth) {
             setWidth(newWidth)
         }
-    }, [windowWidth, settings.fontSize])
+    }, [windowWidth, settings.appFontSize])
 
     const enableResize = useCallback(() => {
         setIsResizing(true)

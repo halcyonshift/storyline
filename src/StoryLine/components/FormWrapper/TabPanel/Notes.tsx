@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
-import { status } from '@sl/theme/utils'
+import { status, textColor, getHex } from '@sl/theme/utils'
 import { TabPanelProps } from './types'
 
 const NotesPanel = ({ notes }: TabPanelProps) => {
@@ -22,10 +22,17 @@ const NotesPanel = ({ notes }: TabPanelProps) => {
                     divider
                     disablePadding
                     disableGutters
-                    sx={{
-                        borderLeft: `8px solid ${note.color || status(note.status, 50).color}`,
-                        backgroundColor: status(note.status, 50).color
-                    }}
+                    sx={
+                        note.color
+                            ? {
+                                  borderLeft: `8px solid ${status(note.status, 500).color}`,
+                                  backgroundColor: note.color,
+                                  color: textColor(note.color, getHex('white'), getHex('black'))
+                              }
+                            : {
+                                  borderLeft: `8px solid ${status(note.status, 500).color}`
+                              }
+                    }
                     secondaryAction={
                         <Stack spacing={0} direction='row' className='mr-3'>
                             <TooltipIconButton
@@ -49,11 +56,7 @@ const NotesPanel = ({ notes }: TabPanelProps) => {
                     }>
                     <ListItemButton
                         onClick={() => {
-                            loadTab({
-                                id: note.id,
-                                label: note.displayName,
-                                link: `note/${note.id}`
-                            })
+                            loadTab({ id: note.id, mode: 'note' })
                         }}>
                         <ListItemText
                             primary={note.displayName}

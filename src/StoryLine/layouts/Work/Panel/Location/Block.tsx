@@ -32,6 +32,7 @@ const Block = ({ location, index, fontWeight }: BlockType) => {
                     <ListItem
                         {...provided.dragHandleProps}
                         title={location.name}
+                        className='bg-slate-50 dark:bg-slate-600'
                         sx={{
                             borderLeft: `8px solid ${status(location.status, 500).color}`
                         }}
@@ -43,11 +44,7 @@ const Block = ({ location, index, fontWeight }: BlockType) => {
                                 <Box className='flex flex-grow pr-1'>
                                     <ListItemButton
                                         onClick={() => {
-                                            loadTab({
-                                                id: location.id,
-                                                label: location.name,
-                                                link: `location/${location.id}`
-                                            })
+                                            loadTab({ id: location.id, mode: 'location' })
                                             setShow(!show)
                                         }}>
                                         <Typography

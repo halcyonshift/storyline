@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Icon /> renders correctly 1`] = `
+<svg
+  aria-hidden={true}
+  aria-label="Add"
+  className="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root"
+  data-testid="AddOutlinedIcon"
+  focusable="false"
+  viewBox="0 0 24 24"
+>
+  <path
+    d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+  />
+</svg>
+`;

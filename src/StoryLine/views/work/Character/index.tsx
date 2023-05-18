@@ -99,6 +99,7 @@ const CharacterView = () => {
                             'politicalLeaning'
                         ].map((field) => (
                             <ListItem
+                                key={field}
                                 primary={t(`form.work.character.${field}`)}
                                 secondary={character[field as keyof CharacterModel] as string}
                             />
@@ -115,6 +116,7 @@ const CharacterView = () => {
                             'hairNatural'
                         ].map((field) => (
                             <ListItem
+                                key={field}
                                 primary={t(`form.work.character.${field}`)}
                                 secondary={character[field as keyof CharacterModel] as string}
                             />

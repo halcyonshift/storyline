@@ -7,7 +7,7 @@ import { getInitialValues } from '@sl/forms/Work/utils'
 const EditCharacterView = () => {
     const character = useRouteLoaderData('character') as CharacterModel
     const initialValues = Object.keys({
-        ...(getInitialValues('character', ['work_id']) as CharacterDataType)
+        ...(getInitialValues('character', ['work_id', 'status', 'mode']) as CharacterDataType)
     }).reduce(
         (o, key) => ({ ...o, [key]: character[key as keyof CharacterModel] }),
         {}

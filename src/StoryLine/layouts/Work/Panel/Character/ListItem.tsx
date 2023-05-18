@@ -16,20 +16,17 @@ const ListItem = ({ character, showIcon }: ListItemProps) => {
     const { t } = useTranslation()
 
     return (
-        <MuiListItem disablePadding disableGutters divider>
+        <MuiListItem
+            disablePadding
+            disableGutters
+            divider
+            className='bg-slate-50 dark:bg-slate-600'
+            sx={{ borderLeft: `8px solid ${status(character.status, 500).color}` }}>
             <ListItemText
                 primary={
-                    <Box
-                        className='flex justify-between align-middle'
-                        sx={{ backgroundColor: status(character.status).color }}>
+                    <Box className='flex justify-between align-middle'>
                         <ListItemButton
-                            onClick={() =>
-                                tabs.loadTab({
-                                    id: character.id,
-                                    label: character.displayName,
-                                    link: `character/${character.id}`
-                                })
-                            }>
+                            onClick={() => tabs.loadTab({ id: character.id, mode: 'character' })}>
                             {showIcon ? (
                                 <Box className='pr-1'>
                                     {

@@ -11,10 +11,31 @@ import { rendererConfig } from './webpack.renderer.config'
 const config: ForgeConfig = {
     packagerConfig: {
         icon: './src/StoryLine/assets/images/icon',
-        appCopyright: "Hannah O'Malley 2023",
-        appVersion: '0.0.1',
+        appCopyright: "Hannah O'Malley",
+        appVersion: '0.1.1',
         appCategoryType: 'public.app-category.productivity',
-        asar: true
+        asar: true,
+        ignore: [
+            /^\/__tests__(\/|$)/,
+            /^\/__mocks__(\/|$)/,
+            /^\/\.git(\/|$)/,
+            /^\/\.husky(\/|$)/,
+            /^\/\.vscode(\/|$)/,
+            /^\/coverage(\/|$)/,
+            /^\/playwright-report(\/|$)/,
+            /^\/playwright-results(\/|$)/,
+            /^\/src\/StoryLine\/db\/__mocks__(\/|$)/,
+            /^\/\.env\.development$/,
+            /^\/\.env\.production$/,
+            /^\/\.env\.test$/,
+            /^\/\.gitignore$/,
+            /^\/babel.config.json$/,
+            /^\/electronegativity.json$/,
+            /^\/jest.config.js$/,
+            /^\/sentry.properties$/,
+            /^\/tailwind.config.js$/,
+            /^\/tsconfig.json$/
+        ]
     },
     rebuildConfig: {},
     makers: [
@@ -24,17 +45,24 @@ const config: ForgeConfig = {
         new MakerDeb({})
     ],
     plugins: [
+        /*
+        {
+            name: '@electron-forge/plugin-electronegativity',
+            config: {
+                isSarif: true,
+                output: './electronegativity.json'
+            }
+        },
         {
             name: '@electron-forge/plugin-auto-unpack-natives',
             config: {}
         },
+        */
         new WebpackPlugin({
             devServer: {
-                allowedHosts: 'auto',
                 hot: true,
                 liveReload: false
             },
-            devContentSecurityPolicy: 'connect-src *',
             mainConfig,
             renderer: {
                 config: rendererConfig,

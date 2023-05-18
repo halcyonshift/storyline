@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Accordion /> renders correctly 1`] = `
+<div
+  aria-controls="content-1"
+  aria-expanded={false}
+  className="flex items-center undefined MuiBox-root css-0"
+  onClick={[Function]}
+  role="button"
+>
+  <svg
+    aria-hidden={true}
+    className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium mr-1 css-1mq2mph-MuiSvgIcon-root"
+    data-testid="ArrowForwardIosSharpIcon"
+    focusable="false"
+    viewBox="0 0 24 24"
+  >
+    <path
+      d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"
+    />
+  </svg>
+  <p
+    className="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+  >
+    Title
+  </p>
+</div>
+`;

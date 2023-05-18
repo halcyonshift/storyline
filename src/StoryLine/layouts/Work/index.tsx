@@ -10,11 +10,11 @@ import * as Panel from './Panel'
 import Navigation from './Navigation'
 import Tabs from './Tabs'
 import { TabsProvider } from './Tabs/useTabs'
-
 import { LayoutProvider } from './useLayout'
 
 const WorkLayout = () => {
     const [currentPanel, setCurrentPanel] = useState<string | null>()
+
     const database = useDatabase()
     const navigate = useNavigate()
     const { t } = useTranslation()
@@ -32,7 +32,12 @@ const WorkLayout = () => {
         <LayoutProvider navigationRef={navigationRef} panelRef={panelRef} mainRef={mainRef}>
             <TabsProvider>
                 <Box className={`flex flex-col flex-grow`}>
-                    <AppBar position='static' color='transparent' className='z-10'>
+                    <AppBar
+                        position='static'
+                        color='transparent'
+                        // eslint-disable-next-line max-len
+                        className='z-10 border-b'
+                        elevation={0}>
                         <Toolbar variant='dense'>
                             <Box>
                                 <IconButton

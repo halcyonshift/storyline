@@ -12,10 +12,15 @@ export type ExportAsDataType = {
     chapterPosition: 'center'
     author: string
     sceneSeparator: string
+    lineHeight: string
+    paragraphSpacing: number
+    indentParagraph: boolean
+    font: string
+    fontSize: number
     mode: ExportModeType
 }
 
-export type ExportModeType = 'html' | 'pdf' | 'docx'
+export type ExportModeType = 'html' | 'pdf' | 'docx' | 'epub'
 export type ExportModeTypes = {
     mode: ExportModeType
     icon: ReactElement

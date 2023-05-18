@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next'
 import { DataSet, Timeline as VisTimeline } from 'vis-timeline/standalone/esm/vis-timeline-graph2d'
 import { ConnectionModel, NoteModel, SectionModel } from '@sl/db/models'
 import { OverviewTimelineProps } from '../types'
+import { ItemType } from './types'
+import './style.css'
 
 const Timeline = ({ work }: OverviewTimelineProps) => {
     const [groups, setGroups] = useState([])
@@ -35,6 +37,7 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
                             id: scene.id,
                             content: scene.displayTitle,
                             editable: { updateTime: true, updateGroup: false, remove: false },
+                            className: 'scene',
                             start: DateTime.fromSQL(scene.date)
                                 .toISO({
                                     suppressMilliseconds: true
@@ -46,6 +49,7 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
                     .concat(
                         characters.map((character) => ({
                             id: character.id,
+                            className: 'character',
                             content: t('view.work.overview.timeline.character.dob', {
                                 name: character.displayName
                             }),
@@ -61,6 +65,7 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
                     .concat(
                         notes.map((note) => ({
                             id: note.id,
+                            className: 'note',
                             content: note.displayName,
                             editable: { updateTime: true, updateGroup: false, remove: false },
                             start: DateTime.fromSQL(note.date)
@@ -77,6 +82,7 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
                             return {
                                 id: connection.id,
                                 content: displayName,
+                                className: 'connection',
                                 editable: { updateTime: true, updateGroup: false, remove: false },
                                 start: DateTime.fromSQL(connection.date)
                                     .toISO({
@@ -88,6 +94,7 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
                         })
                     )
             ).then((_items) => {
+                if (!_items.length) return
                 _items = _items.sort(
                     (a, b) =>
                         DateTime.fromISO(a.start).toMillis() - DateTime.fromISO(b.start).toMillis()
@@ -123,28 +130,39 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
 
     useEffect(() => {
         if (!ref.current || !groups.length || !items.length) return
-        new VisTimeline(ref.current, items, groups, {
+        new VisTimeline(ref.current, items, {
+            height: ref.current.offsetHeight - ref.current.getBoundingClientRect().top,
             start,
             end,
-            onMove: async (item, callback) => {
+            min: DateTime.fromISO(start).minus({ years: 10 }).toISO().split('+')[0],
+            max: DateTime.fromISO(end).plus({ years: 10 }).toISO().split('+')[0],
+            zoomMin: 1000 * 60 * 60 * 24, // 1 day
+            showCurrentTime: false,
+            onMove: async (item: ItemType, callback: (value: ItemType) => void) => {
                 if (item.group === 'scene') {
                     const scene = await database
                         .get<SectionModel>('section')
                         .find(item.id.toString())
-                    await scene.updateDate(DateTime.fromJSDate(item.start as Date).toSQL())
+                    await scene.updateRecord({
+                        date: DateTime.fromJSDate(item.start as Date).toSQL()
+                    })
                 } else if (item.group === 'note') {
                     const note = await database.get<NoteModel>('note').find(item.id.toString())
-                    await note.updateDate(DateTime.fromJSDate(item.start as Date).toSQL())
+                    await note.updateRecord({
+                        date: DateTime.fromJSDate(item.start as Date).toSQL()
+                    })
                 } else if (item.group === 'connection') {
                     const connection = await database
                         .get<ConnectionModel>('connection')
                         .find(item.id.toString())
-                    await connection.updateDate(DateTime.fromJSDate(item.start as Date).toSQL())
+                    await connection.updateRecord({
+                        date: DateTime.fromJSDate(item.start as Date).toSQL()
+                    })
                 }
                 return callback(item)
             }
         })
-    }, [ref.current, start, end, groups.length, items.length])
+    }, [ref.current, start, end, items.length])
 
     return <Box className='absolute w-full h-full' ref={ref}></Box>
 }

@@ -10,6 +10,7 @@ import Panel from '@sl/components/Panel'
 import GroupToggle from '@sl/components/Panel/GroupToggle'
 import { LocationModel, WorkModel } from '@sl/db/models'
 import Block from './Block'
+import { Status } from '@sl/constants/status'
 
 const LocationPanel = () => {
     const [group, setGroup] = useState<boolean>(false)
@@ -46,7 +47,13 @@ const LocationPanel = () => {
 
     return (
         <Panel
-            action={<GroupToggle group={group} setGroup={setGroup} />}
+            action={
+                <GroupToggle
+                    label={'layout.work.panel.location.groupToggle'}
+                    group={group}
+                    setGroup={setGroup}
+                />
+            }
             navigation={[
                 {
                     link: 'addLocation',
@@ -59,6 +66,15 @@ const LocationPanel = () => {
                     {(provided) => (
                         <Box {...provided.droppableProps} ref={provided.innerRef}>
                             {locations
+                                .filter((location) =>
+                                    Boolean(
+                                        group ||
+                                            location.status !== Status.ARCHIVE ||
+                                            locations.find(
+                                                (child) => child.location.id === location.id
+                                            )
+                                    )
+                                )
                                 .filter((location) => !location.location.id)
                                 .map((location, index) => (
                                     <Block

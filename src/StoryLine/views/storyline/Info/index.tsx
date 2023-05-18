@@ -8,18 +8,18 @@ const InfoView = () => {
     const { t } = useTranslation()
 
     return (
-        <Box className='grid grid-cols-2 gap-3'>
+        <Box className='grid grid-cols-2 gap-3 p-8'>
             <Box>
                 <Typography variant='h6'>{t('view.storyline.info.about.title')}</Typography>
                 <Stack spacing={1} className='mt-3'>
                     <Box>
-                        <Typography variant='body2' className='text-slate-600'>
+                        <Typography variant='body2' className='text-slate-600 dark:text-slate-200'>
                             {t('view.storyline.info.about.version')}
                         </Typography>
                         <Typography variant='body1'>{process.env.VERSION}</Typography>
                     </Box>
                     <Box>
-                        <Typography variant='body2' className='text-slate-600'>
+                        <Typography variant='body2' className='text-slate-600 dark:text-slate-200'>
                             {t('view.storyline.info.about.developer')}
                         </Typography>
                         <Typography variant='body1'>Hannah O'Malley</Typography>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ImageProps } from './types'
 
-const Image = ({ path, ...props }: ImageProps) => {
+const Image = ({ path, alt, ...props }: ImageProps) => {
     const [src, setSrc] = useState<string | null>()
 
     useEffect(() => {
@@ -12,7 +12,7 @@ const Image = ({ path, ...props }: ImageProps) => {
         }
     }, [path])
 
-    return src ? <img src={src} {...props} /> : <></>
+    return src ? <img alt={alt || ''} src={src} {...props} /> : <></>
 }
 
 export default Image

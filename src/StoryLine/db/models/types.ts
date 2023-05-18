@@ -1,7 +1,7 @@
 import { PointOfViewType } from '@sl/constants/pov'
 import { SectionModeType } from '@sl/constants/sectionMode'
 import { StatusType } from '@sl/constants/status'
-import { CharacterModel, ItemModel, LocationModel, NoteModel } from '@sl/db/models'
+import { CharacterModel, ItemModel, LocationModel, NoteModel, SectionModel } from '@sl/db/models'
 import { CharacterModeType } from '@sl/constants/characterMode'
 
 export type CharacterDataType = {
@@ -97,6 +97,18 @@ export type SectionDataType = {
     wordGoal?: number | null
     order?: number
     deadlineAt?: Date
+}
+
+export type SprintDataType = {
+    startAt: Date
+    endAt: Date
+    wordGoal?: number | null
+}
+
+export type SprintStatisticDataType = {
+    section: SectionModel
+    words: number | null
+    wordsStart: number | null
 }
 
 export type StatisticDataType = number

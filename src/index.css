@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+*,
+::before,
+::after {
+  border-color: rgba(0, 0, 0, 0.23)
+}
+
 @font-face {
   font-family: 'OpenDyslexic';
   src: url('StoryLine/assets/fonts/open_dyslexic/OpenDyslexic-Bold.otf');
@@ -30,6 +36,7 @@
   font-style: normal
 }
 
+
 html, body, #root {
     height: 100vh;
     overflow: hidden
@@ -44,6 +51,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
   user-select: none
 }
+
 
 .scrollbar-hidden::-webkit-scrollbar {
   height: 0 !important;

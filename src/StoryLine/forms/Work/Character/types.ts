@@ -3,6 +3,6 @@ import { CharacterDataType } from '@sl/db/models/types'
 
 export type CharacterFormProps = {
     character?: CharacterModel
-    initialValues?: CharacterDataType
+    initialValues: CharacterDataType
     work?: WorkModel
 }

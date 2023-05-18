@@ -1,5 +1,3 @@
-import { SectionViewType } from '../types'
-
-const PartView = ({ section }: SectionViewType) => <p>{section.displayTitle}</p>
+const PartView = () => <></>
 
 export default PartView

@@ -1,5 +1,15 @@
 {
     "storyline": "StoryLine",
+    "menu": {
+        "storyline": "StoryLine",
+        "version": "Version",
+        "quit": "Quit StoryLine"
+    },
+    "autoBackup": {
+        "warning": "Back up in progress",
+        "success": "Back up saved to {{filePath}}",
+        "failure": "Could not save back up to {{filePath}}"
+    },
     "error": {
         "connection": "Some features of this area aren't available without an internet connection",
         "404": {
@@ -25,20 +35,28 @@
                 "picker": "Switch to picker"
             }
         },
-        "formButton": {
-            "create": "Create",
-            "update": "Update"
-        },
         "formWrapper" : {
             "tab": {
                 "general": "General",
                 "images": "Images",
                 "notes": "Notes"
+            },
+            "button": {
+                "save": "Save"
             }
+        },
+        "gallery": {
+            "back": "Back",
+            "next": "Next"
         },
         "imageField": {
             "browse": "Browse",
             "delete": "Delete"
+        },
+        "lineHeight": {
+            "normal": "Normal",
+            "relaxed": "Relaxed",
+            "loose": "Loose"
         },
         "mapField": {
             "latitude": "Latitude",
@@ -55,6 +73,9 @@
         },
         "richtextEditor": {
             "placeholder": "It was a dark and stormy night...",
+            "save": {
+                "success": "The work has been saved"
+            },
             "toolbar": {
                 "undo": "Undo",
                 "redo": "Redo",
@@ -87,6 +108,12 @@
                 "placeholder": "Keywords"
             }
         },
+        "separator": {
+            "character": "Characters",
+            "item": "Items",
+            "location": "Locations",
+            "note": "Notes"
+        },
         "textareaField": {
             "placeholder": ""
         },
@@ -95,6 +122,13 @@
                 "yes": "Yes",
                 "no": "no"
             }
+        },
+        "unit": {
+            "years": "years",
+            "months": "months",
+            "days": "days",
+            "hours": "hours",
+            "minutes": "minutes"
         },
         "viewWrapper": {
             "tab": {
@@ -121,6 +155,7 @@
             "TERTIARY": "Tertiary"
         },
         "pointOfView": {
+            "NONE": "None",
             "FIRST": "First",
             "SECOND": "Second",
             "THIRD_OMN": "Third Omniscient",
@@ -308,7 +343,7 @@
                 "untidy": "Untidy",
                 "wary": "Wary",
                 "wicked": "Wicked",
-                "wises": "Wise",
+                "wise": "Wise",
                 "witty": "Witty"
             }
         },
@@ -321,18 +356,24 @@
         }
     },
     "form": {
+        "required": "This is required",
         "work": {
-            "global": {
-                "none": "None"
-            },
             "backupRestore": {
                 "exportAs": {
                     "author": "Author",
                     "chapterTitle": "Chapter title",
                     "chapterTitleInitialValue": "Chapter {{number}}. {{title}}",
-                    "chapterPosition": "Chapter position",
+                    "chapterPosition": {
+                        "label":  "",
+                        "left": "Left",
+                        "center": "Center"
+                    },
+                    "font": "Font",
+                    "indentParagraph": "Indent paragraphs",
+                    "lineHeight": "Line height",
+                    "paragraphSpacing": "Paragraph spacing",
                     "sceneSeparator": "Scene separator",
-                    "helpText": "Exporting may take a few minutes for longer works - tea time!",
+                    "helpText": "Exporting may take a few minutes for longer works - time for a cuppa!",
                     "button": {
                         "export": "Export"
                     }
@@ -384,6 +425,12 @@
             "connection": {
                 "table": "Select",
                 "date": "Date",
+                "to": "To",
+                "from": "From",
+                "mode": {
+                    "label": "Connection",
+                    "placeholder": "e.g., Brother"
+                },
                 "button": {
                     "save": "Save",
                     "delete": "Delete"
@@ -447,6 +494,13 @@
                     "success": "The {{name}} has been saved"
                 }
             },
+            "sprint": {
+                "duration": "Duration",
+                "wordGoal": "Word goal",
+                "button": {
+                    "start": "Start!"
+                }
+            },
             "work": {
                 "title": {
                     "label": "Title",
@@ -454,10 +508,8 @@
                 },
                 "author": "Author",
                 "language": "Language",
-                "summary": "Summary",
                 "wordGoal": "Word goal",
                 "deadline": "Deadline",
-                "image": "Cover",
                 "alert": {
                     "success": "The work has been saved"
                 },
@@ -469,6 +521,10 @@
         },
         "storyline": {
             "settings": {
+                "tab": {
+                    "app": "StoryLine",
+                    "editor": "Editor"
+                },
                 "font": "Font",
                 "fontSize": "Font size",
                 "indentParagraph": "Indent paragraphs",
@@ -488,17 +544,11 @@
                     "option60": "Every hour",
                     "option120": "Every 2 hours"
                 },
-                "autoBackupMax": "Maximum number of backups",
                 "autoBackupPath": {
                     "label": "Backup directory",
                     "select": "Select"
                 },
-                "lineSpacing": {
-                    "label": "Line height",
-                    "normal": "Normal",
-                    "relaxed": "Relaxed",
-                    "loose": "Loose"
-                },
+                "lineHeight": "Line height",
                 "paragraphSpacing": "Paragraph spacing",
                 "alert": {
                     "success": "The settings have been saved"
@@ -531,25 +581,29 @@
                     "addTertiary": "Add tertiary character",
                     "edit": "Edit",
                     "delete": "Delete",
-                    "deleteConfirm": "Are you sure you want to delete {{name}}?"
+                    "deleteConfirm": "Are you sure you want to delete {{name}}?",
+                    "groupToggle": "Show archived"
                 },
                 "item": {
                     "add": "Add item",
                     "edit": "Edit",
                     "delete": "Delete",
-                    "deleteConfirm": "Are you sure you want to delete {{name}}?"
+                    "deleteConfirm": "Are you sure you want to delete {{name}}?",
+                    "groupToggle": "Show archived"
                 },
                 "location": {
                     "add": "Add location",
                     "edit": "Edit",
                     "delete": "Delete",
-                    "deleteConfirm": "Are you sure you want to delete {{name}}?"
+                    "deleteConfirm": "Are you sure you want to delete {{name}}?",
+                    "groupToggle": "Show archived"
                 },
                 "note": {
                     "add": "Add note",
                     "edit": "Edit",
                     "delete": "Delete",
-                    "deleteConfirm": "Are you sure you want to delete {{name}}?"
+                    "deleteConfirm": "Are you sure you want to delete {{name}}?",
+                    "groupToggle": "Show archived"
                 },
                 "search": {
                     "clear": "Clear",
@@ -564,6 +618,10 @@
                     "addPart": "Add part",
                     "addChapter": "Add chapter",
                     "addScene": "Add scene",
+                    "sprint": {
+                        "title": "Start sprint",
+                        "intro": "This will track how many words were written in the given time and replace the clock with a countdown. Click the countdown to hide it, or stop the sprint. Good luck!"
+                    },
                     "edit": "Edit",
                     "delete": "Delete",
                     "deleteConfirm": "Are you sure you want to delete {{name}}?",
@@ -577,16 +635,51 @@
     "view": {
         "storyline": {
             "landing": {
-                "title": "",
+                "title": "Welcome to",
                 "navigation": {
-                    "openWork": "Works",
-                    "addWork": "New",
+                    "works": "Works",
+                    "new": "New",
                     "importWork": "Import",
                     "settings": "Settings",
                     "info": "Info"
                 },
                 "recent": {
                     "title": "Recently opened"
+                },
+                "feedback": {
+                    "title": "Feedback"
+                },
+                "titles": {
+                    "title_1": "The Adventures of a Couch Potato Detective",
+                    "title_2": "My Cat, the CEO",
+                    "title_3": "The Curse of the Talking Toaster",
+                    "title_4": "A Zombie's Guide to Love",
+                    "title_5": "The Great Cheeto Heist",
+                    "title_6": "The Secret Life of a Professional Gummy Bear Taster",
+                    "title_7": "The Poodle Who Saved the World",
+                    "title_8": "The Chronicles of a Time-Traveling Squirrel",
+                    "title_9": "The Day the Aliens Ate My Homework",
+                    "title_10": "My Life as a Ninja Banana",
+                    "title_11": "The Misadventures of a Self-Proclaimed Superhero",
+                    "title_12": "The Revenge of the Lawn Gnomes",
+                    "title_13": "The Unfortunate Fate of the Unicorns",
+                    "title_14": "The Mysterious Case of the Disappearing Socks",
+                    "title_15": "The Diary of a Cheese Fiend",
+                    "title_16": "The Werewolf's Guide to Personal Hygiene",
+                    "title_17": "The Secret Life of a Professional Bubble Wrap Popper",
+                    "title_18": "The Adventures of a Talking Houseplant",
+                    "title_19": "The Mystery of the Haunted Lint Roller",
+                    "title_20": "The Misadventures of a Superpowered Goldfish",
+                    "title_21": "The Epic Battle of the Robot Vacuum Cleaners",
+                    "title_22": "The Day the Zombies Invaded Walmart",
+                    "title_23": "The Secret Life of a Professional Pillow Fluffer",
+                    "title_24": "The Mysterious Case of the Vanishing Toilet Paper",
+                    "title_25":  "The Adventures of a Ninja Koala",
+                    "title_26": "The Unfortunate Fate of the Last Cupcake",
+                    "title_27": "The Curse of the Dancing Chicken Nuggets",
+                    "title_28": "The Chronicles of a Time-Traveling Rubber Chicken",
+                    "title_29": "The Secret Life of a Professional Whoopee Cushion Tester",
+                    "title_30": "The Misadventures of a Time-Traveling Hamster"
                 }
             },
             "importWork": {
@@ -596,9 +689,22 @@
                     "title": "Bibisco",
                     "text": "Statistics history won't be imported, just a snapshot of the most recent data",
                     "error": "Sorry, the import hasn't worked"
+                },
+                "storyLine": {
+                    "title": "StoryLine",
+                    "text": "This will only import a backup if the work doesn't already exist - if it does, use the Restore inside the work",
+                    "error": "A work with this id already exists",
+                    "failure": "Sorry, the import hasn't worked"
                 }
             },
-            "openWork": {
+            "works": {
+                "table": {
+                    "th": {
+                        "words": "Words",
+                        "deadline": "Deadline",
+                        "status": "Status"
+                    }
+                },
                 "edit": "Edit",
                 "delete": "Delete",
                 "deleteConfirm": "Are you sure? This will delete everything except any associated backups"
@@ -623,12 +729,17 @@
         },
         "work": {
             "backupRestore": {
-                "storyline": {
+                "backup": {
                     "success": "Backup saved to {{filePath}}",
                     "failure": "Backup could not be saved",
-                    "button": {
-                        "backup": "Backup"
-                    }
+                    "text": "This backup can only be used with the restore functionality, backup to a different platform is on the roadmap.",
+                    "button": "Backup"
+                },
+                "restore": {
+                    "success": "The backup has been restored",
+                    "failure": "The backup could not be restored",
+                    "text": "This will overwrite all data within the work with the backup, any items not in the backup will be deleted.",
+                    "button": "Restore"
                 }
             },
             "character": {
@@ -660,33 +771,59 @@
                         "note": "Notes"
                     },
                     "mode": {
-                        "label": "Relation",
+                        "label": "Connection",
                         "all": "All"
                     }
-                }
-            },
-            "insight": {
-                "word": {
-                    "day": "Daily",
-                    "week": "Weekly",
-                    "month": "Monthly"
+                },
+                "button": {
+                    "add": "New"
                 }
             },
             "dashboard": {
                 "deadline": {
                     "none": "No upcoming deadlines!"
                 },
+                "lastUpdated": {
+                    "edit": "Edit"
+                },
                 "random": {
                     "character": "Character",
-                    "prompt": "Prompt"
+                    "prompt": "Prompt",
+                    "generate": "Generate"
                 },
                 "tracker": {
-                    "remaining": "{{days}} days left ({{words}} words a day)"
+                    "remaining": "{{days}} days left ({{words}} words a day)",
+                    "deadline": {
+                        "days": "<span className='font-bold'>{{timeLeft}}</span> until deadline!",
+                        "words": " <span className='font-bold'>{{wordsPerDay}} words a day</span> will meet your goal."
+                    }
                 },
                 "wordCharts": {
                     "count": "Total count",
                     "written": "Daily count",
                     "noData": "No stats to view"
+                }
+            },
+            "insight": {
+                "chapterLength": {
+                    "scene": "Scene {{number}}"
+                },
+                "spread": {
+                    "empty": "Add characters, items, locations or notes to view to track their appearances through scenes"
+                },
+                "word": {
+                    "day": "Best writing day",
+                    "period": "By period",
+                    "sprint": "Sprints"
+                },
+                "wordsByDay": {
+                    "mon": "Monday",
+                    "tue": "Tuesday",
+                    "wed": "Wednesday",
+                    "thu": "Thursday",
+                    "fri": "Friday",
+                    "sat": "Saturday",
+                    "sun": "Sunday"
                 }
             },
             "overview": {

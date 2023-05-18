@@ -13,7 +13,8 @@ const EditNoteView = () => {
             'item_id',
             'location_id',
             'note_id',
-            'section_id'
+            'section_id',
+            'status'
         ]) as NoteDataType
     ).reduce((o, key) => ({ ...o, [key]: note[key as keyof NoteModel] }), {}) as NoteDataType
 

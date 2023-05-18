@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { useEffect, useState } from 'react'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
@@ -13,6 +12,7 @@ import { SECTION_ICONS } from '@sl/constants/icons'
 import { Status } from '@sl/constants/status'
 import { SectionModel, WorkModel } from '@sl/db/models'
 import Block from './Block'
+import Sprint from './Sprint'
 
 const SectionPanel = () => {
     const [group, setGroup] = useState<boolean>(false)
@@ -27,6 +27,7 @@ const SectionPanel = () => {
         [],
         []
     )
+
     const navigate = useNavigate()
 
     const handleDragEnd = async (result: DropResult) => {
@@ -140,11 +141,14 @@ const SectionPanel = () => {
     return (
         <Panel
             action={
-                <GroupToggle
-                    label={'layout.work.panel.section.groupToggle'}
-                    group={group}
-                    setGroup={setGroup}
-                />
+                <>
+                    <Sprint work={work} />
+                    <GroupToggle
+                        label={'layout.work.panel.section.groupToggle'}
+                        group={group}
+                        setGroup={setGroup}
+                    />
+                </>
             }
             navigation={navigation}>
             <DragDropContext onDragEnd={handleDragEnd}>
@@ -158,6 +162,7 @@ const SectionPanel = () => {
                                           section={part}
                                           index={index}
                                           fontWeight={900}
+                                          group={group}
                                       />
                                   ))
                                 : chapters.length > 1
@@ -167,6 +172,7 @@ const SectionPanel = () => {
                                           section={chapter}
                                           index={index}
                                           fontWeight={500}
+                                          group={group}
                                       />
                                   ))
                                 : scenes.map((scene, index) => (
@@ -175,6 +181,7 @@ const SectionPanel = () => {
                                           section={scene}
                                           index={index}
                                           fontWeight={400}
+                                          group={group}
                                       />
                                   ))}
                             {provided.placeholder}

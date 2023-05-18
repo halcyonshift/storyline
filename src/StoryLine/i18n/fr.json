@@ -20,8 +20,8 @@
             "landing": {
                 "title": "",
                 "navigation": {
-                    "openWork": "Projets",
-                    "addWork": "Nouveau projet",
+                    "works": "Projets",
+                    "new": "Nouveau projet",
                     "importWork": "Importer un projet",
                     "settings": "Paramètres",
                     "info": "Information"
