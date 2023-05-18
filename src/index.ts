@@ -26,7 +26,7 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 
 if (app.isPackaged) {
     init({
-        dsn: 'https://41e621e8f6ea49b5b01855d8d13dd496@o215263.ingest.sentry.io/4505164795936768'
+        dsn: process.env.SENTRY_DSN
     })
 }
 
