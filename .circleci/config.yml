@@ -22,6 +22,12 @@ commands:
           paths:
             - node_modules
           key: v1-dependencies-{{ arch }}-{{ checksum "yarn.lock" }}
+  test:
+    steps:
+      - run:
+          command: yarn test:unit
+      - store_test_results:
+          path: /coverage/
 jobs:
   lint:
     docker:
@@ -29,6 +35,38 @@ jobs:
     steps:
       - install
       - run: yarn run lint
+  mac-test:
+    parameters:
+      arch:
+        type: enum
+        enum: [ 'x64', 'arm64' ]
+    macos:
+      xcode: '13.4.0'
+    resource_class: macos.x86.medium.gen2
+    steps:
+      - install
+      - test
+  win-test:
+    parameters:
+      arch:
+        type: enum
+        enum: [ 'x64', 'arm64', 'ia32' ]
+    executor:
+      name: win/default
+      shell: bash.exe
+    steps:
+      - install
+      - test
+  linux-test:
+    parameters:
+      arch:
+        type: enum
+        enum: [ 'x64', 'arm64','armv7l' ]
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - install
+      - test
   mac-build:
     parameters:
       arch:
@@ -122,6 +160,18 @@ workflows:
   build-and-test:
     jobs:
       - lint
+      - mac-test:
+          matrix:
+            parameters:
+              arch: [ x64, arm64 ]
+      - win-test:
+          matrix:
+            parameters:
+              arch: [ x64 ]
+      - linux-test:
+          matrix:
+            parameters:
+              arch: [ x64 ]
       - mac-build:
           matrix:
             parameters:
@@ -155,6 +205,10 @@ workflows:
       - publish-to-github:
           context: storyline-release
           requires:
+            - mac-test-x64
+            - mac-test-arm64
+            - win-test-x64
+            - linux-test-x64
             - mac-build-x64
             - mac-build-arm64
             - win-build-ia32
