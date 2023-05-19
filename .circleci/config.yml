@@ -15,40 +15,6 @@ commands:
       - run: npm install --global yarn
       - run: yarn install --frozen-lockfile
 jobs:
-  mac-build:
-    parameters:
-      arch:
-        type: enum
-        enum: [ 'x64', 'arm64' ]
-    macos:
-      xcode: '13.4.0'
-    resource_class: macos.x86.medium.gen2
-    steps:
-      - install
-      - run: npx yarn run publisher --arch=<< parameters.arch >> --dry-run
-      - store_artifacts:
-          path: out
-      - persist_to_workspace:
-          root: .
-          paths:
-            - out
-  win-build:
-    parameters:
-      arch:
-        type: enum
-        enum: [ 'x64', 'arm64', 'ia32' ]
-    executor:
-      name: win/default
-      shell: bash.exe
-    steps:
-      - install
-      - run: npx yarn run publisher --arch=<< parameters.arch >> --dry-run
-      - store_artifacts:
-          path: out
-      - persist_to_workspace:
-          root: .
-          paths:
-            - out
   linux-build:
     parameters:
       arch:
@@ -107,14 +73,6 @@ jobs:
 workflows:
   build:
     jobs:
-      - mac-build:
-          matrix:
-            parameters:
-              arch: [ x64, arm64 ]
-      - win-build:
-          matrix:
-            parameters:
-              arch: [ x64, ia32 ]
       - linux-build:
           matrix:
             parameters:
@@ -122,10 +80,6 @@ workflows:
       - publish-to-github:
           context: storyline-release
           requires:
-            - mac-build-x64
-            - mac-build-arm64
-            - win-build-ia32
-            - win-build-x64
             - linux-build-x64
             - linux-build-armv64
             - linux-build-armv7l

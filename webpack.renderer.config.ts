@@ -13,6 +13,7 @@ export const rendererConfig: Configuration = {
     module: {
         rules
     },
+    devtool: 'source-map',
     plugins,
     externals: {
         electron: 'commonjs electron'
