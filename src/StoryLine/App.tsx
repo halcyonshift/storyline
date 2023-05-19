@@ -12,8 +12,8 @@ import { useTranslation } from 'react-i18next'
 import { Outlet, useRouteLoaderData } from 'react-router-dom'
 import useMessenger from '@sl/layouts/useMessenger'
 import useSettings from '@sl/theme/useSettings'
-import { WorkModel } from './db/models'
-import { ErrorBoundary } from './views/StoryLine'
+import { WorkModel } from '@sl/db/models'
+import { ErrorBoundary } from '@sl/views/StoryLine'
 
 const App = () => {
     const { autoBackupFreq, autoBackupPath } = useSettings()
