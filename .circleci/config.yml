@@ -25,9 +25,9 @@ commands:
   test:
     steps:
       - run:
-          command: yarn test:unit
+          command: yarn test:integration
       - store_test_results:
-          path: /coverage/
+          path: ./coverage/
 jobs:
   lint:
     docker:
