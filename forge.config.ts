@@ -8,20 +8,32 @@ import { WebpackPlugin } from '@electron-forge/plugin-webpack'
 import { mainConfig } from './webpack.main.config'
 import { rendererConfig } from './webpack.renderer.config'
 
+import { version } from './package.json'
+
 const config: ForgeConfig = {
     packagerConfig: {
         icon: './src/StoryLine/assets/images/icon',
+        executableName: 'storyline',
         appCopyright: "Hannah O'Malley",
         appVersion: '0.1.3',
         appCategoryType: 'public.app-category.productivity',
-        asar: true
+        asar: true,
+        win32metadata: {
+            CompanyName: 'StoryLine',
+            OriginalFilename: 'StoryLine'
+        }
     },
     rebuildConfig: {},
     makers: [
-        new MakerSquirrel({}),
+        new MakerSquirrel({
+            name: 'storyline',
+            exe: 'storyline.exe',
+            noMsi: true,
+            setupExe: 'storyline-${version}-win32-${arch}-setup.exe'
+        }),
         new MakerZIP({}, ['darwin']),
-        new MakerRpm({}),
-        new MakerDeb({})
+        new MakerRpm({}, ['linux']),
+        new MakerDeb({}, ['linux'])
     ],
     publishers: [
         {
@@ -31,7 +43,8 @@ const config: ForgeConfig = {
                     owner: 'halcyonshift',
                     name: 'storyline'
                 },
-                prerelease: true
+                draft: true,
+                prerelease: false
             }
         }
     ],

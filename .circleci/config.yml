@@ -57,6 +57,32 @@ jobs:
           root: .
           paths:
             - out
+  linux-build:
+    parameters:
+      arch:
+        type: enum
+        enum: [ 'x64', 'arm64','armv7l' ]
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run: sudo apt-get update && sudo apt install rpm
+      - install
+      - run: npx yarn run publish --arch=<< parameters.arch >> --dry-run
+      # CircleCI doesn't let you persist files with the same name from multiple
+      # jobs, so only persist the .webpack path from the x64 linux-build job
+      - when:
+          condition:
+            not:
+              equal: [ << parameters.arch >>, x64 ]
+          steps:
+            - run: rm -rf .webpack/*
+      - store_artifacts:
+          path: out
+      - persist_to_workspace:
+          root: .
+          paths:
+            - out
+            - .webpack
   publish-to-github:
     docker:
       - image: cimg/base:stable
@@ -109,6 +135,16 @@ workflows:
                 - /^v.*/
             branches:
               ignore: /.*/
+      - linux-build:
+          matrix:
+            parameters:
+              arch: [ x64, arm64, armv7l ]
+          filters:
+            tags:
+              only:
+                - /^v.*/
+            branches:
+              ignore: /.*/
       - publish-to-github:
           context: storyline-release
           requires:
@@ -116,6 +152,9 @@ workflows:
             - mac-build-arm64
             - win-build-ia32
             - win-build-x64
+            - linux-build-x64
+            - linux-build-arm64
+            - linux-build-armv7l
           filters:
             tags:
               only:
