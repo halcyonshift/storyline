@@ -33,7 +33,7 @@ jobs:
     resource_class: macos.x86.medium.gen2
     steps:
       - install
-      - run: npx yarn run publish --arch=<< parameters.arch >> --dry-run
+      - run: npx yarn run publisher --arch=<< parameters.arch >> --dry-run
       - store_artifacts:
           path: out
       - persist_to_workspace:
@@ -50,8 +50,7 @@ jobs:
       shell: bash.exe
     steps:
       - install
-      - run: export WINDOWS_CODESIGN_FILE=$(node ./tools/add-windows-cert.js)
-      - run: npx yarn run publish --arch=<< parameters.arch >> --dry-run
+      - run: npx yarn run publisher --arch=<< parameters.arch >> --dry-run
       - store_artifacts:
           path: out
       - persist_to_workspace:
