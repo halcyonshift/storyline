@@ -8,14 +8,14 @@
     "esModuleInterop": true,
     "noImplicitAny": true,
     "sourceMap": true,
-    "baseUrl": "./",
+    "baseUrl": ".",
     "outDir": "dist",
     "types": ["node", "jest", "@testing-library/jest-dom"],
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "paths": {
       "*": ["node_modules/*"],
-      "@sl/*": ["src/StoryLine/*"]
+      "@sl/*": ["/src/StoryLine/*"]
     },
     "experimentalDecorators": true
   },
