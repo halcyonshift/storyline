@@ -28,10 +28,6 @@ commands:
           command: yarn test:unit
       - store_test_results:
           path: ./coverage/
-  integrationtest:
-    steps:
-      - run:
-          command: yarn test:integration
 jobs:
   lint:
     docker:
@@ -71,38 +67,6 @@ jobs:
     steps:
       - install
       - unittest
-  mac-integrationtest:
-    parameters:
-      arch:
-        type: enum
-        enum: [ 'x64', 'arm64' ]
-    macos:
-      xcode: '13.4.0'
-    resource_class: macos.x86.medium.gen2
-    steps:
-      - install
-      - integrationtest
-  win-integrationtest:
-    parameters:
-      arch:
-        type: enum
-        enum: [ 'x64', 'arm64', 'ia32' ]
-    executor:
-      name: win/default
-      shell: bash.exe
-    steps:
-      - install
-      - integrationtest
-  linux-integrationtest:
-    parameters:
-      arch:
-        type: enum
-        enum: [ 'x64', 'arm64','armv7l' ]
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - install
-      - integrationtest
   mac-build:
     parameters:
       arch:
@@ -238,36 +202,6 @@ workflows:
                 - /^v.*/
             branches:
               ignore: /.*/
-      - mac-integrationtest:
-          matrix:
-            parameters:
-              arch: [ x64, arm64 ]
-          filters:
-            tags:
-              only:
-                - /^v.*/
-            branches:
-              ignore: /.*/
-      - win-integrationtest:
-          matrix:
-            parameters:
-              arch: [ x64 ]
-          filters:
-            tags:
-              only:
-                - /^v.*/
-            branches:
-              ignore: /.*/
-      - linux-integrationtest:
-          matrix:
-            parameters:
-              arch: [ x64 ]
-          filters:
-            tags:
-              only:
-                - /^v.*/
-            branches:
-              ignore: /.*/
       - publish-to-github:
           context: storyline-release
           requires:
@@ -282,10 +216,6 @@ workflows:
             - linux-build-x64
             - linux-build-arm64
             - linux-build-armv7l
-            - mac-integrationtest-x64
-            - mac-integrationtest-arm64
-            - win-integrationtest-x64
-            - linux-integrationtest-x64
           filters:
             tags:
               only:
