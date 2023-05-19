@@ -22,12 +22,16 @@ commands:
           paths:
             - node_modules
           key: v1-dependencies-{{ arch }}-{{ checksum "yarn.lock" }}
-  test:
+  unittest:
+    steps:
+      - run:
+          command: yarn test:unit
+      - store_test_results:
+          path: ./coverage/
+  integrationtest:
     steps:
       - run:
           command: yarn test:integration
-      - store_test_results:
-          path: ./coverage/
 jobs:
   lint:
     docker:
@@ -35,7 +39,7 @@ jobs:
     steps:
       - install
       - run: yarn run lint
-  mac-test:
+  mac-unittest:
     parameters:
       arch:
         type: enum
@@ -45,8 +49,8 @@ jobs:
     resource_class: macos.x86.medium.gen2
     steps:
       - install
-      - test
-  win-test:
+      - unittest
+  win-unittest:
     parameters:
       arch:
         type: enum
@@ -56,8 +60,8 @@ jobs:
       shell: bash.exe
     steps:
       - install
-      - test
-  linux-test:
+      - unittest
+  linux-unittest:
     parameters:
       arch:
         type: enum
@@ -66,7 +70,39 @@ jobs:
       - image: cimg/base:stable
     steps:
       - install
-      - test
+      - unittest
+  mac-integrationtest:
+    parameters:
+      arch:
+        type: enum
+        enum: [ 'x64', 'arm64' ]
+    macos:
+      xcode: '13.4.0'
+    resource_class: macos.x86.medium.gen2
+    steps:
+      - install
+      - integrationtest
+  win-integrationtest:
+    parameters:
+      arch:
+        type: enum
+        enum: [ 'x64', 'arm64', 'ia32' ]
+    executor:
+      name: win/default
+      shell: bash.exe
+    steps:
+      - install
+      - integrationtest
+  linux-integrationtest:
+    parameters:
+      arch:
+        type: enum
+        enum: [ 'x64', 'arm64','armv7l' ]
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - install
+      - integrationtest
   mac-build:
     parameters:
       arch:
@@ -160,15 +196,15 @@ workflows:
   build-and-test:
     jobs:
       - lint
-      - mac-test:
+      - mac-unittest:
           matrix:
             parameters:
               arch: [ x64, arm64 ]
-      - win-test:
+      - win-unittest:
           matrix:
             parameters:
               arch: [ x64 ]
-      - linux-test:
+      - linux-unittest:
           matrix:
             parameters:
               arch: [ x64 ]
@@ -202,13 +238,43 @@ workflows:
                 - /^v.*/
             branches:
               ignore: /.*/
+      - mac-integrationtest:
+          matrix:
+            parameters:
+              arch: [ x64, arm64 ]
+          filters:
+            tags:
+              only:
+                - /^v.*/
+            branches:
+              ignore: /.*/
+      - win-integrationtest:
+          matrix:
+            parameters:
+              arch: [ x64 ]
+          filters:
+            tags:
+              only:
+                - /^v.*/
+            branches:
+              ignore: /.*/
+      - linux-integrationtest:
+          matrix:
+            parameters:
+              arch: [ x64 ]
+          filters:
+            tags:
+              only:
+                - /^v.*/
+            branches:
+              ignore: /.*/
       - publish-to-github:
           context: storyline-release
           requires:
-            - mac-test-x64
-            - mac-test-arm64
-            - win-test-x64
-            - linux-test-x64
+            - mac-unittest-x64
+            - mac-unittest-arm64
+            - win-unittest-x64
+            - linux-unittest-x64
             - mac-build-x64
             - mac-build-arm64
             - win-build-ia32
@@ -216,6 +282,10 @@ workflows:
             - linux-build-x64
             - linux-build-arm64
             - linux-build-armv7l
+            - mac-integrationtest-x64
+            - mac-integrationtest-arm64
+            - win-integrationtest-x64
+            - linux-integrationtest-x64
           filters:
             tags:
               only:
