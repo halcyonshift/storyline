@@ -83,7 +83,7 @@ workflows:
       - linux-build:
           matrix:
             parameters:
-              arch: [ x64, 'armv64', armv7l ]
+              arch: [ x64, armv64, armv7l ]
       - publish-to-github:
           context: storyline-release
           requires:
