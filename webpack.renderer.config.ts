@@ -14,6 +14,12 @@ export const rendererConfig: Configuration = {
         rules
     },
     devtool: 'source-map',
+    stats: {
+        colors: true,
+        modules: true,
+        reasons: true,
+        errorDetails: true
+    },
     plugins,
     externals: {
         electron: 'commonjs electron'

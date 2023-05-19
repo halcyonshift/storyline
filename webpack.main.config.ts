@@ -5,6 +5,12 @@ import { rules } from './webpack.rules'
 export const mainConfig: Configuration = {
     entry: './src/index.ts',
     devtool: 'source-map',
+    stats: {
+        colors: true,
+        modules: true,
+        reasons: true,
+        errorDetails: true
+    },
     module: {
         rules
     },
