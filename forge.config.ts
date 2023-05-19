@@ -15,7 +15,7 @@ const config: ForgeConfig = {
         icon: './src/StoryLine/assets/images/icon',
         executableName: 'storyline',
         appCopyright: "Hannah O'Malley",
-        appVersion: '0.1.3',
+        appVersion: '0.1.6',
         appCategoryType: 'public.app-category.productivity',
         asar: true,
         win32metadata: {
@@ -25,12 +25,12 @@ const config: ForgeConfig = {
     },
     rebuildConfig: {},
     makers: [
-        new MakerSquirrel({
+        new MakerSquirrel((arch: string) => ({
             name: 'storyline',
             exe: 'storyline.exe',
             noMsi: true,
-            setupExe: 'storyline-${version}-win32-${arch}-setup.exe'
-        }),
+            setupExe: `storyline-${version}-win32-${arch}-setup.exe`
+        })),
         new MakerZIP({}, ['darwin']),
         new MakerRpm({}, ['linux']),
         new MakerDeb({}, ['linux'])
