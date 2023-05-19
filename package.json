@@ -1,14 +1,13 @@
 {
   "name": "storyline",
   "productName": "StoryLine",
-  "version": "0.1.8",
+  "version": "0.1.10",
   "description": "Writing tool",
   "main": ".webpack/main",
   "scripts": {
     "start": "ELECTRON_DISABLE_SECURITY_WARNINGS=true electron-forge start",
-    "package:test": "electron-forge package --platform=darwin",
-    "package:production": "electron-forge package --arch=ia32,x64 --platform=darwin,win32",
-    "maker": "electron-forge make --platform=darwin",
+    "packager": "electron-forge package --arch=ia32,x64 --platform=darwin,win32",
+    "maker": "electron-forge make",
     "publisher": "electron-forge publish",
     "lint": "eslint --max-warnings=0 --ext .ts,.tsx .",
     "test:ci": "yarn jest ./__tests__/unit --silent",
@@ -16,7 +15,7 @@
     "test:integration": "DB_NAME_RANDOM=1 yarn playwright test",
     "prepare": "husky install && chmod ug+x .husky/*",
     "translation:unused": "i18n-unused display-unused",
-    "icons": "electron-icon-builder --input=./src/StoryLine/assets/images/icon.png --output=./src/StoryLine/assets/images/icons",
+    "icons": "electron-icon-builder --input=./src/StoryLine/assets/images/icon.png --output=./appicons",
     "nuke": "rm -rf node_modules yarn.lock && yarn cache clean && yarn"
   },
   "keywords": [],

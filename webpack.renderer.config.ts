@@ -13,7 +13,7 @@ export const rendererConfig: Configuration = {
     module: {
         rules
     },
-    devtool: process.env.DEVTOOL || 'source-map',
+    devtool: 'source-map',
     stats: {
         colors: true,
         modules: true,

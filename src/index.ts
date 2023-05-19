@@ -75,6 +75,7 @@ const createWindow = (): void => {
         if (!app.isPackaged) {
             mainWindow.webContents.openDevTools()
         }
+        mainWindow.webContents.openDevTools()
     })
 
     mainWindow.on('enter-full-screen', () => {
