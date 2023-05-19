@@ -12,7 +12,7 @@ import { version } from './package.json'
 const config: ForgeConfig = {
     packagerConfig: {
         icon: './src/StoryLine/assets/images/icon',
-        executableName: 'storyline',
+        executableName: 'StoryLine',
         appCopyright: "Hannah O'Malley",
         appVersion: version,
         appCategoryType: 'public.app-category.productivity',
@@ -25,7 +25,7 @@ const config: ForgeConfig = {
     rebuildConfig: {},
     makers: [
         new MakerSquirrel((arch) => ({
-            name: 'storyline',
+            name: 'StoryLine',
             exe: 'storyline.exe',
             noMsi: true,
             setupExe: `storyline-${version}-win32-${arch}-setup.exe`
