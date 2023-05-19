@@ -53,7 +53,7 @@ jobs:
     parameters:
       arch:
         type: enum
-        enum: [ 'x64', 'arm64', 'armv7l' ]
+        enum: [ 'x64', 'armv64', 'armv7l' ]
     docker:
       - image: cimg/base:stable
     steps:
@@ -118,7 +118,7 @@ workflows:
       - linux-build:
           matrix:
             parameters:
-              arch: [ x64, 'arm64', armv7l ]
+              arch: [ x64, 'armv64', armv7l ]
       - publish-to-github:
           context: storyline-release
           requires:
