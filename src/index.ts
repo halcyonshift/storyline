@@ -42,7 +42,8 @@ const createWindow = (): void => {
     const splashWindow = new BrowserWindow({
         width: 1024,
         height: 768,
-        frame: false
+        frame: false,
+        icon: './src/StoryLine/assets/images/icons/linux.png'
     })
 
     splashWindow.loadFile('./src/splash.html')
@@ -57,7 +58,8 @@ const createWindow = (): void => {
         webPreferences: {
             preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
             spellcheck: true
-        }
+        },
+        icon: './src/StoryLine/assets/images/icons/linux.png'
     })
 
     mainWindow.webContents.on('will-navigate', function (e, url) {
