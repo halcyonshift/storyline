@@ -67,7 +67,7 @@ jobs:
     steps:
       - run: sudo apt-get update && sudo apt install rpm
       - install
-      - run: npx yarn run publish --arch=<< parameters.arch >> --dry-run
+      - run: npx yarn run publisher --arch=<< parameters.arch >> --dry-run
       # CircleCI doesn't let you persist files with the same name from multiple
       # jobs, so only persist the .webpack path from the x64 linux-build job
       - when:
