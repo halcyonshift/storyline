@@ -23,6 +23,12 @@ commands:
             - node_modules
           key: v1-dependencies-{{ arch }}-{{ checksum "yarn.lock" }}
 jobs:
+  lint:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - install
+      - run: yarn run lint
   mac-build:
     parameters:
       arch:
@@ -113,8 +119,9 @@ jobs:
             sentry-cli releases finalize $SENTRY_RELEASE
             sentry-cli releases deploys $SENTRY_RELEASE new -e $SENTRY_ENVIRONMENT
 workflows:
-  build:
+  build-and-test:
     jobs:
+      - lint
       - mac-build:
           matrix:
             parameters:
