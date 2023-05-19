@@ -4,7 +4,6 @@ import { MakerZIP } from '@electron-forge/maker-zip'
 import { MakerDeb } from '@electron-forge/maker-deb'
 import { MakerRpm } from '@electron-forge/maker-rpm'
 import { WebpackPlugin } from '@electron-forge/plugin-webpack'
-
 import { mainConfig } from './webpack.main.config'
 import { rendererConfig } from './webpack.renderer.config'
 
@@ -15,7 +14,7 @@ const config: ForgeConfig = {
         icon: './src/StoryLine/assets/images/icon',
         executableName: 'storyline',
         appCopyright: "Hannah O'Malley",
-        appVersion: '0.1.6',
+        appVersion: version,
         appCategoryType: 'public.app-category.productivity',
         asar: true,
         win32metadata: {
@@ -25,7 +24,7 @@ const config: ForgeConfig = {
     },
     rebuildConfig: {},
     makers: [
-        new MakerSquirrel((arch: string) => ({
+        new MakerSquirrel((arch) => ({
             name: 'storyline',
             exe: 'storyline.exe',
             noMsi: true,
