@@ -119,32 +119,14 @@ workflows:
           matrix:
             parameters:
               arch: [ x64, arm64 ]
-          filters:
-            tags:
-              only:
-                - /^v.*/
-            branches:
-              ignore: /.*/
       - win-build:
           matrix:
             parameters:
               arch: [ x64, ia32 ]
-          filters:
-            tags:
-              only:
-                - /^v.*/
-            branches:
-              ignore: /.*/
       - linux-build:
           matrix:
             parameters:
               arch: [ x64, armv7l ]
-          filters:
-            tags:
-              only:
-                - /^v.*/
-            branches:
-              ignore: /.*/
       - publish-to-github:
           context: storyline-release
           requires:
@@ -154,18 +136,6 @@ workflows:
             - win-build-x64
             - linux-build-x64
             - linux-build-armv7l
-          filters:
-            tags:
-              only:
-                - /^v.*/
-            branches:
-              ignore: /.*/
       - notify-sentry-deploy:
           requires:
             - publish-to-github
-          filters:
-            tags:
-              only:
-                - /^v.*/
-            branches:
-              ignore: /.*/
