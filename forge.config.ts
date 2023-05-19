@@ -11,7 +11,7 @@ import { version } from './package.json'
 
 const config: ForgeConfig = {
     packagerConfig: {
-        icon: './src/StoryLine/assets/images/icon',
+        // icon: './src/StoryLine/assets/images/icon',
         executableName: 'storyline',
         appCopyright: "Hannah O'Malley",
         appVersion: version,
