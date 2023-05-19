@@ -16,6 +16,7 @@
     "test:integration": "DB_NAME_RANDOM=1 yarn playwright test",
     "prepare": "husky install && chmod ug+x .husky/*",
     "translation:unused": "i18n-unused display-unused",
+    "icons": "electron-icon-builder --input=./src/StoryLine/assets/images/icon.png --output=./src/StoryLine/assets/images/icons",
     "nuke": "rm -rf node_modules yarn.lock && yarn cache clean && yarn"
   },
   "keywords": [],
@@ -63,6 +64,7 @@
     "css-loader": "6.0.0",
     "dotenv-webpack": "8.0.1",
     "electron": "23.1.1",
+    "electron-icon-builder": "^2.0.1",
     "electron-playwright-helpers": "1.5.4",
     "eslint": "8.35.0",
     "eslint-config-code-complexity": "1.1.1",

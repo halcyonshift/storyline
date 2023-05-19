@@ -12,7 +12,7 @@ import { version } from './package.json'
 
 const config: ForgeConfig = {
     packagerConfig: {
-        icon: './src/StoryLine/assets/images/icon',
+        icon: './src/StoryLine/assets/images/icons/icon',
         executableName: 'StoryLine',
         appCopyright: "Hannah O'Malley",
         appVersion: version,
@@ -29,17 +29,33 @@ const config: ForgeConfig = {
             name: 'StoryLine',
             exe: 'storyline.exe',
             noMsi: true,
-            setupExe: `storyline-${version}-win32-${arch}-setup.exe`
+            setupExe: `storyline-${version}-win32-${arch}-setup.exe`,
+            setupIcon: './src/StoryLine/assets/images/icons/icon.ico'
         })),
         new MakerZIP({}, ['darwin']),
         new MakerDMG(
             {
-                format: 'ULFO'
+                format: 'ULFO',
+                icon: './src/StoryLine/assets/images/icons/icon.icns'
             },
             ['darwin']
         ),
-        new MakerRpm({}, ['linux']),
-        new MakerDeb({}, ['linux'])
+        new MakerRpm(
+            {
+                options: {
+                    icon: './src/StoryLine/assets/images/icons/linux.png'
+                }
+            },
+            ['linux']
+        ),
+        new MakerDeb(
+            {
+                options: {
+                    icon: './src/StoryLine/assets/images/icons/linux.png'
+                }
+            },
+            ['linux']
+        )
     ],
     publishers: [
         {
