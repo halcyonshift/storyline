@@ -4,6 +4,8 @@ import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
 import { htmlParse } from '@sl/utils'
 
+import packageJSON from '../../../../../package.json'
+
 const InfoView = () => {
     const { t } = useTranslation()
 
@@ -16,7 +18,7 @@ const InfoView = () => {
                         <Typography variant='body2' className='text-slate-600 dark:text-slate-200'>
                             {t('view.storyline.info.about.version')}
                         </Typography>
-                        <Typography variant='body1'>{process.env.VERSION}</Typography>
+                        <Typography variant='body1'>{packageJSON.version}</Typography>
                     </Box>
                     <Box>
                         <Typography variant='body2' className='text-slate-600 dark:text-slate-200'>

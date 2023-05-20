@@ -135,7 +135,7 @@
     "react-dom": "18.2.0",
     "react-draggable": "4.4.5",
     "react-i18next": "12.2.0",
-    "react-joyride": "2.5.3",
+    "react-joyride": "^2.5.4",
     "react-leaflet": "4.2.1",
     "react-router-dom": "6.8.1",
     "rxjs-hooks": "0.8.0-alpha.0",
