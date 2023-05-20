@@ -46,10 +46,9 @@ const LandingView = () => {
     }
 
     return (
-        // eslint-disable-next-line max-len
         <Box className='p-4 grid grid-cols-2 grid-rows-2 gap-4 flex-grow bg-slate-50 dark:bg-neutral-700'>
-            <Paper elevation={1} className='relative'>
-                <Typography variant='h6' className='px-4 pt-3'>
+            <Paper elevation={1} className='relative row-span-2'>
+                <Typography variant='h5' className='px-4 pt-3'>
                     {t('view.storyline.landing.title')}
                 </Typography>
                 <List>
@@ -57,7 +56,8 @@ const LandingView = () => {
                         <ListItem
                             link='/works'
                             icon={Icons.global.open}
-                            text='view.storyline.landing.navigation.works'
+                            primary='view.storyline.landing.navigation.works.primary'
+                            secondary='view.storyline.landing.navigation.works.secondary'
                         />
                     ) : null}
                     <MuiListItem disablePadding disableGutters>
@@ -65,39 +65,50 @@ const LandingView = () => {
                             <ListItemIcon sx={{ fontSize: settings.appFontSize * 2 }}>
                                 {Icons.global.add}
                             </ListItemIcon>
-                            <ListItemText primary={t('view.storyline.landing.navigation.new')} />
+                            <ListItemText
+                                primary={t('view.storyline.landing.navigation.new.primary')}
+                                secondary={t('view.storyline.landing.navigation.new.secondary')}
+                            />
                         </ListItemButton>
                     </MuiListItem>
                     <ListItem
                         link='/importWork'
                         icon={Icons.importExport.import}
-                        text='view.storyline.landing.navigation.importWork'
+                        primary='view.storyline.landing.navigation.importWork.primary'
+                        secondary='view.storyline.landing.navigation.importWork.secondary'
+                    />
+                    <ListItem
+                        link='/backupRestore'
+                        icon={Icons.global.backupRestore}
+                        primary='view.storyline.landing.navigation.backupRestore.primary'
+                        secondary='view.storyline.landing.navigation.backupRestore.secondary'
                     />
                     <ListItem
                         link='/settings'
                         icon={Icons.settings.settings}
-                        text='view.storyline.landing.navigation.settings'
+                        primary='view.storyline.landing.navigation.settings.primary'
+                        secondary='view.storyline.landing.navigation.settings.secondary'
                     />
                     <ListItem
                         link='/info'
                         icon={Icons.global.info}
-                        text='view.storyline.landing.navigation.info'
+                        primary='view.storyline.landing.navigation.info.primary'
+                        secondary='view.storyline.landing.navigation.info.secondary'
                     />
                 </List>
             </Paper>
             <Paper elevation={1} className='relative'>
-                <Typography variant='h6' className='px-4 pt-3'>
+                <Typography variant='h5' className='px-4 pt-3'>
                     {t('view.storyline.landing.recent.title')}
                 </Typography>
                 <List>
                     {recentWorks.map((work) => (
-                        <ListItem key={work.id} link={`/work/${work.id}`} text={work.title} />
+                        <ListItem key={work.id} link={`/work/${work.id}`} primary={work.title} />
                     ))}
                 </List>
             </Paper>
-            <Box></Box>
             <Paper elevation={1} className='relative'>
-                <Typography variant='h6' className='px-4 pt-3'>
+                <Typography variant='h5' className='px-4 pt-3'>
                     {t('view.storyline.landing.feedback.title')}
                 </Typography>
             </Paper>

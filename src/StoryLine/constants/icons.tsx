@@ -17,7 +17,8 @@ export const GLOBAL_ICONS = {
     random: <Icon name='Casino' />,
     up: <Icon name='ArrowUpward' />,
     show: <Icon name='Visibility' />,
-    hide: <Icon name='VisibilityOff' />
+    hide: <Icon name='VisibilityOff' />,
+    backupRestore: <Icon name='ImportExport' />
 }
 
 export const CHARACTER_ICONS = {

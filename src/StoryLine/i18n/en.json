@@ -635,13 +635,32 @@
     "view": {
         "storyline": {
             "landing": {
-                "title": "Welcome to",
+                "title": "Welcome to StoryLine",
                 "navigation": {
-                    "works": "Works",
-                    "new": "New",
-                    "importWork": "Import",
-                    "settings": "Settings",
-                    "info": "Info"
+                    "works": {
+                        "primary": "Works",
+                        "secondary": "All your works can be found in here"
+                    },
+                    "new": {
+                        "primary": "New",
+                        "secondary": "Create a new work with a click"
+                    },
+                    "importWork": {
+                        "primary": "Import",
+                        "secondary": "Transfer a work in from a variety of platforms and software"
+                    },
+                    "backupRestore": {
+                        "primary": "Backup or restore",
+                        "secondary": "Save and restore the entire app"
+                    },
+                    "settings": {
+                        "primary": "Settings",
+                        "secondary": "Configure the way the StoryLine and the editor look and work"
+                    },
+                    "info": {
+                        "primary": "Info",
+                        "secondary": "Need to get in touch? Love licences? Both in here."
+                    }
                 },
                 "recent": {
                     "title": "Recently opened"

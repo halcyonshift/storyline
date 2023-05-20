@@ -4,19 +4,21 @@ import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
 import { htmlParse } from '@sl/utils'
 
+import packageJSON from '../../../../../package.json'
+
 const InfoView = () => {
     const { t } = useTranslation()
 
     return (
         <Box className='grid grid-cols-2 gap-3 p-8'>
             <Box>
-                <Typography variant='h6'>{t('view.storyline.info.about.title')}</Typography>
+                <Typography variant='h5'>{t('view.storyline.info.about.title')}</Typography>
                 <Stack spacing={1} className='mt-3'>
                     <Box>
                         <Typography variant='body2' className='text-slate-600 dark:text-slate-200'>
                             {t('view.storyline.info.about.version')}
                         </Typography>
-                        <Typography variant='body1'>{process.env.VERSION}</Typography>
+                        <Typography variant='body1'>{packageJSON.version}</Typography>
                     </Box>
                     <Box>
                         <Typography variant='body2' className='text-slate-600 dark:text-slate-200'>
@@ -27,7 +29,7 @@ const InfoView = () => {
                 </Stack>
             </Box>
             <Box>
-                <Typography variant='h6'>{t('view.storyline.info.license.title')}</Typography>
+                <Typography variant='h5'>{t('view.storyline.info.license.title')}</Typography>
                 <Typography variant='body1' className='pt-3'>
                     {t('view.storyline.info.license.text')}
                 </Typography>
