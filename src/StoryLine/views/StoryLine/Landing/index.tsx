@@ -9,9 +9,11 @@ import {
     Typography
 } from '@mui/material'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
+import * as Q from '@nozbe/watermelondb/QueryDescription'
 import { sample } from 'lodash'
 import { useTranslation } from 'react-i18next'
-import { useLoaderData, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { useObservable } from 'rxjs-hooks'
 import ListItem from '@sl/components/ListItem'
 import Icons, { GLOBAL_ICONS } from '@sl/constants/icons'
 import { Status } from '@sl/constants/status'
@@ -21,10 +23,17 @@ import useSettings from '@sl/theme/useSettings'
 const LandingView = () => {
     const database = useDatabase()
     const navigate = useNavigate()
-    const recentWorks = useLoaderData() as WorkModel[]
     const settings = useSettings()
     const { t } = useTranslation()
-
+    const recentWorks = useObservable(
+        () =>
+            database
+                .get<WorkModel>('work')
+                .query(Q.sortBy('last_opened_at', Q.desc), Q.take(5))
+                .observeWithColumns(['title']),
+        [],
+        []
+    )
     const BUG_LINK =
         'https://github.com/halcyonshift/storyline/issues/new?labels=bug&template=' +
         'bug_report.md&title=%5BBUG%5D'
@@ -118,7 +127,7 @@ const LandingView = () => {
                 </List>
             </Paper>
             <Paper elevation={1} className='relative '>
-                <Box className='px-4 pt-5 bg-indigo-50 dark:bg-indigo-900 h-full'>
+                <Box className='px-4 pt-5 bg-indigo-50 dark:bg-indigo-900 h-full rounded'>
                     <Box className='grid grid-cols-1 gap-5'>
                         <a title='Go to GitHub' href={BUG_LINK}>
                             <Box>

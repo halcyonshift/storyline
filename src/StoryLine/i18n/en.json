@@ -634,8 +634,24 @@
     },
     "view": {
         "storyline": {
+            "backupRestore": {
+                "backup": {
+                    "success": "Backup saved to {{filePath}}",
+                    "failure": "Backup could not be saved",
+                    "title": "Backup StoryLine",
+                    "text": "This will backup the entire application, including all works and images",
+                    "button": "Backup"
+                },
+                "restore": {
+                    "success": "The backup has been restored",
+                    "failure": "The backup could not be restored",
+                    "title": "Restore StoryLine",
+                    "text": "This will overwrite all data, any items not in the backup will be removed! StoryLine will close and re-open after restore.",
+                    "button": "Restore"
+                }
+            },
             "landing": {
-                "title": "Welcome to StoryLine",
+                "title": "Welcome to StoryLine!",
                 "navigation": {
                     "works": {
                         "primary": "Works",
@@ -676,8 +692,8 @@
                         "text": "Tell me your hopes and dreams"
                     },
                     "support": {
-                        "title": "After a user guide?",
-                        "text": "There isn't one yet, sorry, but there's a Discord!"
+                        "title": "Looking for a user guide?",
+                        "text": "There isn't one yet, but there is a Discord!"
                     }
                 },
                 "titles": {

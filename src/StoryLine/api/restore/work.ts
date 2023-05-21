@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import JSZip from 'jszip'
 
-const restore = async (baseDir: string) => {
+const restoreWork = async (baseDir: string) => {
     const result = await dialog.showOpenDialog({
         title: 'Select StoryLine archive',
         filters: [{ name: 'Files', extensions: ['zip'] }]
@@ -51,4 +51,4 @@ const restore = async (baseDir: string) => {
     }
 }
 
-export default restore
+export default restoreWork

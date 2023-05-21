@@ -10,11 +10,11 @@ import {
 import contextMenu from 'electron-context-menu'
 import { init } from '@sentry/electron/main'
 import path from 'path'
-import backup from './StoryLine/api/backup'
+import * as apiBackup from './StoryLine/api/backup'
+import * as apiRestore from './StoryLine/api/restore'
 import * as apiExport from './StoryLine/api/export'
 import * as apiImport from './StoryLine/api/import'
 import deleteFile from './StoryLine/api/deleteFile'
-import restore from './StoryLine/api/restore'
 import selectFile from './StoryLine/api/selectFile'
 import selectFilePath from './StoryLine/api/selectFilePath'
 import selectImage from './StoryLine/api/selectImage'
@@ -159,8 +159,21 @@ app.on('activate', () => {
 
 app.whenReady()
     .then(() => {
-        ipcMain.handle('backup', backup)
+        ipcMain.handle('relaunch', () => {
+            app.relaunch()
+            app.exit()
+        })
         ipcMain.handle('delete-file', deleteFile)
+        ipcMain.handle('backup-storyline', apiBackup.storyLine)
+        ipcMain.handle('backup-work', apiBackup.work)
+        ipcMain.handle(
+            'restore-storyline',
+            async () => await apiRestore.storyLine(path.join(app.getPath('userData')))
+        )
+        ipcMain.handle(
+            'restore-work',
+            async () => await apiRestore.work(path.join(app.getPath('userData')))
+        )
         ipcMain.handle('export-docx', apiExport.docx)
         ipcMain.handle('export-epub', apiExport.epub)
         ipcMain.handle('export-html', apiExport.html)
@@ -168,7 +181,6 @@ app.whenReady()
             'import-bibisco2',
             async () => await apiImport.bibisco(app.getPath('userData'))
         )
-        ipcMain.handle('restore', async () => await restore(path.join(app.getPath('userData'))))
         ipcMain.handle('select-file-path', selectFilePath)
         ipcMain.handle(
             'select-image',

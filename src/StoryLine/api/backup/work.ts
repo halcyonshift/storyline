@@ -5,7 +5,7 @@ import { kebabCase } from 'lodash'
 import path from 'path'
 import JSZip from 'jszip'
 
-const backup = async (
+const backupWork = async (
     _: Electron.IpcMainInvokeEvent,
     json: { work: { title: string }[] },
     images: string[],
@@ -38,7 +38,6 @@ const backup = async (
         })
 
         if (result.filePath) {
-            // eslint-disable-next-line max-nested-callbacks
             fs.writeFile(result.filePath, buffer, () => {
                 captureMessage('api.backup without localPath write failure')
             })
@@ -50,4 +49,4 @@ const backup = async (
     return false
 }
 
-export default backup
+export default backupWork
