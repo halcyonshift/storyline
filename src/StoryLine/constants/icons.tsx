@@ -18,7 +18,10 @@ export const GLOBAL_ICONS = {
     up: <Icon name='ArrowUpward' />,
     show: <Icon name='Visibility' />,
     hide: <Icon name='VisibilityOff' />,
-    backupRestore: <Icon name='ImportExport' />
+    backupRestore: <Icon name='ImportExport' />,
+    bug: <Icon name='BugReport' />,
+    feature: <Icon name='ChatBubble' />,
+    help: <Icon name='LiveHelp' />
 }
 
 export const CHARACTER_ICONS = {

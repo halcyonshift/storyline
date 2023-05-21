@@ -13,7 +13,7 @@ import { sample } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useLoaderData, useNavigate } from 'react-router-dom'
 import ListItem from '@sl/components/ListItem'
-import Icons from '@sl/constants/icons'
+import Icons, { GLOBAL_ICONS } from '@sl/constants/icons'
 import { Status } from '@sl/constants/status'
 import { WorkModel } from '@sl/db/models'
 import useSettings from '@sl/theme/useSettings'
@@ -24,6 +24,16 @@ const LandingView = () => {
     const recentWorks = useLoaderData() as WorkModel[]
     const settings = useSettings()
     const { t } = useTranslation()
+
+    const BUG_LINK =
+        'https://github.com/halcyonshift/storyline/issues/new?labels=bug&template=' +
+        'bug_report.md&title=%5BBUG%5D'
+
+    const FEATURE_LINK =
+        'https://github.com/halcyonshift/storyline/issues/new?labels=enhancement&template=' +
+        'feature_request.md&title=%5BFEATURE%5D'
+
+    const DISCORD_LINK = 'https://discord.gg/4Dy9xW7fqQ'
 
     const handleNew = async () => {
         const work = await database.write(async () => {
@@ -107,10 +117,50 @@ const LandingView = () => {
                     ))}
                 </List>
             </Paper>
-            <Paper elevation={1} className='relative'>
-                <Typography variant='h5' className='px-4 pt-3'>
-                    {t('view.storyline.landing.feedback.title')}
-                </Typography>
+            <Paper elevation={1} className='relative '>
+                <Box className='px-4 pt-5 bg-indigo-50 dark:bg-indigo-900 h-full'>
+                    <Box className='grid grid-cols-1 gap-5'>
+                        <a title='Go to GitHub' href={BUG_LINK}>
+                            <Box>
+                                <Typography variant='h4' className='float-left pr-3'>
+                                    {GLOBAL_ICONS.bug}
+                                </Typography>
+                                <Typography variant='body1'>
+                                    {t('view.storyline.landing.contact.bug.title')}
+                                </Typography>
+                                <Typography variant='body2'>
+                                    {t('view.storyline.landing.contact.bug.text')}
+                                </Typography>
+                            </Box>
+                        </a>
+                        <a title='Go to GitHub' href={FEATURE_LINK}>
+                            <Box>
+                                <Typography variant='h4' className='float-left pr-3'>
+                                    {GLOBAL_ICONS.feature}
+                                </Typography>
+                                <Typography variant='body1'>
+                                    {t('view.storyline.landing.contact.feature.title')}
+                                </Typography>
+                                <Typography variant='body2'>
+                                    {t('view.storyline.landing.contact.feature.text')}
+                                </Typography>
+                            </Box>
+                        </a>
+                        <a title='Go to Discord' href={DISCORD_LINK}>
+                            <Box>
+                                <Typography variant='h4' className='float-left pr-3'>
+                                    {GLOBAL_ICONS.help}
+                                </Typography>
+                                <Typography variant='body1'>
+                                    {t('view.storyline.landing.contact.support.title')}
+                                </Typography>
+                                <Typography variant='body2'>
+                                    {t('view.storyline.landing.contact.support.text')}
+                                </Typography>
+                            </Box>
+                        </a>
+                    </Box>
+                </Box>
             </Paper>
         </Box>
     )

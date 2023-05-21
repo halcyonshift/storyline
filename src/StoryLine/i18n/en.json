@@ -651,7 +651,7 @@
                     },
                     "backupRestore": {
                         "primary": "Backup or restore",
-                        "secondary": "Save and restore the entire app"
+                        "secondary": "Bundle everything up or unbundle it all back again"
                     },
                     "settings": {
                         "primary": "Settings",
@@ -665,8 +665,20 @@
                 "recent": {
                     "title": "Recently opened"
                 },
-                "feedback": {
-                    "title": "Feedback"
+                "contact": {
+                    "title": "Contact",
+                    "bug": {
+                        "title": "Found a bug?",
+                        "text": "Please report it with as much info as possible"
+                    },
+                    "feature": {
+                        "title": "Want a new feature?",
+                        "text": "Tell me your hopes and dreams"
+                    },
+                    "support": {
+                        "title": "After a user guide?",
+                        "text": "There isn't one yet, sorry, but there's a Discord!"
+                    }
                 },
                 "titles": {
                     "title_1": "The Adventures of a Couch Potato Detective",
