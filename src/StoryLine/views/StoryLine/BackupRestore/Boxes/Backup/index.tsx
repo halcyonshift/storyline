@@ -19,9 +19,11 @@ const BackupBox = () => {
             IDBExportImport.exportToJsonString(
                 target.result,
                 async (_: Error, jsonString: string) => {
-                    const status = await api.backupStoryLine(jsonString)
-                    if (status) {
-                        messenger.success(t('view.storyline.backupRestore.backup.success'))
+                    const filePath = await api.backupStoryLine(jsonString)
+                    if (filePath) {
+                        messenger.success(
+                            t('view.storyline.backupRestore.backup.success', { filePath })
+                        )
                     } else {
                         messenger.success(t('view.storyline.backupRestore.backup.failure'))
                     }

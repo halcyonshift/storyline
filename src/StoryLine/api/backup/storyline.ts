@@ -1,26 +1,30 @@
-import { dialog } from 'electron'
+import { app, dialog } from 'electron'
 import { captureMessage } from '@sentry/electron/main'
 import fs from 'fs'
-import path from 'path'
 import JSZip from 'jszip'
+import { DateTime } from 'luxon'
+import path from 'path'
+import { walk } from '../utils'
 
 const backupStoryLine = async (_: Electron.IpcMainInvokeEvent, jsonString: string) => {
-    const images: string[] = []
     const zip = new JSZip()
 
     zip.file('database.json', jsonString)
 
-    images.forEach((image: string) => {
-        const data = fs.readFileSync(image)
-        zip.file(`images/${path.basename(image)}`, data)
-    })
+    const imageDir = path.join(app.getPath('userData'), 'images')
+    const imageFiles = await walk(imageDir)
+    const imagesFolder = zip.folder('images')
+
+    for (const imageFile of imageFiles.flat(Number.POSITIVE_INFINITY)) {
+        imagesFolder.file(imageFile.replace(imageDir, ''), fs.readFileSync(imageFile))
+    }
 
     const buffer = await zip.generateAsync({ type: 'nodebuffer' })
 
     const result = await dialog.showSaveDialog({
-        defaultPath: `StoryLine.zip`,
+        defaultPath: `${DateTime.now().toFormat('yyyyMMddHmm')}.storyline`,
         filters: [
-            { name: 'ZIP files', extensions: ['zip'] },
+            { name: '.storyline files', extensions: ['storyline'] },
             { name: 'All Files', extensions: ['*'] }
         ]
     })
@@ -33,7 +37,7 @@ const backupStoryLine = async (_: Electron.IpcMainInvokeEvent, jsonString: strin
         return result.filePath
     }
 
-    return true
+    return false
 }
 
 export default backupStoryLine
