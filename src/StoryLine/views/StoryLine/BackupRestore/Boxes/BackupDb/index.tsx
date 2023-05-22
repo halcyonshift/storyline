@@ -22,10 +22,12 @@ const BackupBox = () => {
                     const filePath = await api.backupStoryLine(jsonString)
                     if (filePath) {
                         messenger.success(
-                            t('view.storyline.backupRestore.backup.success', { filePath })
+                            t('view.storyline.backupRestore.backup.storyline.success', { filePath })
                         )
                     } else {
-                        messenger.success(t('view.storyline.backupRestore.backup.failure'))
+                        messenger.success(
+                            t('view.storyline.backupRestore.backup.storyline.failure')
+                        )
                     }
                 }
             )
@@ -34,10 +36,14 @@ const BackupBox = () => {
 
     return (
         <Box className='grid h-full place-items-center p-5'>
-            <Typography variant='h6'>{t('view.storyline.backupRestore.backup.title')}</Typography>
-            <Typography variant='body1'>{t('view.storyline.backupRestore.backup.text')}</Typography>
+            <Typography variant='h6'>
+                {t('view.storyline.backupRestore.backup.storyline.title')}
+            </Typography>
+            <Typography variant='body1'>
+                {t('view.storyline.backupRestore.backup.storyline.text')}
+            </Typography>
             <Button variant='contained' onClick={exportDb}>
-                {t('view.storyline.backupRestore.backup.button')}
+                {t('view.storyline.backupRestore.backup.storyline.button')}
             </Button>
         </Box>
     )

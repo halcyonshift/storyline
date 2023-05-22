@@ -4,7 +4,7 @@ import useMessenger from '@sl/layouts/useMessenger'
 import IDBExportImport from 'indexeddb-export-import'
 import { useTranslation } from 'react-i18next'
 
-const StoryLineBox = () => {
+const RestoreDbBox = () => {
     const database = useDatabase()
     const messenger = useMessenger()
     const { t } = useTranslation()
@@ -28,10 +28,14 @@ const StoryLineBox = () => {
                         jsonString,
                         (error: Error) => {
                             if (!error) {
-                                messenger.success(t('view.storyline.backupRestore.restore.success'))
+                                messenger.success(
+                                    t('view.storyline.backupRestore.restore.storyline.success')
+                                )
                                 api.relaunch()
                             } else {
-                                messenger.success(t('view.storyline.backupRestore.restore.failure'))
+                                messenger.success(
+                                    t('view.storyline.backupRestore.restore.storyline.failure')
+                                )
                             }
                         }
                     )
@@ -42,15 +46,17 @@ const StoryLineBox = () => {
 
     return (
         <Box className='grid h-full place-items-center p-5'>
-            <Typography variant='h6'>{t('view.storyline.backupRestore.restore.title')}</Typography>
+            <Typography variant='h6'>
+                {t('view.storyline.backupRestore.restore.storyline.title')}
+            </Typography>
             <Typography variant='body1'>
-                {t('view.storyline.backupRestore.restore.text')}
+                {t('view.storyline.backupRestore.restore.storyline.text')}
             </Typography>
             <Button variant='contained' onClick={importDb}>
-                {t('view.storyline.backupRestore.restore.button')}
+                {t('view.storyline.backupRestore.restore.storyline.button')}
             </Button>
         </Box>
     )
 }
 
-export default StoryLineBox
+export default RestoreDbBox

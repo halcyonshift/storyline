@@ -5,8 +5,7 @@ import JSZip from 'jszip'
 
 const restoreWork = async (baseDir: string) => {
     const result = await dialog.showOpenDialog({
-        title: 'Select StoryLine archive',
-        filters: [{ name: 'Files', extensions: ['zip'] }]
+        filters: [{ name: '.slwork', extensions: ['slwork'] }]
     })
     if (result.canceled || !result.filePaths.length) return false
     const filePath = result.filePaths[0]

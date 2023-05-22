@@ -93,8 +93,8 @@ const router = createHashRouter([
                         }
                     },
                     {
-                        path: 'backupRestore',
-                        element: <WorkViews.BackupRestoreView />
+                        path: 'export',
+                        element: <WorkViews.ExportView />
                     },
                     {
                         path: 'character/:character_id',

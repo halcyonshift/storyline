@@ -478,20 +478,6 @@ export default class WorkModel extends Model {
             )
         )
 
-        /*
-                    ...data.sprint.map((sprintData: any) =>
-                this.collections.get<SprintModel>('sprint').prepareCreate((sprint) => {
-                    sprint._raw.id = sprintData.id
-                    sprint.work.set(this)
-                    sprint.startAt = DateTime.fromMillis(sprintData.start_at).toJSDate()
-                    sprint.endAt = DateTime.fromMillis(sprintData.end_at).toJSDate()
-                    sprint.wordGoal = sprintData.word_goal
-                    sprint.createdAt = DateTime.fromMillis(sprintData.created_at).toJSDate()
-                    sprint.updatedAt = DateTime.fromMillis(sprintData.updated_at).toJSDate()
-                })
-            ),
-            */
-
         await this.batch(
             ...data.location.map((locationData: any) =>
                 this.collections.get<LocationModel>('location').prepareCreate((location) => {
@@ -531,6 +517,17 @@ export default class WorkModel extends Model {
                         section.deadlineAt = DateTime.fromMillis(sectionData.deadline_at).toJSDate()
                     section.createdAt = DateTime.fromMillis(sectionData.created_at).toJSDate()
                     section.updatedAt = DateTime.fromMillis(sectionData.updated_at).toJSDate()
+                })
+            ),
+            ...data.sprint.map((sprintData: any) =>
+                this.collections.get<SprintModel>('sprint').prepareCreate((sprint) => {
+                    sprint._raw.id = sprintData.id
+                    sprint.work.set(this)
+                    sprint.startAt = DateTime.fromMillis(sprintData.start_at).toJSDate()
+                    sprint.endAt = DateTime.fromMillis(sprintData.end_at).toJSDate()
+                    sprint.wordGoal = sprintData.word_goal
+                    sprint.createdAt = DateTime.fromMillis(sprintData.created_at).toJSDate()
+                    sprint.updatedAt = DateTime.fromMillis(sprintData.updated_at).toJSDate()
                 })
             )
         )
@@ -577,7 +574,7 @@ export default class WorkModel extends Model {
                     //
                 })
         }
-        /*
+
         for await (const statisticData of data.sprint_statistic) {
             await this.collections
                 .get<SprintStatisticModel>('sprint_statistic')
@@ -594,7 +591,6 @@ export default class WorkModel extends Model {
                     //
                 })
         }
-        */
 
         for await (const tagData of data.tag) {
             await this.collections

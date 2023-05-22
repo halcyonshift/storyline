@@ -18,7 +18,7 @@ export const GLOBAL_ICONS = {
     up: <Icon name='ArrowUpward' />,
     show: <Icon name='Visibility' />,
     hide: <Icon name='VisibilityOff' />,
-    backupRestore: <Icon name='ImportExport' />,
+    backupRestore: <Icon name='SettingsBackupRestore' />,
     bug: <Icon name='BugReport' />,
     feature: <Icon name='ChatBubble' />,
     help: <Icon name='LiveHelp' />
@@ -44,6 +44,7 @@ export const IMPORTEXPORT_ICONS = {
     html: <Icon name='Html' />,
     importExport: <Icon name='ImportExport' />,
     import: <Icon name='ArrowDownward' />,
+    export: <Icon name='Publish' />,
     pdf: <Icon name='PictureAsPdf' />
 }
 
