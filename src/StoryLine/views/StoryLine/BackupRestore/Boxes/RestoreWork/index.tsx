@@ -39,12 +39,7 @@ const RestoreWorkBox = () => {
             work = await database.get<WorkModel>('work').find(id)
             work.delete()
         } catch {
-            work = await database.write(async () => {
-                return await database.get<WorkModel>('work').create((work) => {
-                    work._raw.id = data.work[0].id
-                    work.title = data.work[0].title
-                })
-            })
+            //
         }
 
         const { data } = await api.restoreWork()
@@ -52,6 +47,15 @@ const RestoreWorkBox = () => {
         if (!data?.work[0]?.id) {
             messenger.error(t('view.storyline.backupRestore.restore.work.failure'))
             return
+        }
+
+        if (!work) {
+            work = await database.write(async () => {
+                return await database.get<WorkModel>('work').create((work) => {
+                    work._raw.id = data.work[0].id
+                    work.title = data.work[0].title
+                })
+            })
         }
 
         const status = await work.restore(data)
