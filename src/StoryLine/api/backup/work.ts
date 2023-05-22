@@ -1,4 +1,4 @@
-import { dialog } from 'electron'
+import { app, dialog } from 'electron'
 import { captureMessage } from '@sentry/electron/main'
 import fs from 'fs'
 import { kebabCase } from 'lodash'
@@ -13,9 +13,13 @@ const backupWork = async (
 ) => {
     const zip = new JSZip()
     zip.file(`${kebabCase(json.work[0].title)}.json`, JSON.stringify(json))
+
+    const imageDir = path.join(app.getPath('userData'), 'images')
+
+    const imagesFolder = zip.folder('images')
     images.forEach((image: string) => {
         const data = fs.readFileSync(image)
-        zip.file(`images/${path.basename(image)}`, data)
+        imagesFolder.file(image.replace(imageDir, ''), data)
     })
 
     const buffer = await zip.generateAsync({ type: 'nodebuffer' })
@@ -23,18 +27,15 @@ const backupWork = async (
     if (localPath) {
         const fileSavePath = `${localPath}${path.sep}${kebabCase(
             json.work[0].title
-        )}-${Date.now().toString()}.zip`
+        )}-${Date.now().toString()}.slwork`
         fs.writeFile(fileSavePath, buffer, () => {
             captureMessage('api.backup with localPath write failure')
         })
         return fileSavePath
     } else {
         const result = await dialog.showSaveDialog({
-            defaultPath: `${kebabCase(json.work[0].title)}.zip`,
-            filters: [
-                { name: 'ZIP files', extensions: ['zip'] },
-                { name: 'All Files', extensions: ['*'] }
-            ]
+            defaultPath: `${kebabCase(json.work[0].title)}.slwork`,
+            filters: [{ name: '.slwork', extensions: ['slwork'] }]
         })
 
         if (result.filePath) {

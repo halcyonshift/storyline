@@ -22,11 +22,8 @@ const backupStoryLine = async (_: Electron.IpcMainInvokeEvent, jsonString: strin
     const buffer = await zip.generateAsync({ type: 'nodebuffer' })
 
     const result = await dialog.showSaveDialog({
-        defaultPath: `${DateTime.now().toFormat('yyyyMMddHmm')}.storyline`,
-        filters: [
-            { name: '.storyline files', extensions: ['storyline'] },
-            { name: 'All Files', extensions: ['*'] }
-        ]
+        defaultPath: `${DateTime.now().toFormat('yyyyMMddHmm')}.sldb`,
+        filters: [{ name: '.sldb', extensions: ['sldb'] }]
     })
 
     if (result.filePath) {

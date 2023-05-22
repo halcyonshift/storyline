@@ -335,10 +335,10 @@ export default class WorkModel extends Model {
         const location = await this.location.fetch()
         const note = await this.note.fetch()
         const section = await this.section.fetch()
-        const statistic = await this.statistic.fetch()
-        const tag = await this.tag.fetch()
         const sprint = await this.sprint.fetch()
         const sprint_statistic = await this.sprint_statistic.fetch()
+        const statistic = await this.statistic.fetch()
+        const tag = await this.tag.fetch()
 
         const backupPath = await this.database.localStorage.get<string>('autoBackupPath')
 

@@ -5,7 +5,7 @@ import JSZip from 'jszip'
 
 const restoreStoryLine = async (baseDir: string) => {
     const result = await dialog.showOpenDialog({
-        filters: [{ name: 'Files', extensions: ['storyline'] }]
+        filters: [{ name: '.sldb', extensions: ['sldb'] }]
     })
 
     if (result.canceled || !result.filePaths.length) return false
