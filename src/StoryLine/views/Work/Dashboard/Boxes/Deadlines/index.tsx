@@ -78,7 +78,7 @@ const DeadlinesBox = () => {
                                 <Typography
                                     key={item.label}
                                     variant='body1'
-                                    sx={{ color: status(item.status, 700).color }}>
+                                    sx={{ color: status(item.status, 700)?.color }}>
                                     {item.label}
                                 </Typography>
                             ))}

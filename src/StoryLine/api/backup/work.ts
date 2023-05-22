@@ -1,11 +1,11 @@
-import { dialog } from 'electron'
+import { app, dialog } from 'electron'
 import { captureMessage } from '@sentry/electron/main'
 import fs from 'fs'
 import { kebabCase } from 'lodash'
 import path from 'path'
 import JSZip from 'jszip'
 
-const backup = async (
+const backupWork = async (
     _: Electron.IpcMainInvokeEvent,
     json: { work: { title: string }[] },
     images: string[],
@@ -13,9 +13,17 @@ const backup = async (
 ) => {
     const zip = new JSZip()
     zip.file(`${kebabCase(json.work[0].title)}.json`, JSON.stringify(json))
+
+    const imageDir = path.join(app.getPath('userData'), 'images')
+
+    const imagesFolder = zip.folder('images')
     images.forEach((image: string) => {
-        const data = fs.readFileSync(image)
-        zip.file(`images/${path.basename(image)}`, data)
+        try {
+            const data = fs.readFileSync(image)
+            imagesFolder.file(image.replace(imageDir, ''), data)
+        } catch {
+            //
+        }
     })
 
     const buffer = await zip.generateAsync({ type: 'nodebuffer' })
@@ -23,22 +31,18 @@ const backup = async (
     if (localPath) {
         const fileSavePath = `${localPath}${path.sep}${kebabCase(
             json.work[0].title
-        )}-${Date.now().toString()}.zip`
+        )}-${Date.now().toString()}.slwork`
         fs.writeFile(fileSavePath, buffer, () => {
             captureMessage('api.backup with localPath write failure')
         })
         return fileSavePath
     } else {
         const result = await dialog.showSaveDialog({
-            defaultPath: `${kebabCase(json.work[0].title)}.zip`,
-            filters: [
-                { name: 'ZIP files', extensions: ['zip'] },
-                { name: 'All Files', extensions: ['*'] }
-            ]
+            defaultPath: `${kebabCase(json.work[0].title)}.slwork`,
+            filters: [{ name: '.slwork', extensions: ['slwork'] }]
         })
 
         if (result.filePath) {
-            // eslint-disable-next-line max-nested-callbacks
             fs.writeFile(result.filePath, buffer, () => {
                 captureMessage('api.backup without localPath write failure')
             })
@@ -50,4 +54,4 @@ const backup = async (
     return false
 }
 
-export default backup
+export default backupWork

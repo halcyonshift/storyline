@@ -571,7 +571,7 @@
                 "overview": "Overview",
                 "connection": "Connections",
                 "insight": "Insights",
-                "backupRestore": "Backup, restore & export",
+                "export": "Export",
                 "setting": "Settings"
             },
             "panel": {
@@ -634,20 +634,85 @@
     },
     "view": {
         "storyline": {
+            "backupRestore": {
+                "backup": {
+                    "storyline": {
+                        "success": "Backup saved to {{filePath}}",
+                        "failure": "Backup could not be saved",
+                        "title": "Backup StoryLine",
+                        "text": "This will backup the entire application, including all works and images",
+                        "button": "Backup"
+                    },
+                    "work": {
+                        "success": "Backup saved to {{filePath}}",
+                        "failure": "Backup could not be saved",
+                        "label": "Work",
+                        "button": "Backup"
+                    }
+                },
+                "restore": {
+                    "storyline": {
+                        "success": "The backup has been restored",
+                        "failure": "The backup could not be restored",
+                        "title": "Restore StoryLine",
+                        "text": "This will overwrite all data, any items not in the backup will be removed! StoryLine will close and re-open after restore.",
+                        "button": "Restore"
+                    },
+                    "work": {
+                        "success": "The backup has been restored",
+                        "failure": "The backup could not be restored",
+                        "text": "Restoration will delete all data and images of the current work, if it exists",
+                        "button": "Restore",
+                        "label": "Work",
+                        "new": "New"
+                    }
+                }
+            },
             "landing": {
-                "title": "Welcome to",
+                "title": "Welcome to StoryLine!",
                 "navigation": {
-                    "works": "Works",
-                    "new": "New",
-                    "importWork": "Import",
-                    "settings": "Settings",
-                    "info": "Info"
+                    "works": {
+                        "primary": "Works",
+                        "secondary": "All your works can be found in here"
+                    },
+                    "new": {
+                        "primary": "New",
+                        "secondary": "Create a new work with a click"
+                    },
+                    "importWork": {
+                        "primary": "Import",
+                        "secondary": "Got a work elsewhere you'd like here too?"
+                    },
+                    "backupRestore": {
+                        "primary": "Backup or restore",
+                        "secondary": "Bundle everything up or unbundle it all back again"
+                    },
+                    "settings": {
+                        "primary": "Settings",
+                        "secondary": "Configure the way the StoryLine and the editor look and work"
+                    },
+                    "info": {
+                        "primary": "Info",
+                        "secondary": "Need to get in touch? Love licences? Both in here."
+                    }
                 },
                 "recent": {
                     "title": "Recently opened"
                 },
-                "feedback": {
-                    "title": "Feedback"
+                "contact": {
+                    "title": "Contact",
+                    "bug": {
+                        "title": "Found a bug?",
+                        "text": "Please report it with as much info as possible"
+                    },
+                    "feature": {
+                        "title": "Want a new feature?",
+                        "text": "Tell me your hopes and dreams"
+                    },
+                    "support": {
+                        "title": "Looking for a user guide?",
+                        "text": "There isn't one yet, but there is a Discord!"
+                    }
                 },
                 "titles": {
                     "title_1": "The Adventures of a Couch Potato Detective",
@@ -728,20 +793,6 @@
             }
         },
         "work": {
-            "backupRestore": {
-                "backup": {
-                    "success": "Backup saved to {{filePath}}",
-                    "failure": "Backup could not be saved",
-                    "text": "This backup can only be used with the restore functionality, backup to a different platform is on the roadmap.",
-                    "button": "Backup"
-                },
-                "restore": {
-                    "success": "The backup has been restored",
-                    "failure": "The backup could not be restored",
-                    "text": "This will overwrite all data within the work with the backup, any items not in the backup will be deleted.",
-                    "button": "Restore"
-                }
-            },
             "character": {
                 "tab": {
                     "overview": "Overview",

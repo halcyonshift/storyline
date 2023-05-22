@@ -14,7 +14,8 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Tooltip
+    Tooltip,
+    Typography
 } from '@mui/material'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
@@ -52,11 +53,15 @@ const WorkRow = ({
     return (
         <TableRow key={work.id}>
             <TableCell width='100%' component='th' scope='row'>
-                <Link href={`/work/${work.id}`}>{work.title}</Link>
+                <Typography variant='body1'>
+                    <Link href={`/work/${work.id}`}>{work.title}</Link>
+                </Typography>
             </TableCell>
-            <TableCell align='center'>{words.toLocaleString(language)}</TableCell>
+            <TableCell align='center'>
+                <Typography variant='body1'>{words.toLocaleString(language)}</Typography>
+            </TableCell>
             <TableCell align='center' className='whitespace-nowrap'>
-                {work.displayDeadline}
+                <Typography variant='body1'>{work.displayDeadline}</Typography>
             </TableCell>
             <TableCell align='center'>
                 {progress ? (

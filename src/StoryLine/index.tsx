@@ -1,4 +1,3 @@
-import { Q } from '@nozbe/watermelondb'
 import DatabaseProvider from '@nozbe/watermelondb/DatabaseProvider'
 import { createRoot } from 'react-dom/client'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
@@ -30,12 +29,7 @@ const router = createHashRouter([
                 children: [
                     {
                         index: true,
-                        element: <StoryLineViews.LandingView />,
-                        loader: async () =>
-                            await database
-                                .get<WorkModel>('work')
-                                .query(Q.sortBy('last_opened_at', Q.desc), Q.take(5))
-                                .fetch()
+                        element: <StoryLineViews.LandingView />
                     },
                     {
                         path: 'works',
@@ -44,6 +38,10 @@ const router = createHashRouter([
                     {
                         path: 'importWork',
                         element: <StoryLineViews.ImportWorkView />
+                    },
+                    {
+                        path: 'backupRestore',
+                        element: <StoryLineViews.BackupRestoreView />
                     },
                     {
                         path: 'settings',
@@ -95,8 +93,8 @@ const router = createHashRouter([
                         }
                     },
                     {
-                        path: 'backupRestore',
-                        element: <WorkViews.BackupRestoreView />
+                        path: 'export',
+                        element: <WorkViews.ExportView />
                     },
                     {
                         path: 'character/:character_id',
