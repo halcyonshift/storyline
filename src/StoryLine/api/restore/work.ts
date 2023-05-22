@@ -20,8 +20,8 @@ const restoreWork = async (baseDir: string) => {
     const jsonFile = zip.file(fileNames.find((file) => file.endsWith('.json')))
     const jsonFileContent = await jsonFile.async('string')
 
-    const imageFiles = fileNames.filter(
-        (fileName) => !fileName.endsWith('.json') && fileName.includes('.')
+    const imageFiles = fileNames.filter((fileName) =>
+        ['.jpg', '.jpeg', '.png', '.gif'].includes(path.extname(fileName).toLowerCase())
     )
     const json = JSON.parse(jsonFileContent)
 
@@ -29,23 +29,16 @@ const restoreWork = async (baseDir: string) => {
 
     if (!workId) return false
 
-    const imageFileDir = path.join(baseDir, 'images', 'import', workId)
-    const images = []
-
-    for (const fileName of imageFiles) {
-        const imageName = path.basename(fileName)
+    for await (const fileName of imageFiles) {
+        const targetFilePath = path.join(baseDir, fileName)
+        await fs.promises.mkdir(path.dirname(targetFilePath), { recursive: true })
         const content = await zip.file(fileName).async('nodebuffer')
-        images.push(imageName)
-        await fs.promises.mkdir(imageFileDir, { recursive: true })
-        await fs.promises.writeFile(path.join(imageFileDir, imageName), content)
+        fs.writeFileSync(targetFilePath, content)
     }
 
     fs.rmSync(saveFilePath)
 
     return {
-        images,
-        imagePath: imageFileDir,
-        sep: path.sep,
         data: json
     }
 }

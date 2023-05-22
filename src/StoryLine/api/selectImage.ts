@@ -4,7 +4,6 @@ import path from 'path'
 
 const selectImage = async (fileDir: string) => {
     const result = await dialog.showOpenDialog({
-        title: 'Select an image',
         filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'gif'] }]
     })
 

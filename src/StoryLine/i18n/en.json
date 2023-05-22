@@ -662,7 +662,9 @@
                         "success": "The backup has been restored",
                         "failure": "The backup could not be restored",
                         "text": "Restoration will delete all data and images of the current work, if it exists",
-                        "button": "Restore"
+                        "button": "Restore",
+                        "label": "Work",
+                        "new": "New"
                     }
                 }
             },

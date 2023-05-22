@@ -393,20 +393,7 @@ export default class WorkModel extends Model {
         return { data: jsonData, images: [...new Set(images)], backupPath: backupPath || '' }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @writer async restore(data: any, images: []) {
-        api.deleteFile(this.image)
-        await this.character.destroyAllPermanently()
-        await this.connection.destroyAllPermanently()
-        await this.item.destroyAllPermanently()
-        await this.location.destroyAllPermanently()
-        await this.note.destroyAllPermanently()
-        await this.section.destroyAllPermanently()
-        await this.sprint.destroyAllPermanently()
-        await this.sprint_statistic.destroyAllPermanently()
-        await this.statistic.destroyAllPermanently()
-        await this.tag.destroyAllPermanently()
-
+    @writer async restore(data: any) {
         await this.update((work) => {
             work.title = data.work[0].title
             work.author = data.work[0].author
@@ -736,9 +723,10 @@ export default class WorkModel extends Model {
         await this.location.destroyAllPermanently()
         await this.note.destroyAllPermanently()
         await this.section.destroyAllPermanently()
+        await this.sprint.destroyAllPermanently()
+        await this.sprint_statistic.destroyAllPermanently()
         await this.statistic.destroyAllPermanently()
         await this.tag.destroyAllPermanently()
-        await this.destroyPermanently()
         return true
     }
 }

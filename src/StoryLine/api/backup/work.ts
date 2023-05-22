@@ -18,8 +18,12 @@ const backupWork = async (
 
     const imagesFolder = zip.folder('images')
     images.forEach((image: string) => {
-        const data = fs.readFileSync(image)
-        imagesFolder.file(image.replace(imageDir, ''), data)
+        try {
+            const data = fs.readFileSync(image)
+            imagesFolder.file(image.replace(imageDir, ''), data)
+        } catch {
+            //
+        }
     })
 
     const buffer = await zip.generateAsync({ type: 'nodebuffer' })
