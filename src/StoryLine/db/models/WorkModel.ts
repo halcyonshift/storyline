@@ -716,7 +716,7 @@ export default class WorkModel extends Model {
     }
 
     @writer async delete() {
-        api.deleteFile(this.image)
+        await api.deleteFile(this.image)
         await this.character.destroyAllPermanently()
         await this.connection.destroyAllPermanently()
         await this.item.destroyAllPermanently()
@@ -727,6 +727,7 @@ export default class WorkModel extends Model {
         await this.sprint_statistic.destroyAllPermanently()
         await this.statistic.destroyAllPermanently()
         await this.tag.destroyAllPermanently()
+        await this.destroyPermanently()
         return true
     }
 }
