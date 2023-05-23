@@ -178,6 +178,11 @@ app.whenReady()
         ipcMain.handle('export-epub', apiExport.epub)
         ipcMain.handle('export-html', apiExport.html)
         ipcMain.handle(
+            'import-ao3',
+            async (_, id: number, mode: 'series' | 'work') =>
+                await apiImport.ao3(app.getPath('userData'), id, mode)
+        )
+        ipcMain.handle(
             'import-bibisco2',
             async () => await apiImport.bibisco(app.getPath('userData'))
         )

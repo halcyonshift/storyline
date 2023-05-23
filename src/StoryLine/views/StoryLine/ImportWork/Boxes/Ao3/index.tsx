@@ -58,7 +58,7 @@ const Ao3Box = () => {
             <Button
                 variant='contained'
                 onClick={async () => {
-                    const workId = await importAo3(id, database)
+                    const workId = await importAo3(id, mode, database)
 
                     if (workId) {
                         navigate(`/work/${workId}`)

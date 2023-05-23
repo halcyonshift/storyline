@@ -9,6 +9,7 @@ export default {
     restoreWork: () => ipcRenderer.invoke('restore-work'),
     importImage: (subDir: string) => ipcRenderer.invoke('select-image', subDir),
     importFile: (subDir: string) => ipcRenderer.invoke('select-file', subDir),
+    importAo3: (id: number, mode: 'series' | 'work') => ipcRenderer.invoke('import-ao3', id, mode),
     importBibisco: () => ipcRenderer.invoke('import-bibisco2'),
     importEPub: () => ipcRenderer.invoke('import-epub'),
     imageSrc: (path: string) => ipcRenderer.invoke('show-image', path),
