@@ -112,6 +112,7 @@
     "chrono-node": "2.6.3",
     "electron-context-menu": "3.6.1",
     "electron-squirrel-startup": "1.0.0",
+    "epub": "^1.2.1",
     "epub-gen-memory": "^1.0.10",
     "eslint-import-resolver-typescript": "3.5.3",
     "formik": "2.2.9",

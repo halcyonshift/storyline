@@ -8,9 +8,10 @@ export default {
     restoreStoryLine: () => ipcRenderer.invoke('restore-storyline'),
     restoreWork: () => ipcRenderer.invoke('restore-work'),
     importImage: (subDir: string) => ipcRenderer.invoke('select-image', subDir),
-    imageSrc: (path: string) => ipcRenderer.invoke('show-image', path),
     importFile: (subDir: string) => ipcRenderer.invoke('select-file', subDir),
     importBibisco: () => ipcRenderer.invoke('import-bibisco2'),
+    importEPub: () => ipcRenderer.invoke('import-epub'),
+    imageSrc: (path: string) => ipcRenderer.invoke('show-image', path),
     deleteFile: (path: string) => ipcRenderer.invoke('delete-file', path),
     selectFilePath: () => ipcRenderer.invoke('select-file-path'),
     exportHTML: (fileName: string, html: string) =>

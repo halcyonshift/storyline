@@ -181,6 +181,7 @@ app.whenReady()
             'import-bibisco2',
             async () => await apiImport.bibisco(app.getPath('userData'))
         )
+        ipcMain.handle('import-epub', async () => await apiImport.epub(app.getPath('userData')))
         ipcMain.handle('select-file-path', selectFilePath)
         ipcMain.handle(
             'select-image',
