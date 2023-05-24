@@ -37,7 +37,7 @@ const Spread = () => {
                     const locations = await scene.taggedLocations()
                     const notes = await scene.taggedNotes()
 
-                    characters.map((character) => {
+                    characters.forEach((character) => {
                         if (!_tags.characters[character.record.id])
                             _tags.characters[character.record.id] = {
                                 character: character.record,
@@ -48,7 +48,7 @@ const Spread = () => {
                         }
                     })
 
-                    items.map((item) => {
+                    items.forEach((item) => {
                         if (!_tags.items[item.record.id])
                             _tags.items[item.record.id] = { item: item.record, chapters: [] }
 
@@ -57,7 +57,7 @@ const Spread = () => {
                         }
                     })
 
-                    locations.map((location) => {
+                    locations.forEach((location) => {
                         if (!_tags.locations[location.record.id])
                             _tags.locations[location.record.id] = {
                                 location: location.record,
@@ -69,7 +69,7 @@ const Spread = () => {
                         }
                     })
 
-                    notes.map((note) => {
+                    notes.forEach((note) => {
                         if (!_tags.notes[note.record.id])
                             _tags.notes[note.record.id] = { note: note.record, chapters: [] }
 

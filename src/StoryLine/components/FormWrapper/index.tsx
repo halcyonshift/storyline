@@ -74,7 +74,7 @@ const _FormWrapper = ({
     useEffect(() => {
         panelsRef.current = panelsRef.current.slice(0, tabList.length)
         if (!tabs.showTabs && panelsRef.current.length === tabList.length) {
-            getFormFields()
+            void getFormFields()
         }
     }, [tabList, tabs.showTabs])
 
@@ -83,8 +83,8 @@ const _FormWrapper = ({
         if (!Object.keys(form.errors).length || !Object.keys(form.touched).length) return
         const _errorBadges: ErrorBadgeType = {}
 
-        Object.keys(form.errors).map((name) => {
-            Object.entries(formFields).map(([key, values]) => {
+        Object.keys(form.errors).forEach((name) => {
+            Object.entries(formFields).forEach(([key, values]) => {
                 const index = (parseInt(key) - 1).toString()
                 if (values.includes(name)) {
                     if (!_errorBadges[index]) _errorBadges[index] = 0
@@ -92,6 +92,7 @@ const _FormWrapper = ({
                 }
             })
         })
+
         setErrorBadges(_errorBadges)
     }, [form.errors, form.touched])
 

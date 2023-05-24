@@ -2,7 +2,7 @@
 import { Model, Q, Query, ColumnName } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, text, writer } from '@nozbe/watermelondb/decorators'
-import { DateTime, DurationLikeObject, DurationUnits, Interval } from 'luxon'
+import { DateTime, DurationUnits, Interval } from 'luxon'
 import percentRound from 'percent-round'
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
 import { SectionMode } from '@sl/constants/sectionMode'
@@ -85,7 +85,7 @@ export default class WorkModel extends Model {
 
         return units
             .reduce((duration, unit) => {
-                const d = diff.get(unit as keyof DurationLikeObject)
+                const d = diff.get(unit)
                 if (d) {
                     duration.push(`${Math.round(d)} ${t(`component.unit.${unit}`)}`)
                 }
@@ -120,7 +120,7 @@ export default class WorkModel extends Model {
         const results: SearchResultType[] = []
         const scenes = await this.scenes.fetch()
 
-        scenes.map((scene) => {
+        scenes.forEach((scene) => {
             const text = scene.body.replace('</p>', ' ').replace(/(<([^>]+)>)/gi, '')
             const matches = [...text.matchAll(regex)]
             if (matches.length) {
@@ -178,7 +178,7 @@ export default class WorkModel extends Model {
             'fears'
         ]
 
-        characters.map((character) => {
+        characters.forEach((character) => {
             const result: SearchResultType = {
                 id: character.id,
                 label: character.displayName,
@@ -186,7 +186,7 @@ export default class WorkModel extends Model {
                 excerpts: []
             }
 
-            characterFields.map((field) => {
+            characterFields.forEach((field) => {
                 const text = (character[field as keyof CharacterModel] || '')
                     .toString()
                     .replace('</p>', ' ')
@@ -210,7 +210,7 @@ export default class WorkModel extends Model {
 
         const noteFields = ['title', 'body']
 
-        notes.map((note) => {
+        notes.forEach((note) => {
             const result: SearchResultType = {
                 id: note.id,
                 label: note.displayName,
@@ -218,7 +218,7 @@ export default class WorkModel extends Model {
                 excerpts: []
             }
 
-            noteFields.map((field) => {
+            noteFields.forEach((field) => {
                 const text = (note[field as keyof NoteModel] || '')
                     .toString()
                     .replace('</p>', ' ')
@@ -242,7 +242,7 @@ export default class WorkModel extends Model {
 
         const locationFields = ['name', 'body']
 
-        locations.map((location) => {
+        locations.forEach((location) => {
             const result: SearchResultType = {
                 id: location.id,
                 label: location.displayName,
@@ -250,7 +250,7 @@ export default class WorkModel extends Model {
                 excerpts: []
             }
 
-            locationFields.map((field) => {
+            locationFields.forEach((field) => {
                 const text = (location[field as keyof LocationModel] || '')
                     .toString()
                     .replace('</p>', ' ')
@@ -274,7 +274,7 @@ export default class WorkModel extends Model {
 
         const itemFields = ['name', 'body']
 
-        items.map((item) => {
+        items.forEach((item) => {
             const result: SearchResultType = {
                 id: item.id,
                 label: item.displayName,
@@ -282,7 +282,7 @@ export default class WorkModel extends Model {
                 excerpts: []
             }
 
-            itemFields.map((field) => {
+            itemFields.forEach((field) => {
                 const text = (item[field as keyof ItemModel] || '')
                     .toString()
                     .replace('</p>', ' ')
@@ -373,13 +373,13 @@ export default class WorkModel extends Model {
             tag: []
         }
 
-        Object.entries(dbData).map(([table, items]) => {
+        Object.entries(dbData).forEach(([table, items]) => {
             const columns: ColumnName[] = Object.keys(schema.tables[table].columns)
-            items.map((item) => {
+            items.forEach((item) => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const data: any = { id: item.id }
 
-                columns.map((column) => {
+                columns.forEach((column) => {
                     data[column] = item._getRaw(column)
                 })
                 jsonData[table].push(data)

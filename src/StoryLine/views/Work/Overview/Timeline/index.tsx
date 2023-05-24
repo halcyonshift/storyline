@@ -19,7 +19,7 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
     const { t } = useTranslation()
 
     useEffect(() => {
-        Promise.all([
+        void Promise.all([
             work.character.fetch(),
             work.connection.fetch(),
             work.note.fetch(),
@@ -30,7 +30,7 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
             notes = notes.filter((note) => note.sortDate)
             scenes = scenes.filter((scene) => scene.sortDate)
 
-            Promise.all(
+            void Promise.all(
                 []
                     .concat(
                         scenes.map((scene) => ({

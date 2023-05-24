@@ -63,7 +63,7 @@ const SectionPanel = () => {
                 })
             })
 
-            destinationSections.map((item, index) => {
+            destinationSections.forEach((item, index) => {
                 const section = sections.find((section) => section.id === item.id)
                 if (section.order !== index + 1) {
                     batchUpdate.push(
@@ -75,7 +75,7 @@ const SectionPanel = () => {
             })
         }
 
-        sourceSections.map((item, index) => {
+        sourceSections.forEach((item, index) => {
             const section = sections.find((section) => section.id === item.id)
             if (section.order !== index + 1) {
                 batchUpdate.push(

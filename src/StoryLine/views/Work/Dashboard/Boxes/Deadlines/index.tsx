@@ -40,7 +40,7 @@ const DeadlinesBox = () => {
             )
             .fetch()
             .then((sections) => {
-                sections.map((section) => {
+                sections.forEach((section) => {
                     const date = DateTime.fromJSDate(section.deadlineAt).endOf('day')
                     if (!_deadlines[date.toFormat(YYYYMMDD)]) {
                         _deadlines[date.toFormat(YYYYMMDD)] = {
