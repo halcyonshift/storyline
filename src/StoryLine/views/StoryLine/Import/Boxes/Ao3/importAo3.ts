@@ -3,19 +3,9 @@ import { Database } from '@nozbe/watermelondb'
 import { DateTime } from 'luxon'
 import { SectionMode } from '@sl/constants/sectionMode'
 import { Status } from '@sl/constants/status'
-import { SectionModel, WorkModel } from '@sl/db/models'
-import { wordCount } from '@sl/utils'
+import { SectionModel, StatisticModel, WorkModel } from '@sl/db/models'
+import { cleaner, wordCount } from '@sl/utils'
 
-const cleaner = (htmlString: string) =>
-    htmlString
-        .replace(/“/g, '"')
-        .replace(/”/g, '"')
-        .replace(/’/g, "'")
-        .replace(/<div[^>]*>/g, '')
-        .replace(/<\/div>/g, '')
-        .replace(/<(?!\/?(p|ol|ul|em|li|strong)\b)[^>]+>/gi, '<p>')
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const importAo3 = async (
     workOrSeriesId: number,
     mode: 'series' | 'work',
@@ -37,7 +27,9 @@ const importAo3 = async (
             work.updatedAt = DateTime.fromISO(works[0].work.date).toJSDate()
         })
     })
+
     let partOrder = 1
+
     for await (const _work of works) {
         const part = await database.write(async () => {
             return await database.get<SectionModel>('section').create((section) => {
@@ -86,6 +78,30 @@ const importAo3 = async (
                     })
                 )
             )
+        })
+    }
+
+    const scenes = await work.scenes.fetch()
+
+    const statistics: StatisticModel[] = scenes.reduce(
+        (arr: StatisticModel[], scene: SectionModel) => {
+            arr.push(
+                database.get<StatisticModel>('statistic').prepareCreate((statistic) => {
+                    statistic.work.set(work)
+                    statistic.section.set(scene)
+                    statistic.words = scene.words
+                    statistic.createdAt = scene.updatedAt
+                    statistic.updatedAt = scene.updatedAt
+                })
+            )
+            return arr
+        },
+        []
+    )
+
+    if (statistics.length) {
+        await database.write(async () => {
+            return await database.batch(statistics)
         })
     }
 

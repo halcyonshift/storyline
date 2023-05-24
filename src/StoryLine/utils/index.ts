@@ -21,6 +21,15 @@ export const exportDocxParse = (s: string) => parse(s, docxExtractExcerptsOption
 export const htmlParse = (s: string) => parse(s, htmlParseOptions)
 export const htmlExtractExcerpts = (s: string) => parse(s, htmlExtractExcerptsOptions)
 
+export const cleaner = (htmlString: string) =>
+    htmlString
+        .replace(/“/g, '"')
+        .replace(/”/g, '"')
+        .replace(/’/g, "'")
+        .replace(/<div[^>]*>/g, '')
+        .replace(/<\/div>/g, '')
+        .replace(/<(?!\/?(p|ol|ul|em|li|strong)\b)[^>]+>/gi, '<p>')
+
 export const wordCount = (s: string, lang = 'en') => {
     s = s.replace(/<[^>]+>/g, ' ').trim()
     const segmenter = new Intl.Segmenter(lang, {

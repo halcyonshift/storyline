@@ -679,7 +679,7 @@
                         "primary": "New",
                         "secondary": "Create a new work with a click"
                     },
-                    "importWork": {
+                    "import": {
                         "primary": "Import",
                         "secondary": "Got a work elsewhere you'd like here too?"
                     },
@@ -747,7 +747,7 @@
                     "title_30": "The Misadventures of a Time-Traveling Hamster"
                 }
             },
-            "importWork": {
+            "import": {
                 "title": "Import",
                 "button": "Import",
                 "ao3": {

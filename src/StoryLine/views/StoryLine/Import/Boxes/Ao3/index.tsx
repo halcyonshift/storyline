@@ -30,7 +30,7 @@ const Ao3Box = () => {
         <Box className='grid h-full place-items-center p-5'>
             <Typography variant='h6'>
                 <Link href='https://archiveofourown.org/' color='inherit'>
-                    {t('view.storyline.importWork.ao3.title')}
+                    {t('view.storyline.import.ao3.title')}
                 </Link>
             </Typography>
             <FormControl>
@@ -44,7 +44,7 @@ const Ao3Box = () => {
                 </RadioGroup>
             </FormControl>
             <TextField
-                value={id}
+                value={id || ' '}
                 inputProps={{
                     inputMode: 'numeric',
                     pattern: '[0-9]*'
@@ -63,10 +63,10 @@ const Ao3Box = () => {
                     if (workId) {
                         navigate(`/work/${workId}`)
                     } else {
-                        messenger.error(t('view.storyline.importWork.ao3.error'))
+                        messenger.error(t('view.storyline.import.ao3.error'))
                     }
                 }}>
-                {t('view.storyline.importWork.button')}
+                {t('view.storyline.import.button')}
             </Button>
         </Box>
     )

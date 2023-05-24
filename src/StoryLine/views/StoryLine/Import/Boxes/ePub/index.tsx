@@ -14,7 +14,7 @@ const ePubBox = () => {
 
     return (
         <Box className='grid h-full place-items-center p-5'>
-            <Typography variant='h6'>{t('view.storyline.importWork.epub.title')}</Typography>
+            <Typography variant='h6'>{t('view.storyline.import.epub.title')}</Typography>
             <Button
                 variant='contained'
                 onClick={async () => {
@@ -23,10 +23,10 @@ const ePubBox = () => {
                     if (workId) {
                         navigate(`/work/${workId}`)
                     } else {
-                        messenger.error(t('view.storyline.importWork.epub.error'))
+                        messenger.error(t('view.storyline.import.epub.error'))
                     }
                 }}>
-                {t('view.storyline.importWork.button')}
+                {t('view.storyline.import.button')}
             </Button>
         </Box>
     )

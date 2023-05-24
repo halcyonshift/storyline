@@ -4,16 +4,7 @@ import { DateTime } from 'luxon'
 import { SectionMode } from '@sl/constants/sectionMode'
 import { Status } from '@sl/constants/status'
 import { SectionModel, WorkModel } from '@sl/db/models'
-import { wordCount } from '@sl/utils'
-
-export const cleaner = (htmlString: string) =>
-    htmlString
-        .replace(/“/g, '"')
-        .replace(/”/g, '"')
-        .replace(/’/g, "'")
-        .replace(/<div[^>]*>/g, '')
-        .replace(/<\/div>/g, '')
-        .replace(/<(?!\/?(p|ol|ul|em|li|strong)\b)[^>]+>/gi, '<p>')
+import { cleaner, wordCount } from '@sl/utils'
 
 const importEPub = async (database: Database): Promise<false | string> => {
     const data = await api.importEPub()

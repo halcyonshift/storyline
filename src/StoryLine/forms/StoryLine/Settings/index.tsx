@@ -129,10 +129,7 @@ const SettingsForm = ({
                                 form={form}
                                 name='language'
                                 label={t('form.storyline.settings.language')}
-                                options={[
-                                    { value: 'en', label: 'English' },
-                                    { value: 'fr', label: 'Français' }
-                                ]}
+                                options={[{ value: 'en', label: 'English' }]}
                             />
                         </Box>
                         <Box className='grid grid-cols-1 gap-5'>
