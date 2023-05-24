@@ -16,10 +16,10 @@ const BibiscoBox = () => {
         <Box className='grid h-full place-items-center p-5'>
             <Typography variant='h6'>
                 <Link href='https://bibisco.com/' color='inherit'>
-                    {t('view.storyline.importWork.bibisco.title')}
+                    {t('view.storyline.import.bibisco.title')}
                 </Link>
             </Typography>
-            <Typography variant='body1'>{t('view.storyline.importWork.bibisco.text')}</Typography>
+            <Typography variant='body1'>{t('view.storyline.import.bibisco.text')}</Typography>
             <Button
                 variant='contained'
                 onClick={async () => {
@@ -28,10 +28,10 @@ const BibiscoBox = () => {
                     if (workId) {
                         navigate(`/work/${workId}`)
                     } else {
-                        messenger.error(t('view.storyline.importWork.bibisco.error'))
+                        messenger.error(t('view.storyline.import.bibisco.error'))
                     }
                 }}>
-                {t('view.storyline.importWork.button')}
+                {t('view.storyline.import.button')}
             </Button>
         </Box>
     )
