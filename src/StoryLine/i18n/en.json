@@ -358,27 +358,7 @@
     "form": {
         "required": "This is required",
         "work": {
-            "backupRestore": {
-                "exportAs": {
-                    "author": "Author",
-                    "chapterTitle": "Chapter title",
-                    "chapterTitleInitialValue": "Chapter {{number}}. {{title}}",
-                    "chapterPosition": {
-                        "label":  "",
-                        "left": "Left",
-                        "center": "Center"
-                    },
-                    "font": "Font",
-                    "indentParagraph": "Indent paragraphs",
-                    "lineHeight": "Line height",
-                    "paragraphSpacing": "Paragraph spacing",
-                    "sceneSeparator": "Scene separator",
-                    "helpText": "Exporting may take a few minutes for longer works - time for a cuppa!",
-                    "button": {
-                        "export": "Export"
-                    }
-                }
-            },
+
             "character": {
                 "tab": {
                     "demographics": "Demographics",
@@ -438,6 +418,24 @@
                 "alert": {
                     "success": "The connection has been saved"
                 }
+            },
+            "export": {
+                "author": "Author",
+                "chapterTitle": "Chapter title",
+                "chapterTitleInitialValue": "Chapter {{number}}. {{title}}",
+                "chapterPosition": {
+                    "label":  "",
+                    "left": "Left",
+                    "center": "Center"
+                },
+                "font": "Font",
+                "indentParagraph": "Indent paragraphs",
+                "lineHeight": "Line height",
+                "paragraphSpacing": "Paragraph spacing",
+                "sceneSeparator": "Scene separator",
+                "title": "Export .{{mode}}",
+                "helpText": "Exporting may take a few minutes for longer works - time for a cuppa!",
+                "button": "Export"
             },
             "item": {
                 "name": {

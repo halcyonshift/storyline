@@ -177,6 +177,9 @@ app.whenReady()
         ipcMain.handle('export-docx', apiExport.docx)
         ipcMain.handle('export-epub', apiExport.epub)
         ipcMain.handle('export-html', apiExport.html)
+        ipcMain.handle('export-markdown', apiExport.markdown)
+        ipcMain.handle('export-rtf', apiExport.rtf)
+        ipcMain.handle('export-text', apiExport.text)
         ipcMain.handle(
             'import-ao3',
             async (_, id: number, mode: 'series' | 'work') =>

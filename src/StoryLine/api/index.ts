@@ -15,12 +15,17 @@ export default {
     imageSrc: (path: string) => ipcRenderer.invoke('show-image', path),
     deleteFile: (path: string) => ipcRenderer.invoke('delete-file', path),
     selectFilePath: () => ipcRenderer.invoke('select-file-path'),
-    exportHTML: (fileName: string, html: string) =>
-        ipcRenderer.invoke('export-html', fileName, html),
     exportDocx: (fileName: string, html: string) =>
         ipcRenderer.invoke('export-docx', fileName, html),
     exportEpub: (fileName: string, options: Options, chapters: Content) =>
         ipcRenderer.invoke('export-epub', fileName, options, chapters),
+    exportHTML: (fileName: string, html: string) =>
+        ipcRenderer.invoke('export-html', fileName, html),
+    exportMarkdown: (fileName: string, html: string) =>
+        ipcRenderer.invoke('export-markdown', fileName, html),
+    exportRTF: (fileName: string, html: string) => ipcRenderer.invoke('export-rtf', fileName, html),
+    exportText: (fileName: string, html: string) =>
+        ipcRenderer.invoke('export-text', fileName, html),
     relaunch: () => ipcRenderer.invoke('relaunch'),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     subscribeToFullScreenEvent: (callback: any) => {
