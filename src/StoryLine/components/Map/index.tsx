@@ -13,7 +13,7 @@ const Map = ({ center, children }: MapProps) => (
         scrollWheelZoom={true}
         dragging={true}
         easeLinearity={0.35}>
-        <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png' />
+        <TileLayer url='https://{s}.tile.osm.org/{z}/{x}/{y}.png' />
         {children}
     </MapContainer>
 )

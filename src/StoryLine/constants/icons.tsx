@@ -41,11 +41,13 @@ export const CONNECTION_ICONS = {
 export const IMPORTEXPORT_ICONS = {
     docx: <Icon name='Description' />,
     epub: <Icon name='Book' />,
-    html: <Icon name='Html' />,
+    html: <Icon name='Code' />,
+    markdown: <Icon name='ArrowDownward' />,
     importExport: <Icon name='ImportExport' />,
     import: <Icon name='ArrowDownward' />,
     export: <Icon name='Publish' />,
-    pdf: <Icon name='PictureAsPdf' />
+    pdf: <Icon name='PictureAsPdf' />,
+    txt: <Icon name='Subject' />
 }
 
 export const INSIGHT_ICONS = {

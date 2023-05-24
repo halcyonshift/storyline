@@ -91,10 +91,10 @@ const LandingView = () => {
                         </ListItemButton>
                     </MuiListItem>
                     <ListItem
-                        link='/importWork'
+                        link='/import'
                         icon={Icons.importExport.import}
-                        primary='view.storyline.landing.navigation.importWork.primary'
-                        secondary='view.storyline.landing.navigation.importWork.secondary'
+                        primary='view.storyline.landing.navigation.import.primary'
+                        secondary='view.storyline.landing.navigation.import.secondary'
                     />
                     <ListItem
                         link='/backupRestore'

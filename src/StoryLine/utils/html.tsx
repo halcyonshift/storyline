@@ -61,3 +61,14 @@ export const htmlParseOptions: HTMLReactParserOptions = {
         }
     }
 }
+
+export const htmlCleanOptions: HTMLReactParserOptions = {
+    replace: (domNode) => {
+        if (domNode instanceof Element) {
+            if (['p', 'li', 'ol', 'ul'].includes(domNode.name)) {
+                return <p>{domToReact(domNode.children)}</p>
+            }
+        }
+        return null
+    }
+}

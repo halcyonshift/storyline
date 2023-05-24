@@ -5,8 +5,7 @@ import JSZip from 'jszip'
 
 const bibisco = async (baseDir: string) => {
     const result = await dialog.showOpenDialog({
-        title: 'Select .bibisco2 archive',
-        filters: [{ name: 'Files', extensions: ['bibisco2'] }]
+        filters: [{ name: '.bibisco2', extensions: ['bibisco2'] }]
     })
     if (result.canceled || !result.filePaths.length) return false
     const filePath = result.filePaths[0]

@@ -358,27 +358,7 @@
     "form": {
         "required": "This is required",
         "work": {
-            "backupRestore": {
-                "exportAs": {
-                    "author": "Author",
-                    "chapterTitle": "Chapter title",
-                    "chapterTitleInitialValue": "Chapter {{number}}. {{title}}",
-                    "chapterPosition": {
-                        "label":  "",
-                        "left": "Left",
-                        "center": "Center"
-                    },
-                    "font": "Font",
-                    "indentParagraph": "Indent paragraphs",
-                    "lineHeight": "Line height",
-                    "paragraphSpacing": "Paragraph spacing",
-                    "sceneSeparator": "Scene separator",
-                    "helpText": "Exporting may take a few minutes for longer works - time for a cuppa!",
-                    "button": {
-                        "export": "Export"
-                    }
-                }
-            },
+
             "character": {
                 "tab": {
                     "demographics": "Demographics",
@@ -438,6 +418,24 @@
                 "alert": {
                     "success": "The connection has been saved"
                 }
+            },
+            "export": {
+                "author": "Author",
+                "chapterTitle": "Chapter title",
+                "chapterTitleInitialValue": "Chapter {{number}}. {{title}}",
+                "chapterPosition": {
+                    "label":  "",
+                    "left": "Left",
+                    "center": "Center"
+                },
+                "font": "Font",
+                "indentParagraph": "Indent paragraphs",
+                "lineHeight": "Line height",
+                "paragraphSpacing": "Paragraph spacing",
+                "sceneSeparator": "Scene separator",
+                "title": "Export .{{mode}}",
+                "helpText": "Exporting may take a few minutes for longer works - time for a cuppa!",
+                "button": "Export"
             },
             "item": {
                 "name": {
@@ -679,7 +677,7 @@
                         "primary": "New",
                         "secondary": "Create a new work with a click"
                     },
-                    "importWork": {
+                    "import": {
                         "primary": "Import",
                         "secondary": "Got a work elsewhere you'd like here too?"
                     },
@@ -747,19 +745,21 @@
                     "title_30": "The Misadventures of a Time-Traveling Hamster"
                 }
             },
-            "importWork": {
+            "import": {
                 "title": "Import",
                 "button": "Import",
-                "bibisco": {
-                    "title": "Bibisco",
-                    "text": "Statistics history won't be imported, just a snapshot of the most recent data",
+                "ao3": {
+                    "title": "Ao3",
                     "error": "Sorry, the import hasn't worked"
                 },
-                "storyLine": {
-                    "title": "StoryLine",
-                    "text": "This will only import a backup if the work doesn't already exist - if it does, use the Restore inside the work",
-                    "error": "A work with this id already exists",
-                    "failure": "Sorry, the import hasn't worked"
+                "epub": {
+                    "title": "ePub",
+                    "error": "Sorry, the import hasn't worked"
+                },
+                "bibisco": {
+                    "title": "Bibisco",
+                    "text": "Statistics history cannot be imported",
+                    "error": "Sorry, the import hasn't worked"
                 }
             },
             "works": {

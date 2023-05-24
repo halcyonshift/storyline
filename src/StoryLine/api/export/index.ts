@@ -1,3 +1,6 @@
-export { default as docx } from './html'
+export { default as docx } from './docx'
 export { default as epub } from './epub'
 export { default as html } from './html'
+export { default as markdown } from './md'
+export { default as rtf } from './rtf'
+export { default as text } from './txt'

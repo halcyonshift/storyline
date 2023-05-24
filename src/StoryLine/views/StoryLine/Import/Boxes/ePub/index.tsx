@@ -1,12 +1,12 @@
+import React from 'react'
 import { Box, Button, Typography } from '@mui/material'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import Link from '@sl/components/Link'
 import useMessenger from '@sl/layouts/useMessenger'
-import importBibisco from './importBibisco'
+import importEPub from './importEPub'
 
-const BibiscoBox = () => {
+const ePubBox = () => {
     const database = useDatabase()
     const messenger = useMessenger()
     const navigate = useNavigate()
@@ -14,27 +14,22 @@ const BibiscoBox = () => {
 
     return (
         <Box className='grid h-full place-items-center p-5'>
-            <Typography variant='h6'>
-                <Link href='https://bibisco.com/' color='inherit'>
-                    {t('view.storyline.importWork.bibisco.title')}
-                </Link>
-            </Typography>
-            <Typography variant='body1'>{t('view.storyline.importWork.bibisco.text')}</Typography>
+            <Typography variant='h6'>{t('view.storyline.import.epub.title')}</Typography>
             <Button
                 variant='contained'
                 onClick={async () => {
-                    const workId = await importBibisco(database)
+                    const workId = await importEPub(database)
 
                     if (workId) {
                         navigate(`/work/${workId}`)
                     } else {
-                        messenger.error(t('view.storyline.importWork.bibisco.error'))
+                        messenger.error(t('view.storyline.import.epub.error'))
                     }
                 }}>
-                {t('view.storyline.importWork.button')}
+                {t('view.storyline.import.button')}
             </Button>
         </Box>
     )
 }
 
-export default BibiscoBox
+export default ePubBox

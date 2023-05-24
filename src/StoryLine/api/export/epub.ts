@@ -12,7 +12,7 @@ const epub = async (
 ) => {
     const result = await dialog.showSaveDialog({
         defaultPath: `${kebabCase(fileName)}.epub`,
-        filters: [{ name: 'All Files', extensions: ['*'] }]
+        filters: [{ name: '.epub', extensions: ['epub'] }]
     })
 
     if (result.filePath) {

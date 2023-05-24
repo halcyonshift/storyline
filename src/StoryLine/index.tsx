@@ -36,8 +36,8 @@ const router = createHashRouter([
                         element: <StoryLineViews.WorksView />
                     },
                     {
-                        path: 'importWork',
-                        element: <StoryLineViews.ImportWorkView />
+                        path: 'import',
+                        element: <StoryLineViews.ImportView />
                     },
                     {
                         path: 'backupRestore',
