@@ -2,7 +2,7 @@ import { MapContainer, TileLayer } from 'react-leaflet'
 import { MapProps } from './types'
 import './map.css'
 
-const Map = ({ center, children }: MapProps) => (
+const MapView = ({ center, children }: MapProps) => (
     <MapContainer
         center={center || [51.51531376950311, -0.12632316009655253]}
         zoom={6}
@@ -18,4 +18,4 @@ const Map = ({ center, children }: MapProps) => (
     </MapContainer>
 )
 
-export default Map
+export default MapView
