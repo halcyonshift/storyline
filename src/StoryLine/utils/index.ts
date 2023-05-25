@@ -1,3 +1,4 @@
+import * as cheerio from 'cheerio'
 import parse from 'html-react-parser'
 import { DateTime } from 'luxon'
 import {
@@ -21,17 +22,41 @@ export const exportDocxParse = (s: string) => parse(s, docxExtractExcerptsOption
 export const htmlParse = (s: string) => parse(s, htmlParseOptions)
 export const htmlExtractExcerpts = (s: string) => parse(s, htmlExtractExcerptsOptions)
 
-export const cleaner = (htmlString: string) =>
-    htmlString
-        .replace(/“/g, '"')
-        .replace(/”/g, '"')
-        .replace(/’/g, "'")
-        .replace(/<div[^>]*>/g, '')
-        .replace(/<\/div>/g, '')
-        .replace(/<(?!\/?(p|ol|ul|em|li|strong)\b)[^>]+>/gi, '<p>')
+export const htmlToText = (html: string) => {
+    const $ = cheerio.load(`<div>${html.replace(/<\/p>/g, ' ')}</div>`)
+    return $('div').text()
+}
+
+export const cleaner = (htmlString: string) => {
+    const $ = cheerio.load(
+        htmlString
+            .replace(/“/g, '"')
+            .replace(/”/g, '"')
+            .replace(/’/g, "'")
+            .replace(/<div[^>]*>/g, '')
+            .replace(/<\/div>/g, '')
+    )
+
+    const allowedTags = ['p', 'ol', 'ul', 'em', 'li', 'strong', 'u', 's']
+
+    $('body *').each((_, element) => {
+        const tagName = element.tagName.toLowerCase()
+        element.attribs = {}
+
+        if (!allowedTags.includes(tagName)) {
+            if (['a', 'img'].includes(tagName)) {
+                $(element).replaceWith('<span>' + $(element).text() + '</span>')
+            } else {
+                $(element).replaceWith('<p>' + $(element).text() + '</p>')
+            }
+        }
+    })
+
+    return $.html('body *')
+}
 
 export const wordCount = (s: string, lang = 'en') => {
-    s = s.replace(/<[^>]+>/g, ' ').trim()
+    s = cleaner(s).trim()
     const segmenter = new Intl.Segmenter(lang, {
         granularity: 'word'
     })

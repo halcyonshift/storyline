@@ -16,6 +16,14 @@ const restoreStoryLine = async (baseDir: string) => {
     await fs.promises.copyFile(filePath, saveFilePath)
     const data = await fs.promises.readFile(saveFilePath)
     const zip = await JSZip.loadAsync(data)
+
+    zip.forEach((_, zipEntry) => {
+        const resolvedPath = path.join(baseDir, 'restore', zipEntry.name)
+        if (!resolvedPath.startsWith(fileDir)) {
+            throw Error('Path traversal detected')
+        }
+    })
+
     const fileNames = Object.keys(zip.files)
 
     const jsonFile = zip.file(fileNames.find((file) => file.endsWith('.json')))
@@ -30,7 +38,7 @@ const restoreStoryLine = async (baseDir: string) => {
             const contentPromise = zipEntry.async('nodebuffer')
             const targetFilePath = path.join(baseDir, relativePath)
 
-            contentPromise.then((content) => {
+            void contentPromise.then((content) => {
                 fs.mkdirSync(path.dirname(targetFilePath), { recursive: true })
                 fs.writeFileSync(targetFilePath, content)
             })

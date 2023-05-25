@@ -19,10 +19,10 @@ import {
     TagModel,
     WorkModel
 } from '@sl/db/models'
-import { wordCount } from '@sl/utils'
+import { wordCount, cleaner } from '@sl/utils'
 
 const cleanText = (text: string) => {
-    return text.replace(/<[^>]*>/g, '').replace('&nbsp;', ' ')
+    return cleaner(text).replace('&nbsp;', ' ')
 }
 
 const statusMap = {

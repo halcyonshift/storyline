@@ -9,7 +9,7 @@ import { SectionMode } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
 import schema from '@sl/db/schema'
 import { SearchResultType } from '@sl/layouts/Work/Panel/Search/types'
-import { displayDateTime } from '@sl/utils'
+import { displayDateTime, htmlToText } from '@sl/utils'
 import { t } from 'i18next'
 import {
     CharacterDataType,
@@ -122,7 +122,7 @@ export default class WorkModel extends Model {
         const scenes = await this.scenes.fetch()
 
         scenes.forEach((scene) => {
-            const text = scene.body.replace('</p>', ' ').replace(/(<([^>]+)>)/gi, '')
+            const text = htmlToText(scene.body)
             const matches = [...text.matchAll(regex)]
             if (matches.length) {
                 const result: SearchResultType = {
@@ -188,10 +188,8 @@ export default class WorkModel extends Model {
             }
 
             characterFields.forEach((field) => {
-                const text = (character[field as keyof CharacterModel] || '')
-                    .toString()
-                    .replace('</p>', ' ')
-                    .replace(/(<([^>]+)>)/gi, '')
+                const text = htmlToText((character[field as keyof CharacterModel] || '').toString())
+
                 const matches = [...text.matchAll(regex)]
                 if (matches.length) {
                     for (const match of matches) {
@@ -220,10 +218,8 @@ export default class WorkModel extends Model {
             }
 
             noteFields.forEach((field) => {
-                const text = (note[field as keyof NoteModel] || '')
-                    .toString()
-                    .replace('</p>', ' ')
-                    .replace(/(<([^>]+)>)/gi, '')
+                const text = htmlToText((note[field as keyof NoteModel] || '').toString())
+
                 const matches = [...text.matchAll(regex)]
                 if (matches.length) {
                     for (const match of matches) {
@@ -252,10 +248,7 @@ export default class WorkModel extends Model {
             }
 
             locationFields.forEach((field) => {
-                const text = (location[field as keyof LocationModel] || '')
-                    .toString()
-                    .replace('</p>', ' ')
-                    .replace(/(<([^>]+)>)/gi, '')
+                const text = htmlToText((location[field as keyof LocationModel] || '').toString())
                 const matches = [...text.matchAll(regex)]
                 if (matches.length) {
                     for (const match of matches) {
@@ -284,10 +277,7 @@ export default class WorkModel extends Model {
             }
 
             itemFields.forEach((field) => {
-                const text = (item[field as keyof ItemModel] || '')
-                    .toString()
-                    .replace('</p>', ' ')
-                    .replace(/(<([^>]+)>)/gi, '')
+                const text = htmlToText((item[field as keyof ItemModel] || '').toString())
                 const matches = [...text.matchAll(regex)]
                 if (matches.length) {
                     for (const match of matches) {
