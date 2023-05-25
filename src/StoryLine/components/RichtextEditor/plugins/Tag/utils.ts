@@ -1,1 +1,5 @@
-export const stripSlashes = (text: string) => text.replace(/^\s*\/*\s*|\s*\/*\s*$/gm, '')
+export const stripSlashes = (text: string) =>
+    text
+        .split('/')
+        .filter((v) => v !== '')
+        .join('/')

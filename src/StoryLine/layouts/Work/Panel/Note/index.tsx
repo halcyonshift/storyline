@@ -57,7 +57,7 @@ const NotePanel = () => {
                 })
             })
 
-            destinationNotes.map((item, index) => {
+            destinationNotes.forEach((item, index) => {
                 const note = notes.find((note) => note.id === item.id)
                 if (note.order !== index + 1) {
                     batchUpdate.push(
@@ -71,7 +71,7 @@ const NotePanel = () => {
             sourceNotes.splice(destinationIndex, 0, reordered)
         }
 
-        sourceNotes.map((item, index) => {
+        sourceNotes.forEach((item, index) => {
             const note = notes.find((note) => note.id === item.id)
             if (note.order !== index + 1) {
                 batchUpdate.push(

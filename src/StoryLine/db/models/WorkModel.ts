@@ -2,14 +2,14 @@
 import { Model, Q, Query, ColumnName } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, text, writer } from '@nozbe/watermelondb/decorators'
-import { DateTime, DurationLikeObject, DurationUnits, Interval } from 'luxon'
+import { DateTime, DurationUnits, Interval } from 'luxon'
 import percentRound from 'percent-round'
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
 import { SectionMode } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
 import schema from '@sl/db/schema'
 import { SearchResultType } from '@sl/layouts/Work/Panel/Search/types'
-import { displayDateTime } from '@sl/utils'
+import { displayDateTime, htmlToText } from '@sl/utils'
 import { t } from 'i18next'
 import {
     CharacterDataType,
@@ -85,9 +85,10 @@ export default class WorkModel extends Model {
 
         return units
             .reduce((duration, unit) => {
-                const d = diff.get(unit as keyof DurationLikeObject)
+                const d = diff.get(unit)
                 if (d) {
-                    duration.push(`${Math.round(d)} ${t(`component.unit.${unit}`)}`)
+                    const textKey = `component.unit.${unit}`
+                    duration.push(`${Math.round(d)} ${t(textKey)}`)
                 }
                 return duration
             }, [])
@@ -120,8 +121,8 @@ export default class WorkModel extends Model {
         const results: SearchResultType[] = []
         const scenes = await this.scenes.fetch()
 
-        scenes.map((scene) => {
-            const text = scene.body.replace('</p>', ' ').replace(/(<([^>]+)>)/gi, '')
+        scenes.forEach((scene) => {
+            const text = htmlToText(scene.body)
             const matches = [...text.matchAll(regex)]
             if (matches.length) {
                 const result: SearchResultType = {
@@ -178,7 +179,7 @@ export default class WorkModel extends Model {
             'fears'
         ]
 
-        characters.map((character) => {
+        characters.forEach((character) => {
             const result: SearchResultType = {
                 id: character.id,
                 label: character.displayName,
@@ -186,11 +187,9 @@ export default class WorkModel extends Model {
                 excerpts: []
             }
 
-            characterFields.map((field) => {
-                const text = (character[field as keyof CharacterModel] || '')
-                    .toString()
-                    .replace('</p>', ' ')
-                    .replace(/(<([^>]+)>)/gi, '')
+            characterFields.forEach((field) => {
+                const text = htmlToText((character[field as keyof CharacterModel] || '').toString())
+
                 const matches = [...text.matchAll(regex)]
                 if (matches.length) {
                     for (const match of matches) {
@@ -210,7 +209,7 @@ export default class WorkModel extends Model {
 
         const noteFields = ['title', 'body']
 
-        notes.map((note) => {
+        notes.forEach((note) => {
             const result: SearchResultType = {
                 id: note.id,
                 label: note.displayName,
@@ -218,11 +217,9 @@ export default class WorkModel extends Model {
                 excerpts: []
             }
 
-            noteFields.map((field) => {
-                const text = (note[field as keyof NoteModel] || '')
-                    .toString()
-                    .replace('</p>', ' ')
-                    .replace(/(<([^>]+)>)/gi, '')
+            noteFields.forEach((field) => {
+                const text = htmlToText((note[field as keyof NoteModel] || '').toString())
+
                 const matches = [...text.matchAll(regex)]
                 if (matches.length) {
                     for (const match of matches) {
@@ -242,7 +239,7 @@ export default class WorkModel extends Model {
 
         const locationFields = ['name', 'body']
 
-        locations.map((location) => {
+        locations.forEach((location) => {
             const result: SearchResultType = {
                 id: location.id,
                 label: location.displayName,
@@ -250,11 +247,8 @@ export default class WorkModel extends Model {
                 excerpts: []
             }
 
-            locationFields.map((field) => {
-                const text = (location[field as keyof LocationModel] || '')
-                    .toString()
-                    .replace('</p>', ' ')
-                    .replace(/(<([^>]+)>)/gi, '')
+            locationFields.forEach((field) => {
+                const text = htmlToText((location[field as keyof LocationModel] || '').toString())
                 const matches = [...text.matchAll(regex)]
                 if (matches.length) {
                     for (const match of matches) {
@@ -274,7 +268,7 @@ export default class WorkModel extends Model {
 
         const itemFields = ['name', 'body']
 
-        items.map((item) => {
+        items.forEach((item) => {
             const result: SearchResultType = {
                 id: item.id,
                 label: item.displayName,
@@ -282,11 +276,8 @@ export default class WorkModel extends Model {
                 excerpts: []
             }
 
-            itemFields.map((field) => {
-                const text = (item[field as keyof ItemModel] || '')
-                    .toString()
-                    .replace('</p>', ' ')
-                    .replace(/(<([^>]+)>)/gi, '')
+            itemFields.forEach((field) => {
+                const text = htmlToText((item[field as keyof ItemModel] || '').toString())
                 const matches = [...text.matchAll(regex)]
                 if (matches.length) {
                     for (const match of matches) {
@@ -373,13 +364,13 @@ export default class WorkModel extends Model {
             tag: []
         }
 
-        Object.entries(dbData).map(([table, items]) => {
+        Object.entries(dbData).forEach(([table, items]) => {
             const columns: ColumnName[] = Object.keys(schema.tables[table].columns)
-            items.map((item) => {
+            items.forEach((item) => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const data: any = { id: item.id }
 
-                columns.map((column) => {
+                columns.forEach((column) => {
                     data[column] = item._getRaw(column)
                 })
                 jsonData[table].push(data)

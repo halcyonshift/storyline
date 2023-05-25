@@ -24,7 +24,7 @@ const Result = ({ result }: { result: SearchResultType }) => {
                 <Box className='pl-5 pr-2'>
                     {result.excerpts.map((excerpt: string, index: number) => (
                         <Typography
-                            key={`result-${index}`}
+                            key={crypto.randomUUID()}
                             variant='body2'
                             onClick={() =>
                                 loadTab({

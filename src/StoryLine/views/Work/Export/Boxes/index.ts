@@ -1,5 +1,5 @@
 export { default as Docx } from './Docx'
-export { default as ePub } from './ePub'
+export { default as EPub } from './EPub'
 export { default as HTML } from './HTML'
 export { default as Markdown } from './Markdown'
 export { default as Pages } from './Pages'

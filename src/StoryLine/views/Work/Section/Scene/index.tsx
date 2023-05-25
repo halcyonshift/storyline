@@ -9,6 +9,7 @@ import useSettings from '@sl/theme/useSettings'
 import { wordCount } from '@sl/utils'
 import useOnlineStatus from '@sl/utils/useOnlineStatus'
 import { SectionViewType } from '../types'
+import { captureException } from '@sentry/react'
 
 const SceneView = ({ section }: SectionViewType) => {
     const [initialValue, setInitialValue] = useState<string>(section.body)
@@ -38,9 +39,13 @@ const SceneView = ({ section }: SectionViewType) => {
                 Grammarly.init(process.env.GRAMMARLY_CLIENT_ID, {
                     documentDomain: 'creative',
                     documentDialect: 'auto-text'
-                }).then((grammarly) => {
-                    grammarly.addPlugin(document.getElementById('sceneBody'))
                 })
+                    .then((grammarly) => {
+                        grammarly.addPlugin(document.getElementById('sceneBody'))
+                    })
+                    .catch((error) => {
+                        captureException(error)
+                    })
             }, 100)
         }
     }, [section.id, settings.spellCheck])

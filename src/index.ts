@@ -128,7 +128,7 @@ app.on('ready', () => {
     createWindow()
 
     const csp = [
-        'img-src data: https://*.grammarly.com http://*.tile.osm.org',
+        'img-src data: https://*.grammarly.com https://*.tile.osm.org',
         "connect-src 'self' https://*.grammarly.com https://*.grammarly.io wss://*.grammarly.com",
         "style-src 'self' 'unsafe-inline'",
         "script-src 'self' 'unsafe-eval' https://*.grammarly.com",

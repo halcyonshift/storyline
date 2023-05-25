@@ -93,7 +93,7 @@ const Block = ({ location, index, fontWeight }: BlockType) => {
                         />
                     </ListItem>
                     {children.length ? (
-                        show ? (
+                        show && (
                             <Droppable droppableId={location.id} type='LOCATION'>
                                 {(provided) => (
                                     <Box ref={provided.innerRef} {...provided.droppableProps}>
@@ -109,7 +109,7 @@ const Block = ({ location, index, fontWeight }: BlockType) => {
                                     </Box>
                                 )}
                             </Droppable>
-                        ) : null
+                        )
                     ) : (
                         <Droppable droppableId={location.id} type='LOCATION' isCombineEnabled>
                             {(provided) => (

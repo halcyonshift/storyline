@@ -58,8 +58,8 @@ const WordsByDay = () => {
             setLabels(_labels)
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const datasets: any = {}
-            _labels.map((label, labelIndex) => {
-                stats.map((stat) => {
+            _labels.forEach((label, labelIndex) => {
+                stats.forEach((stat) => {
                     if (!datasets[label]) datasets[label] = 0
                     const dayOfWeek = DateTime.fromJSDate(stat.createdAt).weekday - 1
                     if (dayOfWeek == labelIndex) datasets[label] += stat.words

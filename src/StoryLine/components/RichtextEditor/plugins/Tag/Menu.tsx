@@ -74,7 +74,7 @@ const TagMenu = ({
                         const _label =
                             options.find((option) => option.id === event.target.value)?.label ||
                             'none'
-                        setId(event.target.value as string)
+                        setId(event.target.value)
                         editor.dispatchCommand(
                             TOGGLE_TAG_COMMAND,
                             event.target.value !== 'none'

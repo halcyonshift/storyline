@@ -21,7 +21,7 @@ const ExportView = () => {
                 <Boxes.Docx work={work} />
             </Paper>
             <Paper elevation={1}>
-                <Boxes.ePub work={work} />
+                <Boxes.EPub work={work} />
             </Paper>
             <Paper elevation={1}>
                 <Boxes.HTML work={work} />

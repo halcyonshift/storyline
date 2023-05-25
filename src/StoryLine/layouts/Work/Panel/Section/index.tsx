@@ -37,7 +37,13 @@ const SectionPanel = () => {
         let sourceSections: SectionModel[] = []
 
         if (result.type === 'ROOT') {
-            sourceSections = parts.length > 1 ? parts : chapters.length > 1 ? chapters : scenes
+            if (parts.length > 1) {
+                sourceSections = parts
+            } else if (chapters.length > 1) {
+                sourceSections = chapters
+            } else {
+                sourceSections = scenes
+            }
         } else {
             sourceSections = sections.filter(
                 (section) => section.section.id === result.source.droppableId
@@ -63,7 +69,7 @@ const SectionPanel = () => {
                 })
             })
 
-            destinationSections.map((item, index) => {
+            destinationSections.forEach((item, index) => {
                 const section = sections.find((section) => section.id === item.id)
                 if (section.order !== index + 1) {
                     batchUpdate.push(
@@ -75,7 +81,7 @@ const SectionPanel = () => {
             })
         }
 
-        sourceSections.map((item, index) => {
+        sourceSections.forEach((item, index) => {
             const section = sections.find((section) => section.id === item.id)
             if (section.order !== index + 1) {
                 batchUpdate.push(
@@ -155,35 +161,39 @@ const SectionPanel = () => {
                 <Droppable droppableId='root' direction='vertical' type='ROOT'>
                     {(provided) => (
                         <Box {...provided.droppableProps} ref={provided.innerRef}>
-                            {parts.length > 1
-                                ? parts.map((part, index) => (
-                                      <Block
-                                          key={part.id}
-                                          section={part}
-                                          index={index}
-                                          fontWeight={900}
-                                          group={group}
-                                      />
-                                  ))
-                                : chapters.length > 1
-                                ? chapters.map((chapter, index) => (
-                                      <Block
-                                          key={chapter.id}
-                                          section={chapter}
-                                          index={index}
-                                          fontWeight={500}
-                                          group={group}
-                                      />
-                                  ))
-                                : scenes.map((scene, index) => (
-                                      <Block
-                                          key={scene.id}
-                                          section={scene}
-                                          index={index}
-                                          fontWeight={400}
-                                          group={group}
-                                      />
-                                  ))}
+                            {(() => {
+                                if (parts.length > 1) {
+                                    return parts.map((part, index) => (
+                                        <Block
+                                            key={part.id}
+                                            section={part}
+                                            index={index}
+                                            fontWeight={900}
+                                            group={group}
+                                        />
+                                    ))
+                                } else if (chapters.length > 1) {
+                                    return chapters.map((chapter, index) => (
+                                        <Block
+                                            key={chapter.id}
+                                            section={chapter}
+                                            index={index}
+                                            fontWeight={500}
+                                            group={group}
+                                        />
+                                    ))
+                                } else {
+                                    return scenes.map((scene, index) => (
+                                        <Block
+                                            key={scene.id}
+                                            section={scene}
+                                            index={index}
+                                            fontWeight={400}
+                                            group={group}
+                                        />
+                                    ))
+                                }
+                            })()}
                             {provided.placeholder}
                         </Box>
                     )}

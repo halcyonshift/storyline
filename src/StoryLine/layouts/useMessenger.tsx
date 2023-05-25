@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
+import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react'
 import { MessengerContextType, StatusType } from './types'
 
 const MessengerContext = createContext({} as MessengerContextType)
@@ -37,16 +37,19 @@ export const MessengerProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <MessengerContext.Provider
-            value={{
-                error,
-                warning,
-                info,
-                success,
-                open,
-                setOpen,
-                status,
-                message
-            }}>
+            value={useMemo(
+                () => ({
+                    error,
+                    warning,
+                    info,
+                    success,
+                    open,
+                    setOpen,
+                    status,
+                    message
+                }),
+                [open, status, message]
+            )}>
             {children}
         </MessengerContext.Provider>
     )

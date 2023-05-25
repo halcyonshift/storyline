@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
+import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react'
 import { createTheme, responsiveFontSizes } from '@mui/material/styles'
 import { Theme } from '@mui/system'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
@@ -96,7 +96,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     }, [])
 
     useEffect(() => {
-        changeLanguage(language)
+        void changeLanguage(language)
         database.localStorage.set('autoBackupFreq', autoBackupFreq)
         database.localStorage.set('autoBackupPath', autoBackupPath)
         database.localStorage.set('autoSave', autoSave)
@@ -208,40 +208,59 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <SettingsContext.Provider
-            value={{
-                autoBackupFreq,
-                setAutoBackupFreq,
-                autoBackupPath,
-                setAutoBackupPath,
-                autoSave,
-                setAutoSave,
-                displayMode,
-                setDisplayMode,
-                appFont,
-                setAppFont,
-                appFontSize,
-                setAppFontSize,
-                editorFont,
-                setEditorFont,
-                editorFontSize,
-                setEditorFontSize,
-                language,
-                setLanguage,
-                indentParagraph,
-                setIndentParagraph,
-                lineHeight,
-                setLineHeight,
-                palette,
-                setPalette,
-                paragraphSpacing,
-                setParagraphSpacing,
-                spellCheck,
-                setSpellCheck,
-                theme,
-                getHex,
-                getHeaderHeight,
-                isDark
-            }}>
+            value={useMemo(
+                () => ({
+                    autoBackupFreq,
+                    setAutoBackupFreq,
+                    autoBackupPath,
+                    setAutoBackupPath,
+                    autoSave,
+                    setAutoSave,
+                    displayMode,
+                    setDisplayMode,
+                    appFont,
+                    setAppFont,
+                    appFontSize,
+                    setAppFontSize,
+                    editorFont,
+                    setEditorFont,
+                    editorFontSize,
+                    setEditorFontSize,
+                    language,
+                    setLanguage,
+                    indentParagraph,
+                    setIndentParagraph,
+                    lineHeight,
+                    setLineHeight,
+                    palette,
+                    setPalette,
+                    paragraphSpacing,
+                    setParagraphSpacing,
+                    spellCheck,
+                    setSpellCheck,
+                    theme,
+                    getHex,
+                    getHeaderHeight,
+                    isDark
+                }),
+                [
+                    autoBackupFreq,
+                    autoBackupPath,
+                    autoSave,
+                    displayMode,
+                    appFont,
+                    appFontSize,
+                    editorFont,
+                    editorFontSize,
+                    language,
+                    indentParagraph,
+                    lineHeight,
+                    palette,
+                    paragraphSpacing,
+                    spellCheck,
+                    theme
+                ]
+            )}>
             {children}
         </SettingsContext.Provider>
     )

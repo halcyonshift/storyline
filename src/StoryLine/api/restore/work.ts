@@ -9,12 +9,20 @@ const restoreWork = async (baseDir: string) => {
     })
     if (result.canceled || !result.filePaths.length) return false
     const filePath = result.filePaths[0]
-    const fileDir = path.join(baseDir, 'import')
+    const fileDir = path.join(baseDir, 'restore')
     await fs.promises.mkdir(fileDir, { recursive: true })
-    const saveFilePath = path.join(fileDir, 'restore.zip')
+    const saveFilePath = path.join(fileDir, 'work.zip')
     await fs.promises.copyFile(filePath, saveFilePath)
     const data = await fs.promises.readFile(saveFilePath)
     const zip = await JSZip.loadAsync(data)
+
+    zip.forEach((_, zipEntry) => {
+        const resolvedPath = path.join(baseDir, 'restore', zipEntry.name)
+        if (!resolvedPath.startsWith(fileDir)) {
+            throw Error('Path traversal detected')
+        }
+    })
+
     const fileNames = Object.keys(zip.files)
 
     const jsonFile = zip.file(fileNames.find((file) => file.endsWith('.json')))
@@ -27,7 +35,10 @@ const restoreWork = async (baseDir: string) => {
 
     const workId = json.work[0].id
 
-    if (!workId) return false
+    if (!workId) {
+        fs.rmSync(saveFilePath)
+        return false
+    }
 
     for await (const fileName of imageFiles) {
         const targetFilePath = path.join(baseDir, fileName)

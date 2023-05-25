@@ -23,7 +23,7 @@ const LastUpdatedBox = () => {
     useEffect(() => {
         work.section.fetch()
 
-        Promise.all([
+        void Promise.all([
             work.character.extend(Q.sortBy('updated_at', Q.desc)).fetch(),
             work.item.extend(Q.sortBy('updated_at', Q.desc)).fetch(),
             work.location.extend(Q.sortBy('updated_at', Q.desc)).fetch(),
@@ -47,12 +47,8 @@ const LastUpdatedBox = () => {
                     })
                 )
             }
-            setLastUpdated(
-                take(
-                    _lastUpdated.sort((a, b) => b.date.toMillis() - a.date.toMillis()),
-                    10
-                )
-            )
+            _lastUpdated.sort((a, b) => b.date.toMillis() - a.date.toMillis())
+            setLastUpdated(take(_lastUpdated, 10))
         })
     }, [])
 

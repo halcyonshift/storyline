@@ -5,8 +5,8 @@ import { LinksPanelProps } from './types'
 
 const LinksPanel = ({ links }: LinksPanelProps) => (
     <List disablePadding>
-        {links.map((link, index) => (
-            <ListItem key={`link-${index}`} divider>
+        {links.map((link) => (
+            <ListItem key={crypto.randomUUID()} divider>
                 <Link href={link}>{prettyUrl(link)}</Link>
             </ListItem>
         ))}

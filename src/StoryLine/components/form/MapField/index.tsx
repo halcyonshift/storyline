@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useMapEvent } from 'react-leaflet'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 import useOnlineStatus from '@sl/utils/useOnlineStatus'
-import Map from '../../Map'
+import MapView from '../../MapView'
 import TooltipIconButton from '@sl/components/TooltipIconButton'
 import { FieldType, MapFieldProps, LocationMarkerProps } from './types'
 
@@ -42,9 +42,9 @@ const MapField = ({ form, fieldType }: MapFieldProps) => {
             <Box className='flex-grow'>
                 {mode === 'picker' ? (
                     <Stack spacing={2}>
-                        <Map center={center}>
+                        <MapView center={center}>
                             <LocationMarker form={form} />
-                        </Map>
+                        </MapView>
                         <Typography variant='body2' textAlign='center'>
                             {form.values.latitude} {form.values.longitude}
                         </Typography>

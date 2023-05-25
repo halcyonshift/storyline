@@ -127,21 +127,29 @@ const ConnectionView = () => {
             return o
         }, {} as NodeTypeByID)
 
-        return new DataSet(Object.values(nodes) as NodeType[])
+        return new DataSet(Object.values(nodes))
     }
 
     const getEdges = (): DataSet =>
         new DataSet(
-            connections.map((connection) => ({
-                id: connection.id,
-                from: connection.idA,
-                to: connection.idB,
-                relation: connection.mode,
-                value: connection.to && connection.from ? 2 : 1,
-                title: connection.mode,
-                color: connection.color || getHex('slate', 300),
-                arrows: connection.to && connection.from ? '' : connection.to ? 'to' : 'from'
-            }))
+            connections.map((connection) => {
+                let arrows
+
+                if (connection.to && connection.from) arrows = ''
+                else if (connection.to) arrows = 'to'
+                else arrows = 'from'
+
+                return {
+                    id: connection.id,
+                    from: connection.idA,
+                    to: connection.idB,
+                    relation: connection.mode,
+                    value: connection.to && connection.from ? 2 : 1,
+                    title: connection.mode,
+                    color: connection.color || getHex('slate', 300),
+                    arrows
+                }
+            })
         )
 
     useEffect(() => {
@@ -162,7 +170,7 @@ const ConnectionView = () => {
                         .filter((connection) => connection.mode)
                         .map((connection) => connection.mode)
                 )
-            ].sort()
+            ].sort((a, b) => a.localeCompare(b))
         )
         setNodes(getNodes())
         setEdges(getEdges())
@@ -231,7 +239,7 @@ const ConnectionView = () => {
                         value={filterTable}
                         label={t('view.work.connection.filter.table.label')}
                         onChange={(event) => {
-                            setFilterTable(event.target.value as string)
+                            setFilterTable(event.target.value)
                         }}>
                         <MenuItem value=''>{t('view.work.connection.filter.table.all')}</MenuItem>
                         {filterTableOptions.map((table) => (
@@ -251,7 +259,7 @@ const ConnectionView = () => {
                         value={filterMode}
                         label={t('view.work.connection.filter.mode.label')}
                         onChange={(event) => {
-                            setFilterMode(event.target.value as string)
+                            setFilterMode(event.target.value)
                         }}>
                         <MenuItem value=''>{t('view.work.connection.filter.mode.all')}</MenuItem>
                         {filterModeOptions.map((mode) => (

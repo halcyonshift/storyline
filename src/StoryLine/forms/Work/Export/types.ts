@@ -1,6 +1,16 @@
-import { WorkModel } from '@sl/db/models'
+import { SectionModel, WorkModel } from '@sl/db/models'
 
 export type ExportModeType = 'docx' | 'epub' | 'html' | 'md' | 'pages' | 'pdf' | 'rtf' | 'txt'
+export type StylesType = {
+    h1: object
+    h2: object
+    h3: object
+    sep: object
+    p: object
+    cover: object
+    image: object
+    page: object
+}
 
 export type ExportFormProps = {
     mode: ExportModeType
@@ -22,4 +32,13 @@ export type ExportDataType = {
     indentParagraph: boolean
     font: string
     fontSize: number
+}
+
+export type FullWorkSectionType = {
+    parts?: SectionModel[]
+    chapters?: SectionModel[]
+    scenes: SectionModel[]
+    settings: ExportDataType
+    styles: StylesType
+    parse: (s: string) => string
 }
