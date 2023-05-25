@@ -95,7 +95,7 @@ const Block = ({ note, index, fontWeight }: BlockType) => {
                         />
                     </ListItem>
                     {children.length ? (
-                        show ? (
+                        show && (
                             <Droppable droppableId={note.id} type='NOTE' isCombineEnabled>
                                 {(provided) => (
                                     <Box ref={provided.innerRef} {...provided.droppableProps}>
@@ -111,7 +111,7 @@ const Block = ({ note, index, fontWeight }: BlockType) => {
                                     </Box>
                                 )}
                             </Droppable>
-                        ) : null
+                        )
                     ) : (
                         <Droppable droppableId={note.id} type='NOTE'>
                             {(provided) => (

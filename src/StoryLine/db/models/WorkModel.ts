@@ -87,7 +87,8 @@ export default class WorkModel extends Model {
             .reduce((duration, unit) => {
                 const d = diff.get(unit)
                 if (d) {
-                    duration.push(`${Math.round(d)} ${t(`component.unit.${unit}`)}`)
+                    const textKey = `component.unit.${unit}`
+                    duration.push(`${Math.round(d)} ${t(textKey)}`)
                 }
                 return duration
             }, [])

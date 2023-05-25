@@ -13,8 +13,8 @@ const SelectField = ({ form, name, label, options, children, ...props }: SelectF
             error={form.touched[name] && Boolean(form.errors[name])}
             {...props}>
             {options
-                ? options.map((option, index) => (
-                      <MenuItem key={`${option.value}-${index}`} value={option.value}>
+                ? options.map((option) => (
+                      <MenuItem key={crypto.randomUUID()} value={option.value}>
                           {option.label}
                       </MenuItem>
                   ))

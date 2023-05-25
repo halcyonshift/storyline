@@ -50,8 +50,8 @@ const AppearancesPanel = ({ appearances }: AppearancesPanelProps) => {
                                 {appearance.scene.displayTitle}
                             </TableCell>
                             <TableCell>
-                                {appearance.text.map((text, index) => (
-                                    <Typography key={index} variant='body2'>
+                                {appearance.text.map((text) => (
+                                    <Typography key={crypto.randomUUID()} variant='body2'>
                                         {text}
                                     </Typography>
                                 ))}

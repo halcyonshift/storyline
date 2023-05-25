@@ -629,36 +629,31 @@ const importBibisco = async (database: Database): Promise<false | string> => {
             return await database.batch(tags)
         })
     }
+
+    const getTable = (group: string) => {
+        if (['main_characters', 'secondary_characters'].includes(group)) return 'character'
+        if (group === 'locations') return 'location'
+        return 'item'
+    }
+
+    const getId = (table: string, label: string) => {
+        if (table === 'character')
+            return characters.find((character) => character.displayName === label)
+        if (table === 'location')
+            return locations.find((location) => location.displayName === label)
+        return items.find((item) => item.displayName === label)
+    }
+
     const relationEdges: ConnectionModel[] = data.collections[12].data.reduce(
         (arr: any[], edge: any) => {
             const fromNode = data.collections[11].data.find((node: any) => node.id === edge.from)
             const toNode = data.collections[11].data.find((node: any) => node.id === edge.to)
 
-            const tableA = ['main_characters', 'secondary_characters'].includes(fromNode.group)
-                ? 'character'
-                : fromNode.group === 'locations'
-                ? 'location'
-                : 'item'
+            const tableA = getTable(fromNode.group)
+            const tableB = getTable(toNode.group)
 
-            const tableB = ['main_characters', 'secondary_characters'].includes(toNode.group)
-                ? 'character'
-                : toNode.group === 'locations'
-                ? 'location'
-                : 'item'
-
-            const idA =
-                tableA === 'character'
-                    ? characters.find((character) => character.displayName === fromNode.label)
-                    : tableA === 'location'
-                    ? locations.find((location) => location.displayName === fromNode.label)
-                    : items.find((item) => item.displayName === fromNode.label)
-
-            const idB =
-                tableB === 'character'
-                    ? characters.find((character) => character.displayName === toNode.label)
-                    : tableB === 'location'
-                    ? locations.find((location) => location.displayName === toNode.label)
-                    : items.find((item) => item.displayName === toNode.label)
+            const idA = getId(tableA, fromNode.label)
+            const idB = getId(tableB, toNode.label)
 
             arr.push(
                 database.get<ConnectionModel>('connection').prepareCreate((connection) => {

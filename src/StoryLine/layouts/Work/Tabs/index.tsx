@@ -30,6 +30,7 @@ const Tabs = () => {
         [],
         []
     )
+
     const item = useObservable(() => work.item.observeWithColumns(['name']), [], [])
     const location = useObservable(() => work.location.observeWithColumns(['name']), [], [])
     const note = useObservable(() => work.note.observeWithColumns(['title']), [], [])
@@ -76,10 +77,15 @@ const Tabs = () => {
         const [removed] = newTabs.splice(result.source.index, 1)
         newTabs.splice(result.destination.index, 0, removed)
         tabs.setTabs(newTabs)
-        tabs.setActive(result.source.index)
-        setTimeout(() => {
+
+        if (result.destination.index === tabs.active) {
+            tabs.setActive(result.source.index)
+            setTimeout(() => {
+                tabs.setActive(result.destination.index)
+            }, 1)
+        } else {
             tabs.setActive(result.destination.index)
-        }, 1)
+        }
     }
 
     const getLabel = (tab: TabType) => {
@@ -121,7 +127,7 @@ const Tabs = () => {
                                     TabIndicatorProps={{ style: { display: 'none' } }}>
                                     {tabs.tabs.map((tab, index) => (
                                         <Draggable
-                                            key={`${tab.id}-${index}`}
+                                            key={`id-${tab.id}`}
                                             draggableId={`id-${tab.id}`}
                                             index={index}
                                             disableInteractiveElementBlocking={true}>

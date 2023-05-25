@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { TabType, TabsContextType, TabsProviderProps } from '../types'
 
@@ -12,12 +12,6 @@ export const TabsProvider = ({ children }: TabsProviderProps) => {
     const navigate = useNavigate()
 
     useEffect(() => focusTab(), [tabs, active])
-
-    useEffect(() => {
-        if (tabs.length) return
-        setShowTabs(false)
-        setActive(null)
-    }, [tabs])
 
     useEffect(() => {
         if (showTabs) focusTab()
@@ -38,6 +32,7 @@ export const TabsProvider = ({ children }: TabsProviderProps) => {
         } else {
             setActive(tabIndex)
         }
+
         setShowTabs(true)
     }
 
@@ -51,7 +46,11 @@ export const TabsProvider = ({ children }: TabsProviderProps) => {
 
         if (newTabs.length) {
             if (activeTab.id === id) {
-                setActive(newTabs[active] ? active : newTabs[active - 1] ? active - 1 : 0)
+                setActive(() => {
+                    if (newTabs[active]) return active
+                    if (newTabs[active - 1]) return active - 1
+                    return 0
+                })
             } else {
                 setActive(newTabs.findIndex((tab) => tab.id === activeTab.id))
             }
@@ -62,16 +61,19 @@ export const TabsProvider = ({ children }: TabsProviderProps) => {
 
     return (
         <TabsContext.Provider
-            value={{
-                active,
-                setActive,
-                tabs,
-                setTabs,
-                loadTab,
-                removeTab,
-                showTabs,
-                setShowTabs
-            }}>
+            value={useMemo(
+                () => ({
+                    active,
+                    setActive,
+                    tabs,
+                    setTabs,
+                    loadTab,
+                    removeTab,
+                    showTabs,
+                    setShowTabs
+                }),
+                [active, tabs.length, showTabs]
+            )}>
             {children}
         </TabsContext.Provider>
     )

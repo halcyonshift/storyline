@@ -20,6 +20,15 @@ const Spread = () => {
     const [chapters, setChapters] = useState<SectionModel[]>([])
     const [tags, setTags] = useState<any>({ characters: [], items: [], locations: [], notes: [] })
 
+    const getColor = (chapters: string[], id: string, color: string) => {
+        if (chapters.includes(id)) {
+            if (color) return color
+            return getHex('sky', 400)
+        }
+
+        return 'transparent'
+    }
+
     useEffect(() => {
         work.chapters.fetch().then(async (chapters) => {
             const _tags: any = {
@@ -202,11 +211,11 @@ const Spread = () => {
                                     title={chapter.displayName}
                                     scope='row'
                                     sx={{
-                                        backgroundColor: appearance.chapters.includes(chapter.id)
-                                            ? appearance.note.color
-                                                ? appearance.note.color
-                                                : getHex('sky', 400)
-                                            : 'transparent'
+                                        backgroundColor: getColor(
+                                            appearance.chapters,
+                                            chapter.id,
+                                            appearance.note.color
+                                        )
                                     }}></TableCell>
                             ))}
                         </TableRow>

@@ -132,16 +132,24 @@ const ConnectionView = () => {
 
     const getEdges = (): DataSet =>
         new DataSet(
-            connections.map((connection) => ({
-                id: connection.id,
-                from: connection.idA,
-                to: connection.idB,
-                relation: connection.mode,
-                value: connection.to && connection.from ? 2 : 1,
-                title: connection.mode,
-                color: connection.color || getHex('slate', 300),
-                arrows: connection.to && connection.from ? '' : connection.to ? 'to' : 'from'
-            }))
+            connections.map((connection) => {
+                let arrows
+
+                if (connection.to && connection.from) arrows = ''
+                else if (connection.to) arrows = 'to'
+                else arrows = 'from'
+
+                return {
+                    id: connection.id,
+                    from: connection.idA,
+                    to: connection.idB,
+                    relation: connection.mode,
+                    value: connection.to && connection.from ? 2 : 1,
+                    title: connection.mode,
+                    color: connection.color || getHex('slate', 300),
+                    arrows
+                }
+            })
         )
 
     useEffect(() => {
