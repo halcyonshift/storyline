@@ -239,7 +239,7 @@ const ConnectionView = () => {
                         value={filterTable}
                         label={t('view.work.connection.filter.table.label')}
                         onChange={(event) => {
-                            setFilterTable(event.target.value as string)
+                            setFilterTable(event.target.value)
                         }}>
                         <MenuItem value=''>{t('view.work.connection.filter.table.all')}</MenuItem>
                         {filterTableOptions.map((table) => (
@@ -259,7 +259,7 @@ const ConnectionView = () => {
                         value={filterMode}
                         label={t('view.work.connection.filter.mode.label')}
                         onChange={(event) => {
-                            setFilterMode(event.target.value as string)
+                            setFilterMode(event.target.value)
                         }}>
                         <MenuItem value=''>{t('view.work.connection.filter.mode.all')}</MenuItem>
                         {filterModeOptions.map((mode) => (
