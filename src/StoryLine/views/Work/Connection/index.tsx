@@ -127,7 +127,7 @@ const ConnectionView = () => {
             return o
         }, {} as NodeTypeByID)
 
-        return new DataSet(Object.values(nodes) as NodeType[])
+        return new DataSet(Object.values(nodes))
     }
 
     const getEdges = (): DataSet =>
@@ -170,7 +170,7 @@ const ConnectionView = () => {
                         .filter((connection) => connection.mode)
                         .map((connection) => connection.mode)
                 )
-            ].sort()
+            ].sort((a, b) => a.localeCompare(b))
         )
         setNodes(getNodes())
         setEdges(getEdges())

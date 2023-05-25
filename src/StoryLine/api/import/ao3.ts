@@ -65,7 +65,7 @@ const ao3 = async (baseDir: string, id: number, mode: 'series' | 'work') => {
             return false
         }
 
-        const work = (await new Promise((resolve) => {
+        const work: WorkType = await new Promise((resolve) => {
             const epub = new EPub(filePath, fileDir, fileDir)
             epub.on('end', async () => {
                 const work = epub.metadata
@@ -90,7 +90,7 @@ const ao3 = async (baseDir: string, id: number, mode: 'series' | 'work') => {
             })
 
             epub.parse()
-        })) as WorkType
+        })
 
         data.works.push(work)
     }

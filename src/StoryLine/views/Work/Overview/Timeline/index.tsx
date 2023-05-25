@@ -144,19 +144,19 @@ const Timeline = ({ work }: OverviewTimelineProps) => {
                         .get<SectionModel>('section')
                         .find(item.id.toString())
                     await scene.updateRecord({
-                        date: DateTime.fromJSDate(item.start as Date).toSQL()
+                        date: DateTime.fromJSDate(item.start).toSQL()
                     })
                 } else if (item.group === 'note') {
                     const note = await database.get<NoteModel>('note').find(item.id.toString())
                     await note.updateRecord({
-                        date: DateTime.fromJSDate(item.start as Date).toSQL()
+                        date: DateTime.fromJSDate(item.start).toSQL()
                     })
                 } else if (item.group === 'connection') {
                     const connection = await database
                         .get<ConnectionModel>('connection')
                         .find(item.id.toString())
                     await connection.updateRecord({
-                        date: DateTime.fromJSDate(item.start as Date).toSQL()
+                        date: DateTime.fromJSDate(item.start).toSQL()
                     })
                 }
                 return callback(item)

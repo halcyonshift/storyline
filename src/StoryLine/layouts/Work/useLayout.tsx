@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { LayoutContextType, LayoutProviderProps } from './types'
 
 const LayoutContext = createContext({} as LayoutContextType)
@@ -14,7 +14,7 @@ export const LayoutProvider = ({
     const [mainWidth, setMainWidth] = useState<number>(0)
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth)
 
-    const updateWidths = async () => {
+    const updateWidths = async (): Promise<void> => {
         setNavigationWidth(navigationRef.current ? navigationRef.current.offsetWidth : 0)
         setPanelWidth(panelRef.current ? panelRef.current.offsetWidth : 0)
         setMainWidth(mainRef.current ? mainRef.current.offsetWidth : 0)
@@ -22,7 +22,7 @@ export const LayoutProvider = ({
     }
 
     useEffect(() => {
-        updateWidths()
+        void updateWidths()
         window.addEventListener('resize', updateWidths)
         return () => {
             window.removeEventListener('resize', updateWidths)
@@ -31,16 +31,27 @@ export const LayoutProvider = ({
 
     return (
         <LayoutContext.Provider
-            value={{
-                navigationRef,
-                panelRef,
-                mainRef,
-                windowWidth,
-                navigationWidth,
-                panelWidth,
-                setPanelWidth,
-                mainWidth
-            }}>
+            value={useMemo(
+                () => ({
+                    navigationRef,
+                    panelRef,
+                    mainRef,
+                    windowWidth,
+                    navigationWidth,
+                    panelWidth,
+                    setPanelWidth,
+                    mainWidth
+                }),
+                [
+                    navigationRef,
+                    panelRef,
+                    mainRef,
+                    windowWidth,
+                    navigationWidth,
+                    panelWidth,
+                    mainWidth
+                ]
+            )}>
             {children}
         </LayoutContext.Provider>
     )

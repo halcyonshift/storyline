@@ -80,9 +80,7 @@ const RestoreWorkBox = () => {
                             id='work-backup-select'
                             value={id}
                             label='Work'
-                            onChange={(event: SelectChangeEvent) =>
-                                setId(event.target.value as string)
-                            }>
+                            onChange={(event: SelectChangeEvent) => setId(event.target.value)}>
                             <MenuItem value=''>
                                 {t('view.storyline.backupRestore.restore.work.new')}
                             </MenuItem>

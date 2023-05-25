@@ -62,9 +62,7 @@ const BackupWorkBox = () => {
                                 id='work-backup-select'
                                 value={id}
                                 label='Work'
-                                onChange={(event: SelectChangeEvent) =>
-                                    setId(event.target.value as string)
-                                }>
+                                onChange={(event: SelectChangeEvent) => setId(event.target.value)}>
                                 {works.map((work) => (
                                     <MenuItem key={work.id} value={work.id}>
                                         {work.title}
