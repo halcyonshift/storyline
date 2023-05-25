@@ -56,7 +56,7 @@ export const cleaner = (htmlString: string) => {
 }
 
 export const wordCount = (s: string, lang = 'en') => {
-    s = cleaner(s).trim()
+    s = htmlToText(s).trim()
     const segmenter = new Intl.Segmenter(lang, {
         granularity: 'word'
     })
