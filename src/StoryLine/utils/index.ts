@@ -1,58 +1,12 @@
-import * as cheerio from 'cheerio'
-import parse from 'html-react-parser'
 import { DateTime } from 'luxon'
-import {
-    getExportHTMLParseOptions,
-    docxExtractExcerptsOptions,
-    htmlExtractExcerptsOptions,
-    htmlParseOptions
-} from './html'
+import { htmlToText } from './html'
 
 export const autoCompleteOptions = (data: { id: string; displayName: string }[]) => {
     return data.map((item) => ({ id: item.id, label: item.displayName }))
 }
+
 export const dateFormat = (jsDate: Date) => {
     return DateTime.fromJSDate(jsDate).toLocaleString(DateTime.DATETIME_SHORT)
-}
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const exportHTMLParse = (s: string, settings: any) => {
-    return parse(s, getExportHTMLParseOptions(settings))
-}
-export const exportDocxParse = (s: string) => parse(s, docxExtractExcerptsOptions)
-export const htmlParse = (s: string) => parse(s, htmlParseOptions)
-export const htmlExtractExcerpts = (s: string) => parse(s, htmlExtractExcerptsOptions)
-
-export const htmlToText = (html: string) => {
-    const $ = cheerio.load(`<div>${html.replace(/<\/p>/g, ' ')}</div>`)
-    return $('div').text()
-}
-
-export const cleaner = (htmlString: string) => {
-    const $ = cheerio.load(
-        htmlString
-            .replace(/“/g, '"')
-            .replace(/”/g, '"')
-            .replace(/’/g, "'")
-            .replace(/<div[^>]*>/g, '')
-            .replace(/<\/div>/g, '')
-    )
-
-    const allowedTags = ['p', 'ol', 'ul', 'em', 'li', 'strong', 'u', 's']
-
-    $('body *').each((_, element) => {
-        const tagName = element.tagName.toLowerCase()
-        element.attribs = {}
-
-        if (!allowedTags.includes(tagName)) {
-            if (['a', 'img'].includes(tagName)) {
-                $(element).replaceWith('<span>' + $(element).text() + '</span>')
-            } else {
-                $(element).replaceWith('<p>' + $(element).text() + '</p>')
-            }
-        }
-    })
-
-    return $.html('body *')
 }
 
 export const wordCount = (s: string, lang = 'en') => {

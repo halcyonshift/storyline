@@ -7,7 +7,7 @@ import TurndownService from 'turndown'
 const exportMarkdown = async (_: Electron.IpcMainInvokeEvent, fileName: string, html: string) => {
     const result = await dialog.showSaveDialog({
         defaultPath: `${kebabCase(fileName)}.md`,
-        filters: [{ name: '.md', extensions: ['md'] }]
+        filters: [{ name: '.md', extensions: ['*'] }]
     })
 
     if (result.filePath) {

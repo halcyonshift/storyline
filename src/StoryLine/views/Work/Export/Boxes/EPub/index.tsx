@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Box, Button, Typography } from '@mui/material'
-import * as cheerio from 'cheerio'
 import { IMPORTEXPORT_ICONS } from '@sl/constants/icons'
 import ExportForm from '@sl/forms/Work/Export'
 import { WorkModel } from '@sl/db/models'
 import { ExportDataType } from '@sl/forms/Work/Export/types'
+import parse from './parse'
 
 const EPubBox = ({ work }: { work: WorkModel }) => {
     const [open, setOpen] = useState<boolean>(false)
@@ -38,15 +38,7 @@ const EPubBox = ({ work }: { work: WorkModel }) => {
                     : undefined,
                 content: scenes
                     .filter((scene) => scene.section.id === chapter.id)
-                    .map((scene) => {
-                        const $ = cheerio.load(scene.body)
-                        $('a').each((_, element) => {
-                            element.attribs = {}
-                            $(element).replaceWith('<span>' + $(element).text() + '</span>')
-                        })
-
-                        return $.html()
-                    })
+                    .map((scene) => parse(scene.body, settings))
                     .join(settings.sceneSeparator)
             }))
         )

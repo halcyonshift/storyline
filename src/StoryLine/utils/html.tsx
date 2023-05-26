@@ -1,53 +1,65 @@
 import Typography from '@mui/material/Typography'
-import { domToReact, HTMLReactParserOptions, Element } from 'html-react-parser'
-import { spacing } from '@sl/theme/utils'
+import parse, { domToReact, HTMLReactParserOptions, Element } from 'html-react-parser'
+import * as cheerio from 'cheerio'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getExportHTMLParseOptions = (settings: any): HTMLReactParserOptions => ({
-    replace: (domNode) => {
-        if (domNode instanceof Element && domNode.attribs && domNode.name === 'p') {
-            return (
-                <p
-                    style={{
-                        marginTop: spacing[settings.paragraphSpacing] || 'auto',
-                        marginBottom: spacing[settings.paragraphSpacing] || 'auto',
-                        textIndent: settings.indentParagraph ? '38px' : ''
-                    }}>
-                    {domToReact(domNode.children, getExportHTMLParseOptions(settings))}
-                </p>
-            )
-        }
+// strip all html and convert to text
 
-        if (domNode instanceof Element && domNode.attribs && domNode.name === 'a') {
-            return <span>{domToReact(domNode.children, getExportHTMLParseOptions(settings))}</span>
-        }
-    }
-})
-
-export const docxExtractExcerptsOptions: HTMLReactParserOptions = {
-    replace: (domNode) => {
-        if (domNode instanceof Element && domNode.attribs && domNode.name === 'p') {
-            return <p>{domToReact(domNode.children, docxExtractExcerptsOptions)}</p>
-        }
-
-        if (domNode instanceof Element && domNode.attribs && domNode.name === 'a') {
-            return <span>{domToReact(domNode.children, docxExtractExcerptsOptions)}</span>
-        }
-    }
+export const htmlToText = (html: string) => {
+    const $ = cheerio.load(`<div>${html.replace(/<\/p>/g, ' ')}</div>`)
+    return $('div').text()
 }
 
-export const htmlExtractExcerptsOptions: HTMLReactParserOptions = {
-    replace: (domNode) => {
-        if (domNode instanceof Element) {
-            if (domNode.name !== 'blockquote') return <></>
-            return <Typography variant='body2'>{domToReact(domNode.children)}</Typography>
+// clean html to allow only given elements on import
+
+export const importCleaner = (
+    html: string,
+    allowedTags = ['p', 'ol', 'ul', 'em', 'li', 'strong', 'u', 's']
+) => {
+    const $ = cheerio.load(
+        html
+            .replace(/“/g, '"')
+            .replace(/”/g, '"')
+            .replace(/’/g, "'")
+            .replace(/<div[^>]*>/g, '')
+            .replace(/<\/div>/g, '')
+            .replace('&nbsp;', ' ')
+    )
+
+    $('body *').each((_, element) => {
+        const tagName = element.tagName.toLowerCase()
+        element.attribs = {}
+
+        if (!allowedTags.includes(tagName)) {
+            if (['a'].includes(tagName)) {
+                $(element).replaceWith($(element).text())
+            } else if (
+                [
+                    'img',
+                    'video',
+                    'object',
+                    'embed',
+                    'script',
+                    'link',
+                    'html',
+                    'head',
+                    'title',
+                    'meta'
+                ].includes(tagName)
+            ) {
+                $(element).remove()
+            } else {
+                $(element).replaceWith('<p>' + $(element).text() + '</p>')
+            }
         }
-    }
+    })
+
+    return $.html('body *')
 }
 
-export const htmlParseOptions: HTMLReactParserOptions = {
+// display html on a view
+
+const htmlParseOptions: HTMLReactParserOptions = {
     replace: (domNode) => {
-        /*
         if (domNode instanceof Element && domNode.attribs && domNode.name === 'p') {
             return (
                 <Typography variant='body1'>
@@ -55,20 +67,23 @@ export const htmlParseOptions: HTMLReactParserOptions = {
                 </Typography>
             )
         }
-        */
+
         if (domNode instanceof Element && domNode.attribs && domNode.name === 'a') {
-            return <span>{domToReact(domNode.children, htmlParseOptions)}</span>
+            return <>{domToReact(domNode.children, htmlParseOptions)}</>
         }
     }
 }
 
-export const htmlCleanOptions: HTMLReactParserOptions = {
-    replace: (domNode) => {
-        if (domNode instanceof Element) {
-            if (['p', 'li', 'ol', 'ul'].includes(domNode.name)) {
-                return <p>{domToReact(domNode.children)}</p>
+export const htmlParse = (s: string) => parse(s, htmlParseOptions)
+
+// get blockquote text to display as excerpt
+
+export const htmlExtractExcerpts = (s: string) =>
+    parse(s, {
+        replace: (domNode) => {
+            if (domNode instanceof Element) {
+                if (domNode.name !== 'blockquote') return <></>
+                return <Typography variant='body2'>{domToReact(domNode.children)}</Typography>
             }
         }
-        return null
-    }
-}
+    })

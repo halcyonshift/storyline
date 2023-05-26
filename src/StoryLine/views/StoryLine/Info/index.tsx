@@ -2,7 +2,7 @@ import { Box, Stack } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
-import { htmlParse } from '@sl/utils'
+import { htmlParse } from '@sl/utils/html'
 
 import packageJSON from '../../../../../package.json'
 

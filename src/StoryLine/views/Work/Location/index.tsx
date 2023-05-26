@@ -6,7 +6,7 @@ import { useObservable } from 'rxjs-hooks'
 import MapView from '@sl/components/MapView'
 import ViewWrapper from '@sl/components/ViewWrapper'
 import LocationModel from '@sl/db/models/LocationModel'
-import { htmlParse } from '@sl/utils'
+import { htmlParse } from '@sl/utils/html'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 const LocationView = () => {

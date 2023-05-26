@@ -13,7 +13,7 @@ export const rendererConfig: Configuration = {
     module: {
         rules
     },
-    devtool: 'source-map',
+    devtool: 'inline-source-map',
     stats: {
         colors: true,
         modules: true,

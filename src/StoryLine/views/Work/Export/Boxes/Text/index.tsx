@@ -1,10 +1,10 @@
-import { useRef, useState, useEffect, useMemo, CSSProperties } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Box, Button, Typography } from '@mui/material'
 import { IMPORTEXPORT_ICONS } from '@sl/constants/icons'
 import ExportForm from '@sl/forms/Work/Export'
 import { WorkModel } from '@sl/db/models'
 import { ExportDataType } from '@sl/forms/Work/Export/types'
-import { exportHTMLParse } from '@sl/utils'
+import { parse } from '../../utils/parse'
 import FullWork from '../../FullWork'
 
 const TextBox = ({ work }: { work: WorkModel }) => {
@@ -13,42 +13,10 @@ const TextBox = ({ work }: { work: WorkModel }) => {
     const ref = useRef<HTMLDivElement>(null)
     const [isGenerating, setIsGenerating] = useState<boolean>(false)
 
-    const parse = (html: string) => {
-        return exportHTMLParse(html, settings)
-    }
-
     const generateExport = async (values: ExportDataType) => {
         setSettings(values)
         setIsGenerating(true)
     }
-    const styles = useMemo(
-        () => ({
-            h1: { textAlign: 'center', fontFamily: 'arial' } as CSSProperties,
-            h2: {
-                textAlign: 'center',
-                fontFamily: 'arial'
-            } as CSSProperties,
-            h3: {
-                textAlign: 'center',
-                fontFamily: 'arial',
-                fontSize: '13pt'
-            } as CSSProperties,
-            sep: { textAlign: 'center', fontFamily: 'arial' } as CSSProperties,
-            p: {
-                fontFamily: 'arial',
-                fontSize: `${settings?.fontSize || 12}px`
-            } as CSSProperties,
-            cover: {
-                margin: '0 auto',
-                height: 'auto',
-                width: '595px',
-                textAlign: 'center'
-            } as CSSProperties,
-            image: { maxWidth: '595px', maxHeight: '842px' } as CSSProperties,
-            page: { width: '595px', margin: 'auto' } as CSSProperties
-        }),
-        [settings]
-    )
 
     useEffect(() => {
         if (!isGenerating || !ref.current.innerHTML) return
@@ -78,9 +46,7 @@ const TextBox = ({ work }: { work: WorkModel }) => {
                 isGenerating={isGenerating}
                 showFormatting={false}
             />
-            {open ? (
-                <FullWork parse={parse} forwardRef={ref} settings={settings} styles={styles} />
-            ) : null}
+            {open ? <FullWork parse={parse} forwardRef={ref} settings={settings} /> : null}
         </Box>
     )
 }

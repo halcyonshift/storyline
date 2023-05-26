@@ -1,12 +1,13 @@
-import { useRef, useState, CSSProperties, useMemo, useEffect } from 'react'
+import { useRef, useState, useMemo, useEffect } from 'react'
 import { Box, Button, Typography } from '@mui/material'
 import jsPDF from 'jspdf'
 import { IMPORTEXPORT_ICONS } from '@sl/constants/icons'
 import ExportForm from '@sl/forms/Work/Export'
 import { WorkModel } from '@sl/db/models'
 import { ExportDataType } from '@sl/forms/Work/Export/types'
-import { htmlParse } from '@sl/utils'
 import FullWork from '../../FullWork'
+import { parse } from '../../utils/parse'
+import getStyles from '../../utils/styles'
 
 const PDFBox = ({ work }: { work: WorkModel }) => {
     const [open, setOpen] = useState<boolean>(false)
@@ -14,41 +15,17 @@ const PDFBox = ({ work }: { work: WorkModel }) => {
     const ref = useRef<HTMLDivElement>(null)
     const [isGenerating, setIsGenerating] = useState<boolean>(false)
 
-    const parse = (html: string) => {
-        return htmlParse(html)
-    }
-
-    const styles = useMemo(
-        () => ({
-            h1: { textAlign: 'center', fontFamily: 'arial', fontSize: '16pt' } as CSSProperties,
-            h2: {
-                textAlign: 'center',
-                fontFamily: 'arial',
-                fontSize: '14pt'
-            } as CSSProperties,
-            h3: {
-                textAlign: 'center',
-                fontFamily: 'arial',
-                fontSize: '13pt'
-            } as CSSProperties,
-            sep: { textAlign: 'center', fontFamily: 'arial' } as CSSProperties,
-            p: {
-                fontFamily: 'arial',
-                fontSize: '10pt',
-                letterSpacing: '0.01px',
-                lineHeight: 'auto'
-            } as CSSProperties,
-            cover: {
-                margin: '0 auto',
-                height: '842px',
-                width: '595px',
-                textAlign: 'center'
-            } as CSSProperties,
-            image: { maxWidth: '595px', maxHeight: '842px' } as CSSProperties,
-            page: { width: '595px', margin: 'auto' } as CSSProperties
-        }),
-        [settings]
-    )
+    const styles = useMemo(() => {
+        const defaults = getStyles(settings)
+        return {
+            ...defaults,
+            ...{
+                h1: { ...defaults.h1, ...{ fontFamily: 'arial', fontSize: '16pt' } },
+                h2: { ...defaults.h1, ...{ fontFamily: 'arial', fontSize: '14pt' } },
+                h3: { ...defaults.h1, ...{ fontFamily: 'arial', fontSize: '13pt' } }
+            }
+        }
+    }, [settings])
 
     const generateExport = async (values: ExportDataType) => {
         setSettings(values)
@@ -58,26 +35,27 @@ const PDFBox = ({ work }: { work: WorkModel }) => {
     const createPDF = async () => {
         const pdf = new jsPDF({
             unit: 'pt',
+            orientation: 'p',
             putOnlyUsedFonts: true,
             compress: true
         })
 
-        await pdf.html(ref.current.innerHTML, {
-            autoPaging: 'text',
-            margin: 56.7,
-            windowWidth: 595,
-            width: 481.6
-        })
+        pdf.advancedAPI(async (pdf) => {
+            await pdf.html(ref.current.innerHTML, {
+                autoPaging: 'text',
+                margin: 56.7,
+                windowWidth: 595,
+                width: 481.6
+            })
 
-        pdf.save(work.title)
+            setIsGenerating(false)
+            pdf.save(work.title)
+        })
     }
 
     useEffect(() => {
         if (!isGenerating || !ref.current.innerHTML) return
-
-        createPDF().then(() => {
-            setIsGenerating(false)
-        })
+        void createPDF()
     }, [isGenerating, ref.current])
 
     return (

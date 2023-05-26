@@ -4,7 +4,7 @@ import { rules } from './webpack.rules'
 
 export const mainConfig: Configuration = {
     entry: './src/index.ts',
-    devtool: 'source-map',
+    devtool: 'inline-source-map',
     stats: {
         colors: true,
         modules: true,

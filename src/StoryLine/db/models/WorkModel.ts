@@ -9,7 +9,8 @@ import { SectionMode } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
 import schema from '@sl/db/schema'
 import { SearchResultType } from '@sl/layouts/Work/Panel/Search/types'
-import { displayDateTime, htmlToText } from '@sl/utils'
+import { displayDateTime } from '@sl/utils'
+import { htmlToText } from '@sl/utils/html'
 import { t } from 'i18next'
 import {
     CharacterDataType,

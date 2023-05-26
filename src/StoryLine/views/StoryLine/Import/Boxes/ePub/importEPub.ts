@@ -3,8 +3,9 @@ import { Database } from '@nozbe/watermelondb'
 import { DateTime } from 'luxon'
 import { SectionMode } from '@sl/constants/sectionMode'
 import { Status } from '@sl/constants/status'
-import { SectionModel, WorkModel } from '@sl/db/models'
-import { cleaner, wordCount } from '@sl/utils'
+import { SectionModel, StatisticModel, WorkModel } from '@sl/db/models'
+import { wordCount } from '@sl/utils'
+import { importCleaner } from '@sl/utils/html'
 
 const importEPub = async (database: Database): Promise<false | string> => {
     const data = await api.importEPub()
@@ -66,8 +67,8 @@ const importEPub = async (database: Database): Promise<false | string> => {
                     section.section.set(chapters[index])
                     section.mode = SectionMode.SCENE
                     section.order = 1
-                    section.body = cleaner(scene.text)
-                    section.words = wordCount(scene.text)
+                    section.body = importCleaner(scene.text)
+                    section.words = wordCount(importCleaner(scene.text))
                     section.status = Status.TODO
                     section.createdAt = date
                     section.updatedAt = date
@@ -75,6 +76,30 @@ const importEPub = async (database: Database): Promise<false | string> => {
             )
         )
     })
+
+    const scenes = await work.scenes.fetch()
+
+    const statistics: StatisticModel[] = scenes.reduce(
+        (arr: StatisticModel[], scene: SectionModel) => {
+            arr.push(
+                database.get<StatisticModel>('statistic').prepareCreate((statistic) => {
+                    statistic.work.set(work)
+                    statistic.section.set(scene)
+                    statistic.words = scene.words
+                    statistic.createdAt = scene.updatedAt
+                    statistic.updatedAt = scene.updatedAt
+                })
+            )
+            return arr
+        },
+        []
+    )
+
+    if (statistics.length) {
+        await database.write(async () => {
+            return await database.batch(statistics)
+        })
+    }
 
     return work.id
 }

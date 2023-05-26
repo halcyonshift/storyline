@@ -1,11 +1,17 @@
 import { MenuItem } from '@mui/material'
-import { FontFamily } from '@sl/constants/fontFamily'
+import { FontFamily, SafeFontFamily } from '@sl/constants/fontFamily'
 import SelectField from '../SelectField'
 import { SelectFieldProps } from '../SelectField/types'
 
-const FontFamilyField = ({ form, name, label, ...props }: SelectFieldProps) => (
+const FontFamilyField = ({
+    form,
+    name,
+    label,
+    mode,
+    ...props
+}: SelectFieldProps & { mode?: 'safe' | 'full' }) => (
     <SelectField form={form} name={name} label={label} {...props}>
-        {Object.entries(FontFamily).map(([name, label]) => (
+        {Object.entries(mode === 'safe' ? SafeFontFamily : FontFamily).map(([name, label]) => (
             <MenuItem key={`appFont-${name}`} value={name} sx={{ fontFamily: name }}>
                 {label}
             </MenuItem>

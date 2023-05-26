@@ -6,7 +6,7 @@ import { kebabCase } from 'lodash'
 const exportHTML = async (_: Electron.IpcMainInvokeEvent, fileName: string, html: string) => {
     const result = await dialog.showSaveDialog({
         defaultPath: `${kebabCase(fileName)}.html`,
-        filters: [{ name: '.html', extensions: ['html'] }]
+        filters: [{ name: '.html', extensions: ['*'] }]
     })
 
     if (result.filePath) {

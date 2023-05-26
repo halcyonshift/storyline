@@ -2,7 +2,7 @@ import { useRouteLoaderData } from 'react-router-dom'
 import { Box } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import NoteModel from '@sl/db/models/NoteModel'
-import { htmlParse } from '@sl/utils'
+import { htmlParse } from '@sl/utils/html'
 import ViewWrapper from '@sl/components/ViewWrapper'
 
 const NoteView = () => {
