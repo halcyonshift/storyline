@@ -840,7 +840,8 @@
                     "generate": "Generate"
                 },
                 "tracker": {
-                    "remaining": "{{days}} days left ({{words}} words a day)",
+                    "daysWordsRemaining": "{{days}} days left ({{words}} words a day)",
+                    "daysRemaining": "{{days}} days left",
                     "deadline": {
                         "days": "<span className='font-bold'>{{timeLeft}}</span> until deadline!",
                         "words": " <span className='font-bold'>{{wordsPerDay}} words a day</span> will meet your goal."
