@@ -69,6 +69,17 @@ const Tabs = () => {
         }
     })
 
+    const axisLockStyle = (style: React.CSSProperties | undefined) => {
+        if (style?.transform) {
+            const axisLockX = `${style.transform.split(',').shift()}, 0px)`
+            return {
+                ...style,
+                transform: axisLockX
+            }
+        }
+        return style
+    }
+
     const onDragEnd = (result: DropResult) => {
         if (!result.destination) return
         if (result.destination.index === result.source.index) return
@@ -135,6 +146,9 @@ const Tabs = () => {
                                                 <Tab
                                                     ref={props.innerRef}
                                                     {...props.draggableProps}
+                                                    style={axisLockStyle(
+                                                        props.draggableProps.style
+                                                    )}
                                                     onClick={(e) => {
                                                         e.stopPropagation()
                                                         tabs.setActive(index)
