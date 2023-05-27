@@ -1,3 +1,4 @@
+import { MutableRefObject } from 'react'
 import { SectionModel, WorkModel } from '@sl/db/models'
 
 export type ExportModeType = 'docx' | 'epub' | 'html' | 'md' | 'pages' | 'pdf' | 'rtf' | 'txt'
@@ -6,7 +7,6 @@ export type StylesType = {
     h2: object
     h3: object
     sep: object
-    p: object
     cover: object
     image: object
     page: object
@@ -34,11 +34,18 @@ export type ExportDataType = {
     fontSize: number
 }
 
-export type FullWorkSectionType = {
+export type FullWorkSectionProps = {
     parts?: SectionModel[]
     chapters?: SectionModel[]
     scenes: SectionModel[]
     settings: ExportDataType
-    styles: StylesType
-    parse: (s: string) => string
+    styles: StylesType | undefined
+    parse: (s: string, settings: ExportDataType) => string | JSX.Element | JSX.Element[]
+}
+
+export type FullWorkProps = {
+    forwardRef: MutableRefObject<HTMLElement>
+    settings?: ExportDataType
+    styles?: StylesType
+    parse?: (value: string, settings?: ExportDataType) => string | JSX.Element | JSX.Element[]
 }

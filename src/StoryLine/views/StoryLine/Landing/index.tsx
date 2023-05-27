@@ -14,6 +14,7 @@ import { sample } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
+import Link from '@sl/components/Link'
 import ListItem from '@sl/components/ListItem'
 import Icons, { GLOBAL_ICONS } from '@sl/constants/icons'
 import { Status } from '@sl/constants/status'
@@ -41,8 +42,6 @@ const LandingView = () => {
     const FEATURE_LINK =
         'https://github.com/halcyonshift/storyline/issues/new?labels=enhancement&template=' +
         'feature_request.md&title=%5BFEATURE%5D'
-
-    const DISCORD_LINK = 'https://discord.gg/4Dy9xW7fqQ'
 
     const handleNew = async () => {
         const work = await database.write(async () => {
@@ -127,22 +126,22 @@ const LandingView = () => {
                 </List>
             </Paper>
             <Paper elevation={1} className='relative '>
-                <Box className='px-4 pt-5 bg-indigo-50 dark:bg-indigo-900 h-full rounded'>
-                    <Box className='grid grid-cols-1 gap-5'>
-                        <a title='Go to GitHub' href={BUG_LINK}>
-                            <Box>
+                <Box className='bg-indigo-50 dark:bg-indigo-900 h-full rounded align-middle grid place-items-center'>
+                    <Box className='grid grid-cols-1 gap-5 w-[80%]'>
+                        <Link title='Go to GitHub' href={BUG_LINK}>
+                            <Box className='pb-5'>
                                 <Typography variant='h4' className='float-left pr-3'>
                                     {GLOBAL_ICONS.bug}
                                 </Typography>
                                 <Typography variant='body1'>
                                     {t('view.storyline.landing.contact.bug.title')}
                                 </Typography>
-                                <Typography variant='body2'>
+                                <Typography variant='body2' className='whitespace-nowrap'>
                                     {t('view.storyline.landing.contact.bug.text')}
                                 </Typography>
                             </Box>
-                        </a>
-                        <a title='Go to GitHub' href={FEATURE_LINK}>
+                        </Link>
+                        <Link title='Go to GitHub' href={FEATURE_LINK}>
                             <Box>
                                 <Typography variant='h4' className='float-left pr-3'>
                                     {GLOBAL_ICONS.feature}
@@ -154,20 +153,7 @@ const LandingView = () => {
                                     {t('view.storyline.landing.contact.feature.text')}
                                 </Typography>
                             </Box>
-                        </a>
-                        <a title='Go to Discord' href={DISCORD_LINK}>
-                            <Box>
-                                <Typography variant='h4' className='float-left pr-3'>
-                                    {GLOBAL_ICONS.help}
-                                </Typography>
-                                <Typography variant='body1'>
-                                    {t('view.storyline.landing.contact.support.title')}
-                                </Typography>
-                                <Typography variant='body2'>
-                                    {t('view.storyline.landing.contact.support.text')}
-                                </Typography>
-                            </Box>
-                        </a>
+                        </Link>
                     </Box>
                 </Box>
             </Paper>

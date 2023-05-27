@@ -2,13 +2,19 @@ import { dialog } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import JSZip from 'jszip'
+import { confirmationDialog } from './utils'
 
 const bibisco = async (baseDir: string) => {
+    const check = await confirmationDialog()
+
+    if (!check) return false
+
     const result = await dialog.showOpenDialog({
-        filters: [{ name: '.bibisco2', extensions: ['bibisco2'] }]
+        filters: [{ name: '.bibisco2', extensions: ['*'] }]
     })
 
     if (result.canceled || !result.filePaths.length) return false
+
     const filePath = result.filePaths[0]
     const fileDir = path.join(baseDir, 'import')
     await fs.promises.mkdir(fileDir, { recursive: true })
@@ -45,6 +51,7 @@ const bibisco = async (baseDir: string) => {
     }
 
     fs.rmSync(saveFilePath)
+
     return {
         images,
         imagePath: imageFileDir,

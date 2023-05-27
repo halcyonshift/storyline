@@ -120,6 +120,17 @@ app.on('ready', () => {
                 { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
                 { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' }
             ] as MenuItemConstructorOptions[]
+        },
+        {
+            label: 'Help',
+            submenu: [
+                {
+                    label: 'Issues',
+                    click: async () => {
+                        await shell.openExternal('https://github.com/halcyonshift/storyline/issues')
+                    }
+                }
+            ] as MenuItemConstructorOptions[]
         }
     ]
 

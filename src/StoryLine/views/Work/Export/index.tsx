@@ -30,9 +30,6 @@ const ExportView = () => {
                 <Boxes.Markdown work={work} />
             </Paper>
             <Paper elevation={1}>
-                <Boxes.Pages work={work} />
-            </Paper>
-            <Paper elevation={1}>
                 <Boxes.PDF work={work} />
             </Paper>
             <Paper elevation={1}>

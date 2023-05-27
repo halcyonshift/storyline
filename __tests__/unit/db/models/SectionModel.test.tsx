@@ -52,52 +52,6 @@ describe('SectionModel', () => {
         expect(aSection.displayName).toEqual(aSection.displayTitle)
     })
 
-    test('displayBody returns expected html', async () => {
-        await aSection.updateRecord({ mode: SectionMode.SCENE })
-
-        const bodyText = 'This is the body of a scene'
-
-        render(
-            <div>
-                <p>{aSection.displayBody}</p>
-            </div>
-        )
-
-        expect(screen.queryByText(bodyText)).toBeFalsy()
-
-        await aSection.updateBody(bodyText)
-
-        render(
-            <div>
-                <p>{aSection.displayBody}</p>
-            </div>
-        )
-        expect(screen.getByText(bodyText)).toBeTruthy()
-    })
-
-    test('displayDescription returns expected html', async () => {
-        const descriptionText = 'This is the description of a scene'
-
-        render(
-            <div>
-                <p>{aSection.displayDescription}</p>
-            </div>
-        )
-        expect(screen.queryByText(descriptionText)).toBeFalsy()
-
-        await aSection.updateRecord(
-            { description: descriptionText },
-            { characters: [], items: [], locations: [], notes: [] }
-        )
-
-        render(
-            <div>
-                <p>{aSection.displayDescription}</p>
-            </div>
-        )
-        expect(screen.getByText(descriptionText)).toBeTruthy()
-    })
-
     test('sortDate should return the date in milliseconds', () => {
         expect(aSection.sortDate).toEqual(978336000)
     })

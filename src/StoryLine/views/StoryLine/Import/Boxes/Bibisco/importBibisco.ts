@@ -19,11 +19,9 @@ import {
     TagModel,
     WorkModel
 } from '@sl/db/models'
-import { wordCount, cleaner } from '@sl/utils'
-
-const cleanText = (text: string) => {
-    return cleaner(text).replace('&nbsp;', ' ')
-}
+import { wordCount } from '@sl/utils'
+import { htmlToText } from '@sl/utils/html'
+import { importCleaner } from '../../utils'
 
 const statusMap = {
     todo: Status.TODO,
@@ -269,30 +267,30 @@ const importBibisco = async (database: Database): Promise<false | string> => {
                     character.image = data.profileimage
                         ? `${imagePath}${sep}${data.profileimage}`
                         : ''
-                    character.firstName = cleanText(data.personaldata.questions[0].text)
-                    character.lastName = cleanText(data.personaldata.questions[1].text)
-                    character.nickname = cleanText(data.personaldata.questions[2].text)
-                    character.gender = cleanText(data.personaldata.questions[3].text)
-                    character.apparentAge = cleanText(data.personaldata.questions[4].text)
-                    character.placeOfBirth = cleanText(data.personaldata.questions[5].text)
-                    character.residence = cleanText(data.personaldata.questions[6].text)
-                    character.education = cleanText(data.personaldata.questions[7].text)
-                    character.profession = cleanText(data.personaldata.questions[8].text)
-                    character.finances = cleanText(data.personaldata.questions[9].text)
-                    character.ethnicity = cleanText(data.physionomy.questions[0].text)
-                    character.height = cleanText(data.physionomy.questions[1].text)
-                    character.build = cleanText(data.physionomy.questions[2].text)
-                    character.hair = cleanText(data.physionomy.questions[3].text)
-                    character.face = cleanText(`${data.physionomy.questions[4].text}
+                    character.firstName = htmlToText(data.personaldata.questions[0].text)
+                    character.lastName = htmlToText(data.personaldata.questions[1].text)
+                    character.nickname = htmlToText(data.personaldata.questions[2].text)
+                    character.gender = htmlToText(data.personaldata.questions[3].text)
+                    character.apparentAge = htmlToText(data.personaldata.questions[4].text)
+                    character.placeOfBirth = htmlToText(data.personaldata.questions[5].text)
+                    character.residence = htmlToText(data.personaldata.questions[6].text)
+                    character.education = htmlToText(data.personaldata.questions[7].text)
+                    character.profession = htmlToText(data.personaldata.questions[8].text)
+                    character.finances = htmlToText(data.personaldata.questions[9].text)
+                    character.ethnicity = htmlToText(data.physionomy.questions[0].text)
+                    character.height = htmlToText(data.physionomy.questions[1].text)
+                    character.build = htmlToText(data.physionomy.questions[2].text)
+                    character.hair = htmlToText(data.physionomy.questions[3].text)
+                    character.face = htmlToText(`${data.physionomy.questions[4].text}
                     ${data.physionomy.questions[5].text}
                     ${data.physionomy.questions[6].text}`)
                     character.distinguishingFeatures =
-                        cleanText(`${data.physionomy.questions[22].text}
+                        importCleaner(`${data.physionomy.questions[22].text}
                     ${data.physionomy.questions[23].text}`)
-                    character.religion = cleanText(data.ideas.questions[0].text)
-                    character.politicalLeaning = cleanText(data.ideas.questions[2].text)
-                    character.description = data.description
-                    character.history = data.lifebeforestorybeginning
+                    character.religion = htmlToText(data.ideas.questions[0].text)
+                    character.politicalLeaning = htmlToText(data.ideas.questions[2].text)
+                    character.description = importCleaner(data.description)
+                    character.history = importCleaner(data.lifebeforestorybeginning.text)
                     character.status = statusMap[data.status as keyof typeof statusMap]
                     character.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
                     character.updatedAt = DateTime.fromMillis(

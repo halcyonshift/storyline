@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import { Box, Typography } from '@mui/material'
-import { htmlParse } from '@sl/utils'
+import { htmlParse } from '@sl/utils/html'
 import { PartSummaryProps } from './types'
 import ChapterSummary from '../Chapter'
 

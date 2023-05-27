@@ -21,8 +21,11 @@ type DataType = {
     works: WorkType[]
 }
 
+// eslint-disable-next-line complexity
 const ao3 = async (baseDir: string, id: number, mode: 'series' | 'work') => {
-    if (!id || !mode || !['series', 'work'].includes(mode)) return false
+    if (!id || id < 0 || id > 1000000000 || !mode || !['series', 'work'].includes(mode))
+        return false
+
     let ids: string[] = []
 
     const data: DataType = {
@@ -35,12 +38,17 @@ const ao3 = async (baseDir: string, id: number, mode: 'series' | 'work') => {
             const response = await axios.get(`https://archiveofourown.org/series/${id}`, {
                 responseType: 'document'
             })
+
             const $ = cheerio.load(response.data)
 
             const works = $('ul.series > li .heading > a[href^="/works/"]')
             ids = works.map((index, element) => $(element).attr('href').split('/')[2]).get()
 
-            data.title = $('h2.heading').text()
+            if (!ids.length) return false
+
+            data.title = $('h2.heading')
+                .text()
+                .replace(/ {2}|\r\n|\n|\r|\t/gm, '')
         } catch {
             return false
         }
@@ -70,23 +78,28 @@ const ao3 = async (baseDir: string, id: number, mode: 'series' | 'work') => {
             epub.on('end', async () => {
                 const work = epub.metadata
                 const chapters: ChapterType[] = []
-                let c = 0
-                for await (const chapter of epub.flow) {
+
+                for await (const chapter of epub.toc) {
+                    const chapterId = epub.flow.find(
+                        (flow) => decodeURI(flow.href) === decodeURI(chapter.href)
+                    )?.id
+
+                    if (!chapterId) continue
+
                     const text: string = await new Promise((resolve) => {
-                        epub.getChapter(chapter.id, (_, text) => {
+                        epub.getChapter(chapterId, (_, text) => {
                             resolve(text)
                         })
                     })
-                    const tocItem = epub.toc[c]
 
                     chapters.push({
-                        title: tocItem?.title || '',
-                        order: tocItem?.order || 0,
+                        title: chapter.title,
+                        order: chapter.order - 1,
                         text
                     })
-                    c += 1
                 }
-                resolve({ work, chapters: chapters.slice(2, -1).concat() })
+
+                resolve({ work, chapters: chapters.slice(1, -1) })
             })
 
             epub.parse()

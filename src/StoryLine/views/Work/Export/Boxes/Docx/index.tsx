@@ -1,11 +1,12 @@
-import { useRef, useState, CSSProperties, useMemo, useEffect } from 'react'
+import { useRef, useState, useMemo, useEffect } from 'react'
 import { Box, Button, Typography } from '@mui/material'
 import { IMPORTEXPORT_ICONS } from '@sl/constants/icons'
 import ExportForm from '@sl/forms/Work/Export'
 import { WorkModel } from '@sl/db/models'
 import { ExportDataType } from '@sl/forms/Work/Export/types'
-import { exportDocxParse } from '@sl/utils'
 import FullWork from '../../FullWork'
+import { parse } from '../../utils/parse'
+import getStyles from '../../utils/styles'
 
 const DocxBox = ({ work }: { work: WorkModel }) => {
     const [open, setOpen] = useState<boolean>(false)
@@ -13,38 +14,20 @@ const DocxBox = ({ work }: { work: WorkModel }) => {
     const ref = useRef<HTMLDivElement>(null)
     const [isGenerating, setIsGenerating] = useState<boolean>(false)
 
-    const parse = (html: string) => {
-        return exportDocxParse(html)
-    }
-
-    const styles = useMemo(
-        () => ({
-            h1: { textAlign: 'center', fontFamily: 'arial' } as CSSProperties,
-            h2: {
-                textAlign: 'center',
-                fontFamily: 'arial'
-            } as CSSProperties,
-            h3: {
-                textAlign: 'center',
-                fontFamily: 'arial',
-                fontSize: '13pt'
-            } as CSSProperties,
-            sep: { textAlign: 'center', fontFamily: 'arial' } as CSSProperties,
-            p: {
-                fontFamily: 'arial',
-                fontSize: '12pt'
-            } as CSSProperties,
-            cover: {
-                margin: '0 auto',
-                height: '842px',
-                width: '595px',
-                textAlign: 'center'
-            } as CSSProperties,
-            image: { maxWidth: '595px', maxHeight: '842px' } as CSSProperties,
-            page: { width: '595px', margin: 'auto' } as CSSProperties
-        }),
-        [settings]
-    )
+    const styles = useMemo(() => {
+        const defaults = getStyles(settings)
+        return {
+            ...defaults,
+            ...{
+                cover: {
+                    ...defaults.cover,
+                    ...{
+                        height: '842px'
+                    }
+                }
+            }
+        }
+    }, [settings])
 
     const generateExport = async (values: ExportDataType) => {
         setSettings(values)

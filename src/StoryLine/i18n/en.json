@@ -691,7 +691,7 @@
                     },
                     "info": {
                         "primary": "Info",
-                        "secondary": "Need to get in touch? Love licences? Both in here."
+                        "secondary": "Want to know who made this? Love licences? Both in here."
                     }
                 },
                 "recent": {
@@ -706,10 +706,6 @@
                     "feature": {
                         "title": "Want a new feature?",
                         "text": "Tell me your hopes and dreams"
-                    },
-                    "support": {
-                        "title": "Looking for a user guide?",
-                        "text": "There isn't one yet, but there is a Discord!"
                     }
                 },
                 "titles": {
@@ -778,7 +774,8 @@
                 "about": {
                     "title": "About",
                     "version": "Version",
-                    "developer": "Developer"
+                    "developer": "Developer",
+                    "repo": "Repo"
                 },
                 "license": {
                     "title": "License",

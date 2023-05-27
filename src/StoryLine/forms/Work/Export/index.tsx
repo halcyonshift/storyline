@@ -26,7 +26,6 @@ import TextField from '@sl/components/form/TextField'
 import {
     DEFAULT_LINE_HEIGHT,
     DEFAULT_PARAGRAPH_SPACING,
-    DEFAULT_FONT,
     DEFAULT_FONT_SIZE,
     DEFAULT_INDENT_PARAGRAPH
 } from '@sl/constants/defaults'
@@ -75,7 +74,7 @@ const ExportForm = ({
             sceneSeparator: 'oOo',
             lineHeight: DEFAULT_LINE_HEIGHT,
             paragraphSpacing: DEFAULT_PARAGRAPH_SPACING,
-            font: DEFAULT_FONT,
+            font: 'arial',
             fontSize: DEFAULT_FONT_SIZE,
             indentParagraph: DEFAULT_INDENT_PARAGRAPH
         },
@@ -106,6 +105,13 @@ const ExportForm = ({
                         <Typography sx={{ ml: 2, flex: 1 }} variant='h6' component='div'>
                             {t('form.work.export.title', { mode })}
                         </Typography>
+                        {isGenerating ? (
+                            <Typography
+                                variant='body2'
+                                className='text-slate-600 pr-3 max-w-[300px]'>
+                                {t('form.work.export.helpText')}
+                            </Typography>
+                        ) : null}
                         <Button variant='contained' type='submit' disabled={isGenerating}>
                             {isGenerating ? (
                                 <CircularProgress size={settings.appFontSize * 2} />
@@ -113,11 +119,6 @@ const ExportForm = ({
                                 t('form.work.export.button')
                             )}
                         </Button>
-                        {isGenerating ? (
-                            <Typography variant='body2' className='text-slate-600 pt-3'>
-                                {t('form.work.export.helpText')}
-                            </Typography>
-                        ) : null}
                     </Toolbar>
                 </AppBar>
                 <DialogContent>
@@ -128,6 +129,7 @@ const ExportForm = ({
                                     <FontFamilyField
                                         form={form}
                                         name='font'
+                                        mode='safe'
                                         label={t('form.work.export.font')}
                                     />
                                     <FontSizeField

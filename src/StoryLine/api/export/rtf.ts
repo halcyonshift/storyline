@@ -5,7 +5,7 @@ import * as htmlToRtf from 'html-to-rtf'
 const exportRTF = async (_: Electron.IpcMainInvokeEvent, fileName: string, html: string) => {
     const result = await dialog.showSaveDialog({
         defaultPath: `${kebabCase(fileName)}.rtf`,
-        filters: [{ name: '.rtf', extensions: ['rtf'] }]
+        filters: [{ name: '.rtf', extensions: ['*'] }]
     })
 
     if (result.filePath) {

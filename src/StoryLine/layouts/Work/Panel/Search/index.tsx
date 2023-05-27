@@ -9,7 +9,7 @@ import WorkModel from '@sl/db/models/WorkModel'
 import Result from './Result'
 import useSettings from '@sl/theme/useSettings'
 import { getHex } from '@sl/theme/utils'
-import { htmlToText } from 'html-to-text'
+import { htmlToText } from '@sl/utils/html'
 
 const SearchInput = styled(InputBase)(() => ({
     '& .MuiInputBase-input': {

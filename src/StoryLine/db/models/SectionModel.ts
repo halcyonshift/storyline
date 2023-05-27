@@ -6,15 +6,8 @@ import { DateTime, Interval } from 'luxon'
 import { type PointOfViewType } from '@sl/constants/pov'
 import { SectionMode, type SectionModeType } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
-import {
-    displayDate,
-    displayTime,
-    displayDateTime,
-    sortDate,
-    htmlExtractExcerpts,
-    htmlParse,
-    wordCount
-} from '@sl/utils'
+import { displayDate, displayTime, displayDateTime, sortDate, wordCount } from '@sl/utils'
+import { htmlExtractExcerpts } from '@sl/utils/html'
 import { stripSlashes } from '@sl/components/RichtextEditor/plugins/Tag/utils'
 import { type AllTagsType, type SectionDataType, type StatisticDataType } from './types'
 import {
@@ -77,14 +70,6 @@ export default class SectionModel extends Model {
 
     get displayName() {
         return this.displayTitle
-    }
-
-    get displayBody() {
-        return this.body ? htmlParse(this.body) : null
-    }
-
-    get displayDescription() {
-        return this.description ? htmlParse(this.description) : null
     }
 
     get sortDate() {

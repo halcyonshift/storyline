@@ -13,7 +13,7 @@ import { useRouteLoaderData } from 'react-router-dom'
 import Image from '@sl/components/Image'
 import ViewWrapper from '@sl/components/ViewWrapper'
 import { CharacterModel } from '@sl/db/models'
-import { htmlParse } from '@sl/utils'
+import { htmlParse } from '@sl/utils/html'
 
 const ListItem = ({ primary, secondary }: { primary: string; secondary: string }) =>
     secondary ? (
