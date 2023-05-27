@@ -2,11 +2,17 @@ import { dialog } from 'electron'
 import EPub from 'epub'
 import fs from 'fs'
 import path from 'path'
+import { confirmationDialog } from './utils'
 
 const epub = async (baseDir: string) => {
+    const check = await confirmationDialog()
+
+    if (!check) return false
+
     const result = await dialog.showOpenDialog({
-        filters: [{ name: '.epub', extensions: ['epub'] }]
+        filters: [{ name: '.epub', extensions: ['*'] }]
     })
+
     if (result.canceled || !result.filePaths.length) return false
     const filePath = result.filePaths[0]
     const fileDir = path.join(baseDir, 'import')
@@ -19,22 +25,29 @@ const epub = async (baseDir: string) => {
         chapters: { title: string; order: number; text: string }[]
     } = await new Promise((resolve) => {
         const epub = new EPub(saveFilePath, fileDir, fileDir)
+
         epub.on('end', async () => {
             const work = epub.metadata
             const chapters: { title: string; order: number; text: string }[] = []
-            let c = 0
-            for await (const chapter of epub.flow) {
+
+            for await (const chapter of epub.toc) {
+                const id = epub.flow.find(
+                    (flow) => decodeURI(flow.href) === decodeURI(chapter.href)
+                )?.id
+
+                if (!id) continue
+
                 const text: string = await new Promise((resolve) => {
-                    epub.getChapter(chapter.id, (_, text) => {
+                    epub.getChapter(id, (_, text) => {
                         resolve(text)
                     })
                 })
+
                 chapters.push({
-                    title: epub.toc[c]?.title || '',
-                    order: epub.toc[c]?.order || 0,
+                    title: chapter.title,
+                    order: chapter.order,
                     text
                 })
-                c += 1
             }
 
             resolve({ work, chapters })

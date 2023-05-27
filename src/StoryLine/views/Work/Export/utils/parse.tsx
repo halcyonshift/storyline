@@ -39,6 +39,8 @@ export const parserOptions = (settings: ExportDataType): HTMLReactParserOptions 
 
         domNode.attribs = {}
 
+        // ToDo - em is repeating needs fix
+
         if (['p', 'blockquote'].includes(domNode.name)) {
             return (
                 <p style={styleObject(attribs.style || '', settings)} dir={attribs.dir}>

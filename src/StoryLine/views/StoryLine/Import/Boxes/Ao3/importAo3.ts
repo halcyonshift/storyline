@@ -5,7 +5,7 @@ import { SectionMode } from '@sl/constants/sectionMode'
 import { Status } from '@sl/constants/status'
 import { SectionModel, StatisticModel, WorkModel } from '@sl/db/models'
 import { wordCount } from '@sl/utils'
-import { importCleaner } from '@sl/utils/html'
+import { importCleaner } from '../../utils'
 
 const importAo3 = async (
     workOrSeriesId: number,
@@ -14,7 +14,7 @@ const importAo3 = async (
 ): Promise<false | string> => {
     const { title, works } = await api.importAo3(workOrSeriesId, mode)
 
-    if (!works.length) {
+    if (!works || !works.length) {
         return false
     }
 

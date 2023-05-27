@@ -20,7 +20,8 @@ import {
     WorkModel
 } from '@sl/db/models'
 import { wordCount } from '@sl/utils'
-import { htmlToText, importCleaner } from '@sl/utils/html'
+import { htmlToText } from '@sl/utils/html'
+import { importCleaner } from '../../utils'
 
 const statusMap = {
     todo: Status.TODO,
@@ -289,7 +290,7 @@ const importBibisco = async (database: Database): Promise<false | string> => {
                     character.religion = htmlToText(data.ideas.questions[0].text)
                     character.politicalLeaning = htmlToText(data.ideas.questions[2].text)
                     character.description = importCleaner(data.description)
-                    character.history = importCleaner(data.lifebeforestorybeginning)
+                    character.history = importCleaner(data.lifebeforestorybeginning.text)
                     character.status = statusMap[data.status as keyof typeof statusMap]
                     character.createdAt = DateTime.fromMillis(data.meta.created).toJSDate()
                     character.updatedAt = DateTime.fromMillis(

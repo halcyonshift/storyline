@@ -4,9 +4,12 @@ StoryLine is an open source novel-writing and e-publishing app
 
 ## Features
 
-* Separate parts, chapers and scenes
-* Granular tagging by scene or text
-* Insights
+* Separate parts, chapters and scenes
+* Various tools to help with structure and flow
+* Grammarly integration
+* Insights on structure and productivity
+* Import from a growing number of formats, apps and platforms
+* Export to ePub, docx, pdf and more
 
 ## Support
 

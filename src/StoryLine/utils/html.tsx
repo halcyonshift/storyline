@@ -9,53 +9,6 @@ export const htmlToText = (html: string) => {
     return $('div').text()
 }
 
-// clean html to allow only given elements on import
-
-export const importCleaner = (
-    html: string,
-    allowedTags = ['p', 'ol', 'ul', 'em', 'li', 'strong', 'u', 's']
-) => {
-    const $ = cheerio.load(
-        html
-            .replace(/“/g, '"')
-            .replace(/”/g, '"')
-            .replace(/’/g, "'")
-            .replace(/<div[^>]*>/g, '')
-            .replace(/<\/div>/g, '')
-            .replace('&nbsp;', ' ')
-    )
-
-    $('body *').each((_, element) => {
-        const tagName = element.tagName.toLowerCase()
-        element.attribs = {}
-
-        if (!allowedTags.includes(tagName)) {
-            if (['a'].includes(tagName)) {
-                $(element).replaceWith($(element).text())
-            } else if (
-                [
-                    'img',
-                    'video',
-                    'object',
-                    'embed',
-                    'script',
-                    'link',
-                    'html',
-                    'head',
-                    'title',
-                    'meta'
-                ].includes(tagName)
-            ) {
-                $(element).remove()
-            } else {
-                $(element).replaceWith('<p>' + $(element).text() + '</p>')
-            }
-        }
-    })
-
-    return $.html('body *')
-}
-
 // display html on a view
 
 const htmlParseOptions: HTMLReactParserOptions = {

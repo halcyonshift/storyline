@@ -5,7 +5,7 @@ import { SectionMode } from '@sl/constants/sectionMode'
 import { Status } from '@sl/constants/status'
 import { SectionModel, StatisticModel, WorkModel } from '@sl/db/models'
 import { wordCount } from '@sl/utils'
-import { importCleaner } from '@sl/utils/html'
+import { importCleaner } from '../../utils'
 
 const importEPub = async (database: Database): Promise<false | string> => {
     const data = await api.importEPub()

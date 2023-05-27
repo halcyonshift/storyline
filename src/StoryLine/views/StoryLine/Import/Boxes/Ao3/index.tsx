@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import {
     Box,
     Button,
+    CircularProgress,
     FormControl,
     FormControlLabel,
     RadioGroup,
@@ -13,18 +15,31 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import Link from '@sl/components/Link'
 import useMessenger from '@sl/layouts/useMessenger'
+import useSettings from '@sl/theme/useSettings'
 import importAo3 from './importAo3'
-import { useState } from 'react'
 
 type ModeType = 'series' | 'work'
 
 const Ao3Box = () => {
     const [id, setId] = useState<number>()
+    const [importing, setImporting] = useState<boolean>(false)
     const [mode, setMode] = useState<ModeType>('work')
     const database = useDatabase()
     const messenger = useMessenger()
     const navigate = useNavigate()
+    const { appFontSize } = useSettings()
     const { t } = useTranslation()
+
+    const handleImport = async () => {
+        setImporting(true)
+        const workId = await importAo3(id, mode, database)
+        setImporting(false)
+        if (workId) {
+            navigate(`/work/${workId}`)
+        } else {
+            messenger.error(t('view.storyline.import.ao3.error'))
+        }
+    }
 
     return (
         <Box className='grid h-full place-items-center p-5'>
@@ -44,7 +59,7 @@ const Ao3Box = () => {
                 </RadioGroup>
             </FormControl>
             <TextField
-                value={id || ' '}
+                value={id || ''}
                 inputProps={{
                     inputMode: 'numeric',
                     pattern: '[0-9]*'
@@ -55,19 +70,13 @@ const Ao3Box = () => {
                     setId(parseInt(event.target.value))
                 }}
             />
-            <Button
-                variant='contained'
-                onClick={async () => {
-                    const workId = await importAo3(id, mode, database)
-
-                    if (workId) {
-                        navigate(`/work/${workId}`)
-                    } else {
-                        messenger.error(t('view.storyline.import.ao3.error'))
-                    }
-                }}>
-                {t('view.storyline.import.button')}
-            </Button>
+            {importing ? (
+                <CircularProgress size={appFontSize * 2} />
+            ) : (
+                <Button variant='contained' onClick={handleImport}>
+                    {t('view.storyline.import.button')}
+                </Button>
+            )}
         </Box>
     )
 }
