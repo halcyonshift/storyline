@@ -85,6 +85,7 @@ export const RICHTEXT_ICONS = {
     alignRight: <Icon name='FormatAlignRight' />,
     alignCenter: <Icon name='FormatAlignCenter' />,
     alignJustify: <Icon name='FormatAlignJustify' />,
+    style: <Icon name='DashboardCustomize' />,
     tag: <Icon name='LocalOffer' />,
     version: <Icon name='RestorePage' />,
     redo: <Icon name='Redo' />,

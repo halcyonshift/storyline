@@ -116,6 +116,11 @@ export type SprintStatisticDataType = {
 
 export type StatisticDataType = number
 
+export type StyleDataType = {
+    label: string
+    body: string
+}
+
 export type WorkDataType = {
     status?: StatusType
     title: string

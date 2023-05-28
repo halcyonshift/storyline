@@ -166,7 +166,7 @@ const SettingsForm = ({
                 </TabPanel>
                 <TabPanel value='editor'>
                     <Box className='grid grid-cols-2 gap-5'>
-                        <Box className='grid grid-cols-1 gap-5'>
+                        <Box className='grid grid-cols-1 gap-5 pr-5'>
                             <Box className='grid grid-cols-2 gap-5'>
                                 <FontFamilyField
                                     form={form}
@@ -202,7 +202,7 @@ const SettingsForm = ({
                                 label='form.storyline.settings.spellCheck'
                             />
                         </Box>
-                        <Box>
+                        <Box className='pl-5'>
                             <Box className='grid grid-cols-1 gap-5'>
                                 <RadioField
                                     form={form}

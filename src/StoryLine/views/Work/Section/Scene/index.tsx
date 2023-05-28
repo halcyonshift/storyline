@@ -78,7 +78,7 @@ const SceneView = ({ section }: SectionViewType) => {
         }
     }
 
-    const plugins = ['excerpt', 'tag', 'search', 'save']
+    const plugins = ['excerpt', 'tag', 'search', 'save', 'style']
 
     return (
         <RichtextEditor

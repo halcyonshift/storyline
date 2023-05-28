@@ -247,6 +247,20 @@ const ToolbarPlugin = ({
                     }}>
                     {RICHTEXT_ICONS.alignJustify}
                 </IconButton>
+                {config.includes('style') ? (
+                    <IconButton
+                        id='menu-style'
+                        aria-label={t('component.richtextEditor.toolbar.style.label')}
+                        aria-controls={menu ? 'menu' : undefined}
+                        aria-haspopup={true}
+                        aria-expanded={menu ? 'true' : undefined}
+                        onClick={(e) => {
+                            setMenu('style')
+                            setMenuElement(menu ? null : e.currentTarget)
+                        }}>
+                        {RICHTEXT_ICONS.style}
+                    </IconButton>
+                ) : null}
                 {config.includes('tag') ? (
                     <IconButton
                         id='menu-tag'

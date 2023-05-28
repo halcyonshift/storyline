@@ -174,6 +174,15 @@ const schema = appSchema({
             ]
         }),
         tableSchema({
+            name: 'style',
+            columns: [
+                { name: 'label', type: 'string' },
+                { name: 'body', type: 'string' },
+                { name: 'created_at', type: 'number' },
+                { name: 'updated_at', type: 'number' }
+            ]
+        }),
+        tableSchema({
             name: 'tag',
             columns: [
                 { name: 'work_id', type: 'string', isIndexed: true },

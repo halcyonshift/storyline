@@ -72,7 +72,7 @@ const ConnectionForm = ({ work, connection, initialValues, setOpen }: Connection
         Promise.all([connection.fromRecord(), connection.toRecord()]).then(
             ([fromRecord, toRecord]) => {
                 form.setFieldValue('mode', connection.mode)
-                form.setFieldValue('relation', connection.relation)
+                form.setFieldValue('relation', connection.relation || '')
                 form.setFieldValue('from', connection.from)
                 form.setFieldValue('date', connection.date)
                 form.setFieldValue('color', connection.color)
