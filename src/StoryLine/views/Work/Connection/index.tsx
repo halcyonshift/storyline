@@ -33,6 +33,7 @@ import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { getHex } from '@sl/theme/utils'
 import { ObjType, NodeType, NodeTypeByID } from './types'
 import useSettings from '@sl/theme/useSettings'
+
 const PaperComponent = (props: PaperProps) => {
     return (
         <Draggable handle='#draggable' cancel={'[class*="MuiDialogContent-root"]'}>
@@ -216,7 +217,7 @@ const ConnectionView = () => {
 
     return (
         <Box className='relative w-full h-full'>
-            <Box className='float-right mt-3 grid grid-cols-3 gap-3 w-1/3 px-3'>
+            <Box className='float-right mt-3 grid grid-cols-3 gap-3 w-full px-3'>
                 <Box>
                     <Button
                         variant='contained'

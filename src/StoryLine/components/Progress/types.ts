@@ -1,4 +1,5 @@
+import { SectionModel } from '@sl/db/models'
+
 export type ProgressProps = {
-    words: number
-    goal: number
+    section: SectionModel
 }
