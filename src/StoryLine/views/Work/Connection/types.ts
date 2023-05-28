@@ -10,6 +10,8 @@ export type NodeType = {
     color?: string
     shape?: string
     size?: number
+    level: number
+    children: NodeType[]
 }
 
 export type NodeTypeByID = {

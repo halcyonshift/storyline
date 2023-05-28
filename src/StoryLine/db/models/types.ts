@@ -42,9 +42,12 @@ export type CharacterDataType = {
     fears?: string
 }
 
+type RelationType = 'parent' | 'child' | 'sibling'
+
 export type ConnectionDataType = {
     body: string
     mode: string
+    relation: RelationType
     tableA: string
     tableB: string
     idA: string

@@ -411,6 +411,13 @@
                     "label": "Connection",
                     "placeholder": "e.g., Brother"
                 },
+                "relation": {
+                    "label": "Relation",
+                    "option0": "None",
+                    "option1": "Parent",
+                    "option2": "Child",
+                    "option3": "Sibling"
+                },
                 "button": {
                     "save": "Save",
                     "delete": "Delete"
@@ -810,6 +817,7 @@
             },
             "connection": {
                 "filter": {
+                    "tree": "Family tree",
                     "table": {
                         "label": "Type",
                         "all": "All",

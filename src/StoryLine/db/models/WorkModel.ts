@@ -442,6 +442,7 @@ export default class WorkModel extends Model {
                     connection.to = connectionData.to
                     connection.from = connectionData.from
                     connection.mode = connectionData.mode
+                    connection.relation = connectionData.relation
                 })
             ),
             ...data.item.map((itemData: any) =>

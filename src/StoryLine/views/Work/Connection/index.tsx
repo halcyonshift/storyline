@@ -6,11 +6,13 @@ import {
     DialogContent,
     DialogTitle,
     FormControl,
+    FormControlLabel,
     InputLabel,
     MenuItem,
     Paper,
     PaperProps,
-    Select
+    Select,
+    Switch
 } from '@mui/material'
 import Draggable from 'react-draggable'
 import { useTranslation } from 'react-i18next'
@@ -47,6 +49,7 @@ const ConnectionView = () => {
     const [open, setOpen] = useState<boolean>(false)
     const initialValues = getInitialValues('connection', ['work_id']) as ConnectionDataType
     const work = useRouteLoaderData('work') as WorkModel
+    const [isTree, setIsTree] = useState<boolean>(false)
     const [characters, setCharacters] = useState<CharacterModel[]>([])
     const [items, setItems] = useState<ItemModel[]>([])
     const [locations, setLocations] = useState<LocationModel[]>([])
@@ -64,7 +67,16 @@ const ConnectionView = () => {
     const { t } = useTranslation()
     const settings = useSettings()
     const connections = useObservable(
-        () => work.connection.observeWithColumns(['id_a', 'id_b', 'mode', 'to', 'from', 'color']),
+        () =>
+            work.connection.observeWithColumns([
+                'id_a',
+                'id_b',
+                'mode',
+                'to',
+                'from',
+                'color',
+                'relation'
+            ]),
         [],
         []
     )
@@ -83,6 +95,16 @@ const ConnectionView = () => {
         note: 'dot'
     }
 
+    const getSiblingLevel = (node: NodeType, siblingId: string) => {
+        if (node.id === siblingId) {
+            return node.level
+        }
+        const childLevels: NodeType[] = (node.children || []).map((child) =>
+            getSiblingLevel(child, siblingId)
+        )
+        return Math.max.apply(null, childLevels)
+    }
+
     const getNodes = (): DataSet => {
         const data = {
             character: characters,
@@ -90,6 +112,8 @@ const ConnectionView = () => {
             location: locations,
             note: notes
         }
+
+        const rootNodes: NodeType[] = []
 
         const nodes = connections.reduce((o, connection) => {
             if (!o[connection.idA]) {
@@ -101,9 +125,12 @@ const ConnectionView = () => {
                         label: objA.displayName.replace(/ /g, '\n'),
                         table: connection.tableA,
                         obj: objA,
+                        level: 0,
                         color: colors[connection.tableA as keyof typeof colors],
-                        shape: shapes[connection.tableA as keyof typeof shapes]
+                        shape: shapes[connection.tableA as keyof typeof shapes],
+                        children: []
                     }
+                    rootNodes.push(o[connection.idA])
                 } catch {
                     //
                 }
@@ -117,11 +144,28 @@ const ConnectionView = () => {
                         label: objB.displayName.replace(' ', '\n'),
                         table: connection.tableB,
                         obj: objB,
+                        level: 0,
                         color: colors[connection.tableB as keyof typeof colors],
-                        shape: shapes[connection.tableB as keyof typeof shapes]
+                        shape: shapes[connection.tableB as keyof typeof shapes],
+                        children: []
                     }
+                    rootNodes.push(o[connection.idB])
                 } catch {
                     //
+                }
+            }
+
+            if (isTree) {
+                if (connection.relation === 'parent') {
+                    o[connection.idB].level = o[connection.idA].level + 1
+                    o[connection.idA].children.push(o[connection.idB])
+                } else if (connection.relation === 'sibling') {
+                    const maxLevel = rootNodes.reduce((level, rootNode) => {
+                        return Math.max(level, getSiblingLevel(rootNode, connection.idB))
+                    }, -1)
+                    o[connection.idB].level = maxLevel + 1
+                    const parent = o[connection.idA]
+                    parent.children.push(o[connection.idB])
                 }
             }
 
@@ -133,24 +177,26 @@ const ConnectionView = () => {
 
     const getEdges = (): DataSet =>
         new DataSet(
-            connections.map((connection) => {
-                let arrows
+            connections
+                .filter((connection) => !isTree || connection.relation)
+                .map((connection) => {
+                    let arrows
 
-                if (connection.to && connection.from) arrows = ''
-                else if (connection.to) arrows = 'to'
-                else arrows = 'from'
+                    if (connection.to && connection.from) arrows = ''
+                    else if (connection.to) arrows = 'to'
+                    else arrows = 'from'
 
-                return {
-                    id: connection.id,
-                    from: connection.idA,
-                    to: connection.idB,
-                    relation: connection.mode,
-                    value: connection.to && connection.from ? 2 : 1,
-                    title: connection.mode,
-                    color: connection.color || getHex('slate', 300),
-                    arrows
-                }
-            })
+                    return {
+                        id: connection.id,
+                        from: connection.idA,
+                        to: connection.idB,
+                        relation: connection.mode,
+                        value: connection.to && connection.from ? 2 : 1,
+                        title: connection.mode,
+                        color: connection.color || getHex('slate', 300),
+                        arrows
+                    }
+                })
         )
 
     useEffect(() => {
@@ -175,7 +221,7 @@ const ConnectionView = () => {
         )
         setNodes(getNodes())
         setEdges(getEdges())
-    }, [connections])
+    }, [connections, isTree])
 
     useEffect(() => {
         setNodesView(new DataView(getNodes()))
@@ -191,7 +237,22 @@ const ConnectionView = () => {
             ref.current,
             { nodes: nodesView, edges: edgesView },
             {
-                nodes: { font: { color: getHex(settings.isDark() ? 'white' : 'black') } }
+                nodes: { font: { color: getHex(settings.isDark() ? 'white' : 'black') } },
+                physics: isTree
+                    ? {
+                          hierarchicalRepulsion: {
+                              avoidOverlap: 1
+                          }
+                      }
+                    : {},
+                layout: isTree
+                    ? {
+                          hierarchical: {
+                              direction: 'UD',
+                              sortMethod: 'directed'
+                          }
+                      }
+                    : {}
             }
         )
         network.on('doubleClick', (e) => {
@@ -217,7 +278,7 @@ const ConnectionView = () => {
 
     return (
         <Box className='relative w-full h-full'>
-            <Box className='float-right mt-3 grid grid-cols-3 gap-3 w-full px-3'>
+            <Box className='float-right mt-3 grid grid-cols-4 gap-3 w-full px-3'>
                 <Box>
                     <Button
                         variant='contained'
@@ -230,6 +291,20 @@ const ConnectionView = () => {
                         {t('view.work.connection.button.add')}
                     </Button>
                 </Box>
+                <FormControl fullWidth className='z-10'>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                color='success'
+                                checked={isTree}
+                                onChange={() => setIsTree(!isTree)}
+                                inputProps={{ 'aria-label': 'controlled' }}
+                                aria-label={t('view.work.connection.filter.tree')}
+                            />
+                        }
+                        label={t('view.work.connection.filter.tree')}
+                    />
+                </FormControl>
                 <FormControl fullWidth className='z-10'>
                     <InputLabel id='filter-table-label'>
                         {t('view.work.connection.filter.table.label')}

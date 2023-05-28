@@ -12,6 +12,7 @@ export default class ConnectionModel extends Model {
     }
     @text('body') body!: string
     @text('mode') mode!: string
+    @field('relation') relation!: string
     @field('table_a') tableA!: string
     @field('table_b') tableB!: string
     @field('id_a') idA!: string

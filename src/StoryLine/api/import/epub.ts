@@ -10,7 +10,7 @@ const epub = async (baseDir: string) => {
     if (!check) return false
 
     const result = await dialog.showOpenDialog({
-        filters: [{ name: '.epub', extensions: ['*'] }]
+        filters: [{ name: '.epub', extensions: ['epub'] }]
     })
 
     if (result.canceled || !result.filePaths.length) return false
