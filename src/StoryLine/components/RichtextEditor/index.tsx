@@ -21,6 +21,7 @@ import useSettings from '@sl/theme/useSettings'
 import InitialValuePlugin from './plugins/InitialValue'
 import SavePlugin from './plugins/Save'
 import SearchPlugin from './plugins/Search'
+import StylePlugin from './plugins/Styles'
 import TagPlugin from './plugins/Tag'
 import { TagNode } from './plugins/Tag/Node'
 import { stripSlashes } from './plugins/Tag/utils'
@@ -185,6 +186,14 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                             />
                         ) : null}
                         {toolbar.includes('save') ? <SavePlugin onSave={onSave} /> : null}
+                        {toolbar.includes('style') ? (
+                            <StylePlugin
+                                menu={menu}
+                                menuElement={menuElement}
+                                setMenu={setMenu}
+                                setMenuElement={setMenuElement}
+                            />
+                        ) : null}
                         {toolbar.includes('tag') ? (
                             <TagPlugin
                                 menu={menu}

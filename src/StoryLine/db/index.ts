@@ -14,6 +14,7 @@ import {
     SprintModel,
     SprintStatisticModel,
     StatisticModel,
+    StyleModel,
     TagModel,
     WorkModel
 } from './models'
@@ -38,6 +39,7 @@ const database = new Database({
         SprintModel,
         SprintStatisticModel,
         StatisticModel,
+        StyleModel,
         TagModel,
         WorkModel
     ]

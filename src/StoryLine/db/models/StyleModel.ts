@@ -6,7 +6,7 @@ export default class StyleModel extends Model {
     static table = 'style'
 
     @text('label') label!: string
-    @text('body') author!: string
+    @text('body') body!: string
 
     @writer async updateRecord(data: Partial<StyleDataType>) {
         await this.update((style) => {

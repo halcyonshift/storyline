@@ -1,9 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import { createCommand, LexicalCommand, COMMAND_PRIORITY_LOW } from 'lexical'
+import {
+    $getSelection,
+    createCommand,
+    LexicalCommand,
+    COMMAND_PRIORITY_LOW,
+    $isTextNode
+} from 'lexical'
+
 import StyleModel from '@sl/db/models/StyleModel'
 import { MenuProps } from '../../types'
-import VersionMenu from './Menu'
+import StylesMenu from './Menu'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
 
 export const LOAD_STYLE_COMMAND: LexicalCommand<string | null> = createCommand()
@@ -13,7 +20,7 @@ const StylesPlugin = (props: MenuProps) => {
     const [editor] = useLexicalComposerContext()
     const [open, setOpen] = useState<boolean>(false)
 
-    useEffect(() => setOpen(Boolean(props.menu === 'version')), [props.menu])
+    useEffect(() => setOpen(Boolean(props.menu === 'style')), [props.menu])
 
     useEffect(() => {
         editor.registerCommand<string | null>(
@@ -23,12 +30,28 @@ const StylesPlugin = (props: MenuProps) => {
                     database
                         .get<StyleModel>('style')
                         .find(id)
-                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
                         .then((style) => {
-                            // do a thing
+                            editor.update(() => {
+                                const selection = $getSelection()
+                                const nodes = selection.extract()
+                                // eslint-disable-next-line max-nested-callbacks
+                                nodes.forEach((node) => {
+                                    if ($isTextNode(node)) {
+                                        node.setStyle(style.body)
+                                    }
+                                })
+                            })
                         })
                 } else {
-                    // remove a thing
+                    editor.update(() => {
+                        const selection = $getSelection()
+                        const nodes = selection.extract()
+                        nodes.forEach((node) => {
+                            if ($isTextNode(node)) {
+                                node.setStyle('')
+                            }
+                        })
+                    })
                 }
 
                 return true
@@ -37,7 +60,7 @@ const StylesPlugin = (props: MenuProps) => {
         )
     }, [editor])
 
-    return <VersionMenu open={open} {...props} />
+    return <StylesMenu open={open} {...props} />
 }
 
 export default StylesPlugin

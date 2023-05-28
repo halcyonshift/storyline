@@ -63,7 +63,7 @@ const TagMenu = ({
                 horizontal: 'center'
             }}
             MenuListProps={{
-                'aria-labelledby': `menu-tag`
+                'aria-labelledby': 'menu-tag'
             }}>
             <Selector onClick={(mode: TagModeType) => setMode(mode)} />
             <Box className='px-3 py-1'>
