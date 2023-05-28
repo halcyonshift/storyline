@@ -55,6 +55,7 @@ const schema = appSchema({
                 { name: 'id_a', type: 'string' },
                 { name: 'id_b', type: 'string' },
                 { name: 'mode', type: 'string' },
+                { name: 'relation', type: 'string', isIndexed: true, isOptional: true },
                 { name: 'to', type: 'boolean' },
                 { name: 'from', type: 'boolean' },
                 { name: 'body', type: 'string' },

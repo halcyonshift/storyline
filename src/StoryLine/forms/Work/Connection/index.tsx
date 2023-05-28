@@ -6,6 +6,7 @@ import * as yup from 'yup'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 import ColorField from '@sl/components/form/ColorField'
 import DateField from '@sl/components/form/DateField'
+import RadioField from '@sl/components/form/RadioField'
 import Selector from '@sl/components/Selector'
 import TextareaField from '@sl/components/form/TextareaField'
 import TextField from '@sl/components/form/TextField'
@@ -37,6 +38,7 @@ const ConnectionForm = ({ work, connection, initialValues, setOpen }: Connection
         idA: yup.string().required(t('form.required')),
         idB: yup.string().required(t('form.required')),
         mode: yup.string().required(t('form.required')),
+        relation: yup.string().nullable(),
         to: yup.boolean(),
         from: yup.boolean()
     })
@@ -70,6 +72,7 @@ const ConnectionForm = ({ work, connection, initialValues, setOpen }: Connection
         Promise.all([connection.fromRecord(), connection.toRecord()]).then(
             ([fromRecord, toRecord]) => {
                 form.setFieldValue('mode', connection.mode)
+                form.setFieldValue('relation', connection.relation)
                 form.setFieldValue('from', connection.from)
                 form.setFieldValue('date', connection.date)
                 form.setFieldValue('color', connection.color)
@@ -205,6 +208,29 @@ const ConnectionForm = ({ work, connection, initialValues, setOpen }: Connection
                 placeholder={t('form.work.connection.mode.placeholder')}
                 name='mode'
                 form={form}
+            />
+            <RadioField
+                form={form}
+                name='relation'
+                label='form.work.connection.relation.label'
+                options={[
+                    {
+                        value: '',
+                        label: 'form.work.connection.relation.option0'
+                    },
+                    {
+                        value: 'parent',
+                        label: 'form.work.connection.relation.option1'
+                    },
+                    {
+                        value: 'child',
+                        label: 'form.work.connection.relation.option2'
+                    },
+                    {
+                        value: 'sibling',
+                        label: 'form.work.connection.relation.option3'
+                    }
+                ]}
             />
             <Box className='grid grid-cols-2 gap-2'>
                 <DateField form={form} label={'form.work.connection.date'} fieldName='date' />

@@ -10,7 +10,7 @@ const bibisco = async (baseDir: string) => {
     if (!check) return false
 
     const result = await dialog.showOpenDialog({
-        filters: [{ name: '.bibisco2', extensions: ['*'] }]
+        filters: [{ name: '.bibisco2', extensions: ['bibisco2'] }]
     })
 
     if (result.canceled || !result.filePaths.length) return false
