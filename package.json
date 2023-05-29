@@ -1,14 +1,15 @@
 {
   "name": "storyline",
   "productName": "StoryLine",
-  "version": "0.1.11",
+  "version": "0.1.2",
   "description": "Writing tool",
   "main": ".webpack/main",
   "scripts": {
     "start": "ENVIRONMENT=development ELECTRON_DISABLE_SECURITY_WARNINGS=true electron-forge start",
-    "packager": "electron-forge package --arch=ia32,x64 --platform=darwin,win32",
+    "packager": "electron-forge package",
     "maker": "electron-forge make",
     "publisher": "electron-forge publish",
+    "dist": "electron-builder",
     "lint": "eslint --max-warnings=0 --ext .ts,.tsx .",
     "test:ci": "yarn jest ./__tests__/unit --silent",
     "test:unit": "yarn jest ./__tests__/unit --silent",
@@ -17,6 +18,22 @@
     "translation:unused": "i18n-unused display-unused",
     "icons": "electron-icon-builder --input=./src/StoryLine/assets/images/icon.png --output=./appicons",
     "nuke": "rm -rf node_modules yarn.lock && yarn cache clean && yarn"
+  },
+  "build": {
+    "appId": "com.halcyonshift.storyline",
+    "productName": "StoryLine",
+    "icon": "./src/StoryLine/assets/images/icons/icon.icns",
+    "directories": {
+       "output": "releases/${platform}/${arch}"
+    },
+    "mac": {
+       "hardenedRuntime": true,
+       "gatekeeperAssess": false,
+       "entitlements": "./entitlements.plist",
+       "entitlementsInherit": "./entitlements.plist",
+       "category": "public.app-category.productivity"
+    },
+    "asar": null
   },
   "keywords": [],
   "author": {
@@ -66,6 +83,7 @@
     "css-loader": "6.0.0",
     "dotenv-webpack": "8.0.1",
     "electron": "23.1.1",
+    "electron-builder": "^23.6.0",
     "electron-icon-builder": "^2.0.1",
     "electron-playwright-helpers": "1.5.4",
     "eslint": "8.35.0",
@@ -94,6 +112,7 @@
   },
   "dependencies": {
     "@electron-forge/maker-dmg": "^6.1.1",
+    "@electron-forge/maker-pkg": "^6.1.1",
     "@electron-forge/publisher-github": "^6.1.1",
     "@emotion/react": "11.10.6",
     "@emotion/styled": "11.10.6",
