@@ -6,8 +6,8 @@
   "main": ".webpack/main",
   "scripts": {
     "start": "ENVIRONMENT=development ELECTRON_DISABLE_SECURITY_WARNINGS=true electron-forge start",
-    "packager": "electron-forge package",
-    "maker": "electron-forge make",
+    "packager": "electron-forge package --arch=ia32,x64 --platform=darwin,win32",
+    "maker": "electron-forge make --platform=darwin --arch=x64,arm64",
     "publisher": "electron-forge publish",
     "dist": "electron-builder",
     "lint": "eslint --max-warnings=0 --ext .ts,.tsx .",

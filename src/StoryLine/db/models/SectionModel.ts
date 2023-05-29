@@ -239,7 +239,7 @@ export default class SectionModel extends Model {
             }
             this.wordCount = count
         }
-        return this.wordCount
+        return this.wordCount || 0
     }
 
     async destroyPermanently(): Promise<void> {

@@ -83,7 +83,7 @@ const Progress = ({ section }: ProgressProps) => {
                         {section.displayTitle}
                     </Typography>
                     <Typography variant='body1' className='whitespace-nowrap'>
-                        {section.wordCount.toLocaleString()}
+                        {section.wordCount ? section.wordCount.toLocaleString() : 0}
                     </Typography>
                 </Box>
             </Tooltip>
@@ -98,7 +98,7 @@ const Progress = ({ section }: ProgressProps) => {
                 {section.displayTitle}
             </Typography>
             <Typography variant='body1' className='whitespace-nowrap'>
-                {section.wordCount.toLocaleString()}
+                {section.wordCount ? section.wordCount.toLocaleString() : 0}
             </Typography>
         </Box>
     )
