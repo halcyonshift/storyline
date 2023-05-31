@@ -40,7 +40,7 @@ const DeadlinesBox = () => {
             )
             .fetch()
             .then((sections) => {
-                sections.map((section) => {
+                sections.forEach((section) => {
                     const date = DateTime.fromJSDate(section.deadlineAt).endOf('day')
                     if (!_deadlines[date.toFormat(YYYYMMDD)]) {
                         _deadlines[date.toFormat(YYYYMMDD)] = {
@@ -78,7 +78,7 @@ const DeadlinesBox = () => {
                                 <Typography
                                     key={item.label}
                                     variant='body1'
-                                    sx={{ color: status(item.status, 700).color }}>
+                                    sx={{ color: status(item.status, 700)?.color }}>
                                     {item.label}
                                 </Typography>
                             ))}

@@ -2,7 +2,7 @@
 import { Model, Q, Query, ColumnName } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, text, writer } from '@nozbe/watermelondb/decorators'
-import { DateTime, DurationLikeObject, DurationUnits, Interval } from 'luxon'
+import { DateTime, DurationUnits, Interval } from 'luxon'
 import percentRound from 'percent-round'
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
 import { SectionMode } from '@sl/constants/sectionMode'
@@ -10,6 +10,7 @@ import { Status, type StatusType } from '@sl/constants/status'
 import schema from '@sl/db/schema'
 import { SearchResultType } from '@sl/layouts/Work/Panel/Search/types'
 import { displayDateTime } from '@sl/utils'
+import { htmlToText } from '@sl/utils/html'
 import { t } from 'i18next'
 import {
     CharacterDataType,
@@ -85,9 +86,10 @@ export default class WorkModel extends Model {
 
         return units
             .reduce((duration, unit) => {
-                const d = diff.get(unit as keyof DurationLikeObject)
+                const d = diff.get(unit)
                 if (d) {
-                    duration.push(`${Math.round(d)} ${t(`component.unit.${unit}`)}`)
+                    const textKey = `component.unit.${unit}`
+                    duration.push(`${Math.round(d)} ${t(textKey)}`)
                 }
                 return duration
             }, [])
@@ -120,8 +122,8 @@ export default class WorkModel extends Model {
         const results: SearchResultType[] = []
         const scenes = await this.scenes.fetch()
 
-        scenes.map((scene) => {
-            const text = scene.body.replace('</p>', ' ').replace(/(<([^>]+)>)/gi, '')
+        scenes.forEach((scene) => {
+            const text = htmlToText(scene.body)
             const matches = [...text.matchAll(regex)]
             if (matches.length) {
                 const result: SearchResultType = {
@@ -178,7 +180,7 @@ export default class WorkModel extends Model {
             'fears'
         ]
 
-        characters.map((character) => {
+        characters.forEach((character) => {
             const result: SearchResultType = {
                 id: character.id,
                 label: character.displayName,
@@ -186,11 +188,9 @@ export default class WorkModel extends Model {
                 excerpts: []
             }
 
-            characterFields.map((field) => {
-                const text = (character[field as keyof CharacterModel] || '')
-                    .toString()
-                    .replace('</p>', ' ')
-                    .replace(/(<([^>]+)>)/gi, '')
+            characterFields.forEach((field) => {
+                const text = htmlToText((character[field as keyof CharacterModel] || '').toString())
+
                 const matches = [...text.matchAll(regex)]
                 if (matches.length) {
                     for (const match of matches) {
@@ -210,7 +210,7 @@ export default class WorkModel extends Model {
 
         const noteFields = ['title', 'body']
 
-        notes.map((note) => {
+        notes.forEach((note) => {
             const result: SearchResultType = {
                 id: note.id,
                 label: note.displayName,
@@ -218,11 +218,9 @@ export default class WorkModel extends Model {
                 excerpts: []
             }
 
-            noteFields.map((field) => {
-                const text = (note[field as keyof NoteModel] || '')
-                    .toString()
-                    .replace('</p>', ' ')
-                    .replace(/(<([^>]+)>)/gi, '')
+            noteFields.forEach((field) => {
+                const text = htmlToText((note[field as keyof NoteModel] || '').toString())
+
                 const matches = [...text.matchAll(regex)]
                 if (matches.length) {
                     for (const match of matches) {
@@ -242,7 +240,7 @@ export default class WorkModel extends Model {
 
         const locationFields = ['name', 'body']
 
-        locations.map((location) => {
+        locations.forEach((location) => {
             const result: SearchResultType = {
                 id: location.id,
                 label: location.displayName,
@@ -250,11 +248,8 @@ export default class WorkModel extends Model {
                 excerpts: []
             }
 
-            locationFields.map((field) => {
-                const text = (location[field as keyof LocationModel] || '')
-                    .toString()
-                    .replace('</p>', ' ')
-                    .replace(/(<([^>]+)>)/gi, '')
+            locationFields.forEach((field) => {
+                const text = htmlToText((location[field as keyof LocationModel] || '').toString())
                 const matches = [...text.matchAll(regex)]
                 if (matches.length) {
                     for (const match of matches) {
@@ -274,7 +269,7 @@ export default class WorkModel extends Model {
 
         const itemFields = ['name', 'body']
 
-        items.map((item) => {
+        items.forEach((item) => {
             const result: SearchResultType = {
                 id: item.id,
                 label: item.displayName,
@@ -282,11 +277,8 @@ export default class WorkModel extends Model {
                 excerpts: []
             }
 
-            itemFields.map((field) => {
-                const text = (item[field as keyof ItemModel] || '')
-                    .toString()
-                    .replace('</p>', ' ')
-                    .replace(/(<([^>]+)>)/gi, '')
+            itemFields.forEach((field) => {
+                const text = htmlToText((item[field as keyof ItemModel] || '').toString())
                 const matches = [...text.matchAll(regex)]
                 if (matches.length) {
                     for (const match of matches) {
@@ -335,10 +327,10 @@ export default class WorkModel extends Model {
         const location = await this.location.fetch()
         const note = await this.note.fetch()
         const section = await this.section.fetch()
-        const statistic = await this.statistic.fetch()
-        const tag = await this.tag.fetch()
         const sprint = await this.sprint.fetch()
         const sprint_statistic = await this.sprint_statistic.fetch()
+        const statistic = await this.statistic.fetch()
+        const tag = await this.tag.fetch()
 
         const backupPath = await this.database.localStorage.get<string>('autoBackupPath')
 
@@ -373,13 +365,13 @@ export default class WorkModel extends Model {
             tag: []
         }
 
-        Object.entries(dbData).map(([table, items]) => {
+        Object.entries(dbData).forEach(([table, items]) => {
             const columns: ColumnName[] = Object.keys(schema.tables[table].columns)
-            items.map((item) => {
+            items.forEach((item) => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const data: any = { id: item.id }
 
-                columns.map((column) => {
+                columns.forEach((column) => {
                     data[column] = item._getRaw(column)
                 })
                 jsonData[table].push(data)
@@ -393,20 +385,7 @@ export default class WorkModel extends Model {
         return { data: jsonData, images: [...new Set(images)], backupPath: backupPath || '' }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @writer async restore(data: any, images: []) {
-        api.deleteFile(this.image)
-        await this.character.destroyAllPermanently()
-        await this.connection.destroyAllPermanently()
-        await this.item.destroyAllPermanently()
-        await this.location.destroyAllPermanently()
-        await this.note.destroyAllPermanently()
-        await this.section.destroyAllPermanently()
-        await this.sprint.destroyAllPermanently()
-        await this.sprint_statistic.destroyAllPermanently()
-        await this.statistic.destroyAllPermanently()
-        await this.tag.destroyAllPermanently()
-
+    @writer async restore(data: any) {
         await this.update((work) => {
             work.title = data.work[0].title
             work.author = data.work[0].author
@@ -463,6 +442,7 @@ export default class WorkModel extends Model {
                     connection.to = connectionData.to
                     connection.from = connectionData.from
                     connection.mode = connectionData.mode
+                    connection.relation = connectionData.relation
                 })
             ),
             ...data.item.map((itemData: any) =>
@@ -477,20 +457,6 @@ export default class WorkModel extends Model {
                 })
             )
         )
-
-        /*
-                    ...data.sprint.map((sprintData: any) =>
-                this.collections.get<SprintModel>('sprint').prepareCreate((sprint) => {
-                    sprint._raw.id = sprintData.id
-                    sprint.work.set(this)
-                    sprint.startAt = DateTime.fromMillis(sprintData.start_at).toJSDate()
-                    sprint.endAt = DateTime.fromMillis(sprintData.end_at).toJSDate()
-                    sprint.wordGoal = sprintData.word_goal
-                    sprint.createdAt = DateTime.fromMillis(sprintData.created_at).toJSDate()
-                    sprint.updatedAt = DateTime.fromMillis(sprintData.updated_at).toJSDate()
-                })
-            ),
-            */
 
         await this.batch(
             ...data.location.map((locationData: any) =>
@@ -531,6 +497,17 @@ export default class WorkModel extends Model {
                         section.deadlineAt = DateTime.fromMillis(sectionData.deadline_at).toJSDate()
                     section.createdAt = DateTime.fromMillis(sectionData.created_at).toJSDate()
                     section.updatedAt = DateTime.fromMillis(sectionData.updated_at).toJSDate()
+                })
+            ),
+            ...data.sprint.map((sprintData: any) =>
+                this.collections.get<SprintModel>('sprint').prepareCreate((sprint) => {
+                    sprint._raw.id = sprintData.id
+                    sprint.work.set(this)
+                    sprint.startAt = DateTime.fromMillis(sprintData.start_at).toJSDate()
+                    sprint.endAt = DateTime.fromMillis(sprintData.end_at).toJSDate()
+                    sprint.wordGoal = sprintData.word_goal
+                    sprint.createdAt = DateTime.fromMillis(sprintData.created_at).toJSDate()
+                    sprint.updatedAt = DateTime.fromMillis(sprintData.updated_at).toJSDate()
                 })
             )
         )
@@ -577,7 +554,7 @@ export default class WorkModel extends Model {
                     //
                 })
         }
-        /*
+
         for await (const statisticData of data.sprint_statistic) {
             await this.collections
                 .get<SprintStatisticModel>('sprint_statistic')
@@ -594,7 +571,6 @@ export default class WorkModel extends Model {
                     //
                 })
         }
-        */
 
         for await (const tagData of data.tag) {
             await this.collections
@@ -733,13 +709,15 @@ export default class WorkModel extends Model {
     }
 
     @writer async delete() {
-        api.deleteFile(this.image)
+        await api.deleteFile(this.image)
         await this.character.destroyAllPermanently()
         await this.connection.destroyAllPermanently()
         await this.item.destroyAllPermanently()
         await this.location.destroyAllPermanently()
         await this.note.destroyAllPermanently()
         await this.section.destroyAllPermanently()
+        await this.sprint.destroyAllPermanently()
+        await this.sprint_statistic.destroyAllPermanently()
         await this.statistic.destroyAllPermanently()
         await this.tag.destroyAllPermanently()
         await this.destroyPermanently()

@@ -30,6 +30,7 @@ const Tabs = () => {
         [],
         []
     )
+
     const item = useObservable(() => work.item.observeWithColumns(['name']), [], [])
     const location = useObservable(() => work.location.observeWithColumns(['name']), [], [])
     const note = useObservable(() => work.note.observeWithColumns(['title']), [], [])
@@ -68,6 +69,17 @@ const Tabs = () => {
         }
     })
 
+    const axisLockStyle = (style: React.CSSProperties | undefined) => {
+        if (style?.transform) {
+            const axisLockX = `${style.transform.split(',').shift()}, 0px)`
+            return {
+                ...style,
+                transform: axisLockX
+            }
+        }
+        return style
+    }
+
     const onDragEnd = (result: DropResult) => {
         if (!result.destination) return
         if (result.destination.index === result.source.index) return
@@ -76,10 +88,15 @@ const Tabs = () => {
         const [removed] = newTabs.splice(result.source.index, 1)
         newTabs.splice(result.destination.index, 0, removed)
         tabs.setTabs(newTabs)
-        tabs.setActive(result.source.index)
-        setTimeout(() => {
+
+        if (result.destination.index === tabs.active) {
+            tabs.setActive(result.source.index)
+            setTimeout(() => {
+                tabs.setActive(result.destination.index)
+            }, 1)
+        } else {
             tabs.setActive(result.destination.index)
-        }, 1)
+        }
     }
 
     const getLabel = (tab: TabType) => {
@@ -121,7 +138,7 @@ const Tabs = () => {
                                     TabIndicatorProps={{ style: { display: 'none' } }}>
                                     {tabs.tabs.map((tab, index) => (
                                         <Draggable
-                                            key={`${tab.id}-${index}`}
+                                            key={`id-${tab.id}`}
                                             draggableId={`id-${tab.id}`}
                                             index={index}
                                             disableInteractiveElementBlocking={true}>
@@ -129,6 +146,9 @@ const Tabs = () => {
                                                 <Tab
                                                     ref={props.innerRef}
                                                     {...props.draggableProps}
+                                                    style={axisLockStyle(
+                                                        props.draggableProps.style
+                                                    )}
                                                     onClick={(e) => {
                                                         e.stopPropagation()
                                                         tabs.setActive(index)

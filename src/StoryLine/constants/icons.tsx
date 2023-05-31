@@ -17,7 +17,11 @@ export const GLOBAL_ICONS = {
     random: <Icon name='Casino' />,
     up: <Icon name='ArrowUpward' />,
     show: <Icon name='Visibility' />,
-    hide: <Icon name='VisibilityOff' />
+    hide: <Icon name='VisibilityOff' />,
+    backupRestore: <Icon name='SettingsBackupRestore' />,
+    bug: <Icon name='BugReport' />,
+    feature: <Icon name='ChatBubble' />,
+    help: <Icon name='LiveHelp' />
 }
 
 export const CHARACTER_ICONS = {
@@ -37,10 +41,13 @@ export const CONNECTION_ICONS = {
 export const IMPORTEXPORT_ICONS = {
     docx: <Icon name='Description' />,
     epub: <Icon name='Book' />,
-    html: <Icon name='Html' />,
+    html: <Icon name='Code' />,
+    markdown: <Icon name='ArrowDownward' />,
     importExport: <Icon name='ImportExport' />,
     import: <Icon name='ArrowDownward' />,
-    pdf: <Icon name='PictureAsPdf' />
+    export: <Icon name='Publish' />,
+    pdf: <Icon name='PictureAsPdf' />,
+    txt: <Icon name='Subject' />
 }
 
 export const INSIGHT_ICONS = {

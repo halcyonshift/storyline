@@ -9,6 +9,7 @@ import WorkModel from '@sl/db/models/WorkModel'
 import Result from './Result'
 import useSettings from '@sl/theme/useSettings'
 import { getHex } from '@sl/theme/utils'
+import { htmlToText } from '@sl/utils/html'
 
 const SearchInput = styled(InputBase)(() => ({
     '& .MuiInputBase-input': {
@@ -28,7 +29,7 @@ const SearchPanel = () => {
     const { getHeaderHeight, isDark } = useSettings()
 
     const doSearch = debounce(async (query) => {
-        query = query.replace(/(<([^>]+)>)/gi, '')
+        query = htmlToText(query.toString())
         setKeyWords(query)
         setResults([])
         if (!query || query.length < 3 || isSearching) return
@@ -39,7 +40,7 @@ const SearchPanel = () => {
     }, 1000)
 
     useEffect(() => {
-        doSearch(keyWords)
+        void doSearch(keyWords)
     }, [fullWord, caseSensitive, sceneOnly])
 
     return (

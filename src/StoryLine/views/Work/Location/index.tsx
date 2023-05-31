@@ -3,11 +3,11 @@ import { Box, Divider, List, ListItem, ListItemButton, ListItemText, Stack } fro
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
+import MapView from '@sl/components/MapView'
 import ViewWrapper from '@sl/components/ViewWrapper'
 import LocationModel from '@sl/db/models/LocationModel'
-import { htmlParse } from '@sl/utils'
+import { htmlParse } from '@sl/utils/html'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
-import Map from '@sl/components/Map'
 
 const LocationView = () => {
     const location = useRouteLoaderData('location') as LocationModel
@@ -35,7 +35,7 @@ const LocationView = () => {
     return (
         <ViewWrapper tabList={tabList} model={location}>
             <Stack spacing={2} className='py-3'>
-                {location.latLng ? <Map center={location.latLng}></Map> : null}
+                {location.latLng ? <MapView center={location.latLng} /> : null}
                 {location.latLng && location.body ? <Divider /> : null}
                 {htmlParse(location.body)}
             </Stack>

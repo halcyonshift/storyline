@@ -46,7 +46,7 @@ const StoryLineLayout = () => {
                     </Box>
                     <Box className='flex flex-grow justify-between'>
                         <Typography variant='h6'>
-                            {title ? t(`view.storyline.landing.navigation.${title}`) : ''}
+                            {title ? t(`view.storyline.landing.navigation.${title}.primary`) : ''}
                         </Typography>
                         <Typography variant='h6'>
                             <Link href='/'>StoryLine</Link>

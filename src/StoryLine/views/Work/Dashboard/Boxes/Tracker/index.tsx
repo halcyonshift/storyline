@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { SectionModel, WorkModel } from '@sl/db/models'
 import useSettings from '@sl/theme/useSettings'
-import { htmlParse } from '@sl/utils'
+import { htmlParse } from '@sl/utils/html'
 import ChapterList from './ChapterList'
 import PartList from './PartList'
 import SceneList from './SceneList'
@@ -68,13 +68,15 @@ const TrackerBox = () => {
                 ) : null}
             </Box>
             <Box className='flex-grow overflow-auto scrollbar-hidden'>
-                {parts.length > 1 ? (
-                    <PartList parts={parts} chapters={chapters} scenes={scenes} />
-                ) : chapters.length > 1 ? (
-                    <ChapterList chapters={chapters} scenes={scenes} />
-                ) : (
-                    <SceneList scenes={scenes} />
-                )}
+                {(() => {
+                    if (parts.length > 1) {
+                        return <PartList parts={parts} chapters={chapters} scenes={scenes} />
+                    } else if (chapters.length > 1) {
+                        return <ChapterList chapters={chapters} scenes={scenes} />
+                    } else {
+                        return <SceneList scenes={scenes} />
+                    }
+                })()}
             </Box>
         </Box>
     )

@@ -3,7 +3,6 @@ import { MakerSquirrel } from '@electron-forge/maker-squirrel'
 import { MakerZIP } from '@electron-forge/maker-zip'
 import { MakerDeb } from '@electron-forge/maker-deb'
 import { MakerRpm } from '@electron-forge/maker-rpm'
-import { MakerDMG } from '@electron-forge/maker-dmg'
 import { WebpackPlugin } from '@electron-forge/plugin-webpack'
 import { mainConfig } from './webpack.main.config'
 import { rendererConfig } from './webpack.renderer.config'
@@ -14,6 +13,7 @@ const config: ForgeConfig = {
     packagerConfig: {
         icon: './src/StoryLine/assets/images/icons/icon',
         executableName: 'storyline',
+        appBundleId: 'com.halcyonshift.storyline',
         appCopyright: "Hannah O'Malley",
         appVersion: version,
         appCategoryType: 'public.app-category.productivity',
@@ -21,6 +21,13 @@ const config: ForgeConfig = {
         win32metadata: {
             CompanyName: 'StoryLine',
             OriginalFilename: 'StoryLine'
+        },
+        osxSign: {},
+        osxNotarize: {
+            tool: 'notarytool',
+            appleId: process.env.APPLE_ID,
+            appleIdPassword: process.env.APPLE_PASSWORD,
+            teamId: process.env.APPLE_TEAM_ID
         }
     },
     rebuildConfig: {},
@@ -33,13 +40,6 @@ const config: ForgeConfig = {
             setupIcon: './src/StoryLine/assets/images/icons/icon.ico'
         })),
         new MakerZIP({}, ['darwin']),
-        new MakerDMG(
-            {
-                format: 'ULFO',
-                icon: './src/StoryLine/assets/images/icons/icon.icns'
-            },
-            ['darwin']
-        ),
         new MakerRpm(
             {
                 options: {

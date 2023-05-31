@@ -54,37 +54,39 @@ const PointOfViewBox = () => {
         const _povStatistics: any = {}
         const _povModeStatistics: any = {}
 
-        Promise.all([work.scenes.fetch(), work.characters.fetch()]).then(([scenes, characters]) => {
-            scenes
-                .filter((scene) => scene.pointOfViewCharacter)
-                .map((scene) => {
-                    if (!_povStatistics[scene.pointOfViewCharacter.id]) {
-                        _povStatistics[scene.pointOfViewCharacter.id] = {
-                            character: characters.find(
-                                (character) => character.id === scene.pointOfViewCharacter.id
-                            ),
-                            scenes: 0
+        void Promise.all([work.scenes.fetch(), work.characters.fetch()]).then(
+            ([scenes, characters]) => {
+                scenes
+                    .filter((scene) => scene.pointOfViewCharacter)
+                    .forEach((scene) => {
+                        if (!_povStatistics[scene.pointOfViewCharacter.id]) {
+                            _povStatistics[scene.pointOfViewCharacter.id] = {
+                                character: characters.find(
+                                    (character) => character.id === scene.pointOfViewCharacter.id
+                                ),
+                                scenes: 0
+                            }
                         }
-                    }
-                    _povStatistics[scene.pointOfViewCharacter.id].scenes += 1
+                        _povStatistics[scene.pointOfViewCharacter.id].scenes += 1
 
-                    if (!_povModeStatistics[scene.pointOfView]) {
-                        _povModeStatistics[scene.pointOfView] = 0
-                    }
-                    _povModeStatistics[scene.pointOfView] += 1
-                })
-            setPovModeLabels(
-                Object.values(PointOfView).map((pov) => t(`constant.pointOfView.${pov}`))
-            )
-            setPovLabels(
-                Object.values(_povStatistics).map(
-                    (pov: any) => pov.character?.displayName || 'None'
+                        if (!_povModeStatistics[scene.pointOfView]) {
+                            _povModeStatistics[scene.pointOfView] = 0
+                        }
+                        _povModeStatistics[scene.pointOfView] += 1
+                    })
+                setPovModeLabels(
+                    Object.values(PointOfView).map((pov) => t(`constant.pointOfView.${pov}`))
                 )
-            )
+                setPovLabels(
+                    Object.values(_povStatistics).map(
+                        (pov: any) => pov.character?.displayName || 'None'
+                    )
+                )
 
-            setPovStatistics(Object.values(_povStatistics))
-            setPovModeStatistics(Object.values(_povModeStatistics))
-        })
+                setPovStatistics(Object.values(_povStatistics))
+                setPovModeStatistics(Object.values(_povModeStatistics))
+            }
+        )
     }, [])
 
     return (

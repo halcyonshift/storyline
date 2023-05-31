@@ -7,7 +7,7 @@ import HTMLtoDOCX from 'html-to-docx'
 const docx = async (_: Electron.IpcMainInvokeEvent, fileName: string, html: string) => {
     const result = await dialog.showSaveDialog({
         defaultPath: `${kebabCase(fileName)}.docx`,
-        filters: [{ name: 'All Files', extensions: ['*'] }]
+        filters: [{ name: '.docx', extensions: ['*'] }]
     })
 
     const docx = (await HTMLtoDOCX(

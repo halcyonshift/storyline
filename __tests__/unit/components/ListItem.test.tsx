@@ -13,23 +13,23 @@ jest.mock('react-router-dom', () => ({
 
 describe('<ListItem />', () => {
     it('Displays correct text', () => {
-        render(<ListItem link='/' text='this is text' />)
+        render(<ListItem link='/' primary='this is text' />)
         expect(screen.getByText('this is text')).toBeTruthy()
     })
 
     it('Shows icon', () => {
-        render(<ListItem link='/' text='this is text' icon={GLOBAL_ICONS.add} />)
+        render(<ListItem link='/' primary='this is text' icon={GLOBAL_ICONS.add} />)
         expect(screen.getByLabelText('Add')).toBeTruthy()
     })
 
     it('Links as expected', async () => {
-        render(<ListItem link='/a-link' text='this is text' icon={GLOBAL_ICONS.add} />)
+        render(<ListItem link='/a-link' primary='this is text' icon={GLOBAL_ICONS.add} />)
         await userEvent.click(screen.getByRole('button'))
         expect(mockedUsedNavigate).toHaveBeenCalledWith('/a-link')
     })
 
     it('renders correctly', () => {
-        const tree = renderer.create(<ListItem link='/' text='this is text' />).toJSON()
+        const tree = renderer.create(<ListItem link='/' primary='this is text' />).toJSON()
         expect(tree).toMatchSnapshot()
     })
 })

@@ -2,13 +2,19 @@ import { dialog } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import JSZip from 'jszip'
+import { confirmationDialog } from './utils'
 
 const bibisco = async (baseDir: string) => {
+    const check = await confirmationDialog()
+
+    if (!check) return false
+
     const result = await dialog.showOpenDialog({
-        title: 'Select .bibisco2 archive',
-        filters: [{ name: 'Files', extensions: ['bibisco2'] }]
+        filters: [{ name: '.bibisco2', extensions: ['bibisco2'] }]
     })
+
     if (result.canceled || !result.filePaths.length) return false
+
     const filePath = result.filePaths[0]
     const fileDir = path.join(baseDir, 'import')
     await fs.promises.mkdir(fileDir, { recursive: true })
@@ -16,6 +22,14 @@ const bibisco = async (baseDir: string) => {
     await fs.promises.copyFile(filePath, saveFilePath)
     const data = await fs.promises.readFile(saveFilePath)
     const zip = await JSZip.loadAsync(data)
+
+    zip.forEach((_, zipEntry) => {
+        const resolvedPath = path.join(baseDir, 'import', zipEntry.name)
+        if (!resolvedPath.startsWith(fileDir)) {
+            throw Error('Path traversal detected')
+        }
+    })
+
     const fileNames = Object.keys(zip.files)
 
     const jsonFile = zip.file(fileNames.find((file) => file.endsWith('.json')))
@@ -37,6 +51,7 @@ const bibisco = async (baseDir: string) => {
     }
 
     fs.rmSync(saveFilePath)
+
     return {
         images,
         imagePath: imageFileDir,

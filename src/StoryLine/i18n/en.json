@@ -358,27 +358,7 @@
     "form": {
         "required": "This is required",
         "work": {
-            "backupRestore": {
-                "exportAs": {
-                    "author": "Author",
-                    "chapterTitle": "Chapter title",
-                    "chapterTitleInitialValue": "Chapter {{number}}. {{title}}",
-                    "chapterPosition": {
-                        "label":  "",
-                        "left": "Left",
-                        "center": "Center"
-                    },
-                    "font": "Font",
-                    "indentParagraph": "Indent paragraphs",
-                    "lineHeight": "Line height",
-                    "paragraphSpacing": "Paragraph spacing",
-                    "sceneSeparator": "Scene separator",
-                    "helpText": "Exporting may take a few minutes for longer works - time for a cuppa!",
-                    "button": {
-                        "export": "Export"
-                    }
-                }
-            },
+
             "character": {
                 "tab": {
                     "demographics": "Demographics",
@@ -431,6 +411,13 @@
                     "label": "Connection",
                     "placeholder": "e.g., Brother"
                 },
+                "relation": {
+                    "label": "Relation",
+                    "option0": "None",
+                    "option1": "Parent",
+                    "option2": "Child",
+                    "option3": "Sibling"
+                },
                 "button": {
                     "save": "Save",
                     "delete": "Delete"
@@ -438,6 +425,24 @@
                 "alert": {
                     "success": "The connection has been saved"
                 }
+            },
+            "export": {
+                "author": "Author",
+                "chapterTitle": "Chapter title",
+                "chapterTitleInitialValue": "Chapter {{number}}. {{title}}",
+                "chapterPosition": {
+                    "label":  "",
+                    "left": "Left",
+                    "center": "Center"
+                },
+                "font": "Font",
+                "indentParagraph": "Indent paragraphs",
+                "lineHeight": "Line height",
+                "paragraphSpacing": "Paragraph spacing",
+                "sceneSeparator": "Scene separator",
+                "title": "Export .{{mode}}",
+                "helpText": "Exporting may take a few minutes for longer works - time for a cuppa!",
+                "button": "Export"
             },
             "item": {
                 "name": {
@@ -571,7 +576,7 @@
                 "overview": "Overview",
                 "connection": "Connections",
                 "insight": "Insights",
-                "backupRestore": "Backup, restore & export",
+                "export": "Export",
                 "setting": "Settings"
             },
             "panel": {
@@ -634,20 +639,81 @@
     },
     "view": {
         "storyline": {
+            "backupRestore": {
+                "backup": {
+                    "storyline": {
+                        "success": "Backup saved to {{filePath}}",
+                        "failure": "Backup could not be saved",
+                        "title": "Backup StoryLine",
+                        "text": "This will backup the entire application, including all works and images",
+                        "button": "Backup"
+                    },
+                    "work": {
+                        "success": "Backup saved to {{filePath}}",
+                        "failure": "Backup could not be saved",
+                        "label": "Work",
+                        "button": "Backup"
+                    }
+                },
+                "restore": {
+                    "storyline": {
+                        "success": "The backup has been restored",
+                        "failure": "The backup could not be restored",
+                        "title": "Restore StoryLine",
+                        "text": "This will overwrite all data, any items not in the backup will be removed! StoryLine will close and re-open after restore.",
+                        "button": "Restore"
+                    },
+                    "work": {
+                        "success": "The backup has been restored",
+                        "failure": "The backup could not be restored",
+                        "text": "Restoration will delete all data and images of the current work, if it exists",
+                        "button": "Restore",
+                        "label": "Work",
+                        "new": "New"
+                    }
+                }
+            },
             "landing": {
-                "title": "Welcome to StoryLine",
+                "title": "Welcome to StoryLine!",
                 "navigation": {
-                    "works": "Works",
-                    "new": "New",
-                    "importWork": "Import",
-                    "settings": "Settings",
-                    "info": "Info"
+                    "works": {
+                        "primary": "Works",
+                        "secondary": "All your works can be found in here"
+                    },
+                    "new": {
+                        "primary": "New",
+                        "secondary": "Create a new work with a click"
+                    },
+                    "import": {
+                        "primary": "Import",
+                        "secondary": "Got a work elsewhere you'd like here too?"
+                    },
+                    "backupRestore": {
+                        "primary": "Backup or restore",
+                        "secondary": "Bundle everything up or unbundle it all back again"
+                    },
+                    "settings": {
+                        "primary": "Settings",
+                        "secondary": "Configure the way the StoryLine and the editor look and work"
+                    },
+                    "info": {
+                        "primary": "Info",
+                        "secondary": "Want to know who made this? Love licences? Both in here."
+                    }
                 },
                 "recent": {
                     "title": "Recently opened"
                 },
-                "feedback": {
-                    "title": "Feedback"
+                "contact": {
+                    "title": "Contact",
+                    "bug": {
+                        "title": "Found a bug?",
+                        "text": "Please report it with as much info as possible"
+                    },
+                    "feature": {
+                        "title": "Want a new feature?",
+                        "text": "Tell me your hopes and dreams"
+                    }
                 },
                 "titles": {
                     "title_1": "The Adventures of a Couch Potato Detective",
@@ -682,19 +748,21 @@
                     "title_30": "The Misadventures of a Time-Traveling Hamster"
                 }
             },
-            "importWork": {
+            "import": {
                 "title": "Import",
                 "button": "Import",
-                "bibisco": {
-                    "title": "Bibisco",
-                    "text": "Statistics history won't be imported, just a snapshot of the most recent data",
+                "ao3": {
+                    "title": "Ao3",
                     "error": "Sorry, the import hasn't worked"
                 },
-                "storyLine": {
-                    "title": "StoryLine",
-                    "text": "This will only import a backup if the work doesn't already exist - if it does, use the Restore inside the work",
-                    "error": "A work with this id already exists",
-                    "failure": "Sorry, the import hasn't worked"
+                "epub": {
+                    "title": "ePub",
+                    "error": "Sorry, the import hasn't worked"
+                },
+                "bibisco": {
+                    "title": "Bibisco",
+                    "text": "Statistics history cannot be imported",
+                    "error": "Sorry, the import hasn't worked"
                 }
             },
             "works": {
@@ -713,7 +781,8 @@
                 "about": {
                     "title": "About",
                     "version": "Version",
-                    "developer": "Developer"
+                    "developer": "Developer",
+                    "repo": "Repo"
                 },
                 "license": {
                     "title": "License",
@@ -728,20 +797,6 @@
             }
         },
         "work": {
-            "backupRestore": {
-                "backup": {
-                    "success": "Backup saved to {{filePath}}",
-                    "failure": "Backup could not be saved",
-                    "text": "This backup can only be used with the restore functionality, backup to a different platform is on the roadmap.",
-                    "button": "Backup"
-                },
-                "restore": {
-                    "success": "The backup has been restored",
-                    "failure": "The backup could not be restored",
-                    "text": "This will overwrite all data within the work with the backup, any items not in the backup will be deleted.",
-                    "button": "Restore"
-                }
-            },
             "character": {
                 "tab": {
                     "overview": "Overview",
@@ -762,6 +817,7 @@
             },
             "connection": {
                 "filter": {
+                    "tree": "Family tree",
                     "table": {
                         "label": "Type",
                         "all": "All",
@@ -792,7 +848,8 @@
                     "generate": "Generate"
                 },
                 "tracker": {
-                    "remaining": "{{days}} days left ({{words}} words a day)",
+                    "daysWordsRemaining": "{{days}} days left ({{words}} words a day)",
+                    "daysRemaining": "{{days}} days left",
                     "deadline": {
                         "days": "<span className='font-bold'>{{timeLeft}}</span> until deadline!",
                         "words": " <span className='font-bold'>{{wordsPerDay}} words a day</span> will meet your goal."

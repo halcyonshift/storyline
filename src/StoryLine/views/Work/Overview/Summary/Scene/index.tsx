@@ -3,7 +3,7 @@ import { Box, Stack, Typography } from '@mui/material'
 import { flatten } from 'lodash'
 import { SectionModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
-import { htmlParse } from '@sl/utils'
+import { htmlParse } from '@sl/utils/html'
 import { SceneSummaryProps } from './types'
 
 const TagList = ({ scene }: { scene: SectionModel }) => {

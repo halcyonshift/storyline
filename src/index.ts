@@ -10,11 +10,11 @@ import {
 import contextMenu from 'electron-context-menu'
 import { init } from '@sentry/electron/main'
 import path from 'path'
-import backup from './StoryLine/api/backup'
+import * as apiBackup from './StoryLine/api/backup'
+import * as apiRestore from './StoryLine/api/restore'
 import * as apiExport from './StoryLine/api/export'
 import * as apiImport from './StoryLine/api/import'
 import deleteFile from './StoryLine/api/deleteFile'
-import restore from './StoryLine/api/restore'
 import selectFile from './StoryLine/api/selectFile'
 import selectFilePath from './StoryLine/api/selectFilePath'
 import selectImage from './StoryLine/api/selectImage'
@@ -75,7 +75,6 @@ const createWindow = (): void => {
         if (!app.isPackaged) {
             mainWindow.webContents.openDevTools()
         }
-        mainWindow.webContents.openDevTools()
     })
 
     mainWindow.on('enter-full-screen', () => {
@@ -120,6 +119,17 @@ app.on('ready', () => {
                 { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
                 { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' }
             ] as MenuItemConstructorOptions[]
+        },
+        {
+            label: 'Help',
+            submenu: [
+                {
+                    label: 'Issues',
+                    click: async () => {
+                        await shell.openExternal('https://github.com/halcyonshift/storyline/issues')
+                    }
+                }
+            ] as MenuItemConstructorOptions[]
         }
     ]
 
@@ -128,7 +138,7 @@ app.on('ready', () => {
     createWindow()
 
     const csp = [
-        'img-src data: https://*.grammarly.com http://*.tile.osm.org',
+        'img-src data: https://*.grammarly.com https://*.tile.osm.org',
         "connect-src 'self' https://*.grammarly.com https://*.grammarly.io wss://*.grammarly.com",
         "style-src 'self' 'unsafe-inline'",
         "script-src 'self' 'unsafe-eval' https://*.grammarly.com",
@@ -159,16 +169,37 @@ app.on('activate', () => {
 
 app.whenReady()
     .then(() => {
-        ipcMain.handle('backup', backup)
+        ipcMain.handle('relaunch', () => {
+            app.relaunch()
+            app.exit()
+        })
         ipcMain.handle('delete-file', deleteFile)
+        ipcMain.handle('backup-storyline', apiBackup.storyLine)
+        ipcMain.handle('backup-work', apiBackup.work)
+        ipcMain.handle(
+            'restore-storyline',
+            async () => await apiRestore.storyLine(path.join(app.getPath('userData')))
+        )
+        ipcMain.handle(
+            'restore-work',
+            async () => await apiRestore.work(path.join(app.getPath('userData')))
+        )
         ipcMain.handle('export-docx', apiExport.docx)
         ipcMain.handle('export-epub', apiExport.epub)
         ipcMain.handle('export-html', apiExport.html)
+        ipcMain.handle('export-markdown', apiExport.markdown)
+        ipcMain.handle('export-rtf', apiExport.rtf)
+        ipcMain.handle('export-text', apiExport.text)
+        ipcMain.handle(
+            'import-ao3',
+            async (_, id: number, mode: 'series' | 'work') =>
+                await apiImport.ao3(app.getPath('userData'), id, mode)
+        )
         ipcMain.handle(
             'import-bibisco2',
             async () => await apiImport.bibisco(app.getPath('userData'))
         )
-        ipcMain.handle('restore', async () => await restore(path.join(app.getPath('userData'))))
+        ipcMain.handle('import-epub', async () => await apiImport.epub(app.getPath('userData')))
         ipcMain.handle('select-file-path', selectFilePath)
         ipcMain.handle(
             'select-image',

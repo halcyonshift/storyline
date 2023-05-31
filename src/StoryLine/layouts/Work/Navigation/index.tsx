@@ -132,16 +132,16 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                         {Icons.insight.insights}
                     </IconButton>
                 </Tooltip>
-                <Tooltip title={t('layout.work.navigation.backupRestore')} placement='right'>
+                <Tooltip title={t('layout.work.navigation.export')} placement='right'>
                     <IconButton
                         color='inherit'
-                        className={getClassName('/backupRestore')}
-                        aria-label={t('layout.work.navigation.backupRestore')}
+                        className={getClassName('/export')}
+                        aria-label={t('layout.work.navigation.export')}
                         onClick={() => {
                             togglePanel()
-                            navigate(`/work/${params.work_id}/backupRestore`)
+                            navigate(`/work/${params.work_id}/export`)
                         }}>
-                        {Icons.importExport.importExport}
+                        {Icons.importExport.export}
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.setting')} placement='right'>

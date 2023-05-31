@@ -14,9 +14,9 @@ const RadioField = ({ form, name, label, options }: RadioFieldProps) => {
                 name={name}
                 value={form.values[name]}
                 onChange={form.handleChange}>
-                {options.map((option, index) => (
+                {options.map((option) => (
                     <FormControlLabel
-                        key={`${option.value}-${index}`}
+                        key={crypto.randomUUID()}
                         value={option.value}
                         control={<Radio />}
                         label={t(option.label)}

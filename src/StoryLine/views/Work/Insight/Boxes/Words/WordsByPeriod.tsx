@@ -69,11 +69,11 @@ const WordsByPeriod = () => {
             const sectionIds = [...new Set(stats.map((stat) => stat.section.id))]
             const fill: ObjectObjectNumber = {}
 
-            statisticsDates.map((date) => {
+            statisticsDates.forEach((date) => {
                 const ymd = date.toFormat(YYYYMMDD)
                 fill[ymd] = {}
 
-                sectionIds.map((sectionId) => {
+                sectionIds.forEach((sectionId) => {
                     fill[ymd][sectionId] =
                         stats.find(
                             (stat) =>

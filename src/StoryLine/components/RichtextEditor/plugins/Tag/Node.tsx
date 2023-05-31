@@ -121,9 +121,9 @@ export function toggleTag(payload: TagPayloadType): void {
                 if ($isTagNode(parent)) {
                     const children = parent.getChildren()
 
-                    for (let i = 0; i < children.length; i++) {
-                        parent.insertBefore(children[i])
-                    }
+                    children.forEach((child) => {
+                        parent.insertBefore(child)
+                    })
 
                     parent.remove()
                 }
@@ -191,9 +191,9 @@ export function toggleTag(payload: TagPayloadType): void {
                     if (linkNode !== null) {
                         const children = node.getChildren()
 
-                        for (let i = 0; i < children.length; i++) {
-                            linkNode.append(children[i])
-                        }
+                        children.forEach((child) => {
+                            linkNode.append(child)
+                        })
                     }
 
                     node.remove()

@@ -64,9 +64,8 @@ const Block = ({ section, index, fontWeight, group }: BlockType) => {
                                             variant='body1'
                                             className='flex-grow w-0 whitespace-nowrap text-ellipsis
                                                         overflow-hidden self-center'>
-                                            {`${section.isChapter ? `${section.order}.` : ''} ${
-                                                section.displayTitle
-                                            }`}
+                                            {section.isChapter ? `${section.order}. ` : ''}
+                                            {section.displayTitle}
                                         </Typography>
                                     </ListItemButton>
                                     <Stack direction='row'>
@@ -79,16 +78,18 @@ const Block = ({ section, index, fontWeight, group }: BlockType) => {
                                                     section.addChapter()
                                                 }}
                                             />
-                                        ) : section.isChapter ? (
-                                            <TooltipIconButton
-                                                size='small'
-                                                text='layout.work.panel.section.addScene'
-                                                icon={SECTION_ICONS.addScene}
-                                                onClick={() => {
-                                                    section.addScene()
-                                                }}
-                                            />
-                                        ) : null}
+                                        ) : (
+                                            section.isChapter && (
+                                                <TooltipIconButton
+                                                    size='small'
+                                                    text='layout.work.panel.section.addScene'
+                                                    icon={SECTION_ICONS.addScene}
+                                                    onClick={() => {
+                                                        section.addScene()
+                                                    }}
+                                                />
+                                            )
+                                        )}
                                         <TooltipIconButton
                                             size='small'
                                             text='layout.work.panel.note.add'

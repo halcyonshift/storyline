@@ -2,7 +2,7 @@ import { useRouteLoaderData } from 'react-router-dom'
 import { Box } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import ItemModel from '@sl/db/models/ItemModel'
-import { htmlParse } from '@sl/utils'
+import { htmlParse } from '@sl/utils/html'
 import ViewWrapper from '@sl/components/ViewWrapper'
 
 const ItemView = () => {

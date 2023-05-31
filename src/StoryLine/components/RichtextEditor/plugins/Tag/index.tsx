@@ -72,7 +72,7 @@ const TagPlugin = (props: MenuProps) => {
         editor.update(() => {
             $getRoot()
                 .getChildren()
-                .map((child) => {
+                .forEach((child) => {
                     child.getChildren().map((node: ElementNode) => {
                         if ($isTagNode(node)) {
                             const element = editor.getElementByKey(
