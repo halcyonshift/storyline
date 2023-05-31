@@ -637,6 +637,19 @@
             "tabs": "Tabs"
         }
     },
+    "tour": {
+        "storyline": {
+            "step0": "Welcome to StoryLine! Here's a quick tour to get you on your way.",
+            "step1": "If you want to review the license, here it is.",
+            "step2": "You can also find the link to the repo, if you'd like to help with translations.",
+            "step3": "These are global settings for the appearance of StoryLine and the editor",
+            "step4": "Change StoryLine's font, theme and light/dark mode here",
+            "step5": "Change the editor's font and formatting in here"
+        },
+        "work": {
+            "step0": "Welcome to your new work!"
+        }
+    },
     "view": {
         "storyline": {
             "backupRestore": {

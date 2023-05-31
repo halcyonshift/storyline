@@ -4,6 +4,7 @@ import { useDatabase } from '@nozbe/watermelondb/hooks'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLoaderData, useNavigate, useParams } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
+import Tour from '@sl/components/Tour'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 import { type WorkModel } from '@sl/db/models'
 import * as Panel from './Panel'
@@ -32,6 +33,7 @@ const WorkLayout = () => {
         <LayoutProvider navigationRef={navigationRef} panelRef={panelRef} mainRef={mainRef}>
             <TabsProvider>
                 <Box className={`flex flex-col flex-grow`}>
+                    <Tour prefix='work' steps={[{ placement: 'center', target: 'body' }]} />
                     <AppBar
                         position='static'
                         color='transparent'

@@ -17,7 +17,7 @@ import { WorkModel } from '@sl/db/models'
 import useMessenger from '@sl/layouts/useMessenger'
 
 const RestoreWorkBox = () => {
-    const [id, setId] = useState<string>(' ')
+    const [id, setId] = useState<string>('')
     const database = useDatabase()
     const messenger = useMessenger()
     const works = useObservable(

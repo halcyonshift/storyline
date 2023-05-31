@@ -65,7 +65,7 @@ const LandingView = () => {
 
     return (
         <Box className='p-4 grid grid-cols-2 grid-rows-2 gap-4 flex-grow bg-slate-50 dark:bg-neutral-700'>
-            <Paper elevation={1} className='relative'>
+            <Paper elevation={1} className='relative row-span-2'>
                 <Typography id='welcome' variant='h6' className='px-4 pt-3'>
                     {t('view.storyline.landing.title')}
                 </Typography>
@@ -90,12 +90,14 @@ const LandingView = () => {
                         </ListItemButton>
                     </MuiListItem>
                     <ListItem
+                        id='import'
                         link='/import'
                         icon={Icons.importExport.import}
                         primary='view.storyline.landing.navigation.import.primary'
                         secondary='view.storyline.landing.navigation.import.secondary'
                     />
                     <ListItem
+                        id='backupRestore'
                         link='/backupRestore'
                         icon={Icons.global.backupRestore}
                         primary='view.storyline.landing.navigation.backupRestore.primary'

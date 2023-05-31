@@ -25,8 +25,14 @@ const StoryLineLayout = () => {
                 steps={[
                     { placement: 'center', target: 'body' },
                     { target: '#info' },
+                    { placement: 'center', target: 'body' },
                     { target: '#settings' },
+                    { target: '.MuiTabs-flexContainer .MuiButtonBase-root:first-of-type' },
+                    { target: '.MuiTabs-flexContainer .MuiButtonBase-root:last-of-type' },
+                    { target: '#backupRestore' },
+                    { placement: 'center', target: 'body' },
                     { target: '#import' },
+                    { placement: 'center', target: 'body' },
                     { target: '#new' }
                 ]}
             />
