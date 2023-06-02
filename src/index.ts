@@ -24,7 +24,7 @@ import i18n from './StoryLine/i18n'
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 
-if (app.isPackaged) {
+if (parseInt(process.env.MONITOR) === 1) {
     init({
         dsn: process.env.SENTRY_DSN
     })
