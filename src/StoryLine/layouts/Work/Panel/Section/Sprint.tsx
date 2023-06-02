@@ -137,6 +137,7 @@ const Sprint = ({ work }: SprintType) => {
     ) : (
         <>
             <TooltipIconButton
+                id='panel-action-startSprint'
                 onClick={() => setDialogOpen(true)}
                 text={t('layout.work.panel.section.sprint.title')}
                 icon={SECTION_ICONS.sprint}

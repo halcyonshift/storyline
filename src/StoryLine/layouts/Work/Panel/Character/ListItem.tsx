@@ -46,7 +46,7 @@ const ListItem = ({ character, showIcon }: ListItemProps) => {
                         <Stack spacing={0} direction='row'>
                             <TooltipIconButton
                                 size='small'
-                                text='layout.work.panel.note.add'
+                                text='layout.work.panel.note.addNote'
                                 link={`addNote/character/${character.id}`}
                                 icon={NOTE_ICONS.add}
                             />

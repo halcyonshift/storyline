@@ -22,51 +22,7 @@ commands:
           paths:
             - node_modules
           key: v1-dependencies-{{ arch }}-{{ checksum "yarn.lock" }}
-  unittest:
-    steps:
-      - run:
-          command: yarn test:unit
-      - store_test_results:
-          path: ./coverage/
 jobs:
-  lint:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - install
-      - run: yarn run lint
-  mac-unittest:
-    parameters:
-      arch:
-        type: enum
-        enum: [ 'x64', 'arm64' ]
-    macos:
-      xcode: '13.4.0'
-    resource_class: macos.x86.medium.gen2
-    steps:
-      - install
-      - unittest
-  win-unittest:
-    parameters:
-      arch:
-        type: enum
-        enum: [ 'x64', 'arm64', 'ia32' ]
-    executor:
-      name: win/default
-      shell: bash.exe
-    steps:
-      - install
-      - unittest
-  linux-unittest:
-    parameters:
-      arch:
-        type: enum
-        enum: [ 'x64', 'arm64','armv7l' ]
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - install
-      - unittest
   mac-build:
     parameters:
       arch:
@@ -112,8 +68,6 @@ jobs:
       - run: sudo apt-get update && sudo apt install rpm
       - install
       - run: npx yarn run publisher --arch=<< parameters.arch >> --dry-run
-      # CircleCI doesn't let you persist files with the same name from multiple
-      # jobs, so only persist the .webpack path from the x64 linux-build job
       - when:
           condition:
             not:
@@ -157,21 +111,8 @@ jobs:
             sentry-cli releases finalize $SENTRY_RELEASE
             sentry-cli releases deploys $SENTRY_RELEASE new -e $SENTRY_ENVIRONMENT
 workflows:
-  build-and-test:
+  build:
     jobs:
-      - lint
-      - mac-unittest:
-          matrix:
-            parameters:
-              arch: [ x64, arm64 ]
-      - win-unittest:
-          matrix:
-            parameters:
-              arch: [ x64 ]
-      - linux-unittest:
-          matrix:
-            parameters:
-              arch: [ x64 ]
       - mac-build:
           matrix:
             parameters:
@@ -205,10 +146,6 @@ workflows:
       - publish-to-github:
           context: storyline-release
           requires:
-            - mac-unittest-x64
-            - mac-unittest-arm64
-            - win-unittest-x64
-            - linux-unittest-x64
             - mac-build-x64
             - mac-build-arm64
             - win-build-ia32

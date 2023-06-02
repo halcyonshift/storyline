@@ -99,7 +99,7 @@ const NotePanel = () => {
                 />
             }
             navigation={[
-                { link: 'addNote', text: 'layout.work.panel.note.add', icon: NOTE_ICONS.add }
+                { link: 'addNote', text: 'layout.work.panel.note.addNote', icon: NOTE_ICONS.add }
             ]}>
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId='root' direction='vertical' type='ROOT' isCombineEnabled>

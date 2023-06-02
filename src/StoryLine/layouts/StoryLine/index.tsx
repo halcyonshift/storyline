@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Link from '@sl/components/Link'
-import Tour from '@sl/components/Tour'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 
 const StoryLineLayout = () => {
@@ -20,22 +19,6 @@ const StoryLineLayout = () => {
 
     return (
         <Box className={`flex flex-col flex-grow`}>
-            <Tour
-                prefix='storyline'
-                steps={[
-                    { placement: 'center', target: 'body' },
-                    { target: '#info' },
-                    { placement: 'center', target: 'body' },
-                    { target: '#settings' },
-                    { target: '.MuiTabs-flexContainer .MuiButtonBase-root:first-of-type' },
-                    { target: '.MuiTabs-flexContainer .MuiButtonBase-root:last-of-type' },
-                    { target: '#backupRestore' },
-                    { placement: 'center', target: 'body' },
-                    { target: '#import' },
-                    { placement: 'center', target: 'body' },
-                    { target: '#new' }
-                ]}
-            />
             <AppBar position='static' color='transparent' elevation={0} className='border-b'>
                 <Toolbar variant='dense'>
                     <Box>

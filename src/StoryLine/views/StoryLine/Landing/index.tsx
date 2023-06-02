@@ -19,12 +19,14 @@ import ListItem from '@sl/components/ListItem'
 import Icons, { GLOBAL_ICONS } from '@sl/constants/icons'
 import { Status } from '@sl/constants/status'
 import { WorkModel } from '@sl/db/models'
+import useTour from '@sl/layouts/useTour'
 import useSettings from '@sl/theme/useSettings'
 
 const LandingView = () => {
     const database = useDatabase()
     const navigate = useNavigate()
     const settings = useSettings()
+    const tour = useTour()
     const { t } = useTranslation()
     const recentWorks = useObservable(
         () =>
@@ -60,7 +62,7 @@ const LandingView = () => {
         const chapter = await part.addChapter()
         await chapter.addScene()
 
-        navigate(`/work/${work.id}/edit`)
+        navigate(`/work/${work.id}`)
     }
 
     return (
@@ -132,6 +134,19 @@ const LandingView = () => {
             <Paper elevation={1} className='relative '>
                 <Box className='bg-indigo-50 dark:bg-indigo-900 h-full rounded align-middle grid place-items-center'>
                     <Box className='grid grid-cols-1 gap-5 w-[80%]'>
+                        <Box
+                            className='pb-5 cursor-pointer'
+                            onClick={async () => tour.start('storyline')}>
+                            <Typography variant='h4' className='float-left pr-3'>
+                                {GLOBAL_ICONS.tour}
+                            </Typography>
+                            <Typography variant='body1'>
+                                {t('view.storyline.landing.contact.tour.title')}
+                            </Typography>
+                            <Typography variant='body2' className='whitespace-nowrap'>
+                                {t('view.storyline.landing.contact.tour.text')}
+                            </Typography>
+                        </Box>
                         <Link title='Go to GitHub' href={BUG_LINK}>
                             <Box className='pb-5'>
                                 <Typography variant='h4' className='float-left pr-3'>

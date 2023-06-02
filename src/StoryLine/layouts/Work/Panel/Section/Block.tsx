@@ -92,7 +92,7 @@ const Block = ({ section, index, fontWeight, group }: BlockType) => {
                                         )}
                                         <TooltipIconButton
                                             size='small'
-                                            text='layout.work.panel.note.add'
+                                            text='layout.work.panel.note.addNote'
                                             link={`addNote/section/${section.id}`}
                                             icon={NOTE_ICONS.add}
                                         />

@@ -50,10 +50,10 @@ const LocationForm = ({ work, location, initialValues }: LocationFormProps) => {
 
     const getTitle = (): string => {
         if (location?.displayName && !initialValues.name) {
-            return `${location.displayName}: ${t('layout.work.panel.location.add')}`
+            return `${location.displayName}: ${t('layout.work.panel.location.addLocation')}`
         }
 
-        return location?.displayName || t('layout.work.panel.location.add')
+        return location?.displayName || t('layout.work.panel.location.addLocation')
     }
 
     useEffect(() => {

@@ -57,7 +57,7 @@ const LocationPanel = () => {
             navigation={[
                 {
                     link: 'addLocation',
-                    text: 'layout.work.panel.location.add',
+                    text: 'layout.work.panel.location.addLocation',
                     icon: LOCATION_ICONS.add
                 }
             ]}>

@@ -22,7 +22,8 @@
         }
     },
     "navigation": {
-        "back": "Back"
+        "back": "Back",
+        "tour": "Tour"
     },
     "component": {
         "colorField": {
@@ -358,7 +359,6 @@
     "form": {
         "required": "This is required",
         "work": {
-
             "character": {
                 "tab": {
                     "demographics": "Demographics",
@@ -489,6 +489,7 @@
                 "date": "Date",
                 "pointOfView": "Point of view",
                 "pointOfViewCharacter": "Point of view character",
+                "description": "Summary",
                 "tag": {
                     "characters": "Characters",
                     "items": "Items",
@@ -515,6 +516,8 @@
                 "language": "Language",
                 "wordGoal": "Word goal",
                 "deadline": "Deadline",
+                "summary": "Summary",
+                "image": "Cover image",
                 "alert": {
                     "success": "The work has been saved"
                 },
@@ -590,21 +593,21 @@
                     "groupToggle": "Show archived"
                 },
                 "item": {
-                    "add": "Add item",
+                    "addItem": "Add item",
                     "edit": "Edit",
                     "delete": "Delete",
                     "deleteConfirm": "Are you sure you want to delete {{name}}?",
                     "groupToggle": "Show archived"
                 },
                 "location": {
-                    "add": "Add location",
+                    "addLocation": "Add location",
                     "edit": "Edit",
                     "delete": "Delete",
                     "deleteConfirm": "Are you sure you want to delete {{name}}?",
                     "groupToggle": "Show archived"
                 },
                 "note": {
-                    "add": "Add note",
+                    "addNote": "Add note",
                     "edit": "Edit",
                     "delete": "Delete",
                     "deleteConfirm": "Are you sure you want to delete {{name}}?",
@@ -644,10 +647,103 @@
             "step2": "You can also find the link to the repo, if you'd like to help with translations.",
             "step3": "These are global settings for the appearance of StoryLine and the editor",
             "step4": "Change StoryLine's font, theme and light/dark mode here",
-            "step5": "Change the editor's font and formatting in here"
+            "step5": "Change the editor's font and formatting in here",
+            "step6": "If you'd like to backup StoryLine, restore a backup or have a specific work you'd like to backup or restore, you can do it in here",
+            "step7": "Anything restored in here is final and irreversible!",
+            "step8": "If you have a work somewhere else, you may be able to import it here",
+            "step9": "Imports won't always be complete, it depends on the source",
+            "step10": "Click here to create a new work and then look for the tour icon on the top left if you'd like to continue the tour"
         },
         "work": {
-            "step0": "Welcome to your new work!"
+            "welcome": "Welcome to your work! Because there's a lot to see, the tour is screen-specific: click the tour icon whenever you'd like more information about what's in view",
+            "navigation": {
+                "section": "This is where you can write your work. For more information - click this icon to view a panel of tools and then start the tour again",
+                "character": "If you'd like to add information about characters, you can do it in here - click this icon to view the characters panel and then start the tour again",
+                "location": "If you'd like to add information about locations, you can do it in here - click this icon to view the locations panel and then start the tour again",
+                "item": "If you'd like to add information about items, you can do it in here - click this icon to view the items panel and then start the tour again",
+                "note": "If you'd like to add notes, you can do it in here - click this icon to view the notes panel and then start the tour again",
+                "search": "Search your work and/or or the characters, locations, items and notes associated with it - click this icon to view the search panel and then start the tour again",
+                "overview": "A summary of your work in an easy to parse list, plus a timeline of events if dates have been given",
+                "connection": "Map your characters, items, locations and notes to help visualise their connections",
+                "insight": "A collection of stats on word count, writing patterns and narrative",
+                "export": "When your work's ready for publishing, you can export it here in a variety of formats",
+                "settings": "Change the title of your work, give it a cover, and more"
+            },
+            "panel": {
+                "section": {
+                    "intro": "Your work can be split into parts, chapters and scenes (or just chapters and scenes) if you like, but it can stay as a single scene if you prefer. To re-order or move, just drag and drop.",
+                    "addPart": "Parts are a collection of chapters. Your work has one automatically, but if you want another click this icon.",
+                    "addChapter": "Chapters are a collection of scenes. Your work has one automatically, but if you want another click this icon.",
+                    "addScene": "A scene where you do your writing - it might just be a few hundred words, or it may be the entire work. Your work has one automatically, but if you want another click this icon.",
+                    "startSprint": "If you'd like to challenge yourself, you can create a sprint with a word goal and a time limit. Only words in scenes are counted!",
+                    "view": "<span className='block p-3'>Clicking part or chapter headings will show the content under them, clicking a scene heading will take you to the editor.</span><span className='block'>If you need to edit your part, chapter or scene title or summaries, click the pencil icon instead</span>",
+                    "addNote": "You can click this icon to add a note to part, chapter or scene"
+                },
+                "character": {
+                    "intro": "<span className='block p-3'>The <span className='font-bold'>character panel</span> is an optional tool that gives you a space to flesh out your characters and, if you do, you'll be able to tag them in scenes and connections.</span><span className='block'>Characters can be primary, secondary or tertiary - there's no practical difference between them, it's for categorising only</span>",
+                    "addPrimary": "A primary character is a central figure or protagonist, who plays a significant role in driving the plot forward - click this icon to add one",
+                    "addSecondary": "A secondary character supports the primary character and adds depth and complexity, but typically has a lesser role and impact - click this icon to add one.",
+                    "addTertiary": "A tertiary character is a minor, background, character who has minimal impact on the main plot, but may provide additional context or support - click this icon to add one."
+                },
+                "location": {
+                    "intro": "<span className='block p-3'>The <span className='font-bold'>location panel</span> is an optional tool that gives you a space to any locations referenced in your work and, if you do, you'll be able to tag them in scenes and connections.</span><span>Once you have a location, re-run this part of the tour for more information</span>",
+                    "add": "Click this icon to add a top-level location - perhaps a country, or a town. You'll be able to add child locations under it after you save.",
+                    "view": "Click here to view the information about this location, as well as any child locations under it",
+                    "addLocation": "Click this icon to add a child location. For example, if the parent is city, it may be a park within it",
+                    "addNote": "Click this icon to add a note to the location"
+                },
+                "item": {
+                    "intro": "<span className='block p-3'>The <span className='font-bold'>item panel</span> is an optional tool that gives you a space to add any items referenced in your work and, if you do, you'll be able to tag them in scenes and connections.</span><span>Once you have an item, re-run this part of the tour for more information</span>",
+                    "add": "Click this icon to add an item - a magic ring, a car, who knows?",
+                    "view": "Click here to view the information about this item",
+                    "addNote": "Click this icon to add a note to the item"
+                },
+                "note": {
+                    "intro": "<span className='block'>The <span className='font-bold'>note panel</span> is an optional tool that gives you a space to add any notes and, if you do, you'll be able to tag them in scenes and connections.</span><span className='block p-3'>Only notes that aren't related to the narrative, character, items or locations are listed here. Other notes can be found in their respective parent views.</span><span>Once you have a note, re-run this part of the tour for more information</span>",
+                    "add": "Click this icon to add a top-level note - maybe 'Narrative Strands' or 'Scribbles'",
+                    "view": "Click here to view the information about this note, as well as any child notes under it",
+                    "addNote": "Click this icon to add a child note"
+                },
+                "search": {
+                    "intro": "<span className='block'>The <span className='font-bold'>search panel</span> allows a full work word search, which can be restricted to just scenes.",
+                    "input": "Keywords should be as exact as possible, but can be partial words."
+                }
+            },
+            "connection": {
+                "intro": "This area is where you can connect anything to anything else in graphical map. The connections might be family-based (parent, sibling) or more loosely defined: 'lives in' or 'owns'.",
+                "new": "Create a connection between two entities here - it can be mutual, or just one way",
+                "switch": "Filter connections to familial-only and display in a more hierarchical view"
+            },
+            "dashboard": {
+                "intro": "This is your dashboard, it may not look too interesting at the moment, but the more you write the more it will grow",
+                "chart": "A quick look at activity in the last week - you'll find much more in the insights area",
+                "tracker": "An overview of your entire work, with progress if word goal has been set and days left if deadlines have been set",
+                "lastUpdate": "A list of your most recent updates",
+                "deadline": "Your five closest deadlines, if you're using them",
+                "random": "A character name and personality generator and a prompter to get the gears turning"
+            },
+            "export": {
+                "intro": "You work is exportable in a variety of formats, but by their nature they may not all have the same configration options."
+            },
+            "location": {
+                "map": "If your location exists, you can click the map to automatically get its coordinates. Or, click the icon directly to the map's right to enter the coordinates yourself."
+            },
+            "note": {
+                "color": "To help organise them, notes can be given a colour",
+                "taggable": "If you want your note to be available to reference in scenes or connections, check this box"
+            },
+            "overview": {
+                "intro": "<span className='block'>The overview <span className='font-bold'>summary</span> is a brief rundown of part, scene and chapter, using any descriptive text, tags and excerpts to build itself</span><span className='block p-3'>The <span className='font-bold'>timeline</span> is a graphical representation of events in scenes, notes and anything else that allows a date to be given (including character date of birth).</span><span>To move an event, click and drag it to a new point.</span>"
+            },
+            "scene": {
+                "intro": "<span className='block p-3'>Where the magic* happens! If you prefer to write without distractions, full-screen the app</span><span className='block' style='font-size: 10pt'>* magic may include swearing</span>",
+                "toolbar": {
+                    "excerpt": "Highlight text you'd like to appear on the overview summary as a reminder",
+                    "tag": "While you can tag locations, characters, items and notes when editing a scene, you can also highlight text and click here",
+                    "version": "Click here to add a new version of a scene, or view previous versions"
+                }
+            },
+            "statusWidget": "If you'd like to keep track of the status of anything in your work, click one of the states on the widget to update it. The work's status won't automatically update (e.g., meeting a word goal won't make the status Complete)."
         }
     },
     "view": {
@@ -726,6 +822,10 @@
                     "feature": {
                         "title": "Want a new feature?",
                         "text": "Tell me your hopes and dreams"
+                    },
+                    "tour": {
+                        "title": "Take the tour!",
+                        "text": "A quick run around StoryLine to get you started"
                     }
                 },
                 "titles": {

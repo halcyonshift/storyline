@@ -4,7 +4,6 @@ import { useDatabase } from '@nozbe/watermelondb/hooks'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLoaderData, useNavigate, useParams } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
-import Tour from '@sl/components/Tour'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 import { type WorkModel } from '@sl/db/models'
 import * as Panel from './Panel'
@@ -12,6 +11,7 @@ import Navigation from './Navigation'
 import Tabs from './Tabs'
 import { TabsProvider } from './Tabs/useTabs'
 import { LayoutProvider } from './useLayout'
+import useTour from '../useTour'
 
 const WorkLayout = () => {
     const [currentPanel, setCurrentPanel] = useState<string | null>()
@@ -28,16 +28,15 @@ const WorkLayout = () => {
         useLoaderData() as WorkModel,
         []
     )
+    const tour = useTour()
 
     return (
         <LayoutProvider navigationRef={navigationRef} panelRef={panelRef} mainRef={mainRef}>
             <TabsProvider>
-                <Box className={`flex flex-col flex-grow`}>
-                    <Tour prefix='work' steps={[{ placement: 'center', target: 'body' }]} />
+                <Box className='flex flex-col flex-grow'>
                     <AppBar
                         position='static'
                         color='transparent'
-                        // eslint-disable-next-line max-len
                         className='z-10 border-b'
                         elevation={0}>
                         <Toolbar variant='dense'>
@@ -49,6 +48,13 @@ const WorkLayout = () => {
                                     aria-label={t('navigation.back')}
                                     onClick={() => navigate(-1)}>
                                     {GLOBAL_ICONS.back}
+                                </IconButton>
+                                <IconButton
+                                    edge='start'
+                                    color='primary'
+                                    aria-label={t('navigation.tour')}
+                                    onClick={() => tour.start('work')}>
+                                    {GLOBAL_ICONS.tour}
                                 </IconButton>
                             </Box>
                             <Box className='flex flex-grow justify-between'>
