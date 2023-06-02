@@ -23,6 +23,7 @@ export type ExportFormProps = {
 }
 
 export type ExportDataType = {
+    part: string
     chapterTitle: string
     chapterPosition: 'center'
     author: string

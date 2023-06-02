@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 import {
     AppBar,
     Box,
@@ -21,6 +21,7 @@ import FontSizeField from '@sl/components/form/FontSizeField'
 import LineHeightField from '@sl/components/form/LineHeightField'
 import ParagraphSpacingField from '@sl/components/form/ParagraphSpacingField'
 import RadioField from '@sl/components/form/RadioField'
+import SelectField from '@sl/components/form/SelectField'
 import SwitchField from '@sl/components/form/SwitchField'
 import TextField from '@sl/components/form/TextField'
 import {
@@ -29,6 +30,7 @@ import {
     DEFAULT_FONT_SIZE,
     DEFAULT_INDENT_PARAGRAPH
 } from '@sl/constants/defaults'
+import { SectionModel } from '@sl/db/models'
 import useSettings from '@sl/theme/useSettings'
 import { ExportFormProps, ExportDataType } from './types'
 
@@ -50,6 +52,7 @@ const ExportForm = ({
     showFormatting,
     isGenerating
 }: ExportFormProps) => {
+    const [parts, setParts] = useState<SectionModel[]>([])
     const settings = useSettings()
     const { t } = useTranslation()
 
@@ -62,13 +65,15 @@ const ExportForm = ({
         paragraphSpacing: yup.number(),
         font: yup.string(),
         fontSize: yup.number(),
-        indentParagraph: yup.boolean()
+        indentParagraph: yup.boolean(),
+        part: yup.string()
     })
 
     const form: FormikProps<ExportDataType> = useFormik<ExportDataType>({
         enableReinitialize: true,
         initialValues: {
             author: work.author,
+            part: '',
             chapterTitle: t('form.work.export.chapterTitleInitialValue'),
             chapterPosition: 'center',
             sceneSeparator: 'oOo',
@@ -81,6 +86,13 @@ const ExportForm = ({
         validationSchema,
         onSubmit: async (values: ExportDataType) => generateExport(values)
     })
+
+    useEffect(() => {
+        work.parts.fetch().then((parts) => {
+            form.setFieldValue('part', parts[0].id)
+            setParts(parts)
+        })
+    }, [])
 
     return (
         <Dialog
@@ -122,6 +134,20 @@ const ExportForm = ({
                     </Toolbar>
                 </AppBar>
                 <DialogContent>
+                    {mode === 'epub' && parts.length > 1 ? (
+                        <Box className='p-5'>
+                            <SelectField
+                                form={form}
+                                name='part'
+                                label={t('form.work.export.part')}
+                                options={parts.map((part) => ({
+                                    label: part.displayTitle,
+                                    value: part.id
+                                }))}
+                            />
+                        </Box>
+                    ) : null}
+
                     {showFormatting ? (
                         <Box className='p-5'>
                             <Box className='grid grid-cols-1 gap-3'>

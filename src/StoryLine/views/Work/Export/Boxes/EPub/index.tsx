@@ -18,7 +18,14 @@ const EPubBox = ({ work }: { work: WorkModel }) => {
 
     const createEPub = async () => {
         const parts = await work.parts.fetch()
-        const chapters = await parts[0].chapters.fetch()
+
+        let part = parts[0]
+
+        if (parts.length > 1) {
+            part = parts.find((part) => part.id === settings.part)
+        }
+
+        const chapters = await part.chapters.fetch()
         const scenes = await work.scenes.fetch()
 
         return await api.exportEpub(

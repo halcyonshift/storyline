@@ -428,6 +428,7 @@
             },
             "export": {
                 "author": "Author",
+                "part": "Part",
                 "chapterTitle": "Chapter title",
                 "chapterTitleInitialValue": "Chapter {{number}}. {{title}}",
                 "chapterPosition": {
