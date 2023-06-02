@@ -5,7 +5,7 @@
   "description": "Writing tool",
   "main": ".webpack/main",
   "scripts": {
-    "start": "ENVIRONMENT=development MONITOR=1 ELECTRON_DISABLE_SECURITY_WARNINGS=true electron-forge start",
+    "start": "ENVIRONMENT=development MONITOR=0 ELECTRON_DISABLE_SECURITY_WARNINGS=true electron-forge start",
     "packager": "electron-forge package --arch=ia32,x64 --platform=darwin,win32",
     "maker": "electron-forge make --platform=darwin --arch=x64,arm64",
     "publisher": "electron-forge publish",
@@ -24,14 +24,14 @@
     "productName": "StoryLine",
     "icon": "./src/StoryLine/assets/images/icons/icon.icns",
     "directories": {
-       "output": "releases/${platform}/${arch}"
+      "output": "releases/${platform}/${arch}"
     },
     "mac": {
-       "hardenedRuntime": true,
-       "gatekeeperAssess": false,
-       "entitlements": "./entitlements.plist",
-       "entitlementsInherit": "./entitlements.plist",
-       "category": "public.app-category.productivity"
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "./entitlements.plist",
+      "entitlementsInherit": "./entitlements.plist",
+      "category": "public.app-category.productivity"
     },
     "asar": null
   },
@@ -129,6 +129,7 @@
     "@sentry/electron": "4.5.0",
     "@sentry/react": "7.51.2",
     "@wojtekmaj/react-daterange-picker": "5.0.2",
+    "ansi-encode": "^1.0.1",
     "axios": "^1.4.0",
     "chart.js": "4.3.0",
     "chartjs-plugin-annotation": "2.2.1",
