@@ -35,9 +35,6 @@ const ExportView = () => {
                 <Boxes.PDF work={work} />
             </Paper>
             <Paper elevation={1}>
-                <Boxes.RTF work={work} />
-            </Paper>
-            <Paper elevation={1}>
                 <Boxes.Text work={work} />
             </Paper>
         </Box>
