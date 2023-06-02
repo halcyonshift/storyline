@@ -30,7 +30,7 @@ const OverviewView = () => {
     }, [])
 
     return (
-        <Box className=' w-full'>
+        <Box className='w-full' id='overviewView'>
             <TabContext value={value}>
                 <Box className='border-b'>
                     <TabList

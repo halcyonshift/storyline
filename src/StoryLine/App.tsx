@@ -13,6 +13,7 @@ import { Outlet, useRouteLoaderData } from 'react-router-dom'
 import useMessenger from '@sl/layouts/useMessenger'
 import useSettings from '@sl/theme/useSettings'
 import { WorkModel } from '@sl/db/models'
+import { TourProvider } from '@sl/layouts/useTour'
 import { ErrorBoundary } from '@sl/views/StoryLine'
 
 const App = () => {
@@ -46,8 +47,11 @@ const App = () => {
             <LocalizationProvider dateAdapter={AdapterLuxon}>
                 <ThemeProvider theme={settings.theme}>
                     <CssBaseline />
+
                     <Box id='app' className={`${settings.displayMode} flex h-full`}>
-                        <Outlet />
+                        <TourProvider>
+                            <Outlet />
+                        </TourProvider>
                         <Snackbar
                             open={messenger.open}
                             autoHideDuration={6000}

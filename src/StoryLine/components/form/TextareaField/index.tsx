@@ -8,15 +8,13 @@ import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
-import { Box, InputLabel, Typography } from '@mui/material'
-import { useTranslation } from 'react-i18next'
+import { Box, Typography } from '@mui/material'
 import InitialValuePlugin from '@sl/components/RichtextEditor/plugins/InitialValue'
 import ToolbarPlugin from './plugins/Toolbar'
 import theme from './theme'
 import { TextareaFieldProps } from './types'
 
 const TextareaField = ({ form, label, fieldName }: TextareaFieldProps) => {
-    const { t } = useTranslation()
     const [initialValue, setInitialValue] = useState<string>()
 
     useEffect(() => {
@@ -25,7 +23,6 @@ const TextareaField = ({ form, label, fieldName }: TextareaFieldProps) => {
 
     return (
         <Box>
-            {label ? <InputLabel className='mb-1'>{label}</InputLabel> : null}
             <Box className='border rounded-md'>
                 <LexicalComposer
                     initialConfig={{
@@ -50,7 +47,7 @@ const TextareaField = ({ form, label, fieldName }: TextareaFieldProps) => {
                                     variant='body1'
                                     className='text-slate-500 overflow-hidden absolute
                             top-[15px] left-[10px] inline-block pointer-events-none'>
-                                    {t('component.textareaField.placeholder')}
+                                    {label}
                                 </Typography>
                             }
                             ErrorBoundary={LexicalErrorBoundary}

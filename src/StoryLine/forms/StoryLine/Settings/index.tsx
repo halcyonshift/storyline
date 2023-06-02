@@ -99,6 +99,7 @@ const SettingsForm = ({
 
     return (
         <Box
+            id='settingsForm'
             component={'form'}
             onSubmit={form.handleSubmit}
             autoComplete='off'

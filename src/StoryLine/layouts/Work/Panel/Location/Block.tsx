@@ -59,13 +59,13 @@ const Block = ({ location, index, fontWeight }: BlockType) => {
                                     <Stack direction='row'>
                                         <TooltipIconButton
                                             size='small'
-                                            text='layout.work.panel.location.add'
+                                            text='layout.work.panel.location.addLocation'
                                             icon={LOCATION_ICONS.add}
                                             link={`location/${location.id}/add`}
                                         />
                                         <TooltipIconButton
                                             size='small'
-                                            text='layout.work.panel.note.add'
+                                            text='layout.work.panel.note.addNote'
                                             link={`addNote/location/${location.id}`}
                                             icon={NOTE_ICONS.add}
                                         />

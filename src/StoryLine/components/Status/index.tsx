@@ -13,7 +13,7 @@ const Status = ({ model }: StatusProps) => {
     useEffect(() => setStatus(model.status), [model.id])
 
     return (
-        <ButtonGroup size='small' variant='outlined'>
+        <ButtonGroup size='small' variant='outlined' id='status-widget'>
             {Object.keys(Options).map((option: StatusType) => (
                 <Button
                     disableElevation

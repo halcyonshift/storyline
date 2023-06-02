@@ -6,4 +6,5 @@
     height: 200px;
     border: 1px solid #999;
     border-radius: 5px;
+    z-index: 2
 }

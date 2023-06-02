@@ -36,7 +36,8 @@ const DeadlinesBox = () => {
         work.section
             .extend(
                 Q.where('deadline_at', Q.gte(DateTime.now().toMillis())),
-                Q.sortBy('order', Q.asc)
+                Q.sortBy('order', Q.asc),
+                Q.take(5)
             )
             .fetch()
             .then((sections) => {
@@ -88,7 +89,9 @@ const DeadlinesBox = () => {
             </Timeline>
         </Box>
     ) : (
-        <Typography textAlign='center'>{t('view.work.dashboard.deadline.none')}</Typography>
+        <Box className='grid h-full place-items-center p-3'>
+            <Typography variant='body1'>{t('view.work.dashboard.deadline.none')}</Typography>
+        </Box>
     )
 }
 

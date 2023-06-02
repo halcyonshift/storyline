@@ -19,12 +19,14 @@ import ListItem from '@sl/components/ListItem'
 import Icons, { GLOBAL_ICONS } from '@sl/constants/icons'
 import { Status } from '@sl/constants/status'
 import { WorkModel } from '@sl/db/models'
+import useTour from '@sl/layouts/useTour'
 import useSettings from '@sl/theme/useSettings'
 
 const LandingView = () => {
     const database = useDatabase()
     const navigate = useNavigate()
     const settings = useSettings()
+    const tour = useTour()
     const { t } = useTranslation()
     const recentWorks = useObservable(
         () =>
@@ -60,13 +62,13 @@ const LandingView = () => {
         const chapter = await part.addChapter()
         await chapter.addScene()
 
-        navigate(`/work/${work.id}/edit`)
+        navigate(`/work/${work.id}`)
     }
 
     return (
         <Box className='p-4 grid grid-cols-2 grid-rows-2 gap-4 flex-grow bg-slate-50 dark:bg-neutral-700'>
             <Paper elevation={1} className='relative row-span-2'>
-                <Typography variant='h5' className='px-4 pt-3'>
+                <Typography id='welcome' variant='h6' className='px-4 pt-3'>
                     {t('view.storyline.landing.title')}
                 </Typography>
                 <List>
@@ -78,7 +80,7 @@ const LandingView = () => {
                             secondary='view.storyline.landing.navigation.works.secondary'
                         />
                     ) : null}
-                    <MuiListItem disablePadding disableGutters>
+                    <MuiListItem id='new' disablePadding disableGutters>
                         <ListItemButton onClick={handleNew}>
                             <ListItemIcon sx={{ fontSize: settings.appFontSize * 2 }}>
                                 {Icons.global.add}
@@ -90,24 +92,28 @@ const LandingView = () => {
                         </ListItemButton>
                     </MuiListItem>
                     <ListItem
+                        id='import'
                         link='/import'
                         icon={Icons.importExport.import}
                         primary='view.storyline.landing.navigation.import.primary'
                         secondary='view.storyline.landing.navigation.import.secondary'
                     />
                     <ListItem
+                        id='backupRestore'
                         link='/backupRestore'
                         icon={Icons.global.backupRestore}
                         primary='view.storyline.landing.navigation.backupRestore.primary'
                         secondary='view.storyline.landing.navigation.backupRestore.secondary'
                     />
                     <ListItem
+                        id='settings'
                         link='/settings'
                         icon={Icons.settings.settings}
                         primary='view.storyline.landing.navigation.settings.primary'
                         secondary='view.storyline.landing.navigation.settings.secondary'
                     />
                     <ListItem
+                        id='info'
                         link='/info'
                         icon={Icons.global.info}
                         primary='view.storyline.landing.navigation.info.primary'
@@ -128,6 +134,19 @@ const LandingView = () => {
             <Paper elevation={1} className='relative '>
                 <Box className='bg-indigo-50 dark:bg-indigo-900 h-full rounded align-middle grid place-items-center'>
                     <Box className='grid grid-cols-1 gap-5 w-[80%]'>
+                        <Box
+                            className='pb-5 cursor-pointer'
+                            onClick={async () => tour.start('storyline')}>
+                            <Typography variant='h4' className='float-left pr-3'>
+                                {GLOBAL_ICONS.tour}
+                            </Typography>
+                            <Typography variant='body1'>
+                                {t('view.storyline.landing.contact.tour.title')}
+                            </Typography>
+                            <Typography variant='body2' className='whitespace-nowrap'>
+                                {t('view.storyline.landing.contact.tour.text')}
+                            </Typography>
+                        </Box>
                         <Link title='Go to GitHub' href={BUG_LINK}>
                             <Box className='pb-5'>
                                 <Typography variant='h4' className='float-left pr-3'>

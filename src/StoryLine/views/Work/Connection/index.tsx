@@ -277,10 +277,11 @@ const ConnectionView = () => {
     }, [filterTable, filterMode])
 
     return (
-        <Box className='relative w-full h-full'>
-            <Box className='float-right mt-3 grid grid-cols-4 gap-3 w-full px-3'>
+        <Box className='relative w-full h-full' id='connectionView'>
+            <Box className='mt-3 grid grid-cols-4 gap-3 w-full px-3'>
                 <Box>
                     <Button
+                        id='connectionNew'
                         variant='contained'
                         startIcon={GLOBAL_ICONS.add}
                         className='z-10'

@@ -16,7 +16,9 @@ const ExportView = () => {
     }, [])
 
     return (
-        <Box className='p-4 grid grid-cols-3 grid-rows-3 gap-4 flex-grow bg-slate-50 dark:bg-neutral-700'>
+        <Box
+            className='p-4 grid grid-cols-3 grid-rows-3 gap-4 flex-grow bg-slate-50 dark:bg-neutral-700'
+            id='exportView'>
             <Paper elevation={1}>
                 <Boxes.Docx work={work} />
             </Paper>

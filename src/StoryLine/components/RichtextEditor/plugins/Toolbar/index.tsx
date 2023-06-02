@@ -191,6 +191,7 @@ const ToolbarPlugin = ({
                 </IconButton>
                 {config.includes('excerpt') ? (
                     <IconButton
+                        id='rteToolbarExcerpt'
                         color={isQuote ? 'primary' : 'default'}
                         aria-label={t('component.richtextEditor.toolbar.excerpt')}
                         onClick={formatQuote}>

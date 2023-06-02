@@ -148,7 +148,11 @@ const SectionForm = ({ work, section, initialValues }: SectionFormProps) => {
                     name='title'
                     label={t('form.work.section.title')}
                 />
-                <TextareaField form={form} fieldName='description' />
+                <TextareaField
+                    form={form}
+                    fieldName='description'
+                    label={t('form.work.section.description')}
+                />
                 {section.isScene ? (
                     <Box className='grid grid-cols-2 gap-3'>
                         <SelectField

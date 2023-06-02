@@ -10,6 +10,7 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
 
     return (
         <Box
+            id='panel'
             sx={{ backgroundColor: settings.getHex(settings.isDark() ? 800 : 50), width }}
             className='flex flex-col flex-grow'>
             {navigation || action ? (
@@ -18,6 +19,7 @@ const Panel = ({ navigation, children, action }: PanelProps) => {
                     {navigation
                         ? navigation.map((item) => (
                               <TooltipIconButton
+                                  id={`panel-action-${item.text.split('.').at(-1)}`}
                                   key={item.text}
                                   link={item.link}
                                   text={item.text}

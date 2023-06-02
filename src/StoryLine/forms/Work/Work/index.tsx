@@ -1,4 +1,4 @@
-import { Box, MenuItem, TextField as MuiTextField } from '@mui/material'
+import { Box, TextField as MuiTextField } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { FormikProps, useFormik } from 'formik'
 import { DateTime } from 'luxon'
@@ -57,15 +57,6 @@ const WorkForm = ({ work, initialValues }: WorkFormProps) => {
                         />
                         <TextField label={t('form.work.work.author')} name='author' form={form} />
                         <TextField
-                            select
-                            form={form}
-                            name='language'
-                            label={t('form.work.work.language')}>
-                            <MenuItem value='en-gb'>English (UK)</MenuItem>
-                            <MenuItem value='en-us'>English (US)</MenuItem>
-                            <MenuItem value='en-au'>English (Australian)</MenuItem>
-                        </TextField>
-                        <TextField
                             form={form}
                             label={t('form.work.work.wordGoal')}
                             name='wordGoal'
@@ -87,10 +78,14 @@ const WorkForm = ({ work, initialValues }: WorkFormProps) => {
                         />
                     </Box>
                     <Box>
-                        <ImageField form={form} dir='works' />
+                        <ImageField form={form} dir='works' label={t('form.work.work.image')} />
                     </Box>
                 </Box>
-                <TextareaField form={form} fieldName='summary' />
+                <TextareaField
+                    form={form}
+                    fieldName='summary'
+                    label={t('form.work.work.summary')}
+                />
             </>
         </FormWrapper>
     )

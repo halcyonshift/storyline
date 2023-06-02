@@ -10,3 +10,7 @@ export type MessengerContextType = {
     status: StatusType
     message: string
 }
+
+export type TourContextType = {
+    start: (mode: 'storyline' | 'work') => void
+}

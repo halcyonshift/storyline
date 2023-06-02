@@ -21,7 +21,8 @@ export const GLOBAL_ICONS = {
     backupRestore: <Icon name='SettingsBackupRestore' />,
     bug: <Icon name='BugReport' />,
     feature: <Icon name='ChatBubble' />,
-    help: <Icon name='LiveHelp' />
+    help: <Icon name='LiveHelp' />,
+    tour: <Icon name='NotListedLocation' />
 }
 
 export const CHARACTER_ICONS = {

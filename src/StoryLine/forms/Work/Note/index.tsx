@@ -57,10 +57,10 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
 
     const getTitle = (): string => {
         if (belongsTo?.displayName && !initialValues.title) {
-            return `${belongsTo.displayName}: ${t('layout.work.panel.note.add')}`
+            return `${belongsTo.displayName}: ${t('layout.work.panel.note.addNote')}`
         }
 
-        return note?.displayName || t('layout.work.panel.note.add')
+        return note?.displayName || t('layout.work.panel.note.addNote')
     }
 
     return (
@@ -89,6 +89,7 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
                             <ColorField name='color' form={form} />
                             <FormGroup>
                                 <FormControlLabel
+                                    id='isTaggable'
                                     control={
                                         <Checkbox
                                             name='isTaggable'

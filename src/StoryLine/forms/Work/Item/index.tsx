@@ -43,7 +43,7 @@ const ItemForm = ({ work, item, initialValues }: ItemFormProps) => {
     return (
         <FormWrapper
             form={form}
-            title={item?.displayName || t('layout.work.panel.item.add')}
+            title={item?.displayName || t('layout.work.panel.item.addItem')}
             model={item}
             tabList={[t('component.formWrapper.tab.general')]}>
             <>

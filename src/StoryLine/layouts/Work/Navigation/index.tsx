@@ -10,11 +10,11 @@ import useLayout from '../useLayout'
 const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationProps) => {
     const { t } = useTranslation()
     const params = useParams()
+    const { setPanelWidth } = useLayout()
     const location = useLocation()
     const navigate = useNavigate()
     const settings = useSettings()
     const { loadTab } = useTabs()
-    const { setPanelWidth } = useLayout()
 
     const INACTIVE = 'opacity-80'
     const ACTIVE = 'opacity-100'
@@ -35,6 +35,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
             <Stack>
                 <Tooltip title={t('layout.work.navigation.work')} placement='right'>
                     <IconButton
+                        id='navigationSection'
                         color='inherit'
                         className={getClassName('/section')}
                         aria-label={t('layout.work.navigation.work')}
@@ -44,6 +45,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.character')} placement='right'>
                     <IconButton
+                        id='navigationCharacter'
                         color='inherit'
                         className={getClassName('/character')}
                         aria-label={t('layout.work.navigation.character')}
@@ -53,6 +55,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.location')} placement='right'>
                     <IconButton
+                        id='navigationLocation'
                         color='inherit'
                         className={getClassName('/location')}
                         aria-label={t('layout.work.navigation.location')}
@@ -62,6 +65,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.item')} placement='right'>
                     <IconButton
+                        id='navigationItem'
                         color='inherit'
                         className={getClassName('/item')}
                         aria-label={t('layout.work.navigation.item')}
@@ -71,6 +75,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.note')} placement='right'>
                     <IconButton
+                        id='navigationNote'
                         color='inherit'
                         className={getClassName('/note')}
                         aria-label={t('layout.work.navigation.note')}
@@ -83,6 +88,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 <Divider className='bg-white' />
                 <Tooltip title={t('layout.work.navigation.search')} placement='right'>
                     <IconButton
+                        id='navigationSearch'
                         color='inherit'
                         className={getClassName('/search')}
                         aria-label={t('layout.work.navigation.search')}
@@ -92,6 +98,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.overview')} placement='right'>
                     <IconButton
+                        id='navigationOverview'
                         color='inherit'
                         className={getClassName('/overview')}
                         aria-label={t('layout.work.navigation.overview')}
@@ -107,6 +114,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.connection')} placement='right'>
                     <IconButton
+                        id='navigationConnection'
                         color='inherit'
                         className={getClassName('/connection')}
                         aria-label={t('layout.work.navigation.connection')}
@@ -122,6 +130,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.insight')} placement='right'>
                     <IconButton
+                        id='navigationInsight'
                         className={getClassName('/insight')}
                         color='inherit'
                         aria-label={t('layout.work.navigation.insight')}
@@ -134,6 +143,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.export')} placement='right'>
                     <IconButton
+                        id='navigationExport'
                         color='inherit'
                         className={getClassName('/export')}
                         aria-label={t('layout.work.navigation.export')}
@@ -146,6 +156,7 @@ const Navigation = ({ currentPanel, setCurrentPanel, forwardRef }: NavigationPro
                 </Tooltip>
                 <Tooltip title={t('layout.work.navigation.setting')} placement='right'>
                     <IconButton
+                        id='navigationSettings'
                         color='inherit'
                         className={
                             location.pathname === `/work/${params.work_id}/edit` ? ACTIVE : INACTIVE

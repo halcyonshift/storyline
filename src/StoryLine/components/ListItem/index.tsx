@@ -8,13 +8,13 @@ import { useNavigate } from 'react-router-dom'
 import { ListItemProps } from './types'
 import useSettings from '@sl/theme/useSettings'
 
-const ListItem = ({ link, icon, primary, secondary, divider }: ListItemProps) => {
+const ListItem = ({ link, icon, primary, secondary, divider, ...props }: ListItemProps) => {
     const navigate = useNavigate()
     const settings = useSettings()
     const { t } = useTranslation()
 
     return (
-        <MuiListItem disablePadding disableGutters divider={divider}>
+        <MuiListItem disablePadding disableGutters divider={divider} {...props}>
             <ListItemButton onClick={() => navigate(link)}>
                 {icon ? (
                     <ListItemIcon sx={{ fontSize: settings.appFontSize * 2 }}>{icon}</ListItemIcon>

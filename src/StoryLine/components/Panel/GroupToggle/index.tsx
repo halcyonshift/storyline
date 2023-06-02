@@ -9,6 +9,7 @@ const GroupToggle = ({ label, group, setGroup }: GroupToggleProps) => {
     return (
         <Tooltip title={t(label || 'component.panel.groupToggle.default')}>
             <Switch
+                id='groupSwitch'
                 checked={group}
                 onChange={() => setGroup(!group)}
                 inputProps={{ 'aria-label': 'controlled' }}

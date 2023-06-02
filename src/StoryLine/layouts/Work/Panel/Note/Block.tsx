@@ -67,7 +67,7 @@ const Block = ({ note, index, fontWeight }: BlockType) => {
                                     <Stack direction='row'>
                                         <TooltipIconButton
                                             size='small'
-                                            text='layout.work.panel.note.add'
+                                            text='layout.work.panel.note.addNote'
                                             icon={NOTE_ICONS.add}
                                             link={`addNote/note/${note.id}`}
                                         />

@@ -40,7 +40,7 @@ const ItemPanel = () => {
                 />
             }
             navigation={[
-                { link: 'addItem', text: 'layout.work.panel.item.add', icon: ITEM_ICONS.add }
+                { link: 'addItem', text: 'layout.work.panel.item.addItem', icon: ITEM_ICONS.add }
             ]}>
             <List dense disablePadding className='bg-white'>
                 {items
@@ -70,7 +70,7 @@ const ItemPanel = () => {
                                         <Stack spacing={0} direction='row'>
                                             <TooltipIconButton
                                                 size='small'
-                                                text='layout.work.panel.note.add'
+                                                text='layout.work.panel.note.addNote'
                                                 link={`addNote/item/${item.id}`}
                                                 icon={NOTE_ICONS.add}
                                             />
