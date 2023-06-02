@@ -3,6 +3,7 @@
 exports[`<Status /> renders correctly 1`] = `
 <div
   className="MuiButtonGroup-root MuiButtonGroup-outlined css-iajp3t-MuiButtonGroup-root"
+  id="status-widget"
   role="group"
 >
   <button
