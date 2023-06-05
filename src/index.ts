@@ -24,6 +24,9 @@ import i18n from './StoryLine/i18n'
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 
+declare const SPLASH_SCREEN_WEBPACK_ENTRY: string
+declare const SPLASH_SCREEN_PRELOAD_WEBPACK_ENTRY: string
+
 if (parseInt(process.env.MONITOR) === 1) {
     init({
         dsn: process.env.SENTRY_DSN
@@ -40,14 +43,16 @@ contextMenu({
 
 const createWindow = (): void => {
     const splashWindow = new BrowserWindow({
-        width: 1024,
-        height: 768,
+        width: 800,
+        height: 600,
         frame: false,
-        icon: './src/StoryLine/assets/images/icons/linux.png'
+        icon: './src/StoryLine/assets/images/icons/linux.png',
+        webPreferences: {
+            preload: SPLASH_SCREEN_PRELOAD_WEBPACK_ENTRY
+        }
     })
 
-    splashWindow.loadFile('./src/splash.html')
-    splashWindow.center()
+    splashWindow.loadURL(SPLASH_SCREEN_WEBPACK_ENTRY).catch(() => null)
 
     const mainWindow = new BrowserWindow({
         width: 1024,
@@ -70,8 +75,11 @@ const createWindow = (): void => {
     })
 
     mainWindow.once('ready-to-show', () => {
+        splashWindow.hide()
         splashWindow.close()
-        mainWindow.show()
+        setTimeout(() => {
+            mainWindow.show()
+        }, 1000)
         if (!app.isPackaged) {
             mainWindow.webContents.openDevTools()
         }
