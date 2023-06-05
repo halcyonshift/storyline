@@ -2,6 +2,7 @@ import { ipcRenderer } from 'electron'
 import { Content, Options } from 'epub-gen-memory'
 
 export default {
+    shouldUseDarkColors: () => ipcRenderer.invoke('should-use-dark-colors'),
     backupStoryLine: (jsonString: string) => ipcRenderer.invoke('backup-storyline', jsonString),
     backupWork: (json: object, images: string[], path: string) =>
         ipcRenderer.invoke('backup-work', json, images, path),

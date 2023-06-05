@@ -24,6 +24,12 @@ const App = () => {
     const { t } = useTranslation()
 
     useEffect(() => {
+        api.shouldUseDarkColors().then((result) => {
+            settings.setDisplayMode(result ? 'dark' : 'light')
+        })
+    }, [])
+
+    useEffect(() => {
         const intervalId = setInterval(async () => {
             if (!work || !autoBackupPath) return
             messenger.warning(t('autoBackup.warning'))

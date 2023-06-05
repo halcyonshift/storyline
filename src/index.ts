@@ -2,6 +2,7 @@ import {
     app,
     BrowserWindow,
     ipcMain,
+    nativeTheme,
     session,
     shell,
     Menu,
@@ -177,10 +178,12 @@ app.on('activate', () => {
 
 app.whenReady()
     .then(() => {
+        ipcMain.handle('should-use-dark-colors', () => nativeTheme.shouldUseDarkColors)
         ipcMain.handle('relaunch', () => {
             app.relaunch()
             app.exit()
         })
+
         ipcMain.handle('delete-file', deleteFile)
         ipcMain.handle('backup-storyline', apiBackup.storyLine)
         ipcMain.handle('backup-work', apiBackup.work)
