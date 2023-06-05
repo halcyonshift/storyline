@@ -8,6 +8,8 @@ import { htmlParse } from '@sl/utils/html'
 
 import packageJSON from '../../../../../package.json'
 
+import logo from './logo'
+
 const InfoView = () => {
     const { t } = useTranslation()
 
@@ -58,6 +60,11 @@ const InfoView = () => {
                     {t('view.storyline.info.license.notice1')}
                 </Typography>
                 <Typography variant='body2'>{t('view.storyline.info.license.notice2')}</Typography>
+                <Box className='grid place-items-center mt-10'>
+                    <a href='https://www.gnu.org/licenses/gpl-3.0.en.html'>
+                        <img src={logo} alt='GPL v3' className='m-auto' />
+                    </a>
+                </Box>
             </Box>
         </Box>
     )

@@ -1,6 +1,6 @@
 ## Overview
 
-StoryLine is an open source novel-writing and e-publishing app
+StoryLine is an open source novel-writing and e-publishing tool
 
 ## Features
 
