@@ -1,24 +1,25 @@
 import { useEffect } from 'react'
 import { ThemeProvider } from '@mui/material/styles'
-import Alert from '@mui/material/Alert'
-import Box from '@mui/material/Box'
+import { Alert, Box, Snackbar } from '@mui/material'
 import CssBaseline from '@mui/material/CssBaseline'
-import Snackbar from '@mui/material/Snackbar'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+
 import * as Sentry from '@sentry/react'
 import { Settings } from 'luxon'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useRouteLoaderData } from 'react-router-dom'
-import useMessenger from '@sl/layouts/useMessenger'
-import useSettings from '@sl/theme/useSettings'
+import TermsAndConditions from './components/TermsAndConditions'
 import { WorkModel } from '@sl/db/models'
+import useMessenger from '@sl/layouts/useMessenger'
 import { TourProvider } from '@sl/layouts/useTour'
+import useSettings from '@sl/theme/useSettings'
 import { ErrorBoundary } from '@sl/views/StoryLine'
 
 const App = () => {
     const { autoBackupFreq, autoBackupPath } = useSettings()
     const work = useRouteLoaderData('work') as WorkModel
+
     const settings = useSettings()
     const messenger = useMessenger()
     const { t } = useTranslation()
@@ -53,7 +54,6 @@ const App = () => {
             <LocalizationProvider dateAdapter={AdapterLuxon}>
                 <ThemeProvider theme={settings.theme}>
                     <CssBaseline />
-
                     <Box id='app' className={`${settings.displayMode} flex h-full`}>
                         <TourProvider>
                             <Outlet />
@@ -70,6 +70,7 @@ const App = () => {
                             </Alert>
                         </Snackbar>
                     </Box>
+                    <TermsAndConditions />
                 </ThemeProvider>
             </LocalizationProvider>
         </Sentry.ErrorBoundary>

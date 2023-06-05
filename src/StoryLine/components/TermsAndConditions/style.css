@@ -1,0 +1,18 @@
+
+#tac-description h1,
+#tac-description h2 {
+   font-weight: bold;
+}
+
+#tac-description h1 {
+    font-size: 16pt
+}
+
+#tac-description h2 {
+    font-size: 14pt
+}
+
+#tac-description p {
+    font-size: 10pt;
+    margin: 10px 0
+}

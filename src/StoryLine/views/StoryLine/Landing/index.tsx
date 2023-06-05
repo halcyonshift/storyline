@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
     Box,
     List,
@@ -64,6 +65,12 @@ const LandingView = () => {
 
         navigate(`/work/${work.id}`)
     }
+
+    useEffect(() => {
+        database.localStorage.get('terms_and_condition').then((value) => {
+            if (!value) tour.start('storyline')
+        })
+    }, [])
 
     return (
         <Box className='p-4 grid grid-cols-2 grid-rows-2 gap-4 flex-grow bg-slate-50 dark:bg-neutral-700'>
