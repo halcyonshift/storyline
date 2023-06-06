@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import useMessenger from '@sl/layouts/useMessenger'
 import useSettings from '@sl/theme/useSettings'
+import { htmlParse } from '@sl/utils/html'
 import importEPub from './importEPub'
 
 const EPubBox = () => {
@@ -28,10 +29,22 @@ const EPubBox = () => {
     }
 
     return (
-        <Box className='grid h-full place-items-center p-5'>
-            <Typography variant='h6'>{t('view.storyline.import.epub.title')}</Typography>
+        <Box className='flex flex-grow flex-col p-5'>
+            <Typography className='text-center' variant='h6'>
+                {t('view.storyline.import.epub.title')}
+            </Typography>
+            <Typography className='text-center' variant='body2'>
+                {htmlParse('&nbsp;')}
+            </Typography>
+            <Box className='flex-grow p-5'>
+                <Typography className='text-center' variant='body1'>
+                    {t('view.storyline.import.epub.text')}
+                </Typography>
+            </Box>
             {importing ? (
-                <CircularProgress size={appFontSize * 2} />
+                <Box className='text-center'>
+                    <CircularProgress size={appFontSize * 2} />
+                </Box>
             ) : (
                 <Button variant='contained' onClick={handleImport}>
                     {t('view.storyline.import.button')}

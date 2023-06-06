@@ -42,36 +42,47 @@ const Ao3Box = () => {
     }
 
     return (
-        <Box className='grid h-full place-items-center p-5'>
-            <Typography variant='h6'>
+        <Box className='flex flex-grow flex-col p-5'>
+            <Typography className='text-center text-[#900] dark:text-white' variant='h6'>
                 <Link href='https://archiveofourown.org/' color='inherit'>
                     {t('view.storyline.import.ao3.title')}
                 </Link>
             </Typography>
-            <FormControl>
-                <RadioGroup
-                    row
-                    name='mode'
-                    value={mode}
-                    onChange={(event) => setMode(event.target.value as ModeType)}>
-                    <FormControlLabel value='work' control={<Radio />} label='Work' />
-                    <FormControlLabel value='series' control={<Radio />} label='Series' />
-                </RadioGroup>
-            </FormControl>
-            <TextField
-                value={id || ''}
-                inputProps={{
-                    inputMode: 'numeric',
-                    pattern: '[0-9]*'
-                }}
-                type='number'
-                placeholder='e.g., 42948555'
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    setId(parseInt(event.target.value))
-                }}
-            />
+            <Typography className='text-center' variant='body2'>
+                <Link href='https://archiveofourown.org/' color='inherit'>
+                    archiveofourown.org
+                </Link>
+            </Typography>
+            <Box className='flex-grow p-5'>
+                <FormControl>
+                    <RadioGroup
+                        row
+                        name='mode'
+                        value={mode}
+                        onChange={(event) => setMode(event.target.value as ModeType)}>
+                        <FormControlLabel value='work' control={<Radio />} label='Work' />
+                        <FormControlLabel value='series' control={<Radio />} label='Series' />
+                    </RadioGroup>
+                </FormControl>
+                <TextField
+                    value={id || ''}
+                    inputProps={{
+                        inputMode: 'numeric',
+                        pattern: '[0-9]*'
+                    }}
+                    type='number'
+                    fullWidth
+                    placeholder='e.g., 42948555'
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        setId(parseInt(event.target.value))
+                    }}
+                />
+            </Box>
+
             {importing ? (
-                <CircularProgress size={appFontSize * 2} />
+                <Box className='text-center'>
+                    <CircularProgress size={appFontSize * 2} />
+                </Box>
             ) : (
                 <Button variant='contained' onClick={handleImport}>
                     {t('view.storyline.import.button')}
