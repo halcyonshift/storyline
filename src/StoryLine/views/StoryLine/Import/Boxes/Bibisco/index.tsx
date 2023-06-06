@@ -30,7 +30,7 @@ const BibiscoBox = () => {
 
     return (
         <Box className='flex flex-grow flex-col p-5'>
-            <Typography className='text-center text-[#004000]' variant='h6'>
+            <Typography className='text-center text-[#004000] dark:text-white' variant='h6'>
                 <Link href='https://bibisco.com/' color='inherit'>
                     {t('view.storyline.import.bibisco.title')}
                 </Link>

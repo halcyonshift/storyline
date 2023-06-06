@@ -871,8 +871,8 @@
                     "error": "Sorry, the import hasn't worked"
                 },
                 "epub": {
-                    "title": "ePub",
-                    "text": "Only the work information and text will be imported from the ePub",
+                    "title": ".epub",
+                    "text": "Only the work information and text will be imported",
                     "error": "Sorry, the import hasn't worked"
                 },
                 "bibisco": {

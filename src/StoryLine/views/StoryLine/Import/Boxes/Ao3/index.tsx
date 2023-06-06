@@ -43,7 +43,7 @@ const Ao3Box = () => {
 
     return (
         <Box className='flex flex-grow flex-col p-5'>
-            <Typography className='text-center text-[#900]' variant='h6'>
+            <Typography className='text-center text-[#900] dark:text-white' variant='h6'>
                 <Link href='https://archiveofourown.org/' color='inherit'>
                     {t('view.storyline.import.ao3.title')}
                 </Link>
