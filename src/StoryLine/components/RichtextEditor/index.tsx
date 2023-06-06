@@ -159,8 +159,7 @@ const RichtextEditor = ({ id, initialValue, toolbar, onSave, onChange }: Richtex
                             placeholder={
                                 <Typography
                                     variant='body1'
-                                    className='text-slate-500 overflow-hidden absolute
-                    top-[15px] left-[10px] inline-block pointer-events-none'>
+                                    className='text-slate-400 pointer-events-none absolute top-0 left-3 pl-3 pt-6'>
                                     {t('component.richtextEditor.placeholder')}
                                 </Typography>
                             }
