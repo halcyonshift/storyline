@@ -85,7 +85,13 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
                                 type='url'
                                 placeholder='https://'
                             />
-                            <DateField form={form} label={'form.work.note.date'} fieldName='date' />
+                            <Box className='xl:w-1/2'>
+                                <DateField
+                                    form={form}
+                                    label={'form.work.note.date'}
+                                    fieldName='date'
+                                />
+                            </Box>
                             <ColorField name='color' form={form} />
                             <FormGroup>
                                 <FormControlLabel
