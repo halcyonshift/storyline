@@ -21,7 +21,7 @@ const DemographicsPanel = ({ form }: TabPanelProps) => {
                 form={form}
             />
             <TextField name='residence' label={t('form.work.character.residence')} form={form} />
-            <Box className='w-1/2'>
+            <Box className='xl:w-1/2'>
                 <DateField
                     form={form}
                     label={'form.work.character.dateOfBirth'}
