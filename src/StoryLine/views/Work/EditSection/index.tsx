@@ -1,9 +1,12 @@
+import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import SectionModel from '@sl/db/models/SectionModel'
 import { SectionDataType } from '@sl/db/models/types'
 import SectionForm from '@sl/forms/Work/Section'
 import { getInitialValues } from '@sl/forms/Work/utils'
 import { WorkModel } from '@sl/db/models'
+import useLayout from '@sl/layouts/Work/useLayout'
 
 const EditSectionView = () => {
     const section = useRouteLoaderData('section') as SectionModel
@@ -19,6 +22,13 @@ const EditSectionView = () => {
         (o, key) => ({ ...o, [key]: section[key as keyof SectionModel] }),
         {}
     ) as SectionDataType
+    const { setBreadcrumbs, setTitle } = useLayout()
+    const { t } = useTranslation()
+
+    useEffect(() => {
+        setTitle(t('layout.work.panel.section.edit'))
+        section.getBreadcrumbs().then((breadcrumbs) => setBreadcrumbs(breadcrumbs))
+    }, [section.id])
 
     return <SectionForm work={work} section={section} initialValues={initialValues} />
 }

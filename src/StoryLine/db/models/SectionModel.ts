@@ -6,6 +6,7 @@ import { DateTime, Interval } from 'luxon'
 import { type PointOfViewType } from '@sl/constants/pov'
 import { SectionMode, type SectionModeType } from '@sl/constants/sectionMode'
 import { Status, type StatusType } from '@sl/constants/status'
+import { BreadcrumbType, TabType } from '@sl/layouts/Work/types'
 import { displayDate, displayTime, displayDateTime, sortDate, wordCount } from '@sl/utils'
 import { htmlExtractExcerpts } from '@sl/utils/html'
 import { stripSlashes } from '@sl/components/RichtextEditor/plugins/Tag/utils'
@@ -106,6 +107,36 @@ export default class SectionModel extends Model {
 
     get excerpts() {
         return this.body ? htmlExtractExcerpts(this.body) : null
+    }
+
+    async getBreadcrumbs(includeSelf = true): Promise<BreadcrumbType[]> {
+        const work = await this.work.fetch()
+        const sections = await work.section.fetch()
+
+        const ancestors = []
+        let parent = this.section.id
+
+        while (parent) {
+            const section = sections.find((section) => section.id === parent)
+            if (section) {
+                ancestors.unshift({
+                    label: section.displayName,
+                    tab: { id: section.id, mode: 'section' } as TabType
+                })
+                parent = section.section.id
+            } else {
+                parent = null
+            }
+        }
+
+        if (includeSelf) {
+            ancestors.push({
+                label: this.displayName,
+                tab: { id: this.id, mode: 'section' } as TabType
+            })
+        }
+
+        return ancestors
     }
 
     async isTagged(id: string) {

@@ -1,8 +1,11 @@
+import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import LocationModel from '@sl/db/models/LocationModel'
 import { LocationDataType } from '@sl/db/models/types'
 import LocationForm from '@sl/forms/Work/Location'
 import { getInitialValues } from '@sl/forms/Work/utils'
+import useLayout from '@sl/layouts/Work/useLayout'
 
 const EditLocationView = () => {
     const location = useRouteLoaderData('location') as LocationModel
@@ -12,6 +15,13 @@ const EditLocationView = () => {
         (o, key) => ({ ...o, [key]: location[key as keyof LocationModel] }),
         {}
     ) as LocationDataType
+    const { setBreadcrumbs, setTitle } = useLayout()
+    const { t } = useTranslation()
+
+    useEffect(() => {
+        setTitle(t('layout.work.panel.location.edit'))
+        location.getBreadcrumbs().then((breadcrumbs) => setBreadcrumbs(breadcrumbs))
+    }, [location.id])
 
     return <LocationForm location={location} initialValues={initialValues} />
 }

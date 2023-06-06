@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { LayoutContextType, LayoutProviderProps } from './types'
+import { BreadcrumbType, LayoutContextType, LayoutProviderProps } from './types'
 
 const LayoutContext = createContext({} as LayoutContextType)
 
@@ -13,6 +13,8 @@ export const LayoutProvider = ({
     const [panelWidth, setPanelWidth] = useState<number>(0)
     const [mainWidth, setMainWidth] = useState<number>(0)
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth)
+    const [title, setTitle] = useState<string>('')
+    const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbType[]>([])
 
     const updateWidths = async (): Promise<void> => {
         setNavigationWidth(navigationRef.current ? navigationRef.current.offsetWidth : 0)
@@ -40,7 +42,11 @@ export const LayoutProvider = ({
                     navigationWidth,
                     panelWidth,
                     setPanelWidth,
-                    mainWidth
+                    mainWidth,
+                    setTitle,
+                    setBreadcrumbs,
+                    title,
+                    breadcrumbs
                 }),
                 [
                     navigationRef,
@@ -49,7 +55,9 @@ export const LayoutProvider = ({
                     windowWidth,
                     navigationWidth,
                     panelWidth,
-                    mainWidth
+                    mainWidth,
+                    title,
+                    breadcrumbs
                 ]
             )}>
             {children}

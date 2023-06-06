@@ -22,7 +22,8 @@ export const GLOBAL_ICONS = {
     bug: <Icon name='BugReport' />,
     feature: <Icon name='ChatBubble' />,
     help: <Icon name='LiveHelp' />,
-    tour: <Icon name='NotListedLocation' />
+    tour: <Icon name='NotListedLocation' />,
+    dashboard: <Icon name='Dashboard' />
 }
 
 export const CHARACTER_ICONS = {

@@ -55,18 +55,10 @@ const NoteForm = ({ work, note, belongsTo, initialValues }: NoteFormProps) => {
         }
     })
 
-    const getTitle = (): string => {
-        if (belongsTo?.displayName && !initialValues.title) {
-            return `${belongsTo.displayName}: ${t('layout.work.panel.note.addNote')}`
-        }
-
-        return note?.displayName || t('layout.work.panel.note.addNote')
-    }
-
     return (
         <FormWrapper
             form={form}
-            title={getTitle()}
+            title={note?.displayName || t('layout.work.panel.note.addNote')}
             model={note}
             tabList={[t('component.formWrapper.tab.general')]}>
             <>

@@ -6,8 +6,9 @@ import { Box, Tab, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { OverviewViewOption, OverviewViewOptionType } from '@sl/constants/overviewView'
-import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { SectionModel, WorkModel } from '@sl/db/models'
+import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import useLayout from '@sl/layouts/Work/useLayout'
 import Summary from './Summary'
 import Timeline from './Timeline'
 
@@ -19,11 +20,14 @@ const OverviewView = () => {
     const [chapters, setChapters] = useState<SectionModel[]>([])
     const [parts, setParts] = useState<SectionModel[]>([])
     const [scenes, setScenes] = useState<SectionModel[]>([])
+    const { setBreadcrumbs, setTitle } = useLayout()
     const { setShowTabs } = useTabs()
     const { t } = useTranslation()
 
     useEffect(() => {
         setShowTabs(true)
+        setTitle(t('layout.work.navigation.overview'))
+        setBreadcrumbs([])
         work.chapters.fetch().then((chapters) => setChapters(chapters))
         work.parts.fetch().then((parts) => setParts(parts))
         work.scenes.fetch().then((scenes) => setScenes(scenes))

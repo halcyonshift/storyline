@@ -3,6 +3,7 @@ import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { LatLngExpression } from 'leaflet'
 import { Status, type StatusType } from '@sl/constants/status'
+import { BreadcrumbType, TabType } from '@sl/layouts/Work/types'
 import { LocationDataType } from './types'
 import { ConnectionModel, NoteModel, TagModel, WorkModel } from '.'
 
@@ -38,6 +39,36 @@ export default class LocationModel extends Model {
             return [parseFloat(this.latitude), parseFloat(this.longitude)]
         }
         return null
+    }
+
+    async getBreadcrumbs(includeSelf = true): Promise<BreadcrumbType[]> {
+        const work = await this.work.fetch()
+        const locations = await work.location.fetch()
+
+        const ancestors = []
+        let parent = this.location.id
+
+        while (parent) {
+            const location = locations.find((location) => location.id === parent)
+            if (location) {
+                ancestors.unshift({
+                    label: location.displayName,
+                    tab: { id: location.id, mode: 'location' } as TabType
+                })
+                parent = location.location.id
+            } else {
+                parent = null
+            }
+        }
+
+        if (includeSelf) {
+            ancestors.push({
+                label: this.displayName,
+                tab: { id: this.id, mode: 'location' } as TabType
+            })
+        }
+
+        return ancestors
     }
 
     async destroyPermanently(): Promise<void> {

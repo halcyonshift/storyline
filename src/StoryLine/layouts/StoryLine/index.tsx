@@ -9,6 +9,8 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Link from '@sl/components/Link'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 
+import packageJSON from '../../../../package.json'
+
 const StoryLineLayout = () => {
     const [title, setTitle] = useState<string>('')
     const location = useLocation()
@@ -16,6 +18,9 @@ const StoryLineLayout = () => {
     const { t } = useTranslation()
 
     useEffect(() => setTitle(location.pathname.replace('/', '')), [location.pathname])
+    useEffect(() => {
+        api.setTitle(packageJSON.productName)
+    }, [])
 
     return (
         <Box className={`flex flex-col flex-grow`}>
@@ -25,7 +30,6 @@ const StoryLineLayout = () => {
                         <IconButton
                             id={t('navigation.back')}
                             disabled={!title}
-                            size='large'
                             edge='start'
                             color='inherit'
                             aria-label={t('navigation.back')}

@@ -3,6 +3,7 @@ import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { CharacterMode, type CharacterModeType } from '@sl/constants/characterMode'
 import { StatusType } from '@sl/constants/status'
+import { BreadcrumbType } from '@sl/layouts/Work/types'
 import { displayDate, sortDate } from '@sl/utils'
 import { CharacterDataType } from './types'
 import { ConnectionModel, NoteModel, SectionModel, TagModel, WorkModel } from './'
@@ -75,6 +76,10 @@ export default class CharacterModel extends Model {
 
     get sortDate() {
         return sortDate(this.dateOfBirth)
+    }
+
+    async getBreadcrumbs(): Promise<BreadcrumbType[]> {
+        return []
     }
 
     async destroyPermanently(): Promise<void> {
