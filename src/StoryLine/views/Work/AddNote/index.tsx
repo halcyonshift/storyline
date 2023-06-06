@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useLoaderData, useRouteLoaderData } from 'react-router-dom'
 import {
     CharacterModel,
@@ -9,6 +11,7 @@ import {
 } from '@sl/db/models'
 import { NoteDataType } from '@sl/db/models/types'
 import NoteForm from '@sl/forms/Work/Note'
+import useLayout from '@sl/layouts/Work/useLayout'
 import { getInitialValues } from '@sl/forms/Work/utils'
 
 const AddNoteView = () => {
@@ -27,6 +30,17 @@ const AddNoteView = () => {
         'note_id',
         'section_id'
     ]) as NoteDataType
+    const { setTitle, setBreadcrumbs } = useLayout()
+    const { t } = useTranslation()
+
+    useEffect(() => {
+        if (model) {
+            model.getBreadcrumbs().then((breadcrumbs) => setBreadcrumbs(breadcrumbs))
+        } else {
+            setBreadcrumbs([])
+        }
+        setTitle(t('layout.work.panel.note.addNote'))
+    }, [model?.id])
 
     return <NoteForm work={work} belongsTo={model} initialValues={initialValues} />
 }

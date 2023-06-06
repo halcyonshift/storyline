@@ -2,6 +2,7 @@ import { Model, Q, Query, Relation } from '@nozbe/watermelondb'
 import { Associations } from '@nozbe/watermelondb/Model'
 import { children, date, field, lazy, relation, text, writer } from '@nozbe/watermelondb/decorators'
 import { type StatusType } from '@sl/constants/status'
+import { BreadcrumbType } from '@sl/layouts/Work/types'
 import { ConnectionModel, NoteModel, TagModel, WorkModel } from './'
 import { ItemDataType } from './types'
 
@@ -25,6 +26,10 @@ export default class ItemModel extends Model {
 
     get displayName() {
         return this.name
+    }
+
+    async getBreadcrumbs(): Promise<BreadcrumbType[]> {
+        return []
     }
 
     async destroyPermanently(): Promise<void> {

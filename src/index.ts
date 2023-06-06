@@ -42,6 +42,8 @@ contextMenu({
     showSaveImageAs: true
 })
 
+let mainWindow: BrowserWindow
+
 const createWindow = (): void => {
     const splashWindow = new BrowserWindow({
         width: 800,
@@ -55,7 +57,7 @@ const createWindow = (): void => {
 
     splashWindow.loadURL(SPLASH_SCREEN_WEBPACK_ENTRY).catch(() => null)
 
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 1024,
         height: 768,
         minWidth: 1024,
@@ -178,6 +180,7 @@ app.on('activate', () => {
 
 app.whenReady()
     .then(() => {
+        ipcMain.handle('set-title', (_, title) => mainWindow.setTitle(title))
         ipcMain.handle('should-use-dark-colors', () => nativeTheme.shouldUseDarkColors)
         ipcMain.handle('relaunch', () => {
             app.relaunch()

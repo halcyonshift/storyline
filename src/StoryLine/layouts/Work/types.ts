@@ -34,6 +34,16 @@ export type LayoutContextType = {
     panelWidth: number
     setPanelWidth: (width: number) => void
     mainWidth: number
+    setTitle: (title: string) => void
+    title: string
+    setBreadcrumbs: (breadcrumbs: BreadcrumbType[]) => void
+    breadcrumbs: BreadcrumbType[]
+}
+
+export type BreadcrumbType = {
+    label: string
+    href?: string
+    tab?: TabType
 }
 
 export type LayoutProviderProps = {

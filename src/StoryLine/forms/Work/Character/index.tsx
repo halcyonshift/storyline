@@ -13,7 +13,7 @@ import useMessenger from '@sl/layouts/useMessenger'
 import * as Panel from './TabPanel'
 import { CharacterFormProps } from './types'
 
-const CharacterForm = ({ work, character, initialValues }: CharacterFormProps) => {
+const CharacterForm = ({ work, title, character, initialValues }: CharacterFormProps) => {
     const messenger = useMessenger()
     const navigate = useNavigate()
     const { t } = useTranslation()
@@ -64,16 +64,6 @@ const CharacterForm = ({ work, character, initialValues }: CharacterFormProps) =
         fears: yup.string().nullable()
     })
 
-    const getTitle = (): string => {
-        if (character) return character.displayName
-
-        return {
-            [CharacterMode.PRIMARY]: t('layout.work.panel.character.addPrimary'),
-            [CharacterMode.SECONDARY]: t('layout.work.panel.character.addSecondary'),
-            [CharacterMode.TERTIARY]: t('layout.work.panel.character.addTertiary')
-        }[initialValues.mode]
-    }
-
     const form: FormikProps<CharacterDataType> = useFormik<CharacterDataType>({
         enableReinitialize: true,
         initialValues,
@@ -97,7 +87,7 @@ const CharacterForm = ({ work, character, initialValues }: CharacterFormProps) =
     return (
         <FormWrapper
             form={form}
-            title={getTitle()}
+            title={character?.displayName || title}
             model={character}
             header={
                 character ? (

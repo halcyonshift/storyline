@@ -1,14 +1,20 @@
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
+import useLayout from '@sl/layouts/Work/useLayout'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import * as Boxes from './Boxes'
 
 const InsightView = () => {
+    const { setBreadcrumbs, setTitle } = useLayout()
     const { setShowTabs } = useTabs()
+    const { t } = useTranslation()
 
     useEffect(() => {
         setShowTabs(false)
+        setTitle(t('layout.work.navigation.insight'))
+        setBreadcrumbs([])
     }, [])
 
     return (

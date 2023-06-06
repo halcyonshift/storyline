@@ -7,10 +7,12 @@ import MapView from '@sl/components/MapView'
 import ViewWrapper from '@sl/components/ViewWrapper'
 import LocationModel from '@sl/db/models/LocationModel'
 import { htmlParse } from '@sl/utils/html'
+import useLayout from '@sl/layouts/Work/useLayout'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 
 const LocationView = () => {
     const location = useRouteLoaderData('location') as LocationModel
+    const { setBreadcrumbs, setTitle } = useLayout()
     const { t } = useTranslation()
     const { loadTab } = useTabs()
 
@@ -30,6 +32,10 @@ const LocationView = () => {
         } else {
             setTabList(DEFAULT_TABS)
         }
+        location.getBreadcrumbs(false).then((breadcrumbs) => {
+            setTitle(location.displayName)
+            setBreadcrumbs(breadcrumbs)
+        })
     }, [location.id, children.length])
 
     return (

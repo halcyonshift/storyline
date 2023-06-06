@@ -2,13 +2,16 @@ import { useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import useLayout from '@sl/layouts/Work/useLayout'
 import * as Boxes from './Boxes'
 
 const DashboardView = () => {
+    const { setTitle } = useLayout()
     const { setShowTabs } = useTabs()
 
     useEffect(() => {
         setShowTabs(false)
+        setTitle('')
     }, [])
 
     return (

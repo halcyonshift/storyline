@@ -6,6 +6,7 @@ import { Status, type StatusType } from '@sl/constants/status'
 import { displayDate, displayTime, displayDateTime, sortDate } from '@sl/utils'
 import { NoteDataType } from './types'
 import { CharacterModel, ItemModel, LocationModel, SectionModel, TagModel, WorkModel } from '.'
+import { BreadcrumbType, TabType } from '@sl/layouts/Work/types'
 
 export default class NoteModel extends Model {
     static table = 'note'
@@ -57,6 +58,36 @@ export default class NoteModel extends Model {
 
     get displayDateTime() {
         return displayDateTime(this.date)
+    }
+
+    async getBreadcrumbs(includeSelf = true): Promise<BreadcrumbType[]> {
+        const work = await this.work.fetch()
+        const notes = await work.note.fetch()
+
+        const ancestors = []
+        let parent = this.note.id
+
+        while (parent) {
+            const note = notes.find((note) => note.id === parent)
+            if (note) {
+                ancestors.unshift({
+                    label: note.displayName,
+                    tab: { id: note.id, mode: 'note' } as TabType
+                })
+                parent = note.note.id
+            } else {
+                parent = null
+            }
+        }
+
+        if (includeSelf) {
+            ancestors.push({
+                label: this.displayName,
+                tab: { id: this.id, mode: 'note' } as TabType
+            })
+        }
+
+        return ancestors
     }
 
     async destroyPermanently(): Promise<void> {

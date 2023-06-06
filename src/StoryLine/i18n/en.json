@@ -23,7 +23,8 @@
     },
     "navigation": {
         "back": "Back",
-        "tour": "Tour"
+        "tour": "Tour",
+        "dashboard": "Dashboard"
     },
     "component": {
         "colorField": {

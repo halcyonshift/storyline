@@ -30,7 +30,6 @@ const Tabs = () => {
         [],
         []
     )
-
     const item = useObservable(() => work.item.observeWithColumns(['name']), [], [])
     const location = useObservable(() => work.location.observeWithColumns(['name']), [], [])
     const note = useObservable(() => work.note.observeWithColumns(['title']), [], [])

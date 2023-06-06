@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react'
-import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import IconButton from '@mui/material/IconButton'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
+import { AppBar, Box, IconButton, Toolbar, Tooltip, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Link from '@sl/components/Link'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
+
+import packageJSON from '../../../../package.json'
 
 const StoryLineLayout = () => {
     const [title, setTitle] = useState<string>('')
@@ -16,22 +14,26 @@ const StoryLineLayout = () => {
     const { t } = useTranslation()
 
     useEffect(() => setTitle(location.pathname.replace('/', '')), [location.pathname])
+    useEffect(() => {
+        api.setTitle(packageJSON.productName)
+    }, [])
 
     return (
         <Box className={`flex flex-col flex-grow`}>
             <AppBar position='static' color='transparent' elevation={0} className='border-b'>
                 <Toolbar variant='dense'>
                     <Box>
-                        <IconButton
-                            id={t('navigation.back')}
-                            disabled={!title}
-                            size='large'
-                            edge='start'
-                            color='inherit'
-                            aria-label={t('navigation.back')}
-                            onClick={() => navigate(-1)}>
-                            {GLOBAL_ICONS.back}
-                        </IconButton>
+                        <Tooltip title={t('navigation.back')}>
+                            <IconButton
+                                id={t('navigation.back')}
+                                disabled={!title}
+                                edge='start'
+                                color='inherit'
+                                aria-label={t('navigation.back')}
+                                onClick={() => navigate(-1)}>
+                                {GLOBAL_ICONS.back}
+                            </IconButton>
+                        </Tooltip>
                     </Box>
                     <Box className='flex flex-grow justify-between'>
                         <Typography variant='h6'>

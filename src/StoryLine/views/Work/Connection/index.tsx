@@ -32,6 +32,7 @@ import { ConnectionDataType } from '@sl/db/models/types'
 import ConnectionForm from '@sl/forms/Work/Connection'
 import { getInitialValues } from '@sl/forms/Work/utils'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
+import useLayout from '@sl/layouts/Work/useLayout'
 import { getHex } from '@sl/theme/utils'
 import { ObjType, NodeType, NodeTypeByID } from './types'
 import useSettings from '@sl/theme/useSettings'
@@ -63,6 +64,7 @@ const ConnectionView = () => {
     const [nodes, setNodes] = useState([])
     const [edges, setEdges] = useState([])
     const [connection, setConnection] = useState<ConnectionModel | null>()
+    const { setBreadcrumbs, setTitle } = useLayout()
     const { setShowTabs } = useTabs()
     const { t } = useTranslation()
     const settings = useSettings()
@@ -206,6 +208,8 @@ const ConnectionView = () => {
         work.note.fetch().then((notes) => setNotes(notes))
 
         setShowTabs(true)
+        setTitle(t('layout.work.navigation.connection'))
+        setBreadcrumbs([])
     }, [])
 
     useEffect(() => {

@@ -13,6 +13,7 @@ import { useRouteLoaderData } from 'react-router-dom'
 import Image from '@sl/components/Image'
 import ViewWrapper from '@sl/components/ViewWrapper'
 import { CharacterModel } from '@sl/db/models'
+import useLayout from '@sl/layouts/Work/useLayout'
 import { htmlParse } from '@sl/utils/html'
 
 const ListItem = ({ primary, secondary }: { primary: string; secondary: string }) =>
@@ -42,6 +43,7 @@ const CharacterView = () => {
     const [showPersonalityTab] = useState<boolean>(
         Boolean(character.personalityPositive || character.personalityNegative)
     )
+    const { setBreadcrumbs, setTitle } = useLayout()
 
     useEffect(() => {
         const _tabList = DEFAULT_TABS
@@ -49,6 +51,8 @@ const CharacterView = () => {
         if (showPersonalityTab) _tabList.push(t('view.work.character.tab.personality'))
         if (showMotivationTab) _tabList.push(t('view.work.character.tab.motivation'))
         setTabList(_tabList)
+        setBreadcrumbs([])
+        setTitle(character.displayName)
     }, [character.id, showHistoryTab, showPersonalityTab, showMotivationTab])
 
     return (

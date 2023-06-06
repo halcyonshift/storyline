@@ -1,24 +1,20 @@
-import { useRef, useState } from 'react'
-import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
+import { useEffect, useRef, useState } from 'react'
+import { Box } from '@mui/material'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
-import { useTranslation } from 'react-i18next'
-import { Outlet, useLoaderData, useNavigate, useParams } from 'react-router-dom'
+import { Outlet, useLoaderData, useParams } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
-import { GLOBAL_ICONS } from '@sl/constants/icons'
 import { type WorkModel } from '@sl/db/models'
+import AppBar from './Bar'
 import * as Panel from './Panel'
 import Navigation from './Navigation'
 import Tabs from './Tabs'
 import { TabsProvider } from './Tabs/useTabs'
 import { LayoutProvider } from './useLayout'
-import useTour from '../useTour'
+import packageJSON from '../../../../package.json'
 
 const WorkLayout = () => {
     const [currentPanel, setCurrentPanel] = useState<string | null>()
-
     const database = useDatabase()
-    const navigate = useNavigate()
-    const { t } = useTranslation()
     const params = useParams()
     const navigationRef = useRef<HTMLElement>()
     const panelRef = useRef<HTMLElement>()
@@ -28,48 +24,16 @@ const WorkLayout = () => {
         useLoaderData() as WorkModel,
         []
     )
-    const tour = useTour()
+
+    useEffect(() => {
+        api.setTitle(`${packageJSON.productName}: ${work.title}`)
+    }, [])
 
     return (
         <LayoutProvider navigationRef={navigationRef} panelRef={panelRef} mainRef={mainRef}>
             <TabsProvider>
                 <Box className='flex flex-col flex-grow'>
-                    <AppBar
-                        position='static'
-                        color='transparent'
-                        className='z-10 border-b'
-                        elevation={0}>
-                        <Toolbar variant='dense'>
-                            <Box>
-                                <IconButton
-                                    size='large'
-                                    edge='start'
-                                    color='inherit'
-                                    aria-label={t('navigation.back')}
-                                    onClick={() => navigate(-1)}>
-                                    {GLOBAL_ICONS.back}
-                                </IconButton>
-                                <IconButton
-                                    edge='start'
-                                    color='primary'
-                                    aria-label={t('navigation.tour')}
-                                    onClick={() => tour.start('work')}>
-                                    {GLOBAL_ICONS.tour}
-                                </IconButton>
-                            </Box>
-                            <Box className='flex flex-grow justify-between'>
-                                <Typography
-                                    variant='h6'
-                                    className='w-[70vw] text-ellipsis'
-                                    onClick={() => navigate(`/work/${work.id}`)}>
-                                    {work.title}
-                                </Typography>
-                                <Typography variant='h6' onClick={() => navigate('/')}>
-                                    {t('storyline')}
-                                </Typography>
-                            </Box>
-                        </Toolbar>
-                    </AppBar>
+                    <AppBar />
                     <Box className='flex flex-grow'>
                         <Navigation
                             forwardRef={navigationRef}
