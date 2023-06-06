@@ -25,7 +25,6 @@ const EditNoteView = () => {
     const { t } = useTranslation()
 
     useEffect(() => {
-        setTitle(t('layout.work.panel.note.edit'))
         note.getBreadcrumbs().then(async (breadcrumbs) => {
             const parents = []
             if (note.character.id) parents.push(await note.character.fetch())
@@ -37,7 +36,7 @@ const EditNoteView = () => {
                 label: parent.displayName,
                 tab: { id: parent.id, mode: parent.table } as TabType
             })) as BreadcrumbType[]
-
+            setTitle(t('layout.work.panel.note.edit'))
             setBreadcrumbs(parentBreadcrumbs.concat(breadcrumbs))
         })
     }, [note.id])

@@ -1,48 +1,85 @@
+import { useEffect, useState } from 'react'
 import {
     AppBar as MuiAppBar,
     Box,
     Breadcrumbs,
     IconButton,
     Toolbar,
+    Tooltip,
     Typography
 } from '@mui/material'
-import { useDatabase } from '@nozbe/watermelondb/hooks'
 import { useTranslation } from 'react-i18next'
-import { useLoaderData, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
 import Link from '@sl/components/Link'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
-import { type WorkModel } from '@sl/db/models'
+import {
+    type WorkModel,
+    type CharacterModel,
+    type ItemModel,
+    type LocationModel,
+    type NoteModel,
+    type SectionModel
+} from '@sl/db/models'
 import useTabs from '../Tabs/useTabs'
 import useLayout from '../useLayout'
 import useTour from '../../useTour'
+import { TabType } from '../types'
 
 const AppBar = () => {
-    const database = useDatabase()
+    const [show, setShow] = useState<boolean>(false)
+    const work = useRouteLoaderData('work') as WorkModel
     const navigate = useNavigate()
     const { t } = useTranslation()
-    const params = useParams()
-    const work = useObservable(
-        () => database.get<WorkModel>('work').findAndObserve(params.work_id),
-        useLoaderData() as WorkModel,
-        []
-    )
     const tour = useTour()
     const { title, breadcrumbs } = useLayout()
     const { loadTab } = useTabs()
+    const character = useObservable(
+        () => work.character.observeWithColumns(['display_name', 'mode']),
+        [],
+        []
+    )
+    const item = useObservable(() => work.item.observeWithColumns(['name']), [], [])
+    const location = useObservable(() => work.location.observeWithColumns(['name']), [], [])
+    const note = useObservable(() => work.note.observeWithColumns(['title']), [], [])
+    const section = useObservable(() => work.section.observeWithColumns(['title']), [], [])
+    const navLocation = useLocation()
+
+    const getLabel = (tab: TabType) => {
+        const data = {
+            character,
+            item,
+            location,
+            note,
+            section
+        }[tab.mode] as (CharacterModel | ItemModel | LocationModel | NoteModel | SectionModel)[]
+
+        return data.find((obj) => obj.id === tab.id)?.displayName || ''
+    }
+
+    useEffect(() => {
+        setShow(false)
+        setTimeout(() => setShow(true), 10)
+    }, [navLocation.pathname])
+
+    useEffect(() => {
+        setShow(Boolean(title))
+    }, [title])
 
     return (
         <MuiAppBar position='static' color='transparent' className='z-10 border-b' elevation={0}>
             <Toolbar variant='dense'>
                 <Box className='flex w-full place-items-center justify-between'>
                     <Box className='flex flex-grow place-items-center'>
-                        <IconButton
-                            edge='start'
-                            color='inherit'
-                            aria-label={t('navigation.back')}
-                            onClick={() => navigate(-1)}>
-                            {GLOBAL_ICONS.back}
-                        </IconButton>
+                        <Tooltip title={t('navigation.back')}>
+                            <IconButton
+                                edge='start'
+                                color='inherit'
+                                aria-label={t('navigation.back')}
+                                onClick={() => navigate(-1)}>
+                                {GLOBAL_ICONS.back}
+                            </IconButton>
+                        </Tooltip>
                         <IconButton
                             edge='start'
                             color='inherit'
@@ -50,8 +87,11 @@ const AppBar = () => {
                             onClick={() => tour.start('work')}>
                             {GLOBAL_ICONS.tour}
                         </IconButton>
-                        {title ? (
-                            <Breadcrumbs maxItems={3} aria-label='breadcrumb'>
+                        {show ? (
+                            <Breadcrumbs
+                                maxItems={4}
+                                aria-label='breadcrumb'
+                                itemsAfterCollapse={2}>
                                 <Link href={`/work/${work.id}`} color='inherit'>
                                     {t('navigation.dashboard')}
                                 </Link>
@@ -62,7 +102,7 @@ const AppBar = () => {
                                             color='inherit'
                                             href='#'
                                             onClick={() => loadTab(breadcrumb.tab)}>
-                                            {breadcrumb.label}
+                                            {getLabel(breadcrumb.tab)}
                                         </Link>
                                     ) : (
                                         <Link
@@ -73,7 +113,7 @@ const AppBar = () => {
                                         </Link>
                                     )
                                 )}
-                                <Typography color='text.primary'>{title}</Typography>
+                                <Typography variant='body1'>{title}</Typography>
                             </Breadcrumbs>
                         ) : null}
                     </Box>

@@ -32,8 +32,10 @@ const LocationView = () => {
         } else {
             setTabList(DEFAULT_TABS)
         }
-        setTitle(location.displayName)
-        location.getBreadcrumbs(false).then((breadcrumbs) => setBreadcrumbs(breadcrumbs))
+        location.getBreadcrumbs(false).then((breadcrumbs) => {
+            setTitle(location.displayName)
+            setBreadcrumbs(breadcrumbs)
+        })
     }, [location.id, children.length])
 
     return (

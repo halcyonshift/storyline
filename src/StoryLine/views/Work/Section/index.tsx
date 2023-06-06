@@ -11,8 +11,10 @@ const SectionView = () => {
     const { setBreadcrumbs, setTitle } = useLayout()
 
     useEffect(() => {
-        setTitle(section.displayName)
-        section.getBreadcrumbs(false).then((breadcrumbs) => setBreadcrumbs(breadcrumbs))
+        section.getBreadcrumbs(false).then((breadcrumbs) => {
+            setTitle(section.displayName)
+            setBreadcrumbs(breadcrumbs)
+        })
     }, [section.id])
 
     if (section.isPart) {

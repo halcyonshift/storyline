@@ -26,8 +26,10 @@ const EditSectionView = () => {
     const { t } = useTranslation()
 
     useEffect(() => {
-        setTitle(t('layout.work.panel.section.edit'))
-        section.getBreadcrumbs().then((breadcrumbs) => setBreadcrumbs(breadcrumbs))
+        section.getBreadcrumbs().then((breadcrumbs) => {
+            setTitle(t('layout.work.panel.section.edit'))
+            setBreadcrumbs(breadcrumbs)
+        })
     }, [section.id])
 
     return <SectionForm work={work} section={section} initialValues={initialValues} />

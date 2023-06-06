@@ -19,8 +19,10 @@ const EditLocationView = () => {
     const { t } = useTranslation()
 
     useEffect(() => {
-        setTitle(t('layout.work.panel.location.edit'))
-        location.getBreadcrumbs().then((breadcrumbs) => setBreadcrumbs(breadcrumbs))
+        location.getBreadcrumbs().then((breadcrumbs) => {
+            setTitle(t('layout.work.panel.location.edit'))
+            setBreadcrumbs(breadcrumbs)
+        })
     }, [location.id])
 
     return <LocationForm location={location} initialValues={initialValues} />
