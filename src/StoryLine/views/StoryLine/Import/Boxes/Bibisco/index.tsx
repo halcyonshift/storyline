@@ -29,15 +29,26 @@ const BibiscoBox = () => {
     }
 
     return (
-        <Box className='grid h-full place-items-center p-5'>
-            <Typography variant='h6'>
+        <Box className='flex flex-grow flex-col p-5'>
+            <Typography className='text-center text-[#004000]' variant='h6'>
                 <Link href='https://bibisco.com/' color='inherit'>
                     {t('view.storyline.import.bibisco.title')}
                 </Link>
             </Typography>
-            <Typography variant='body1'>{t('view.storyline.import.bibisco.text')}</Typography>
+            <Typography className='text-center' variant='body2'>
+                <Link href='https://bibisco.com/' color='inherit'>
+                    bibisco.com
+                </Link>
+            </Typography>
+            <Box className='flex-grow p-5'>
+                <Typography variant='body1' className='text-center'>
+                    {t('view.storyline.import.bibisco.text')}
+                </Typography>
+            </Box>
             {importing ? (
-                <CircularProgress size={appFontSize * 2} />
+                <Box className='text-center'>
+                    <CircularProgress size={appFontSize * 2} />
+                </Box>
             ) : (
                 <Button variant='contained' onClick={handleImport}>
                     {t('view.storyline.import.button')}

@@ -24,15 +24,17 @@ const StoryLineLayout = () => {
                 <Toolbar variant='dense'>
                     <Box>
                         <Tooltip title={t('navigation.back')}>
-                            <IconButton
-                                id={t('navigation.back')}
-                                disabled={!title}
-                                edge='start'
-                                color='inherit'
-                                aria-label={t('navigation.back')}
-                                onClick={() => navigate(-1)}>
-                                {GLOBAL_ICONS.back}
-                            </IconButton>
+                            <span>
+                                <IconButton
+                                    id={t('navigation.back')}
+                                    disabled={!title}
+                                    edge='start'
+                                    color='inherit'
+                                    aria-label={t('navigation.back')}
+                                    onClick={() => navigate(-1)}>
+                                    {GLOBAL_ICONS.back}
+                                </IconButton>
+                            </span>
                         </Tooltip>
                     </Box>
                     <Box className='flex flex-grow justify-between'>

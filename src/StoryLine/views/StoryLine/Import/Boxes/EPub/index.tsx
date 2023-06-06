@@ -28,10 +28,19 @@ const EPubBox = () => {
     }
 
     return (
-        <Box className='grid h-full place-items-center p-5'>
-            <Typography variant='h6'>{t('view.storyline.import.epub.title')}</Typography>
+        <Box className='flex flex-grow flex-col p-5'>
+            <Typography className='text-center' variant='h6'>
+                {t('view.storyline.import.epub.title')}
+            </Typography>
+            <Box className='flex-grow p-5'>
+                <Typography className='text-center' variant='body1'>
+                    {t('view.storyline.import.epub.text')}
+                </Typography>
+            </Box>
             {importing ? (
-                <CircularProgress size={appFontSize * 2} />
+                <Box className='text-center'>
+                    <CircularProgress size={appFontSize * 2} />
+                </Box>
             ) : (
                 <Button variant='contained' onClick={handleImport}>
                     {t('view.storyline.import.button')}
