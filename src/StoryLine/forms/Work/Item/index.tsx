@@ -48,15 +48,21 @@ const ItemForm = ({ work, item, initialValues }: ItemFormProps) => {
             tabList={[t('component.formWrapper.tab.general')]}>
             <>
                 <Box className='grid grid-cols-2 gap-3 mb-1'>
-                    <Box className='grid grid-cols-1 gap-3'>
-                        <TextField label={t('form.work.item.name.label')} name='name' form={form} />
-                        <TextField
-                            label={t('form.work.item.url')}
-                            name='url'
-                            form={form}
-                            type='url'
-                            placeholder='https://'
-                        />
+                    <Box>
+                        <Box className='grid grid-cols-1 gap-3'>
+                            <TextField
+                                label={t('form.work.item.name.label')}
+                                name='name'
+                                form={form}
+                            />
+                            <TextField
+                                label={t('form.work.item.url')}
+                                name='url'
+                                form={form}
+                                type='url'
+                                placeholder='https://'
+                            />
+                        </Box>
                     </Box>
                     <Box>
                         <ImageField form={form} dir='items' />
