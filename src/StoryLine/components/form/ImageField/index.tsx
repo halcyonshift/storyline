@@ -6,7 +6,7 @@ import Image from '@sl/components/Image'
 import { ImageFieldProps } from './types'
 import { useTranslation } from 'react-i18next'
 
-const ImageField = ({ form, label, dir }: ImageFieldProps) => {
+const ImageField = ({ form, label, dir, placeholder }: ImageFieldProps) => {
     const { t } = useTranslation()
     const [path, setPath] = useState<string>('')
 
@@ -33,8 +33,8 @@ const ImageField = ({ form, label, dir }: ImageFieldProps) => {
                         <InputLabel>{label}</InputLabel>
                     </Box>
                 ) : null}
-                <Box className='bg-slate-100 dark:bg-slate-700 min-h-[50px]'>
-                    <Image path={path} width='w-auto' />
+                <Box className='bg-slate-300 dark:bg-slate-700 min-h-[50px]'>
+                    <Image path={path} width='w-auto' placeholder={placeholder} />
                 </Box>
 
                 <Box className='absolute dark:bg-black bg-white bottom-0 left-0 rounded-tr-lg rounded-bl-md'>

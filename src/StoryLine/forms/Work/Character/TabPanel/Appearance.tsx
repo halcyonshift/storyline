@@ -37,7 +37,7 @@ const AppearancePanel = ({ form }: TabPanelProps) => {
                         />
                     </Box>
                 </Box>
-                <ImageField form={form} dir='characters' />
+                <ImageField form={form} dir='characters' placeholder='character' />
             </Box>
             <TextareaField fieldName='distinguishingFeatures' form={form} />
         </Box>

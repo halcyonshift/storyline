@@ -48,34 +48,42 @@ const WorkForm = ({ work, initialValues }: WorkFormProps) => {
             tabList={[t('component.formWrapper.tab.general')]}>
             <>
                 <Box className='grid grid-cols-2 gap-3'>
-                    <Box className='grid grid-cols-1 gap-3'>
-                        <TextField
-                            autoFocus
-                            form={form}
-                            label={t('form.work.work.title.label')}
-                            name='title'
-                        />
-                        <TextField label={t('form.work.work.author')} name='author' form={form} />
-                        <TextField
-                            form={form}
-                            label={t('form.work.work.wordGoal')}
-                            name='wordGoal'
-                            type='number'
-                            InputProps={{ inputProps: { min: 0, step: 1 } }}
-                        />
-                        <DatePicker
-                            label={t('form.work.work.deadline')}
-                            inputFormat='d/M/yyyy'
-                            disableMaskedInput
-                            value={form.values.deadlineAt}
-                            onChange={(newValue: DateTime | null) => {
-                                form.setFieldValue(
-                                    'deadlineAt',
-                                    newValue ? newValue.toJSDate() : null
-                                )
-                            }}
-                            renderInput={(params) => <MuiTextField margin='dense' {...params} />}
-                        />
+                    <Box>
+                        <Box className='grid grid-cols-1 gap-3'>
+                            <TextField
+                                autoFocus
+                                form={form}
+                                label={t('form.work.work.title.label')}
+                                name='title'
+                            />
+                            <TextField
+                                label={t('form.work.work.author')}
+                                name='author'
+                                form={form}
+                            />
+                            <TextField
+                                form={form}
+                                label={t('form.work.work.wordGoal')}
+                                name='wordGoal'
+                                type='number'
+                                InputProps={{ inputProps: { min: 0, step: 1 } }}
+                            />
+                            <DatePicker
+                                label={t('form.work.work.deadline')}
+                                inputFormat='d/M/yyyy'
+                                disableMaskedInput
+                                value={form.values.deadlineAt}
+                                onChange={(newValue: DateTime | null) => {
+                                    form.setFieldValue(
+                                        'deadlineAt',
+                                        newValue ? newValue.toJSDate() : null
+                                    )
+                                }}
+                                renderInput={(params) => (
+                                    <MuiTextField margin='dense' {...params} />
+                                )}
+                            />
+                        </Box>
                     </Box>
                     <Box>
                         <ImageField form={form} dir='works' label={t('form.work.work.image')} />
