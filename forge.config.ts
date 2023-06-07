@@ -12,7 +12,7 @@ import { version } from './package.json'
 const config: ForgeConfig = {
     packagerConfig: {
         icon: './src/StoryLine/assets/images/icons/icon',
-        executableName: 'storyline',
+        executableName: 'StoryLine',
         appBundleId: 'com.halcyonshift.storyline',
         appCopyright: "Hannah O'Malley",
         appVersion: version,
