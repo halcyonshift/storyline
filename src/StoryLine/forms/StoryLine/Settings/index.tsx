@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { useState } from 'react'
 import { TabContext, TabList, TabPanel } from '@mui/lab'
-import { Box, Button, InputAdornment, MenuItem, Tab } from '@mui/material'
+import { Box, Button, InputAdornment, MenuItem, Tab, Typography } from '@mui/material'
 import { FormikProps, useFormik } from 'formik'
 import { capitalize } from 'lodash'
 import { useTranslation } from 'react-i18next'
@@ -164,96 +164,98 @@ const SettingsForm = ({
                             </SelectField>
                         </Box>
                     </Box>
+                    <Typography variant='h6' className='pt-5'>
+                        {t('form.storyline.settings.backups.title')}
+                    </Typography>
+                    <Typography variant='body2' className='pb-2'>
+                        {t('form.storyline.settings.backups.text')}
+                    </Typography>
+                    <Box className='grid grid-cols-2 gap-5'>
+                        <TextField
+                            form={form}
+                            name='autoBackupPath'
+                            label={t('form.storyline.settings.autoBackupPath.label')}
+                            disabled
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position='end'>
+                                        <Button
+                                            onClick={async () => {
+                                                const filePath = await api.selectFilePath()
+                                                form.setFieldValue('autoBackupPath', filePath)
+                                            }}>
+                                            {t('form.storyline.settings.autoBackupPath.select')}
+                                        </Button>
+                                    </InputAdornment>
+                                )
+                            }}
+                        />
+                        <RadioField
+                            form={form}
+                            name='autoBackupFreq'
+                            label='form.storyline.settings.autoBackupFreq.label'
+                            options={[
+                                {
+                                    value: 0,
+                                    label: 'form.storyline.settings.autoBackupFreq.option0'
+                                },
+                                {
+                                    value: 30,
+                                    label: 'form.storyline.settings.autoBackupFreq.option30'
+                                },
+                                {
+                                    value: 60,
+                                    label: 'form.storyline.settings.autoBackupFreq.option60'
+                                },
+                                {
+                                    value: 120,
+                                    label: 'form.storyline.settings.autoBackupFreq.option120'
+                                }
+                            ]}
+                        />
+                    </Box>
                 </TabPanel>
                 <TabPanel value='editor'>
-                    <Box className='grid grid-cols-2 gap-5'>
-                        <Box className='grid grid-cols-1 gap-5'>
-                            <Box className='grid grid-cols-2 gap-5'>
-                                <FontFamilyField
-                                    form={form}
-                                    name='editorFont'
-                                    label={t('form.storyline.settings.font')}
-                                />
-                                <FontSizeField
-                                    form={form}
-                                    name='editorFontSize'
-                                    label={t('form.storyline.settings.fontSize')}
-                                />
-                            </Box>
-                            <Box className='grid grid-cols-2 gap-5'>
-                                <LineHeightField
-                                    form={form}
-                                    name='lineHeight'
-                                    label='form.storyline.settings.lineHeight'
-                                />
-                                <ParagraphSpacingField
-                                    form={form}
-                                    name='paragraphSpacing'
-                                    label='form.storyline.settings.paragraphSpacing'
-                                />
-                            </Box>
-                            <SwitchField
+                    <Box className='grid grid-cols-1 gap-5'>
+                        <Box className='grid grid-cols-2 gap-5'>
+                            <FontFamilyField
                                 form={form}
-                                name='indentParagraph'
-                                label='form.storyline.settings.indentParagraph'
+                                name='editorFont'
+                                label={t('form.storyline.settings.font')}
                             />
-                            <SwitchField
+                            <FontSizeField
                                 form={form}
-                                name='spellCheck'
-                                label='form.storyline.settings.spellCheck'
+                                name='editorFontSize'
+                                label={t('form.storyline.settings.fontSize')}
                             />
                         </Box>
-                        <Box>
-                            <Box className='grid grid-cols-1 gap-5'>
-                                <RadioField
-                                    form={form}
-                                    name='autoBackupFreq'
-                                    label='form.storyline.settings.autoBackupFreq.label'
-                                    options={[
-                                        {
-                                            value: 0,
-                                            label: 'form.storyline.settings.autoBackupFreq.option0'
-                                        },
-                                        {
-                                            value: 30,
-                                            label: 'form.storyline.settings.autoBackupFreq.option30'
-                                        },
-                                        {
-                                            value: 60,
-                                            label: 'form.storyline.settings.autoBackupFreq.option60'
-                                        },
-                                        {
-                                            value: 120,
-                                            label: 'form.storyline.settings.autoBackupFreq.option120'
-                                        }
-                                    ]}
-                                />
-                                <TextField
-                                    form={form}
-                                    name='autoBackupPath'
-                                    label={t('form.storyline.settings.autoBackupPath.label')}
-                                    disabled
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position='end'>
-                                                <Button
-                                                    onClick={async () => {
-                                                        const filePath = await api.selectFilePath()
-                                                        form.setFieldValue(
-                                                            'autoBackupPath',
-                                                            filePath
-                                                        )
-                                                    }}>
-                                                    {t(
-                                                        'form.storyline.settings.autoBackupPath.select'
-                                                    )}
-                                                </Button>
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                />
-                            </Box>
+                        <Box className='grid grid-cols-2 gap-5'>
+                            <LineHeightField
+                                form={form}
+                                name='lineHeight'
+                                label='form.storyline.settings.lineHeight'
+                            />
+                            <ParagraphSpacingField
+                                form={form}
+                                name='paragraphSpacing'
+                                label='form.storyline.settings.paragraphSpacing'
+                            />
                         </Box>
+                        <SwitchField
+                            form={form}
+                            name='indentParagraph'
+                            label='form.storyline.settings.indentParagraph'
+                        />
+                        <SwitchField
+                            form={form}
+                            name='spellCheck'
+                            label='form.storyline.settings.spellCheck'
+                        />
+                        <SwitchField
+                            form={form}
+                            name='autoSave'
+                            label='form.storyline.settings.autoSave'
+                        />
                     </Box>
                 </TabPanel>
             </TabContext>
