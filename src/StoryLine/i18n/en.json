@@ -535,6 +535,10 @@
                     "app": "StoryLine",
                     "editor": "Editor"
                 },
+                "backups": {
+                    "title": "Backups",
+                    "text": "Backups are per work and will be taken as long as you're actively updating one. You must choose a directory to backup into, and there's no maximum, so remember to clear out the backlog!"
+                },
                 "font": "Font",
                 "fontSize": "Font size",
                 "indentParagraph": "Indent paragraphs",
@@ -548,14 +552,14 @@
                 "spellCheck": "Use spellcheck",
                 "autoSave": "Autosave",
                 "autoBackupFreq": {
-                    "label": "Backup frequency",
+                    "label": "Frequency",
                     "option0": "Never",
                     "option30": "Every 30 mins",
                     "option60": "Every hour",
                     "option120": "Every 2 hours"
                 },
                 "autoBackupPath": {
-                    "label": "Backup directory",
+                    "label": "Directory",
                     "select": "Select"
                 },
                 "lineHeight": "Line height",
