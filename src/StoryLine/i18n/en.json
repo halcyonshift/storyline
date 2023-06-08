@@ -678,8 +678,8 @@
             "panel": {
                 "section": {
                     "intro": "Your work can be split into parts, chapters and scenes (or just chapters and scenes) if you like, but it can stay as a single scene if you prefer. To re-order or move, just drag and drop.",
-                    "addPart": "Parts are a collection of chapters. Your work has one automatically, but if you want another click this icon.",
-                    "addChapter": "Chapters are a collection of scenes. Your work has one automatically, but if you want another click this icon.",
+                    "addPart": "Parts are a collection of chapters. Your work has one automatically, but parts will only be visible when you have two or more. If you want another click this icon.",
+                    "addChapter": "Chapters are a collection of scenes. Your work has one automatically, but chapters will only be visible when you have two or more. If you want another click this icon.",
                     "addScene": "A scene where you do your writing - it might just be a few hundred words, or it may be the entire work. Your work has one automatically, but if you want another click this icon.",
                     "startSprint": "If you'd like to challenge yourself, you can create a sprint with a word goal and a time limit. Only words in scenes are counted!",
                     "view": "<span className='block p-3'>Clicking part or chapter headings will show the content under them, clicking a scene heading will take you to the editor.</span><span className='block'>If you need to edit your part, chapter or scene title or summaries, click the pencil icon instead</span>",
