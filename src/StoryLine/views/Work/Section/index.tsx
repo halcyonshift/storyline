@@ -18,9 +18,9 @@ const SectionView = () => {
     }, [section.id])
 
     if (section.isPart) {
-        return <PartView />
+        return <PartView section={section} />
     } else if (section.isChapter) {
-        return <ChapterView />
+        return <ChapterView section={section} />
     } else {
         return <SceneView section={section} />
     }

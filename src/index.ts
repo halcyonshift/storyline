@@ -49,7 +49,6 @@ const createWindow = (): void => {
         width: 800,
         height: 600,
         frame: false,
-        show: false,
         icon: './src/StoryLine/assets/images/icons/linux.png',
         webPreferences: {
             preload: SPLASH_SCREEN_PRELOAD_WEBPACK_ENTRY
@@ -58,9 +57,6 @@ const createWindow = (): void => {
 
     splashWindow.loadFile('./splash.html')
     splashWindow.loadURL(SPLASH_SCREEN_WEBPACK_ENTRY).catch(() => null)
-    splashWindow.once('ready-to-show', () => {
-        splashWindow.show()
-    })
 
     mainWindow = new BrowserWindow({
         width: 1024,

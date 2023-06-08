@@ -23,7 +23,7 @@ const adapter = new LokiJSAdapter({
     // migrations,
     useWebWorker: false,
     useIncrementalIndexedDB: true,
-    dbName: process.env.DB_NAME_RANDOM ? crypto.randomUUID() : process.env.DB_NAME
+    dbName: process.env.DB_NAME || crypto.randomUUID()
 })
 
 const database = new Database({

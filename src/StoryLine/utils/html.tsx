@@ -5,6 +5,7 @@ import * as cheerio from 'cheerio'
 // strip all html and convert to text
 
 export const htmlToText = (html: string) => {
+    if (!html) return ''
     const $ = cheerio.load(`<div>${html.replace(/<\/p>/g, ' ')}</div>`)
     return $('div').text()
 }

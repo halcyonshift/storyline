@@ -22,12 +22,12 @@ StoryLine is an open source novel-writing and e-publishing tool
 
 ## Development
 
-Add an .env file to the root directory
+Add an .env.development file to the root directory
 
 ```shell
 GRAMMARLY_CLIENT_ID=[GRAMMARLY_API_KEY]
-DB_SCHEMA_VERSION=[1]
 DB_NAME=[dev-db]
+DB_SCHEMA_VERSION=[1]
 MONITOR=[0]
 ```
 
