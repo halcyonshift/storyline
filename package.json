@@ -16,9 +16,9 @@
     "start": "ENVIRONMENT=development MONITOR=0 ELECTRON_DISABLE_SECURITY_WARNINGS=true electron-forge start",
     "package:dev": "electron-forge package",
     "package:mac": "electron-forge package --arch=x64,arm64 --platform=darwin",
-    "package:win": "electron-forge package --arch=ia32,x64 --platform=win32",
+    "package:win": "electron-forge package --arch=x64,arm64,ia32 --platform=win32",
     "make:mac": "electron-forge make --arch=x64,arm64 --platform=darwin",
-    "make:win": "electron-forge make --arch=ia32,x64 --platform=win32",
+    "make:win": "electron-forge make --arch=arm64 --platform=win32",
     "publisher": "electron-forge publish",
     "dist": "electron-builder -mlw portable --config",
     "dist:linux": "electron-builder -l --config",
@@ -44,22 +44,27 @@
         {
           "target": "deb",
           "arch": [
-            "x64",
-            "arm64",
-            "armv7l"
+            "arm64"
           ]
         },
         {
           "target": "rpm",
           "arch": [
-            "x64",
-            "arm64",
-            "armv7l"
+            "arm64"
           ]
         }
       ],
       "icon": "./src/StoryLine/assets/images/icons/linux.png",
       "category": "TextEditors"
+    },
+    "win": {
+      "icon": "./src/StoryLine/assets/images/icons/icon.ico",
+      "target": [
+        {
+          "target": "squirrel",
+          "arch": ["arm64"]
+        }
+      ]
     },
     "asar": null
   },
