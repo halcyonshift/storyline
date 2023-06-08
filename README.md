@@ -56,3 +56,28 @@ $ sonar-scanner \
     -Dsonar.exclusions=**/node_modules/**,**/__test__/**,**/__mock__/**
     -Dsonar.tests=__tests__/unit
 ```
+
+## SENTRY
+
+```shell
+$ yarn test:unit
+$ yarn test:integration
+
+
+## BUILD
+
+```shell
+docker run --rm -ti \
+ --env ELECTRON_CACHE="/root/.cache/electron" \
+ --env ELECTRON_BUILDER_CACHE="/root/.cache/electron-builder" \
+ --env GRAMMARLY_CLIENT_ID="client_CxthYkRk9BKWZWGwLB44vz" \
+ --env DB_NAME="storyline-prod" \
+ --env DB_SCHEMA_VERSION=1 \
+ --env SENTRY_DSN="https://41e621e8f6ea49b5b01855d8d13dd496@o215263.ingest.sentry.io/4505164795936768" \
+ --env MONITOR=1 \
+ -v ${PWD}:/project \
+ -v ${PWD##*/}-node-modules:/project/node_modules \
+ -v ~/.cache/electron:/root/.cache/electron \
+ -v ~/.cache/electron-builder:/root/.cache/electron-builder \
+ electronuserland/builder:wine
+```

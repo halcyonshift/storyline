@@ -17,6 +17,7 @@
           "targets": {
             "node": true
           },
+          "loose": true,
           "useBuiltIns": "usage",
           "corejs": "3.6.5"
         }

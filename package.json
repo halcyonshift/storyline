@@ -18,7 +18,7 @@
     "package:mac": "electron-forge package --arch=x64,arm64 --platform=darwin",
     "package:win": "electron-forge package --arch=x64,arm64,ia32 --platform=win32",
     "make:mac": "electron-forge make --arch=x64,arm64 --platform=darwin",
-    "make:win": "electron-forge make --arch=arm64 --platform=win32",
+    "make:win": "electron-forge make --arch=x64,arm64 --platform=win32",
     "publisher": "electron-forge publish",
     "dist": "electron-builder -mlw portable --config",
     "dist:linux": "electron-builder -l --config",
@@ -44,13 +44,17 @@
         {
           "target": "deb",
           "arch": [
-            "arm64"
+            "arm64",
+            "x64",
+            "armv7l"
           ]
         },
         {
           "target": "rpm",
           "arch": [
-            "arm64"
+            "arm64",
+            "x64",
+            "armv7l"
           ]
         }
       ],
@@ -62,7 +66,9 @@
       "target": [
         {
           "target": "squirrel",
-          "arch": ["arm64"]
+          "arch": [
+            "x64", "arm64", "ia32"
+          ]
         }
       ]
     },
