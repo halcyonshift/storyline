@@ -28,11 +28,9 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 declare const SPLASH_SCREEN_WEBPACK_ENTRY: string
 declare const SPLASH_SCREEN_PRELOAD_WEBPACK_ENTRY: string
 
-if (parseInt(process.env.MONITOR) === 1) {
-    init({
-        dsn: process.env.SENTRY_DSN
-    })
-}
+init({
+    dsn: process.env.SENTRY_DSN
+})
 
 if (require('electron-squirrel-startup')) {
     app.quit()
@@ -84,6 +82,7 @@ const createWindow = (): void => {
         setTimeout(() => {
             mainWindow.show()
         }, 100)
+
         if (!app.isPackaged) {
             mainWindow.webContents.openDevTools()
         }
