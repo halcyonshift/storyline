@@ -1,7 +1,7 @@
 {
   "name": "storyline",
   "productName": "StoryLine",
-  "version": "0.1.3",
+  "version": "0.1.4-alpha",
   "description": "Writing tool",
   "main": ".webpack/main",
   "scripts": {
@@ -27,13 +27,6 @@
     "icon": "./src/StoryLine/assets/images/icons/icon.icns",
     "directories": {
       "output": "releases/${platform}/${arch}"
-    },
-    "mac": {
-      "hardenedRuntime": true,
-      "gatekeeperAssess": false,
-      "entitlements": "./entitlements.plist",
-      "entitlementsInherit": "./entitlements.plist",
-      "category": "public.app-category.productivity"
     },
     "asar": null
   },
