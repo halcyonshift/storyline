@@ -192,12 +192,9 @@ app.whenReady()
         ipcMain.handle('backup-work', apiBackup.work)
         ipcMain.handle(
             'restore-storyline',
-            async () => await apiRestore.storyLine(path.join(app.getPath('userData')))
+            async () => await apiRestore.storyLine(app.getPath('userData'))
         )
-        ipcMain.handle(
-            'restore-work',
-            async () => await apiRestore.work(path.join(app.getPath('userData')))
-        )
+        ipcMain.handle('restore-work', async () => await apiRestore.work(app.getPath('userData')))
         ipcMain.handle('export-docx', apiExport.docx)
         ipcMain.handle('export-epub', apiExport.epub)
         ipcMain.handle('export-html', apiExport.html)
