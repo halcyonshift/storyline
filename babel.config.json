@@ -1,28 +1,35 @@
 {
-    "plugins": [
-        ["@babel/plugin-proposal-decorators", { "legacy": true }],
-        ["@babel/plugin-proposal-class-properties", { "loose": true }],
-        [
-          "@babel/plugin-transform-runtime",
-           {
-             "helpers": true,
-             "regenerator": true
-           }
-        ]
-    ],
-    "presets": [
+  "env": {
+    "production": {
+      "plugins": [
+        ["@babel/transform-react-remove-prop-types"]
+      ]
+    }
+  },
+  "plugins": [
+      ["@babel/plugin-proposal-decorators", { "legacy": true }],
+      ["@babel/plugin-proposal-class-properties", { "loose": true }],
       [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "node": true
-          },
-          "loose": true,
-          "useBuiltIns": "usage",
-          "corejs": "3.6.5"
-        }
-      ],
-      "@babel/preset-typescript",
-      ["@babel/preset-react", {"runtime": "automatic"}]
-    ]
+        "@babel/plugin-transform-runtime",
+          {
+            "helpers": true,
+            "regenerator": true
+          }
+      ]
+  ],
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": true
+        },
+        "loose": true,
+        "useBuiltIns": "usage",
+        "corejs": "3.6.5"
+      }
+    ],
+    "@babel/preset-typescript",
+    ["@babel/preset-react", {"runtime": "automatic"}]
+  ]
 }

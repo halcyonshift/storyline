@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Box, Stack, Typography } from '@mui/material'
-import { flatten } from 'lodash'
+import flatten from 'lodash/flatten'
 import { SectionModel } from '@sl/db/models'
 import useTabs from '@sl/layouts/Work/Tabs/useTabs'
 import { htmlParse } from '@sl/utils/html'

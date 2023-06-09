@@ -1,7 +1,7 @@
 import { dialog } from 'electron'
 import { captureMessage } from '@sentry/electron/main'
 import fs from 'fs'
-import { kebabCase } from 'lodash'
+import kebabCase from 'lodash/kebabCase'
 import { default as _epub, Content, Options } from 'epub-gen-memory'
 
 const epub = async (

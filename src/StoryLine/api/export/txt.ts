@@ -2,7 +2,7 @@ import { dialog } from 'electron'
 import { captureMessage } from '@sentry/electron/main'
 import fs from 'fs'
 import { htmlToText } from 'html-to-text'
-import { kebabCase } from 'lodash'
+import kebabCase from 'lodash/kebabCase'
 
 const exportText = async (_: Electron.IpcMainInvokeEvent, fileName: string, html: string) => {
     const result = await dialog.showSaveDialog({

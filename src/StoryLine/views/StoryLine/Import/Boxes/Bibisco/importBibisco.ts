@@ -2,7 +2,7 @@
 /* eslint-disable max-nested-callbacks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Database } from '@nozbe/watermelondb'
-import { capitalize } from 'lodash'
+import capitalize from 'lodash/capitalize'
 import { DateTime } from 'luxon'
 import { CharacterMode } from '@sl/constants/characterMode'
 import { SectionMode } from '@sl/constants/sectionMode'

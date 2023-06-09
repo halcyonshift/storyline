@@ -3,7 +3,10 @@ import { Box } from '@mui/material'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
 import { DateTime } from 'luxon'
 import { useTranslation } from 'react-i18next'
-import { DataSet, Timeline as VisTimeline } from 'vis-timeline/standalone/esm/vis-timeline-graph2d'
+import {
+    DataSet,
+    Timeline as VisTimeline
+} from 'vis-timeline/standalone/esm/vis-timeline-graph2d.min'
 import { ConnectionModel, NoteModel, SectionModel } from '@sl/db/models'
 import { OverviewTimelineProps } from '../types'
 import { ItemType } from './types'

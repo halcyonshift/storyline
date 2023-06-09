@@ -1,5 +1,5 @@
 import { default as _parse, domToReact, HTMLReactParserOptions, Element } from 'html-react-parser'
-import { camelCase } from 'lodash'
+import camelCase from 'lodash/camelCase'
 import { ExportDataType } from '@sl/forms/Work/Export/types'
 
 const DEFAULT_SIZE = '12px'

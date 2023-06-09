@@ -2,9 +2,12 @@ import type { Configuration } from 'webpack'
 
 import { rules } from './webpack.rules'
 
+const isDevelopment = Boolean(process.env.ENVIRONMENT === 'development')
+
 export const mainConfig: Configuration = {
+    mode: isDevelopment ? 'development' : 'production',
     entry: './src/index.ts',
-    devtool: process.env.ENVIRONMENT === 'development' ? 'inline-source-map' : 'source-map',
+    devtool: isDevelopment ? 'inline-source-map' : 'source-map',
     stats: {
         colors: true,
         modules: true,

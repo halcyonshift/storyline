@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
-import { sample } from 'lodash'
+import sample from 'lodash/sample'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'

@@ -2,7 +2,7 @@ import { createContext, ReactNode, useContext, useEffect, useMemo, useState } fr
 import { createTheme, responsiveFontSizes } from '@mui/material/styles'
 import { Theme } from '@mui/system'
 import { useDatabase } from '@nozbe/watermelondb/hooks'
-import { isBoolean } from 'lodash'
+import isBoolean from 'lodash/isBoolean'
 import { changeLanguage } from 'i18next'
 import {
     DEFAULT_AUTO_BACKUP_FREQ,

@@ -1,4 +1,6 @@
-import { camelCase, without } from 'lodash'
+import camelCase from 'lodash/camelCase'
+import without from 'lodash/without'
+
 import schema from '@sl/db/schema'
 
 export const getInitialValues = (table: string, exclude: string[] = []) => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Box, Checkbox, CircularProgress, FormControlLabel, InputBase } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import debounce from 'lodash.debounce'
+import debounce from 'lodash/debounce'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import Panel from '@sl/components/Panel'

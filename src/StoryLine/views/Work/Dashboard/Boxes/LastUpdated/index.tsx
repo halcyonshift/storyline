@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { List, ListItem, ListItemButton, ListItemText } from '@mui/material'
 import * as Q from '@nozbe/watermelondb/QueryDescription'
-import { take } from 'lodash'
+import take from 'lodash/take'
 import { DateTime } from 'luxon'
 import { useNavigate, useRouteLoaderData } from 'react-router-dom'
 import { GLOBAL_ICONS } from '@sl/constants/icons'

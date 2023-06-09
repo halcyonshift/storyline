@@ -18,7 +18,7 @@ import Draggable from 'react-draggable'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router-dom'
 import { useObservable } from 'rxjs-hooks'
-import { DataSet, DataView, Network } from 'vis-network/standalone/esm/vis-network'
+import { DataSet, DataView, Network } from 'vis-network/standalone/esm/vis-network.min'
 import { GLOBAL_ICONS } from '@sl/constants/icons'
 import {
     CharacterModel,

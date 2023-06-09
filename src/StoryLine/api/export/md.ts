@@ -1,7 +1,7 @@
 import { dialog } from 'electron'
 import { captureMessage } from '@sentry/electron/main'
 import fs from 'fs'
-import { kebabCase } from 'lodash'
+import kebabCase from 'lodash/kebabCase'
 import TurndownService from 'turndown'
 
 const exportMarkdown = async (_: Electron.IpcMainInvokeEvent, fileName: string, html: string) => {

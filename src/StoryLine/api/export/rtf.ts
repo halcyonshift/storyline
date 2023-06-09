@@ -1,5 +1,5 @@
 import { dialog } from 'electron'
-import { kebabCase } from 'lodash'
+import kebabCase from 'lodash/kebabCase'
 import * as htmlToRtf from 'html-to-rtf'
 
 const exportRTF = async (_: Electron.IpcMainInvokeEvent, fileName: string, html: string) => {

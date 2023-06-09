@@ -1,7 +1,7 @@
 import { app, dialog } from 'electron'
 import { captureMessage } from '@sentry/electron/main'
 import fs from 'fs'
-import { kebabCase } from 'lodash'
+import kebabCase from 'lodash/kebabCase'
 import path from 'path'
 import JSZip from 'jszip'
 

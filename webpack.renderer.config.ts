@@ -4,16 +4,19 @@ import path from 'path'
 import { rules } from './webpack.rules'
 import { plugins } from './webpack.plugins'
 
+const isDevelopment = Boolean(process.env.ENVIRONMENT === 'development')
+
 rules.push({
     test: /\.css$/,
     use: [{ loader: 'style-loader' }, { loader: 'css-loader' }, { loader: 'postcss-loader' }]
 })
 
 export const rendererConfig: Configuration = {
+    mode: isDevelopment ? 'development' : 'production',
     module: {
         rules
     },
-    devtool: process.env.ENVIRONMENT === 'development' ? 'inline-source-map' : 'source-map',
+    devtool: isDevelopment ? 'inline-source-map' : 'source-map',
     stats: {
         colors: true,
         modules: true,
