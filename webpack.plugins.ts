@@ -3,16 +3,18 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import Dotenv from 'dotenv-webpack'
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 
+const getEnvFile = () => {
+    if (process.env.ENVIRONMENT === 'development') return './.env.development'
+    if (process.env.CIRCLE) return './.env.ci'
+    return './.env.production'
+}
+
+console.log('getEnvFile', getEnvFile())
+
 export const plugins = [
-    new Dotenv(
-        process.env.CIRCLE && parseInt(process.env.CIRCLE) !== 1
-            ? {
-                  path: `./.env.${
-                      process.env.ENVIRONMENT === 'development' ? 'development' : 'production'
-                  }`
-              }
-            : {}
-    ) as unknown as WebpackPluginInstance,
+    new Dotenv({
+        path: getEnvFile()
+    }) as WebpackPluginInstance,
     new ForkTsCheckerWebpackPlugin({
         logger: 'webpack-infrastructure'
     }),
